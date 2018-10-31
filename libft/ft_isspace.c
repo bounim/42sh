@@ -17,3 +17,8 @@ int					ft_isspace(int c)
 	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'
 			|| c == ' ');
 }
+
+int					ft_isspace_n(int c)
+{
+	return (c == '\t' || c == '\v' || c == '\f' || c == '\r' || c == ' ');
+}
