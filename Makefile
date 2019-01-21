@@ -1,12 +1,17 @@
 NAME ?= 21sh
 
 SRC := \
-	main.c
+	main.c \
+	lexer/lexer.c \
+	lexer/newline.c \
+	lexer/number.c \
+	lexer/quote.c \
+	utils/canonical_path.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
 LDLIBS ?=
-CPPFLAGS += -MMD -MP
+CPPFLAGS += -MMD -MP -Isrc
 
 OBJDIR ?= obj
 SRCDIR := src
@@ -47,3 +52,4 @@ local_clean:
 
 .syntastic_c_config:
 	echo "-Ilibft" > $@
+	echo "-Isrc" >> $@

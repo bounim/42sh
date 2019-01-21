@@ -14,7 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
-# include "printer/printer.h"
+# include "printer.h"
 
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);

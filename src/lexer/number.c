@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   number.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,39 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "lexer.h"
 
-int		main(void)
+int		lexer_number(t_lexer *lex)
 {
-	char buffer[] =
-		"'foo'\n"
-		"'bar'";
-	t_lexer lex;
-	t_printer_handle out;
-	t_lexer_token *cur;
+	t_lexer_token	*t;
 
-	printer_init(&out, 1);
-	lexer_init(&lex, buffer, sizeof(buffer) - 1);
-	printer_int(&out, lexer_read(&lex));
-	printer_str(&out, " - lex.i: ");
-	printer_int(&out, lex.i);
-	printer_endl(&out);
-	if (lex.head)
+	if (lex->buffer[lex->i] >= '0' && lex->buffer[lex->i] <= '9')
 	{
-		cur = lex.head;
-		while (cur)
+		if (!(t = lexer_token(lex, LEX_IO_NUMBER)))
+			return (-1);
+		while (lex->buffer[lex->i] >= '0' && lex->buffer[lex->i] <= '9')
 		{
-			printer_str(&out, "token=");
-			printer_int(&out, (int)cur->token);
-			printer_str(&out, " bufpos=");
-			printer_ulong(&out, cur->buffer_position);
-			printer_str(&out, " inbuf=");
-			printer_ulong(&out, cur->in_buffer);
-			printer_endl(&out);
-			cur = cur->next;
+			t->number = t->number * 10 + (lex->buffer[lex->i] - '0');
+			t->in_buffer++;
 		}
+		lex->i += t->in_buffer;
+		return (0);
 	}
-	printer_flush(&out);
-	lexer_destroy(&lex);
+	return (1);
 }
