@@ -19,7 +19,8 @@
 
 enum				e_lexer_token
 {
-	LEX_WORD = 0,
+	LEX_SPACE = 0,
+	LEX_WORD,
 	LEX_ASSIGNMENT_WORD,
 	LEX_NAME,
 	LEX_NEWLINE,
@@ -58,6 +59,8 @@ enum				e_lexer_token
 	LEX_OP_AMP,
 	LEX_OP_SEMI,
 };
+
+extern char * const g_lexer_token_str[];
 
 typedef struct s_lexer_token	t_lexer_token;
 
@@ -107,18 +110,24 @@ void							lexer_destroy(t_lexer *lex);
 ** Return -1 on fatal error, 0 on success, 1 if it can't match a token.
 */
 
+int								lexer_space(t_lexer *lex);
 int								lexer_quote(t_lexer *lex);
 int								lexer_number(t_lexer *lex);
-int								lexer_newline(t_lexer *lex);
+int								lexer_newline(t_lexer *lex); // FIXME merge to _operator? could also handle backslash LF (=> no token)
+int								lexer_operator(t_lexer *lex);
+int								lexer_keyword(t_lexer *lex);
+int								lexer_litteral(t_lexer *lex);
 
 /*
 ** Internal functions
 ** token: allocate a token node (linked list)
-** keyword: check if next word is a keyword (not quoted, may have backslahes)
+** keyword: check if next word is a keyword (not quoted, may have backslashes),
+** returns size of keyword
 */
 
 t_lexer_token					*lexer_token(t_lexer *lex,
 		enum e_lexer_token token);
-size_t							lexer_keyword(t_lexer *lex, char *keyword);
+size_t							lexer_match_keyword(t_lexer *lex,
+		char *keyword);
 
 #endif

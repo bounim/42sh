@@ -12,6 +12,11 @@
 
 #include "lexer.h"
 
+char * const g_lexer_token_str[] = {
+	"foo\n",
+	"bar",
+};
+
 void				lexer_init(t_lexer *lex, char *buffer, size_t length)
 {
 	ft_memset(lex, 0, sizeof(*lex));
@@ -20,6 +25,7 @@ void				lexer_init(t_lexer *lex, char *buffer, size_t length)
 }
 
 static int			(*g_lexer_func[])(t_lexer *) = {
+	&lexer_space,
 	&lexer_quote,
 	&lexer_number,
 	&lexer_newline,

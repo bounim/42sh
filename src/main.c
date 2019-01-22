@@ -16,7 +16,7 @@
 int		main(void)
 {
 	char buffer[] =
-		"'foo'\n"
+		" 'foo' \n"
 		"'bar'";
 	t_lexer lex;
 	t_printer_handle out;
@@ -24,6 +24,9 @@ int		main(void)
 
 	printer_init(&out, 1);
 	lexer_init(&lex, buffer, sizeof(buffer) - 1);
+	printer_str(&out, g_lexer_token_str[0]);
+	//g_lexer_token_str[0] = "baz\n";
+	printer_str(&out, g_lexer_token_str[0]);
 	printer_int(&out, lexer_read(&lex));
 	printer_str(&out, " - lex.i: ");
 	printer_int(&out, lex.i);

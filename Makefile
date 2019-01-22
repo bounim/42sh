@@ -6,6 +6,7 @@ SRC := \
 	lexer/newline.c \
 	lexer/number.c \
 	lexer/quote.c \
+	lexer/space.c \
 	utils/canonical_path.c
 
 CFLAGS ?=
