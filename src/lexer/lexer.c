@@ -12,9 +12,56 @@
 
 #include "lexer.h"
 
-char * const g_lexer_token_str[] = {
-	"foo\n",
-	"bar",
+t_lexer_token_str *const g_lexer_token_str[] = {
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = "&&", .l = 2 }),
+	&((t_lexer_token_str){ .s = "||", .l = 2 }),
+	&((t_lexer_token_str){ .s = ";;", .l = 2 }),
+	&((t_lexer_token_str){ .s = "<<", .l = 2 }),
+	&((t_lexer_token_str){ .s = ">>", .l = 2 }),
+	&((t_lexer_token_str){ .s = "<&", .l = 2 }),
+	&((t_lexer_token_str){ .s = ">&", .l = 2 }),
+	&((t_lexer_token_str){ .s = "<>", .l = 2 }),
+	&((t_lexer_token_str){ .s = "<<-", .l = 2 }),
+	&((t_lexer_token_str){ .s = ">|", .l = 2 }),
+	&((t_lexer_token_str){ .s = "|", .l = 1 }),
+	&((t_lexer_token_str){ .s = "(", .l = 1 }),
+	&((t_lexer_token_str){ .s = ")", .l = 1 }),
+	&((t_lexer_token_str){ .s = "<", .l = 1 }),
+	&((t_lexer_token_str){ .s = ">", .l = 1 }),
+	&((t_lexer_token_str){ .s = "&", .l = 1 }),
+	&((t_lexer_token_str){ .s = ";", .l = 1 }),
+	&((t_lexer_token_str){ .s = "{", .l = 1 }),
+	&((t_lexer_token_str){ .s = "}", .l = 1 }),
+	&((t_lexer_token_str){ .s = "!", .l = 1 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+	&((t_lexer_token_str){ .s = "if", .l = 2 }),
+	&((t_lexer_token_str){ .s = "then", .l = 4 }),
+	&((t_lexer_token_str){ .s = "else", .l = 4 }),
+	&((t_lexer_token_str){ .s = "elif", .l = 4 }),
+	&((t_lexer_token_str){ .s = "fi", .l = 2 }),
+	&((t_lexer_token_str){ .s = "do", .l = 2 }),
+	&((t_lexer_token_str){ .s = "done", .l = 4 }),
+	&((t_lexer_token_str){ .s = "case", .l = 4 }),
+	&((t_lexer_token_str){ .s = "esac", .l = 4 }),
+	&((t_lexer_token_str){ .s = "while", .l = 5 }),
+	&((t_lexer_token_str){ .s = "until", .l = 5 }),
+	&((t_lexer_token_str){ .s = "for", .l = 3 }),
+	&((t_lexer_token_str){ .s = "in", .l = 2 }),
+	&((t_lexer_token_str){ .s = NULL, .l = 0 }),
+};
+
+static int			(*g_lexer_func[])(t_lexer *) = {
+	&lexer_space,
+	&lexer_operator,
+	&lexer_quote,
+	&lexer_number,
+	&lexer_newline,
 };
 
 void				lexer_init(t_lexer *lex, char *buffer, size_t length)
@@ -23,13 +70,6 @@ void				lexer_init(t_lexer *lex, char *buffer, size_t length)
 	lex->buffer = buffer;
 	lex->buffer_length = length;
 }
-
-static int			(*g_lexer_func[])(t_lexer *) = {
-	&lexer_space,
-	&lexer_quote,
-	&lexer_number,
-	&lexer_newline,
-};
 
 int					lexer_read(t_lexer *lex)
 {

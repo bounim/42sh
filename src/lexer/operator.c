@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   operator.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,41 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "lexer.h"
 
-int		main(void)
+int		lexer_operator(t_lexer *lex)
 {
-	char buffer[] =
-		"< <> 'foo' \n"
-		"'bar';";
-	t_lexer lex;
-	t_printer_handle out;
-	t_lexer_token *cur;
+	t_lexer_token		*t;
+	enum e_lexer_token	li;
 
-	printer_init(&out, 1);
-	lexer_init(&lex, buffer, sizeof(buffer) - 1);
-	printer_str(&out, g_lexer_token_str[LEXER_FIRST_OP]->s);
-	printer_endl(&out);
-	printer_int(&out, lexer_read(&lex));
-	printer_str(&out, " - lex.i: ");
-	printer_int(&out, lex.i);
-	printer_endl(&out);
-	if (lex.head)
+	li = LEXER_FIRST_OP;
+	while (g_lexer_token_str[li]->s)
 	{
-		cur = lex.head;
-		while (cur)
+		if (lex->buffer_length - lex->i >= g_lexer_token_str[li]->l)
 		{
-			printer_str(&out, "token=");
-			printer_int(&out, (int)cur->token);
-			printer_str(&out, " bufpos=");
-			printer_ulong(&out, cur->buffer_position);
-			printer_str(&out, " inbuf=");
-			printer_ulong(&out, cur->in_buffer);
-			printer_endl(&out);
-			cur = cur->next;
+			if (memcmp(&lex->buffer[lex->i], g_lexer_token_str[li]->s,
+						g_lexer_token_str[li]->l) == 0)
+			{
+				if (!(t = lexer_token(lex, li)))
+					return (-1);
+				t->in_buffer = g_lexer_token_str[li]->l;
+				lex->i += t->in_buffer;
+				return (0);
+			}
 		}
+		li++;
 	}
-	printer_flush(&out);
-	lexer_destroy(&lex);
+	return (1);
 }

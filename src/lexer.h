@@ -35,6 +35,17 @@ enum				e_lexer_token
 	LEX_OP_LESSGREAT,
 	LEX_OP_DLESSDASH,
 	LEX_OP_CLOBBER,
+	LEX_OP_PIPE,
+	LEX_OP_LPAREN,
+	LEX_OP_RPAREN,
+	LEX_OP_LESS,
+	LEX_OP_GREAT,
+	LEX_OP_AMP,
+	LEX_OP_SEMI,
+	LEX_OP_LBRACE,
+	LEX_OP_RBRACE,
+	LEX_OP_BANG,
+	LEX_OP_NONE,
 	LEX_RES_IF,
 	LEX_RES_THEN,
 	LEX_RES_ELSE,
@@ -47,20 +58,20 @@ enum				e_lexer_token
 	LEX_RES_WHILE,
 	LEX_RES_UNTIL,
 	LEX_RES_FOR,
-	LEX_REC_LBRACE,
-	LEX_REC_RBRACE,
-	LEX_REC_BANG,
-	LEX_REC_IN,
-	LEX_OP_PIPE,
-	LEX_OP_LPAREN,
-	LEX_OP_RPAREN,
-	LEX_OP_LESS,
-	LEX_OP_GREAT,
-	LEX_OP_AMP,
-	LEX_OP_SEMI,
+	LEX_RES_IN,
+	LEX_RES_NONE,
 };
 
-extern char * const g_lexer_token_str[];
+# define LEXER_FIRST_OP LEX_OP_AND_IF
+# define LEXER_FIRST_RES LEX_RES_IF
+
+typedef struct					s_lexer_token_str
+{
+	char *const					s;
+	size_t						l;
+}								t_lexer_token_str;
+
+extern t_lexer_token_str *const g_lexer_token_str[];
 
 typedef struct s_lexer_token	t_lexer_token;
 
@@ -115,19 +126,14 @@ int								lexer_quote(t_lexer *lex);
 int								lexer_number(t_lexer *lex);
 int								lexer_newline(t_lexer *lex); // FIXME merge to _operator? could also handle backslash LF (=> no token)
 int								lexer_operator(t_lexer *lex);
-int								lexer_keyword(t_lexer *lex);
-int								lexer_litteral(t_lexer *lex);
+int								lexer_litteral(t_lexer *lex); // TODO compute next litteral (possibly with backslashes), then detect a keyword, assignment word, etc...
 
 /*
 ** Internal functions
 ** token: allocate a token node (linked list)
-** keyword: check if next word is a keyword (not quoted, may have backslashes),
-** returns size of keyword
 */
 
 t_lexer_token					*lexer_token(t_lexer *lex,
 		enum e_lexer_token token);
-size_t							lexer_match_keyword(t_lexer *lex,
-		char *keyword);
 
 #endif

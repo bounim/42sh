@@ -5,6 +5,7 @@ SRC := \
 	lexer/lexer.c \
 	lexer/newline.c \
 	lexer/number.c \
+	lexer/operator.c \
 	lexer/quote.c \
 	lexer/space.c \
 	utils/canonical_path.c
