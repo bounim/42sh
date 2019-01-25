@@ -17,6 +17,8 @@ void	printer_bin(t_printer_handle *handle, char *bin, size_t size)
 {
 	size_t	diff;
 
+	if (!bin)
+		return ;
 	while (size)
 	{
 		if (handle->length + size <= PRINTER_BUFFER_SIZE)

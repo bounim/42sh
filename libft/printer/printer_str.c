@@ -15,5 +15,7 @@
 
 void	printer_str(t_printer_handle *handle, char *str)
 {
+	if (!str)
+		return ;
 	printer_bin(handle, str, ft_strlen(str));
 }
