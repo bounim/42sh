@@ -5,6 +5,8 @@ LIBFT_SRC := \
 	ft_memcpy.c \
 	ft_memmove.c \
 	ft_memset.c \
+	ft_stpncpy.c \
+	ft_stpncpyz.c \
 	ft_strchr.c \
 	ft_strcmp.c \
 	ft_strlen.c \
