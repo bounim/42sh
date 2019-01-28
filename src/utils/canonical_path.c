@@ -24,13 +24,12 @@ int			canonical_path(char *result, char *workdir, char *input)
 
 	if (input[0] == '\0')
 	{
-		ft_memcpy(result, workdir, PATH_MAX + 1);
+		ft_strncpyz(result, workdir, PATH_MAX + 1);
 		return (0);
 	}
 	if (input[0] != '/')
 	{
-		ft_memcpy(result, workdir, PATH_MAX + 1);
-		i = ft_strlen(result); // TODO stpncpy??
+		i = ft_stpncpyz(result, workdir, PATH_MAX + 1) - result;
 		if (i == PATH_MAX)
 			return (-1);
 		result[i++] = '/';
