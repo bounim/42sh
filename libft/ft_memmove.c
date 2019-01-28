@@ -21,7 +21,7 @@ void				*ft_memmove(void *dst, const void *src, size_t len)
 	const uint64_t	*s8;
 	int				s;
 
-	if (src == dst)
+	if (src == dst || len == 0)
 		return (dst);
 	s = src < dst ? 1 : 0;
 	d8 = (uint64_t *)((char *)dst + len * s);

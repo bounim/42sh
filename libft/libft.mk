@@ -9,6 +9,7 @@ LIBFT_SRC := \
 	ft_strcmp.c \
 	ft_strlen.c \
 	ft_strncpy.c \
+	ft_strncpyz.c \
 	ft_strnlen.c \
 	printer/printer_bin.c \
 	printer/printer_char.c \
