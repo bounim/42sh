@@ -16,6 +16,7 @@ int		lexer_quote(t_lexer *lex)
 {
 	t_lexer_token	*t;
 
+	// TODO copy string + '\\'
 	if (lex->buffer[lex->i] == '\'')
 	{
 		if (!(t = lexer_token(lex, LEX_WORD)))

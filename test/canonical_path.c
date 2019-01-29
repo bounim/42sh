@@ -17,11 +17,20 @@
 
 static t_test *const g_test[] = {
 	&((t_test){"/work/dir", "", "/work/dir"}),
-	&((t_test){"/work/dir", "f", "/work/dir/l"}),
+	&((t_test){"/work/dir", "f", "/work/dir/f"}),
+	&((t_test){"/work/dir", "f/g", "/work/dir/f/g"}),
+	&((t_test){"/work/dir", "f/g/", "/work/dir/f/g"}),
 	&((t_test){"/work/dir", "/r", "/r"}),
 	&((t_test){"/work/dir", "/", "/"}),
+	&((t_test){"/work/dir", "//", "/"}),
+	&((t_test){"/work/dir", "//r", "/r"}),
+	&((t_test){"/work/dir", "//r//s", "/r/s"}),
 	&((t_test){"/work/dir", ".", "/work/dir"}),
+	&((t_test){"/work/dir", "./", "/work/dir"}),
+	&((t_test){"/work/dir", "./d", "/work/dir/d"}),
+	&((t_test){"/work/dir", "./d/", "/work/dir/d"}),
 	&((t_test){"/work/dir", "..", "/work"}),
+	&((t_test){"/work/dir", "../", "/work"}),
 };
 
 static int	test(t_printer_handle *out, size_t t)
@@ -30,6 +39,7 @@ static int	test(t_printer_handle *out, size_t t)
 	char	workdir[PATH_MAX + 1];
 	int		r;
 
+	ft_memset(result, '\0', sizeof(result));
 	ft_strncpyz(workdir, g_test[t]->workdir, sizeof(workdir));
 	printer_ulong(out, t);
 	printer_bin(out, ": canonical_path(", 17);
@@ -42,6 +52,9 @@ static int	test(t_printer_handle *out, size_t t)
 	if ((r = canonical_path(result, workdir, g_test[t]->input)))
 	{
 		printer_int(out, r);
+		printer_bin(out, " (", 2);
+		printer_str(out, result);
+		printer_bin(out, ")", 1);
 		return (1);
 	}
 	if (ft_strcmp(result, g_test[t]->result) != 0)

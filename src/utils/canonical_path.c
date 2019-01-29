@@ -30,7 +30,7 @@ int			canonical_path(char *result, char *workdir, char *input)
 	if (input[0] != '/')
 	{
 		i = ft_stpncpyz(result, workdir, PATH_MAX + 1) - result;
-		if (i == PATH_MAX)
+		if (i >= PATH_MAX)
 			return (-1);
 		result[i++] = '/';
 	}
@@ -44,21 +44,24 @@ int			canonical_path(char *result, char *workdir, char *input)
 	dot = 0;
 	word_length = 0;
 	end = 0;
-	while (*input)
+	while (1)
 	{
 		if (word_length > 0 && (*input == '/' || *input == '\0')) // copy word
 		{
 			if (*input == '/')
-				word_length++; // ending slash
-			if (i + word_length > PATH_MAX)
+				input++; // ending slash
+			if (i + word_length + 1 > PATH_MAX)
 				return (-1);
 			ft_memcpy(result + i, input - word_length, word_length);
 			i += word_length;
+			result[i++] = '/';
 			if (*input == '\0')
 				break ;
 			word_length = 0;
 			slash = 1;
 		}
+		else if (*input == '\0')
+			break ;
 		else if (*input == '/')
 		{
 			if (slash) // remove useless slashes
@@ -105,7 +108,7 @@ int			canonical_path(char *result, char *workdir, char *input)
 		}
 		input++;
 	}
-	// TODO more things to do?
-	//result[i] = '\0'; // remove ending slash
-	return (-1);
+	if (i > 1 && result[i - 1] == '/')
+		result[i - 1] = '\0'; // remove ending slash
+	return (0);
 }
