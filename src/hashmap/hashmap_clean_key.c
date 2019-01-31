@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "hashmap_internal.h"
 
 void	hashmap_clean_key(t_hashmap_key *key)

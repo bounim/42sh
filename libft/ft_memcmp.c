@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashmap_clean.c                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/30 16:17:23 by emartine          #+#    #+#             */
-/*   Updated: 2019/01/30 16:17:25 by emartine         ###   ########.fr       */
+/*   Created: 2019/01/31 15:46:35 by emartine          #+#    #+#             */
+/*   Updated: 2019/01/31 15:46:37 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "hashmap_internal.h"
+#include <stdint.h>
+#include "libft.h"
 
-void	hashmap_clean(t_hashmap *hashmap)
+int		ft_memcmp(void *a, const void *b, size_t len)
 {
-	size_t	i;
+	uint64_t	*a8;
+	uint64_t	*b8;
+	uint8_t		*a1;
+	uint8_t		*b1;
 
-	i = 0;
-	while (i < hashmap->arraysize)
+	a8 = (uint64_t *)a;
+	b8 = (uint64_t *)b;
+	while (len > 7 && *a8 == *b8)
 	{
-		hashmap_clean_key(&hashmap->array[i]);
-		i++;
+		a8++;
+		b8++;
+		len -= 8;
 	}
-	free(hashmap->array);
+	a1 = (uint8_t *)a8;
+	b1 = (uint8_t *)b8;
+	while (len && *a1 == *b1)
+	{
+		a1++;
+		b1++;
+		len--;
+	}
+	return (*a1 - *b1);
 }

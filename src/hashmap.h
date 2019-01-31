@@ -16,9 +16,9 @@
 # include <stddef.h>
 # include <stdint.h>
 
-typedef struct s_hashkey	t_hashmap_key;
-typedef struct s_hashmap	t_hashmap;
-typedef size_t				(*t_hashmap_func)(t_hashmap *hashmap,
+typedef struct s_hashmap_key	t_hashmap_key;
+typedef struct s_hashmap		t_hashmap;
+typedef size_t					(*t_hashmap_func)(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize);
 
 /*
@@ -27,13 +27,13 @@ typedef size_t				(*t_hashmap_func)(t_hashmap *hashmap,
 ** data, datasize: data (copied)
 */
 
-struct						s_hashmap_key
+struct							s_hashmap_key
 {
-	t_hashmap_key			*next;
-	uint8_t					*key;
-	size_t					keysize;
-	void					*value;
-	size_t					valuesize;
+	t_hashmap_key				*next;
+	uint8_t						*key;
+	size_t						keysize;
+	void						*value;
+	size_t						valuesize;
 };
 
 /*
@@ -44,12 +44,12 @@ struct						s_hashmap_key
 ** length: number of saved keys
 */
 
-struct						s_hashmap
+struct							s_hashmap
 {
-	t_hashmap_func			*hash;
-	t_hashmap_key			*array;
-	size_t					arraysize;
-	size_t					length;
+	t_hashmap_func				hash;
+	t_hashmap_key				*array;
+	size_t						arraysize;
+	size_t						length;
 };
 
 /*
@@ -59,14 +59,14 @@ struct						s_hashmap
 ** returns 0 on success, -1 if allocation failed
 */
 
-int							hashmap_init(t_hashmap *hashmap, size_t size,
+int								hashmap_init(t_hashmap *hashmap, size_t size,
 		t_hashmap_func hash);
 
 /*
 ** free all keys and values
 */
 
-void						hashmap_clean(t_hashmap *hashmap);
+void							hashmap_clean(t_hashmap *hashmap);
 
 /*
 ** set key to value
@@ -74,7 +74,7 @@ void						hashmap_clean(t_hashmap *hashmap);
 ** returns 0 on success, -1 if allocation failed
 */
 
-int							hashmap_set(t_hashmap *hashmap,
+int								hashmap_set(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize,
 		uint8_t *value, size_t valuesize);
 
@@ -82,7 +82,7 @@ int							hashmap_set(t_hashmap *hashmap,
 ** returns NULL if key not found, or the key structure
 */
 
-t_hashmap_key				*hashmap_get(t_hashmap *hashmap,
+t_hashmap_key					*hashmap_get(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize);
 
 #endif

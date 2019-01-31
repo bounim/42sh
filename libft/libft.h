@@ -19,6 +19,7 @@
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_memcmp(void *a, const void *b, size_t len);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_stpncpy(char *dest, const char *src, size_t n);

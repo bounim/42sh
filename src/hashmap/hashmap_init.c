@@ -20,7 +20,7 @@ int							hashmap_init(t_hashmap *hashmap, size_t size,
 	if (NULL == (hashmap->array = malloc(size * sizeof(*hashmap->array))))
 		return (-1);
 	ft_memset(hashmap->array, 0, size * sizeof(*hashmap->array));
-	hashmap->func = hash;
+	hashmap->hash = hash;
 	hashmap->arraysize = size;
 	hashmap->length = 0;
 	return (0);

@@ -2,6 +2,11 @@ NAME ?= 21sh
 
 SRC := \
 	main.c \
+	hashmap/hashmap_clean.c \
+	hashmap/hashmap_clean_key.c \
+	hashmap/hashmap_get.c \
+	hashmap/hashmap_init.c \
+	hashmap/hashmap_set.c \
 	lexer/lexer.c \
 	lexer/newline.c \
 	lexer/number.c \
