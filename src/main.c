@@ -23,9 +23,7 @@ int		main(void)
 	t_lexer_token *cur;
 
 	printer_init(&out, 1);
-	lexer_init(&lex, buffer, sizeof(buffer) - 1);
-	printer_str(&out, g_lexer_token_str[LEXER_FIRST_OP]->s);
-	printer_endl(&out);
+	lexer_init(&lex, (uint8_t *)buffer, sizeof(buffer) - 1);
 	printer_int(&out, lexer_read(&lex));
 	printer_str(&out, " - lex.i: ");
 	printer_int(&out, lex.i);
@@ -36,7 +34,7 @@ int		main(void)
 		while (cur)
 		{
 			printer_str(&out, "token=");
-			printer_int(&out, (int)cur->token);
+			printer_int(&out, (int)cur->state);
 			printer_str(&out, " bufpos=");
 			printer_ulong(&out, cur->buffer_position);
 			printer_str(&out, " inbuf=");

@@ -17,74 +17,29 @@
 # include <stdint.h>
 # include "libft.h"
 
-enum				e_lexer_token
+enum							e_lexer_state
 {
-	LEX_SPACE = 0,
-	LEX_WORD,
-	LEX_ASSIGNMENT_WORD,
-	LEX_NAME,
-	LEX_NEWLINE,
-	LEX_IO_NUMBER,
-	LEX_OP_AND_IF,
-	LEX_OP_OR_IF,
-	LEX_OP_DSEMI,
-	LEX_OP_DLESS,
-	LEX_OP_DGREAT,
-	LEX_OP_LESSAND,
-	LEX_OP_GREATAND,
-	LEX_OP_LESSGREAT,
-	LEX_OP_DLESSDASH,
-	LEX_OP_CLOBBER,
-	LEX_OP_PIPE,
-	LEX_OP_LPAREN,
-	LEX_OP_RPAREN,
-	LEX_OP_LESS,
-	LEX_OP_GREAT,
-	LEX_OP_AMP,
-	LEX_OP_SEMI,
-	LEX_OP_LBRACE,
-	LEX_OP_RBRACE,
-	LEX_OP_BANG,
-	LEX_OP_NONE,
-	LEX_RES_IF,
-	LEX_RES_THEN,
-	LEX_RES_ELSE,
-	LEX_RES_ELIF,
-	LEX_RES_FI,
-	LEX_RES_DO,
-	LEX_RES_DONE,
-	LEX_RES_CASE,
-	LEX_RES_ESAC,
-	LEX_RES_WHILE,
-	LEX_RES_UNTIL,
-	LEX_RES_FOR,
-	LEX_RES_IN,
-	LEX_RES_NONE,
+	LEX_ST_GEN = 0,
+	LEX_ST_OP,
+	LEX_ST_QU,
+	LEX_ST_WD,
+	LEX_ST_BLK,
+	LEX_ST_BS,
+	LEX_ST_DLR,
+	LEX_ST_NB,
 };
 
-# define LEXER_FIRST_OP LEX_OP_AND_IF
-# define LEXER_FIRST_RES LEX_RES_IF
-
-typedef struct					s_lexer_token_str
-{
-	char *const					s;
-	size_t						l;
-}								t_lexer_token_str;
-
-extern t_lexer_token_str *const g_lexer_token_str[];
+// TODO enum e_lexer_type
 
 typedef struct s_lexer_token	t_lexer_token;
 
 struct							s_lexer_token
 {
-	enum e_lexer_token			token;
+	enum e_lexer_state			state; // FIXME enum e_lexer_type type
 	size_t						buffer_position;
 	size_t						in_buffer;
 	t_lexer_token				*previous;
 	t_lexer_token				*next;
-	char						*string;
-	size_t						string_length;
-	int64_t						number;
 };
 
 /*
@@ -95,23 +50,26 @@ struct							s_lexer_token
 
 typedef struct					s_lexer
 {
+	enum e_lexer_state			state;
 	t_lexer_token				*head;
 	t_lexer_token				*foot;
-	char						*buffer;
+	uint8_t						*buffer;
 	size_t						buffer_length;
 	size_t						i;
 	int							nomatch;
 	int							quote;
 }								t_lexer;
 
-void							lexer_init(t_lexer *lex, char *buffer,
+void							lexer_init(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_length);
+
 /*
 ** Returns -1 on error, 0 on success.
 ** When erroring, must check exit variables (nomatch, quote...) to find the
 ** reason, if all are 0, a malloc failed (out of memory).
 ** See t_lexer definition above.
 */
+
 int								lexer_read(t_lexer *lex);
 void							lexer_destroy(t_lexer *lex);
 
@@ -121,19 +79,13 @@ void							lexer_destroy(t_lexer *lex);
 ** Return -1 on fatal error, 0 on success, 1 if it can't match a token.
 */
 
-int								lexer_space(t_lexer *lex);
-int								lexer_quote(t_lexer *lex);
-int								lexer_number(t_lexer *lex);
-int								lexer_newline(t_lexer *lex); // FIXME merge to _operator? could also handle backslash LF (=> no token)
 int								lexer_operator(t_lexer *lex);
-int								lexer_litteral(t_lexer *lex); // TODO compute next litteral (possibly with backslashes), then detect a keyword, assignment word, etc...
 
 /*
 ** Internal functions
 ** token: allocate a token node (linked list)
 */
 
-t_lexer_token					*lexer_token(t_lexer *lex,
-		enum e_lexer_token token);
+t_lexer_token					*lexer_token(t_lexer *lex);
 
 #endif

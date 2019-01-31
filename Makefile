@@ -8,11 +8,7 @@ SRC := \
 	hashmap/hashmap_init.c \
 	hashmap/hashmap_set.c \
 	lexer/lexer.c \
-	lexer/newline.c \
-	lexer/number.c \
 	lexer/operator.c \
-	lexer/quote.c \
-	lexer/space.c \
 	utils/canonical_path.c
 
 TEST_CANONICAL_PATH_NAME := canonical_path
