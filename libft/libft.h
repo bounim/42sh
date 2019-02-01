@@ -13,11 +13,13 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <string.h>
+# include <stddef.h>
+# include "hashmap.h"
 # include "printer.h"
 
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);
+void	*ft_memcat(const void *a, size_t an, const void *b, size_t bn);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_memcmp(void *a, const void *b, size_t len);
 void	*ft_memmove(void *dst, const void *src, size_t len);

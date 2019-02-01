@@ -2,6 +2,7 @@ LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
 	ft_isspace.c \
+	ft_memcat.c \
 	ft_memcpy.c \
 	ft_memcmp.c \
 	ft_memmove.c \
@@ -14,6 +15,11 @@ LIBFT_SRC := \
 	ft_strncpy.c \
 	ft_strncpyz.c \
 	ft_strnlen.c \
+	hashmap/hashmap_clean.c \
+	hashmap/hashmap_clean_key.c \
+	hashmap/hashmap_get.c \
+	hashmap/hashmap_init.c \
+	hashmap/hashmap_set.c \
 	printer/printer_bin.c \
 	printer/printer_char.c \
 	printer/printer_endl.c \
