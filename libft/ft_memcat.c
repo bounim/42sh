@@ -14,11 +14,13 @@
 #include <stdint.h>
 #include "libft.h"
 
-void	*ft_memcat(const void *a, size_t an, const void *b, size_t bn)
+void	*ft_memcat(size_t *rn, const void *a, size_t an,
+		const void *b, size_t bn)
 {
 	void	*r;
 
-	if (NULL == (r = malloc(an + bn)))
+	*rn = an + bn;
+	if (NULL == (r = malloc(*rn)))
 		return (NULL);
 	ft_memmove(r, a, an);
 	ft_memmove(r + an, b, bn);
