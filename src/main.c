@@ -34,11 +34,9 @@ int		main(void)
 		while (cur)
 		{
 			printer_str(&out, "token=");
-			printer_int(&out, (int)cur->state);
+			printer_int(&out, (int)cur->type);
 			printer_str(&out, " bufpos=");
 			printer_ulong(&out, cur->buffer_position);
-			printer_str(&out, " inbuf=");
-			printer_ulong(&out, cur->in_buffer);
 			printer_endl(&out);
 			cur = cur->next;
 		}

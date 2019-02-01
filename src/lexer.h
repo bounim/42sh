@@ -29,23 +29,28 @@ enum							e_lexer_state
 	LEX_ST_NB,
 };
 
-// TODO enum e_lexer_type
+enum							e_lexer_type
+{
+	LEX_TP_WD = 0,
+	LEX_TP_OP,
+};
 
 typedef struct s_lexer_token	t_lexer_token;
 
 struct							s_lexer_token
 {
-	enum e_lexer_state			state; // FIXME enum e_lexer_type type
+	enum e_lexer_type			type;
 	size_t						buffer_position;
-	size_t						in_buffer;
+	uint8_t						*buffer;
+	size_t						size;
 	t_lexer_token				*previous;
 	t_lexer_token				*next;
 };
 
 /*
+** quote: quote type + quote type if != '\0'
 ** When lexer exits, these can be set (0 = default / unset)
 ** nomatch: cannot match a token
-** quote: 1 - quote not closed, 2 - dquote not closed
 */
 
 typedef struct					s_lexer
@@ -57,7 +62,7 @@ typedef struct					s_lexer
 	size_t						buffer_length;
 	size_t						i;
 	int							nomatch;
-	int							quote;
+	char						quote;
 }								t_lexer;
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
@@ -80,12 +85,15 @@ void							lexer_destroy(t_lexer *lex);
 */
 
 int								lexer_operator(t_lexer *lex);
+int								lexer_quote(t_lexer *lex);
+int								lexer_word(t_lexer *lex);
+int								lexer_blank(t_lexer *lex);
 
 /*
 ** Internal functions
 ** token: allocate a token node (linked list)
 */
 
-t_lexer_token					*lexer_token(t_lexer *lex);
+int								lexer_token(t_lexer *lex, enum e_lexer_type);
 
 #endif
