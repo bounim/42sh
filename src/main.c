@@ -16,8 +16,7 @@
 int		main(void)
 {
 	char buffer[] =
-		"< <> 'foo' \n"
-		"'bar';";
+		"echo>lol\n";
 	t_lexer lex;
 	t_printer_handle out;
 	t_lexer_token *cur;
@@ -27,6 +26,8 @@ int		main(void)
 	printer_int(&out, lexer_read(&lex));
 	printer_str(&out, " - lex.i: ");
 	printer_int(&out, lex.i);
+	printer_str(&out, " - lex.nomatch: ");
+	printer_int(&out, lex.nomatch);
 	printer_endl(&out);
 	if (lex.head)
 	{

@@ -27,18 +27,24 @@ static int	is_op(uint8_t c)
 	return (c == '&' || c == '|' || c == ';' || c == '>' || c == '<');
 }
 
+static int	is_digit(uint8_t c)
+{
+	return (c >= '0' && c <= '9');
+}
+
 int			lexer_operator(t_lexer *lex)
 {
 	int	r;
 
 	if (is_op(lex->buffer[lex->i]) && !lex->quote)
 	{
-		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK)
+		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK
+				|| lex->state == LEX_ST_WD)
 			r = lexer_token(lex, LEX_TP_OP);
 		else if (lex->state == LEX_ST_NB || lex->state == LEX_ST_OP)
 			r = lexer_append(lex, LEX_TP_OP);
 		else
-			r = -1; // FIXME
+			return (1);
 		lex->state = LEX_ST_OP;
 		return (r);
 	}
@@ -99,8 +105,19 @@ int			lexer_word(t_lexer *lex)
 {
 	if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK)
 	{
-		//
-		return (0);
+		if (is_digit(lex->buffer[lex->i]))
+			lex->state = LEX_ST_NB;
+		else
+			lex->state = LEX_ST_WD;
+		return (lexer_token(lex, LEX_TP_WD));
+	}
+	else if (lex->state == LEX_ST_WD || lex->state == LEX_ST_NB)
+	{
+		if (is_digit(lex->buffer[lex->i]) && lex->state == LEX_ST_NB)
+			lex->state = LEX_ST_NB;
+		else
+			lex->state = LEX_ST_WD;
+		return (lexer_append(lex, LEX_TP_WD));
 	}
 	return (1);
 }
