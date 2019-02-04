@@ -95,5 +95,7 @@ int								lexer_blank(t_lexer *lex);
 */
 
 int								lexer_token(t_lexer *lex, enum e_lexer_type);
+int								lexer_append(t_lexer *lex,
+		enum e_lexer_type type);
 
 #endif

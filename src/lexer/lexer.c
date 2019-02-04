@@ -53,11 +53,11 @@ int					lexer_read(t_lexer *lex)
 	return (0);
 }
 
-int					lexer_token(t_lexer *lex, enum e_lexer_type)
+int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 {
 	t_lexer_token	*t;
 
-	if (!(ret = malloc(sizeof(*t))))
+	if (!(t = malloc(sizeof(*t))))
 		return (-1);
 	if (!(t->buffer = malloc(1)))
 	{
@@ -90,8 +90,11 @@ int					lexer_append(t_lexer *lex, enum e_lexer_type type)
 	if (!(t = malloc(lex->foot->size + 1)))
 		return (-1);
 	ft_memcpy(t, lex->foot->buffer, lex->foot->size);
+	free(lex->foot->buffer);
+	lex->foot->buffer = t;
 	lex->foot->buffer[lex->foot->size] = lex->buffer[lex->i];
 	lex->foot->size++;
+	lex->foot->type = type;
 	return (0);
 }
 

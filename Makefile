@@ -2,8 +2,8 @@ NAME ?= 21sh
 
 SRC := \
 	main.c \
+	lexer/func.c \
 	lexer/lexer.c \
-	lexer/operator.c \
 	utils/canonical_path.c
 
 TEST_CANONICAL_PATH_NAME := canonical_path

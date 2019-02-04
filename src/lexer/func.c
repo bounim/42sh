@@ -37,6 +37,8 @@ int			lexer_operator(t_lexer *lex)
 			r = lexer_token(lex, LEX_TP_OP);
 		else if (lex->state == LEX_ST_NB || lex->state == LEX_ST_OP)
 			r = lexer_append(lex, LEX_TP_OP);
+		else
+			r = -1; // FIXME
 		lex->state = LEX_ST_OP;
 		return (r);
 	}
@@ -85,7 +87,7 @@ int			lexer_quote(t_lexer *lex)
 
 int			lexer_blank(t_lexer *lex)
 {
-	if (is_blk(lex->c) && !lex->quote)
+	if (is_blank(lex->buffer[lex->i]) && !lex->quote)
 	{
 		lex->state = LEX_ST_BLK;
 		return (0);
