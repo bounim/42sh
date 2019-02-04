@@ -15,6 +15,11 @@ LIBFT_SRC := \
 	ft_strncpy.c \
 	ft_strncpyz.c \
 	ft_strnlen.c \
+	ft_bzero.c \
+	ft_strcpy.c \
+	ft_strdup.c \
+	ft_strsub.c \
+	get_next_line.c \
 	hashmap/hashmap_clean.c \
 	hashmap/hashmap_clean_key.c \
 	hashmap/hashmap_get.c \

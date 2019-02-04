@@ -56,6 +56,7 @@ struct							s_lexer_token
 typedef struct					s_lexer
 {
 	enum e_lexer_state			state;
+	enum e_lexer_state			bgstate;
 	t_lexer_token				*head;
 	t_lexer_token				*foot;
 	uint8_t						*buffer;
@@ -63,6 +64,8 @@ typedef struct					s_lexer
 	size_t						i;
 	int							nomatch;
 	char						quote;
+	char						quotetype;
+	char						startqu;
 }								t_lexer;
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
@@ -86,6 +89,8 @@ void							lexer_destroy(t_lexer *lex);
 
 int								lexer_operator(t_lexer *lex);
 int								lexer_quote(t_lexer *lex);
+int								lexer_inquote(t_lexer *lex);
+int								lexer_backslash(t_lexer *lex);
 int								lexer_word(t_lexer *lex);
 int								lexer_blank(t_lexer *lex);
 
