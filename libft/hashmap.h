@@ -85,4 +85,11 @@ int								hashmap_set(t_hashmap *hashmap,
 t_hashmap_key					*hashmap_get(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize);
 
+/*
+** returns 0 if key found and removed, or -1 if not found
+*/
+
+int								hashmap_unset(t_hashmap *hashmap,
+		uint8_t *key, size_t keysize);
+
 #endif
