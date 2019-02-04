@@ -93,10 +93,11 @@ int			lexer_inquote(t_lexer *lex)
 	if (lex->state == LEX_ST_QU)
 	{
 	puts("lexer_inquote");
+	printf("lex quote = %d\n", lex->quote);
 		if (lex->buffer[lex->i] == lex->quotetype)
 		{
 			lex->state = LEX_ST_WD;
-			lex->quote = 1;
+			lex->quote = 0;
 			lex->quotetype = 0;
 		}
 		else
@@ -131,6 +132,7 @@ int		lexer_backslash(t_lexer *lex)
 		{
 			puts("lexer_bs");
 			lex->state = LEX_ST_QU;
+			lex->quote = 1;
 			lex->bgstate = LEX_ST_GEN; //pas oblige je crois
 			if (lex->intoken)
 				return (lexer_append(lex, LEX_TP_WD)); //voir le cas ou "\", le token n'existe pas encore....
