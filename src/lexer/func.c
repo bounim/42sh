@@ -70,7 +70,6 @@ int			lexer_quote(t_lexer *lex)
 	if (is_quote(lex->buffer[lex->i]) && !lex->quote)
 	{
 	printf("lex quote = %d\n", lex->quote);
-		write(1, "a", 1);
 		if (lex->buffer[lex->i] == '\\')
 		{
 			lex->bgstate = lex->state;
@@ -94,10 +93,8 @@ int			lexer_inquote(t_lexer *lex)
 	if (lex->state == LEX_ST_QU)
 	{
 	puts("lexer_inquote");
-		write(1, "c", 1);
 		if (lex->buffer[lex->i] == lex->quotetype)
 		{
-			write(1, "b", 1);
 			lex->state = LEX_ST_WD;
 			lex->quote = 1;
 			lex->quotetype = 0;
@@ -135,7 +132,9 @@ int		lexer_backslash(t_lexer *lex)
 			puts("lexer_bs");
 			lex->state = LEX_ST_QU;
 			lex->bgstate = LEX_ST_GEN; //pas oblige je crois
-			return (lexer_append(lex, LEX_TP_WD)); //voir le cas ou "\", le token n'existe pas encore....
+			if (lex->intoken)
+				return (lexer_append(lex, LEX_TP_WD)); //voir le cas ou "\", le token n'existe pas encore....
+			return (lexer_token(lex, LEX_TP_WD));
 		}
 		else if (lex->bgstate == LEX_ST_BLK || lex->bgstate == LEX_ST_GEN || lex->bgstate == LEX_ST_OP)
 		{
@@ -160,6 +159,7 @@ int			lexer_blank(t_lexer *lex)
 	{
 	puts("lexer_blk");
 		lex->state = LEX_ST_BLK;
+		lex->intoken = 0;
 		return (0);
 	}
 	return (1);

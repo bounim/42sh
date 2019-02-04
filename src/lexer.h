@@ -51,6 +51,7 @@ struct							s_lexer_token
 ** quote: quote type + quote type if != '\0'
 ** When lexer exits, these can be set (0 = default / unset)
 ** nomatch: cannot match a token
+** intoken: currently building a token
 */
 
 typedef struct					s_lexer
@@ -66,6 +67,7 @@ typedef struct					s_lexer
 	char						quote;
 	char						quotetype;
 	char						startqu;
+	char						intoken;
 }								t_lexer;
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,

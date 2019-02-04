@@ -76,6 +76,8 @@ int					lexer_read(t_lexer *lex)
 		}
 		lex->i++;
 	}
+	if (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)
+		puts("missing quote");
 	return (0);
 }
 
@@ -102,6 +104,7 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 	else
 		lex->head = t;
 	lex->foot = t;
+	lex->intoken = 1;
 	return (0);
 }
 
