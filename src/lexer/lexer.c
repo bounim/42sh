@@ -78,8 +78,11 @@ int					lexer_read(t_lexer *lex)
 		lex->i++;
 	}
 	printf("lex quote = %d\n", lex->quote);
-	if (lex->quote && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS))
+	if (lex->quote/* && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)*/)
+	{
+		//lex->intoken = 1;
 		puts("missing quote");
+	}
 	return (0);
 }
 

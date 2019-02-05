@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "lexer.h"
+#include <stdio.h>
 
 int		main(void)
 {
@@ -21,9 +22,14 @@ int		main(void)
 	t_lexer_token *cur;
 
 	printer_init(&out, 1);
+	while (1)
+	{
 	write(1, " --> ", 5);
 	get_next_line(0, &line);
+	printf("<'%c'>\n", lexer_check_line((uint8_t *)line, ft_strlen(line)));
 	lexer_init(&lex, (uint8_t *)line, ft_strlen(line));
+	//if (lex.quote)
+	//	printf("missing quoteeee\n");
 	printer_int(&out, lexer_read(&lex));
 	printer_str(&out, " - lex.i: ");
 	printer_int(&out, lex.i);
@@ -48,4 +54,5 @@ int		main(void)
 	}
 	printer_flush(&out);
 	lexer_destroy(&lex);
+	}
 }

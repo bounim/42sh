@@ -34,13 +34,40 @@ static int	is_digit(uint8_t c)
 	return (c >= '0' && c <= '9');
 }
 
+uint8_t		lexer_check_line(uint8_t *buffer, size_t size)
+{
+	size_t		i;
+	uint8_t		c;
+
+	i = 0;
+	c = 0;
+	while (i < size)
+	{
+		if (buffer[i] == '\\')
+		{
+			if (i == size - 1 && c == 0)
+				return (buffer[i]);
+			if (i == size - 1 && c != '\"')
+				return (c);
+		}
+		else if (buffer[i] == '\'')
+			c = (c == '\'') ? 0 : buffer[i];
+		else if (buffer[i] == '\"' && c == '\"' && buffer[i - 1] != '\\')
+			c = 0;
+		else if (buffer[i] == '\"' && c == 0)
+			c = buffer[i];
+		i++;
+	}
+	return (c);
+}
+
 int			lexer_operator(t_lexer *lex)
 {
 	int	r;
 
 	if (is_op(lex->buffer[lex->i]) && !lex->quote)
 	{
-	puts("lexer operator");
+		puts("lexer operator");
 		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK
 				|| lex->state == LEX_ST_WD)
 			r = lexer_token(lex, LEX_TP_OP);
@@ -52,7 +79,7 @@ int			lexer_operator(t_lexer *lex)
 		return (r);
 	}
 	else if (!is_op(lex->buffer[lex->i]) && !lex->quote
-			&& lex->state == LEX_ST_OP)
+			&& lex->state == LEX_ST_OP && !is_quote(lex->buffer[lex->i]))
 	{
 		if (!is_blank(lex->buffer[lex->i]))
 		{
@@ -69,7 +96,8 @@ int			lexer_quote(t_lexer *lex)
 {
 	if (is_quote(lex->buffer[lex->i]) && !lex->quote)
 	{
-	printf("lex quote = %d\n", lex->quote);
+		puts("lexer_quote");
+		printf("lex quote = %d\n", lex->quote);
 		if (lex->buffer[lex->i] == '\\')
 		{
 			lex->bgstate = lex->state;
@@ -92,8 +120,8 @@ int			lexer_inquote(t_lexer *lex)
 {
 	if (lex->state == LEX_ST_QU)
 	{
-	puts("lexer_inquote");
-	printf("lex quote = %d\n", lex->quote);
+		puts("lexer_inquote");
+		printf("lex quote = %d\n", lex->quote);
 		if (lex->buffer[lex->i] == lex->quotetype)
 		{
 			lex->state = LEX_ST_WD;
@@ -140,6 +168,7 @@ int		lexer_backslash(t_lexer *lex)
 		}
 		else if (lex->bgstate == LEX_ST_BLK || lex->bgstate == LEX_ST_GEN || lex->bgstate == LEX_ST_OP)
 		{
+			puts("mdr");
 			lex->state = LEX_ST_WD;
 			return (lexer_token(lex, LEX_TP_WD));
 		}
