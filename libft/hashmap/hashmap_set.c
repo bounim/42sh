@@ -14,60 +14,54 @@
 #include "libft.h"
 #include "hashmap_internal.h"
 
-static int	copy_keyvalue(t_hashmap_key *current,
-		uint8_t *key, size_t keysize,
-		uint8_t *value, size_t valuesize)
+static int	copy_keyvalue(t_hashmap_key *current, t_hashmap_key *kv)
 {
-	if (NULL == (current->value = malloc(valuesize)))
+	if (NULL == (current->value = malloc(kv->valuesize)))
 		return (-1);
-	if (NULL == (current->key = malloc(keysize)))
+	if (NULL == (current->key = malloc(kv->keysize)))
 	{
 		free(current->value);
 		return (-1);
 	}
-	ft_memmove(current->key, key, keysize);
-	ft_memmove(current->value, value, valuesize);
-	current->keysize = keysize;
-	current->valuesize = valuesize;
+	ft_memmove(current->key, kv->key, kv->keysize);
+	ft_memmove(current->value, kv->value, kv->valuesize);
+	current->keysize = kv->keysize;
+	current->valuesize = kv->valuesize;
 	return (0);
 }
 
-static int	set_list(t_hashmap_key *current,
-		uint8_t *key, size_t keysize,
-		uint8_t *value, size_t valuesize)
+static int	set_list(t_hashmap_key *current, t_hashmap_key *kv)
 {
 	while (1)
 	{
-		if (keysize == current->keysize
-				&& ft_memcmp(key, current->key, keysize) == 0)
+		if (kv->keysize == current->keysize
+				&& ft_memcmp(kv->key, current->key, kv->keysize) == 0)
 		{
 			free(current->value);
-			if (NULL == (current->value = malloc(valuesize)))
+			if (NULL == (current->value = malloc(kv->valuesize)))
 				return (-1);
-			ft_memmove(current->value, value, valuesize);
-			current->valuesize = valuesize;
+			ft_memmove(current->value, kv->value, kv->valuesize);
+			current->valuesize = kv->valuesize;
 			return (0);
 		}
 		if (!current->next)
 		{
 			if (NULL == (current->next = malloc(sizeof(*current->next))))
 				return (-1);
-			return (copy_keyvalue(current->next, key, keysize,
-						value, valuesize));
+			ft_memset(current->next, 0, sizeof(*current->next));
+			return (copy_keyvalue(current->next, kv));
 		}
 		current = current->next;
 	}
 	return (-1);
 }
 
-int			hashmap_set(t_hashmap *hashmap,
-		uint8_t *key, size_t keysize,
-		uint8_t *value, size_t valuesize)
+int			hashmap_set(t_hashmap *hashmap, t_hashmap_key *kv)
 {
 	t_hashmap_key	*current;
 
-	current = &hashmap->array[hashmap->hash(hashmap, key, keysize)];
+	current = &hashmap->array[hashmap->hash(hashmap, kv->key, kv->keysize)];
 	if (current->key)
-		return (set_list(current, key, keysize, value, valuesize));
-	return (copy_keyvalue(current, key, keysize, value, valuesize));
+		return (set_list(current, kv));
+	return (copy_keyvalue(current, kv));
 }

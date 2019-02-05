@@ -47,7 +47,7 @@ static int	unset_list(t_hashmap_key *current,
 	return (-1);
 }
 
-int		hashmap_unset(t_hashmap *hashmap,
+int			hashmap_unset(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize)
 {
 	t_hashmap_key	*current;

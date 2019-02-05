@@ -75,8 +75,7 @@ void							hashmap_clean(t_hashmap *hashmap);
 */
 
 int								hashmap_set(t_hashmap *hashmap,
-		uint8_t *key, size_t keysize,
-		uint8_t *value, size_t valuesize);
+		t_hashmap_key *kv);
 
 /*
 ** returns NULL if key not found, or the key structure
