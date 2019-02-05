@@ -2,7 +2,6 @@ LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
 	ft_isspace.c \
-	ft_memcat.c \
 	ft_memcpy.c \
 	ft_memcmp.c \
 	ft_memmove.c \

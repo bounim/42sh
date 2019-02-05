@@ -30,11 +30,13 @@ int		ft_memcmp(void *a, const void *b, size_t len)
 	}
 	a1 = (uint8_t *)a8;
 	b1 = (uint8_t *)b8;
-	while (len && *a1 == *b1)
+	while (len > 0 && *a1 == *b1)
 	{
 		a1++;
 		b1++;
 		len--;
 	}
+	if (len == 0)
+		return (0);
 	return (*a1 - *b1);
 }
