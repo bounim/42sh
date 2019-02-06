@@ -51,11 +51,13 @@ struct							s_lexer_token
 ** quote: quote type + quote type if != '\0'
 ** When lexer exits, these can be set (0 = default / unset)
 ** nomatch: cannot match a token
+** intoken: currently building a token
 */
 
 typedef struct					s_lexer
 {
 	enum e_lexer_state			state;
+	enum e_lexer_state			bgstate;
 	t_lexer_token				*head;
 	t_lexer_token				*foot;
 	uint8_t						*buffer;
@@ -63,7 +65,17 @@ typedef struct					s_lexer
 	size_t						i;
 	int							nomatch;
 	char						quote;
+	char						quotetype;
+	char						startqu;
+	char						intoken;
 }								t_lexer;
+
+/*
+** check that an input buffer can be used in the lexer
+** assumes that this function has been called after each line return
+*/
+
+uint8_t		lexer_check_line(uint8_t *buffer, size_t size);
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_length);
@@ -86,6 +98,8 @@ void							lexer_destroy(t_lexer *lex);
 
 int								lexer_operator(t_lexer *lex);
 int								lexer_quote(t_lexer *lex);
+int								lexer_inquote(t_lexer *lex);
+int								lexer_backslash(t_lexer *lex);
 int								lexer_word(t_lexer *lex);
 int								lexer_blank(t_lexer *lex);
 

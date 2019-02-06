@@ -15,9 +15,32 @@
 static int			(*g_lexer_func[])(t_lexer *) = {
 	&lexer_operator,
 	&lexer_quote,
+	&lexer_inquote,
+	&lexer_backslash,
 	&lexer_blank,
 	&lexer_word,
 };
+
+#include <stdio.h>
+void		printstate(enum e_lexer_state st)
+{
+	if (st == LEX_ST_GEN)
+		puts("ST_GEN");
+	if (st == LEX_ST_OP)
+		puts("ST_OP");
+	if (st == LEX_ST_BLK)
+		puts("ST_BLK");
+	if (st == LEX_ST_QU)
+		puts("ST_QU");
+	if (st == LEX_ST_BS)
+		puts("ST_BS");
+	if (st == LEX_ST_WD)
+		puts("ST_WD");
+	if (st == LEX_ST_DLR)
+		puts("ST_DLR");
+	if (st == LEX_ST_NB)
+		puts("ST_NB");
+}
 
 void				lexer_init(t_lexer *lex, uint8_t *buffer, size_t length)
 {
@@ -35,6 +58,9 @@ int					lexer_read(t_lexer *lex)
 	while (lex->i < lex->buffer_length)
 	{
 		f = 0;
+		printstate(lex->state);
+		write(1, (char *)(lex->buffer + lex->i), 1);
+		write(1, "\n", 1);
 		while (f < sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
 			if ((r = g_lexer_func[f](lex)) < 0)
@@ -48,7 +74,14 @@ int					lexer_read(t_lexer *lex)
 			lex->nomatch = 1;
 			return (-1);
 		}
+		printf("lex quote = %d\n", lex->quote);
 		lex->i++;
+	}
+	printf("lex quote = %d\n", lex->quote);
+	if (lex->quote/* && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)*/)
+	{
+		//lex->intoken = 1;
+		puts("missing quote");
 	}
 	return (0);
 }
@@ -59,6 +92,7 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 
 	if (!(t = malloc(sizeof(*t))))
 		return (-1);
+	ft_memset(t, 0, sizeof(*t));
 	if (!(t->buffer = malloc(1)))
 	{
 		free(t);
@@ -66,7 +100,6 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 	}
 	t->buffer[0] = lex->buffer[lex->i];
 	t->size = 1;
-	ft_memset(t, 0, sizeof(*t));
 	t->buffer_position = lex->i;
 	t->type = type;
 	t->previous = lex->foot;
@@ -76,6 +109,7 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 	else
 		lex->head = t;
 	lex->foot = t;
+	lex->intoken = 1;
 	return (0);
 }
 
