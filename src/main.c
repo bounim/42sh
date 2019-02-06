@@ -16,16 +16,12 @@
 
 int		main(void)
 {
-	char *line;
+	char *line = "echo lol\n";
 	t_lexer lex;
 	t_printer_handle out;
 	t_lexer_token *cur;
 
 	printer_init(&out, 1);
-	while (1)
-	{
-	write(1, " --> ", 5);
-	get_next_line(0, &line);
 	printf("<'%c'>\n", lexer_check_line((uint8_t *)line, ft_strlen(line)));
 	lexer_init(&lex, (uint8_t *)line, ft_strlen(line));
 	//if (lex.quote)
@@ -54,5 +50,4 @@ int		main(void)
 	}
 	printer_flush(&out);
 	lexer_destroy(&lex);
-	}
 }

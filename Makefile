@@ -14,7 +14,7 @@ TEST := \
 	$(TEST_CANONICAL_PATH_NAME)
 
 CFLAGS ?=
-CPPFLAGS ?= -Wall -Wextra #-Werror
+CPPFLAGS ?= -Wall -Wextra -Werror
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
 

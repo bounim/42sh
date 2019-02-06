@@ -14,11 +14,8 @@
 # define LIBFT_H
 
 # include <stddef.h>
-# include <unistd.h>
 # include "hashmap.h"
 # include "printer.h"
-
-# define BUFF_SIZE 1
 
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);
@@ -36,10 +33,5 @@ size_t	ft_strlen(const char *str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strncpyz(char *dest, const char *src, size_t n);
 size_t	ft_strnlen(const char *str, size_t size);
-int		get_next_line(int fd, char **line);
-void	ft_bzero(void *s, size_t n);
-char	*ft_strcpy(char *dst, const char *src);
-char	*ft_strdup(const char *s);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
 
 #endif
