@@ -18,7 +18,7 @@ void	hashmap_clean_key(t_hashmap_key *key)
 	t_hashmap_key *next;
 
 	if (!key)
-		return;
+		return ;
 	free(key->key);
 	free(key->value);
 	next = key->next;

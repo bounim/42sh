@@ -75,14 +75,27 @@ void							hashmap_clean(t_hashmap *hashmap);
 */
 
 int								hashmap_set(t_hashmap *hashmap,
-		uint8_t *key, size_t keysize,
-		uint8_t *value, size_t valuesize);
+		t_hashmap_key *kv);
 
 /*
 ** returns NULL if key not found, or the key structure
 */
 
 t_hashmap_key					*hashmap_get(t_hashmap *hashmap,
+		uint8_t *key, size_t keysize);
+
+/*
+** returns 0 if key found and removed, or -1 if not found
+*/
+
+int								hashmap_unset(t_hashmap *hashmap,
+		uint8_t *key, size_t keysize);
+
+/*
+** hash functions
+*/
+
+size_t							hashmap_hash_crc32(t_hashmap *hashmap,
 		uint8_t *key, size_t keysize);
 
 #endif
