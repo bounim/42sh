@@ -12,6 +12,8 @@
 
 #include "lexer.h"
 
+#include <stdio.h> // XXX
+#include <unistd.h> // XXX
 static int			(*g_lexer_func[])(t_lexer *) = {
 	&lexer_operator,
 	&lexer_quote,
@@ -21,7 +23,6 @@ static int			(*g_lexer_func[])(t_lexer *) = {
 	&lexer_word,
 };
 
-#include <stdio.h>
 void		printstate(enum e_lexer_state st)
 {
 	if (st == LEX_ST_GEN)

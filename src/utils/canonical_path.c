@@ -19,7 +19,6 @@ int			canonical_path(char *result, char *workdir, char *input)
 	int		slash;
 	size_t	dot;
 	size_t	word_length;
-	int		end;
 	size_t	diff;
 
 	if (input[0] == '\0')
@@ -43,7 +42,6 @@ int			canonical_path(char *result, char *workdir, char *input)
 	slash = 1;
 	dot = 0;
 	word_length = 0;
-	end = 0;
 	while (1)
 	{
 		if (word_length > 0 && (*input == '/' || *input == '\0')) // copy word
