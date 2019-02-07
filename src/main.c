@@ -10,44 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "lexer.h"
-#include <stdio.h>
+#include "twenty_one_sh.h"
 
-int		main(void)
+t_shell				*g_shell;
+
+int		main(int argc, char **argv, char **env)
 {
-	char *line = "echo lol\n";
+	/*char *line = "echo lol\n";
 	t_lexer lex;
 	t_printer_handle out;
-	t_lexer_token *cur;
+	t_lexer_token *cur;*/
 
-	printer_init(&out, 1);
-	printf("<'%c'>\n", lexer_check_line((uint8_t *)line, ft_strlen(line)));
-	lexer_init(&lex, (uint8_t *)line, ft_strlen(line));
+	//printer_init(&out, 1);
+	//printf("<'%c'>\n", lexer_check_line((uint8_t *)line, ft_strlen(line)));
+	//lexer_init(&lex, (uint8_t *)line, ft_strlen(line));
+	//printer_int(&out, lexer_read(&lex));
+	//lexer_destroy(&lex);
 	//if (lex.quote)
 	//	printf("missing quoteeee\n");
-	printer_int(&out, lexer_read(&lex));
-	printer_str(&out, " - lex.i: ");
-	printer_int(&out, lex.i);
-	printer_str(&out, " - lex.nomatch: ");
-	printer_int(&out, lex.nomatch);
-	printer_endl(&out);
-	if (lex.head)
-	{
-		cur = lex.head;
-		while (cur)
-		{
-			printer_str(&out, "token=");
-			printer_int(&out, (int)cur->type);
-			printer_str(&out, " bufpos=");
-			printer_ulong(&out, cur->buffer_position);
-			printer_str(&out, " buf='");
-			printer_bin(&out, (char *)cur->buffer, cur->size);
-			printer_str(&out, "'");
-			printer_endl(&out);
-			cur = cur->next;
-		}
-	}
-	printer_flush(&out);
-	lexer_destroy(&lex);
+	//printer_flush(&out);
+	g_shell = init_shell(argc, argv, env);
+	run_shell(g_shell);
+	clean_shell(g_shell);
+	exit(EXIT_SUCCESS);
 }

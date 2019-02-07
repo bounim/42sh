@@ -27,9 +27,26 @@ char	*ft_stpncpy(char *dest, const char *src, size_t n);
 char	*ft_stpncpyz(char *dest, const char *src, size_t n);
 char	*ft_strchr(const char *s, int c);
 int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strncpyz(char *dest, const char *src, size_t n);
 size_t	ft_strnlen(const char *str, size_t size);
+
+//FIXME
+
+void	ft_arrdel(char **arr);
+char	**ft_arrdup(char **arr);
+char	*ft_strdup(const char *s1);
+size_t	ft_arrlen(char **arr);
+int		ft_atoi(const char *s);
+char	*ft_itoa(int n);
+char	*ft_strsub(char const *s, unsigned int start, size_t n);
+void	*ft_memalloc(size_t size);
+char	*ft_strfjoin(char *s1, char *s2, int opt);
+char	**ft_strsplit(char const *s, char c);
+size_t	ft_wslen(char *str);
+int		ft_isnotprint(int c);
+int		ft_first_char_unicode(int c);
 
 #endif

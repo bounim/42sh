@@ -10,6 +10,7 @@ LIBFT_SRC := \
 	ft_stpncpyz.c \
 	ft_strchr.c \
 	ft_strcmp.c \
+	ft_strjoin.c \
 	ft_strlen.c \
 	ft_strncpy.c \
 	ft_strncpyz.c \
@@ -31,7 +32,20 @@ LIBFT_SRC := \
 	printer/printer_numeric_length.c \
 	printer/printer_str.c \
 	printer/printer_uint.c \
-	printer/printer_ulong.c
+	printer/printer_ulong.c \
+	ft_arrdel.c \
+	ft_arrdup.c \
+	ft_arrlen.c \
+	ft_atoi.c \
+	ft_itoa.c \
+	ft_strdup.c \
+	ft_strsub.c \
+	ft_memalloc.c \
+	ft_strfjoin.c \
+	ft_strsplit.c \
+	ft_wslen.c \
+	ft_isnotprint.c \
+	ft_first_char_unicode.c
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)
