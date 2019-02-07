@@ -43,7 +43,18 @@ t_shell					*singleton_shell(void) // TODO remove
 	return (ret);
 }
 
-void					run_shell(t_shell *sh) // XXX
+static void				parse_command(uint8_t *line, size_t len)
+{
+	t_lexer lex;
+
+	lexer_init(&lex, line, len);
+	printer_int(&g_shell->err, lexer_read(&lex));
+	printer_endl(&g_shell->err);
+	printer_flush(&g_shell->err);
+	lexer_destroy(&lex);
+}
+
+void					run_shell(t_shell *sh)
 {
 	t_bool				run;
 
@@ -53,13 +64,17 @@ void					run_shell(t_shell *sh) // XXX
 		readline(sh);
 		write(1, "\n", 1);
 		ft_putstr(tgetstr("cr", NULL));
-		ft_putstr(sh->line);
+		//ft_putstr(sh->line);
 		if (ft_strcmp(sh->line, "history") == 0)
 			;
 		else if (ft_strcmp(sh->line, "exit") == 0)
 		{
 			reset_terminal(sh);
 			exit(EXIT_FAILURE); // FIXME why failure
+		}
+		else
+		{
+			parse_command((uint8_t *)sh->line, ft_strlen(sh->line));
 		}
 		write(1, "\n", 1);
 		ft_putstr(tgetstr("cr", NULL));
