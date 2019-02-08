@@ -17,6 +17,17 @@
 # include <stdint.h>
 # include "libft.h"
 
+# define SEMICOLON			";"
+# define PIPE				"|"
+# define LOGICAL_AND		"&&"
+# define LOGICAL_OR			"||"
+# define AND				"&"
+# define OR					"|"
+# define LESS				"<"
+# define GREAT				">"
+# define DLESS				"<<"
+# define DGREAT				">>"
+
 enum							e_lexer_state
 {
 	LEX_ST_GEN = 0,

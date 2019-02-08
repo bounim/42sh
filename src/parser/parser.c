@@ -26,5 +26,5 @@ int		parser_node(uint8_t *buf, size_t size, enum e_lexer_type type)
 		return (-1);
 	ft_memset(n, 0, sizeof(*n));
 	ft_memcpy(n->buffer, buf, size);
-
+	return (0);
 }
