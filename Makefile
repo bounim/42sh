@@ -4,6 +4,7 @@ SRC := \
 	main.c \
 	lexer/func.c \
 	lexer/lexer.c \
+	lexer/lexer_error.c\
 	utils/canonical_path.c
 
 TEST_CANONICAL_PATH_NAME := canonical_path

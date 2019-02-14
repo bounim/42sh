@@ -17,6 +17,8 @@
 # include <stdint.h>
 # include "libft.h"
 
+#include <stdio.h> //BELLEK
+
 # define SEMICOLON			";"
 # define PIPE				"|"
 # define LOGICAL_AND		"&&"
@@ -36,7 +38,6 @@ enum							e_lexer_state
 	LEX_ST_WD,
 	LEX_ST_BLK,
 	LEX_ST_BS,
-	LEX_ST_DLR,
 	LEX_ST_NB,
 };
 
@@ -44,6 +45,7 @@ enum							e_lexer_type
 {
 	LEX_TP_WD = 0,
 	LEX_TP_OP,
+	LEX_TP_IO
 };
 
 typedef struct s_lexer_token	t_lexer_token;
@@ -62,6 +64,7 @@ struct							s_lexer_token
 ** quote: quote type + quote type if != '\0'
 ** When lexer exits, these can be set (0 = default / unset)
 ** nomatch: cannot match a token
+** bgstate: background state for dealing with state conflicts
 ** intoken: currently building a token
 */
 
@@ -87,6 +90,8 @@ typedef struct					s_lexer
 */
 
 uint8_t		lexer_check_line(uint8_t *buffer, size_t size);
+
+void		lexer_print_error(t_lexer *lex);
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_length);

@@ -69,9 +69,15 @@ int			lexer_operator(t_lexer *lex)
 	{
 		puts("lexer operator");
 		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK
-				|| lex->state == LEX_ST_WD)
+				|| lex->state == LEX_ST_WD || (lex->state == LEX_ST_NB
+					&& lex->buffer[lex->i] != '>' && lex->buffer[lex->i] != '<'))
 			r = lexer_token(lex, LEX_TP_OP);
-		else if (lex->state == LEX_ST_NB || lex->state == LEX_ST_OP)
+		else if (lex->state == LEX_ST_NB)
+		{
+			lex->foot->type = LEX_TP_IO;
+			r = lexer_token(lex, LEX_TP_OP);
+		}
+		else if (lex->state == LEX_ST_OP)
 			r = lexer_append(lex, LEX_TP_OP);
 		else
 			return (1);
@@ -81,7 +87,12 @@ int			lexer_operator(t_lexer *lex)
 	else if (!is_op(lex->buffer[lex->i]) && !lex->quote
 			&& lex->state == LEX_ST_OP && !is_quote(lex->buffer[lex->i]))
 	{
-		if (!is_blank(lex->buffer[lex->i]))
+		if (lex->buffer[lex->i] == '-' && lex->foot->buffer[lex->foot->size - 1] == '&')
+		{
+			lex->state = LEX_ST_OP;					//attention a ne pas avoir de bails genre >&-& mdrr
+			return (lexer_append(lex, LEX_TP_OP));
+		}
+		else if (!is_blank(lex->buffer[lex->i]))
 		{
 			lex->state = LEX_ST_WD;
 			return (lexer_token(lex, LEX_TP_WD));
