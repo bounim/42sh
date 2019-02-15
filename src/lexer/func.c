@@ -132,11 +132,16 @@ int			lexer_operator(t_lexer *lex)
 				r = lexer_append(lex, LEX_TP_OP); //ici
 		}
 		else
-			return (1);
+			return (1);  //c pas cense etre return (0) ? :/
 		lex->state = LEX_ST_OP;
 		return (r);
 	}
-	else if (!is_op(lex->buffer[lex->i]) && !lex->quote
+	return (1);
+}
+
+int		lexer_end_operator(t_lexer *lex)
+{
+	if (!is_op(lex->buffer[lex->i]) && !lex->quote
 			&& lex->state == LEX_ST_OP && !is_quote(lex->buffer[lex->i]))
 	{
 		if (lex->buffer[lex->i] == '-' && lex->foot->buffer[lex->foot->size - 1] == '&')
@@ -150,7 +155,7 @@ int			lexer_operator(t_lexer *lex)
 			return (lexer_token(lex, LEX_TP_WD));
 		}
 		else
-			lex->state = LEX_ST_BLK;
+			lex->state = LEX_ST_BLK; //et la faut pas rajouter un return qqchose ?
 	}
 	return (1);
 }
@@ -251,7 +256,7 @@ int			lexer_blank(t_lexer *lex)
 {
 	if (is_blank(lex->buffer[lex->i]) && !lex->quote)
 	{
-	puts("lexer_blk");
+		puts("lexer_blk");
 		lex->state = LEX_ST_BLK;
 		lex->intoken = 0;
 		return (0);
@@ -261,9 +266,9 @@ int			lexer_blank(t_lexer *lex)
 
 int			lexer_word(t_lexer *lex)
 {
-	if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK)
+	if (!is_blank(lex->buffer[lex->i]) && (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK))
 	{
-	puts("lexer_word");
+		puts("lexer_word");
 		if (is_digit(lex->buffer[lex->i]))
 			lex->state = LEX_ST_NB;
 		else

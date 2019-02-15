@@ -26,7 +26,10 @@ int		main(void)
 	printer_init(&out, 1);
 	while ((r = read(0, line, sizeof(line))) > 0)
 	{
-		printf("<'%c'>\n", lexer_check_line(line, (size_t)r));
+		printf("line = %s", line);
+		//printf("<'%c'>\n", lexer_check_line(line, (size_t)r));
+		if (line[r - 1] == '\n')
+			r--;
 		lexer_init(&lex, line, (size_t)r);
 		//if (lex.quote)
 		//	printf("missing quoteeee\n");

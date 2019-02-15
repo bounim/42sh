@@ -114,6 +114,7 @@ void							lexer_destroy(t_lexer *lex);
 */
 
 int								lexer_operator(t_lexer *lex);
+int								lexer_end_operator(t_lexer *lex);
 int								lexer_quote(t_lexer *lex);
 int								lexer_inquote(t_lexer *lex);
 int								lexer_backslash(t_lexer *lex);

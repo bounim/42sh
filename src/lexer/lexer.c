@@ -16,6 +16,7 @@
 #include <unistd.h> // XXX
 static int			(*g_lexer_func[])(t_lexer *) = {
 	&lexer_operator,
+	&lexer_end_operator,
 	&lexer_quote,
 	&lexer_inquote,
 	&lexer_backslash,
@@ -60,8 +61,7 @@ int					lexer_read(t_lexer *lex)
 	{
 		f = 0;
 		printstate(lex->state);
-		write(1, (char *)(lex->buffer + lex->i), 1);
-		write(1, "\n", 1);
+		printf("lex->buffer[%zu] = '%c'\n", lex->i, lex->buffer[lex->i]);
 		while (f < sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
 			if ((r = g_lexer_func[f](lex)) < 0)
@@ -78,7 +78,6 @@ int					lexer_read(t_lexer *lex)
 		printf("lex quote = %d\n", lex->quote);
 		lex->i++;
 	}
-	printf("lex quote = %d\n", lex->quote);
 	if (lex->quote/* && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)*/)
 	{
 		//lex->intoken = 1;
