@@ -29,6 +29,31 @@ static int	is_op(uint8_t c)
 	return (c == '&' || c == '|' || c == ';' || c == '>' || c == '<');
 }
 
+
+/* pas a la norme je sais mais jsais pas comment faire autrement pour l'instant
+** returns 1 if the tested buffer is a valid operator, 0 if not
+*/
+
+static int	op_list(uint8_t *buf, size_t size)
+{
+	char	*tab[] = {";", "|", "&", "||", "&&", "<&", ">&", "<>", "<", "<<", ">", ">>"}; //on laisse de cote le cas du >&-
+	size_t	i;
+
+	i = 0;
+	while (i < 12)
+	{
+		printf("tab[i] = %s\n", tab[i]);
+		printf("buf = %s\n", (char*)buf);
+		if (size == ft_strlen(tab[i]) && !ft_memcmp(buf, tab[i], size))
+		{
+			printf("ouais trouve :: %s\n", tab[i]);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	is_digit(uint8_t c)
 {
 	return (c >= '0' && c <= '9');
@@ -61,6 +86,28 @@ uint8_t		lexer_check_line(uint8_t *buffer, size_t size)
 	return (c);
 }
 
+/* checks in the "valid operators' list" and returns 1 if the token to be created
+** is not in the list, meaning a new operator token must be created, and 0 if success
+*/
+
+int			lexer_check_op(t_lexer *lex)
+{
+	uint8_t	*tmp;
+
+	if (!(tmp = malloc(lex->foot->size + 1)))
+		return (-1);
+	ft_memcpy(tmp, lex->foot->buffer, lex->foot->size);
+	tmp[lex->foot->size] = lex->buffer[lex->i];
+	printf("tmp = %s\n", tmp);
+	if (op_list(tmp, lex->foot->size + 1))
+	{
+		free(tmp);
+		return (0);
+	}
+	free(tmp);
+	return (1);
+}
+
 int			lexer_operator(t_lexer *lex)
 {
 	int	r;
@@ -78,7 +125,12 @@ int			lexer_operator(t_lexer *lex)
 			r = lexer_token(lex, LEX_TP_OP);
 		}
 		else if (lex->state == LEX_ST_OP)
-			r = lexer_append(lex, LEX_TP_OP);
+		{
+			if (lexer_check_op(lex))
+				r = lexer_token(lex, LEX_TP_OP);
+			else
+				r = lexer_append(lex, LEX_TP_OP); //ici
+		}
 		else
 			return (1);
 		lex->state = LEX_ST_OP;
@@ -89,7 +141,7 @@ int			lexer_operator(t_lexer *lex)
 	{
 		if (lex->buffer[lex->i] == '-' && lex->foot->buffer[lex->foot->size - 1] == '&')
 		{
-			lex->state = LEX_ST_OP;					//attention a ne pas avoir de bails genre >&-& mdrr
+			lex->state = LEX_ST_OP;					//attention a ne pas avoir de bails genre >&-& mdrr //ici
 			return (lexer_append(lex, LEX_TP_OP));
 		}
 		else if (!is_blank(lex->buffer[lex->i]))

@@ -135,7 +135,7 @@ int					lexer_append(t_lexer *lex, enum e_lexer_type type)
 
 void				lexer_destroy(t_lexer *lex)
 {
-	t_lexer_token	*current;
+t_lexer_token	*current;
 	t_lexer_token	*previous;
 
 	current = lex->head;

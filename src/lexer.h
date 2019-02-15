@@ -37,6 +37,7 @@ enum							e_lexer_state
 	LEX_ST_QU,
 	LEX_ST_WD,
 	LEX_ST_BLK,
+	LEX_ST_DLR,
 	LEX_ST_BS,
 	LEX_ST_NB,
 };
