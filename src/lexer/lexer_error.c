@@ -38,13 +38,8 @@ t_lexer_token				*lexer_check(t_lexer *lex)
 	t_lexer_token	*cur;
 
 	cur = lex->head;
-	printf("cur->buffer = %s\n", cur->buffer);
-	printf("cur->type = %d\n", cur->type);
 	if (cur && cur->type == LEX_TP_OP)
-	{
-		write(1, "starting with op -- error\n", 30);
 		return (cur);
-	}
 	while (cur)
 	{
 		if (cur->type == 1 && cur->next && cur->next->type == 1)
@@ -54,6 +49,8 @@ t_lexer_token				*lexer_check(t_lexer *lex)
 				if (!is_shift(cur->next->buffer, cur->next->size))
 					return (cur);
 			}
+			else
+				return (cur);
 		}
 		cur = cur->next;
 	}
@@ -98,11 +95,10 @@ void		lexer_print_error(t_lexer *lex)
 {
 	t_lexer_token		*tok;
 
-	write(1, "OK\n", 3);
 	if ((tok = lexer_check(lex)))
 	{
-		ft_putstr("unexpected token :: ");
+		ft_putstr("42sh: parse error near '");
 		ft_putstr((char*)tok->buffer);
-		ft_putchar('\n');
+		ft_putstr("'\n");
 	}
 }

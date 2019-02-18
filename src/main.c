@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "lexer.h"
+#include "parser.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -19,6 +20,7 @@ int		main(void)
 {
 	uint8_t	line[1024];
 	t_lexer lex;
+	t_parser parser;
 	t_printer_handle out;
 	t_lexer_token *cur;
 	int		r;
@@ -41,9 +43,9 @@ int		main(void)
 		printer_endl(&out);
 		if (lex.head)
 		{
-			printer_str(&out, "printing errors....\n");
 			lexer_print_error(&lex);
 			cur = lex.head;
+			parser_init(&parser);
 			while (cur)
 			{
 				printer_str(&out, "token=");
@@ -54,6 +56,8 @@ int		main(void)
 				printer_bin(&out, (char *)cur->buffer, cur->size);
 				printer_str(&out, "'");
 				printer_endl(&out);
+				//parse(&parser);
+				//parser_node(&parser, cur->buffer, cur->size, cur->type);
 				cur = cur->next;
 			}
 		}
