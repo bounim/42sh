@@ -82,16 +82,16 @@ void					run_shell(void)
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
 		readline();
-		parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
 		write(1, "\n", 1);
 		if (g_shell.line)
 		{
+			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
 			ft_putstr((char*)g_shell.line);
 			write(1, "\n", 1);
+			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
+				;
+			else if (ft_u8_strequ(g_shell.line, (const uint8_t *)"exit"))
+				exit(EXIT_SUCCESS);
 		}
-		if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
-			;
-		else if (ft_u8_strequ(g_shell.line, (const uint8_t *)"exit"))
-			exit(EXIT_SUCCESS);
 	}
 }
