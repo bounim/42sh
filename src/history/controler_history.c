@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 13:33:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/02/06 16:23:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/16 10:52:45 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	rl_switch_history(t_rl *rl)
 		rl->history = rl->history->bfr;
 		i++;
 	}
-	if (ft_strcmp(rl->history->buf, rl->buf) != 0)
+	if (!ft_u8_strequ(rl->history->buf, rl->buf))
 	{
 		free(rl->history->buf);
-		if (!(rl->history->buf = (char *)ft_memalloc(rl->bufvar.len_tot)))
-			fatal_exit(singleton_shell(), SH_ENOMEM);
+		if (!(rl->history->buf = (uint8_t *)ft_memalloc(rl->bufvar.len_tot)))
+			fatal_exit(SH_ENOMEM);
 		ft_memcpy(rl->history->buf, rl->buf, rl->bufvar.len_buf);
 		rl->history->bufvar = rl->bufvar;
 	}
@@ -56,7 +56,7 @@ void	rl_print_history(t_rl *rl)
 	ft_putstr(tgetstr("cd", NULL));
 	rl_display_prompt(rl->prompt);
 	free(rl->buf);
-	if (!(rl->buf = (char *)ft_memalloc(rl->history->bufvar.len_tot)))
+	if (!(rl->buf = (uint8_t *)ft_memalloc(rl->history->bufvar.len_tot)))
 		return ;
 	ft_memcpy(rl->buf, rl->history->buf, rl->history->bufvar.len_buf);
 	rl->bufvar = rl->history->bufvar;

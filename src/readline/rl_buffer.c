@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 22:13:26 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/04 17:00:15 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/15 17:41:44 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void				rl_increase_buffer(t_rl *rl)
 {
-	char			*ret;
+	uint8_t			*ret;
 
-	if (!(ret = (char *)ft_memalloc(rl->bufvar.len_tot + BUF_TMP + 1)))
-		fatal_exit(singleton_shell(), SH_ENOMEM);
+	if (!(ret = (uint8_t *)ft_memalloc(rl->bufvar.len_tot + BUF_TMP + 1)))
+		fatal_exit(SH_ENOMEM);
 	ft_memcpy(ret, rl->buf, rl->bufvar.len_buf);
 	rl->bufvar.len_tot += BUF_TMP;
 	free(rl->buf);

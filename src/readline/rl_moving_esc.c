@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:25:08 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/06 16:26:48 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/19 09:32:40 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ void		rl_forward_word(t_rl *rl)
 void		rl_end_of_read(t_rl *rl)
 {
 	rl_add_history(rl);
-	rl_file_from_history(rl, ft_strdup("/Users/schakor"));
+	rl_file_from_history(rl, ft_strjoin(get_env_val(g_shell.envl, "HOME"), "/.21sh_history"));
 	rl->reading = FALSE;
 }

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 22:37:56 by schakor           #+#    #+#             */
-/*   Updated: 2019/01/30 15:32:14 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/19 15:31:42 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,11 @@ void			rl_move_start(t_rl *rl)
 		ft_putstr(tgetstr("le", NULL));
 		index--;
 	}
+}
+
+void			rl_ctrl_c(t_rl *rl)
+{
+	rl->reading = FALSE;
+	free(rl->buf);
+	rl->buf = NULL;
 }

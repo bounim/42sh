@@ -48,5 +48,11 @@ char	**ft_strsplit(char const *s, char c);
 size_t	ft_wslen(char *str);
 int		ft_isnotprint(int c);
 int		ft_first_char_unicode(int c);
+int		ft_u8_strequ(uint8_t const *s1, uint8_t const *s2);
+uint8_t	*ft_u8_strfjoin(uint8_t *s1, uint8_t *s2, int opt);
+uint8_t	*ft_u8_strjoin(uint8_t const *s1, uint8_t const *s2);
+size_t	ft_u8_strlen(const uint8_t *s);
+uint8_t	*ft_u8_strnew(size_t n);
+uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
 
 #endif

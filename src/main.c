@@ -11,26 +11,15 @@
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+//schakor repo commit 27a3f3151872d9f639afd3b305d4cf71bd37456b
+//schakor repo commit 4ed25fab84387307a86d93d5b084a56919987b7d
 
-t_shell				*g_shell;
+t_shell				g_shell;
 
-int		main(int argc, char **argv, char **env)
+int		main(int ac, char **av, char **env)
 {
-	/*char *line = "echo lol\n";
-	t_lexer lex;
-	t_printer_handle out;
-	t_lexer_token *cur;*/
-
-	//printer_init(&out, 1);
-	//printf("<'%c'>\n", lexer_check_line((uint8_t *)line, ft_strlen(line)));
-	//lexer_init(&lex, (uint8_t *)line, ft_strlen(line));
-	//printer_int(&out, lexer_read(&lex));
-	//lexer_destroy(&lex);
-	//if (lex.quote)
-	//	printf("missing quoteeee\n");
-	//printer_flush(&out);
-	g_shell = init_shell(argc, argv, env);
-	run_shell(g_shell);
-	clean_shell(g_shell);
+	init_shell(ac, av, env);
+	run_shell();
+	clean_shell();
 	exit(EXIT_SUCCESS);
 }

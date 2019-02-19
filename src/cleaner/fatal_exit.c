@@ -12,10 +12,10 @@
 
 #include "twenty_one_sh.h"
 
-void		fatal_exit(t_shell *sh, int code)
+void		fatal_exit(int code)
 {
-	if (sh)
-		clean_shell(sh);
+	cooked_terminal();
+	clean_shell();
 	if (code == SH_ENOMEM)
 		ft_putendl_fd("Cannot allocate memory.", STDERR_FILENO);
 	else if (code == SH_EINVAL)

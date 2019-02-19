@@ -12,13 +12,13 @@
 
 #include "twenty_one_sh.h"
 
-t_history	*rl_new_hist(char *buf, t_bufvar bufvar)
+t_history	*rl_new_hist(uint8_t *buf, t_bufvar bufvar)
 {
 	t_history	*list;
 
 	if (!(list = (t_history *)malloc(sizeof(*list))))
 		return (NULL);
-	if (!(list->buf = (char *)ft_memalloc(bufvar.len_tot)))
+	if (!(list->buf = (uint8_t *)ft_memalloc(bufvar.len_tot)))
 		return (NULL);
 	ft_memcpy(list->buf, buf, bufvar.len_buf);
 	list->bufvar = bufvar;

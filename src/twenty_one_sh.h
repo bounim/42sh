@@ -27,21 +27,22 @@
 # include <term.h>
 # include <sys/ioctl.h>
 # include <stdint.h>
+# include <pwd.h>
 
 # include "sh_typedefs.h"
 # include "sh_defines.h"
 # include "shell.h"
 # include "env.h"
 # include "readline.h"
+# include "history.h"
 # include "lexer.h"
-
-t_termios					g_cooked_tio;
-extern t_shell				*g_shell; // TODO do not pass as argument
 
 void						ft_sig_handler(int signo);
 void						ft_signal(int signo);
 
 // FIXME tmp func
+
+# define BUFF_SIZE 100000
 
 void						ft_putendl_fd(char const *s, int fd);
 void						ft_putstr(char const *s);

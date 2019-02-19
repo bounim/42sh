@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 15:28:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/06 15:08:58 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/16 10:53:57 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ struct					s_bufvar
 
 struct					s_history
 {
-	char					*buf;
+	uint8_t					*buf;
 	t_bufvar				bufvar;
 	t_history				*next;
 	t_history				*bfr;
@@ -47,7 +47,7 @@ struct					s_rl
 {
 	char				*prompt;
 	size_t				len_prompt;
-	char				*buf;
+	uint8_t				*buf;
 	t_bufvar			bufvar;
 	uint8_t				bufkey[8];
 	size_t				bufkey_index;
@@ -59,7 +59,7 @@ struct					s_rl
 
 };
 
-void					readline(t_shell *sh);
+void					readline(void);
 void					rl_get_prompt(t_rl *rl);
 void					rl_display_prompt(const char *prompt);
 void					rl_insert_buffer(t_rl *rl, unsigned char c);
@@ -86,10 +86,11 @@ void					rl_add_history(t_rl *rl);
 void					rl_end_of_read(t_rl *rl);
 void					rl_switch_history(t_rl *rl);
 void					rl_print_history(t_rl *rl);
-t_history				*rl_new_hist(char *buffer, t_bufvar bufvar);
+t_history				*rl_new_hist(uint8_t *buffer, t_bufvar bufvar);
 t_history				*rl_add_hist(t_history *list, t_history *new_hist);
 void					rl_history_from_file(t_rl *rl, char *path);
 void					rl_file_from_history(t_rl *rl, char *path);
 int						listlen(t_history *list);
+void					rl_ctrl_c(t_rl *rl);
 
 #endif

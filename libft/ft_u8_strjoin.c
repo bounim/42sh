@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_defines.h                                       :+:      :+:    :+:   */
+/*   ft_u8_strjoin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 12:34:48 by schakor           #+#    #+#             */
-/*   Updated: 2018/12/17 16:39:55 by schakor          ###   ########.fr       */
+/*   Created: 2019/02/16 11:51:22 by schakor           #+#    #+#             */
+/*   Updated: 2019/02/16 12:31:47 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SH_DEFINES_H
-# define SH_DEFINES_H
+#include "libft.h"
 
-# define SH_ENOMEM			1
-# define SH_EINVAL			2
-# define SH_ENOTTY			3
-# define BUF_TMP			32
-
-# define FOUND				1
-# define NOTFOUND			0
-
-# define TRUE				1
-# define FALSE				0
-
-#endif
+uint8_t			*ft_u8_strjoin(uint8_t const *s1, uint8_t const *s2)
+{
+	return ((uint8_t *)ft_strjoin((char const *)s1, (char const *)s2));
+}

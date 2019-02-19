@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/04 10:17:34 by khsadira          #+#    #+#             */
-/*   Updated: 2019/02/06 16:23:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/16 13:40:59 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void			rl_history_cmd(t_rl *rl)
 			ft_putchar(' ');
 		ft_putnbr(i);
 		ft_putstr("  ");
-		ft_putstr(tmp->buf);
+		ft_putstr((char *)tmp->buf);
 		if (tmp->next)
 			ft_putchar(10);
 		i++;

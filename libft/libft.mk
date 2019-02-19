@@ -45,7 +45,13 @@ LIBFT_SRC := \
 	ft_strsplit.c \
 	ft_wslen.c \
 	ft_isnotprint.c \
-	ft_first_char_unicode.c
+	ft_first_char_unicode.c \
+	ft_u8_strequ.c \
+	ft_u8_strfjoin.c \
+	ft_u8_strjoin.c \
+	ft_u8_strlen.c \
+	ft_u8_strnew.c \
+	ft_u8_strsplit.c
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)

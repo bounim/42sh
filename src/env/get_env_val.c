@@ -14,15 +14,12 @@
 
 char		*get_env_val(t_envl *envl, char *name)
 {
-	char	*ret;
-
-	ret = NULL;
 	if (envl == NULL || name == NULL)
 		return (NULL);
 	while (envl != NULL)
 	{
 		if (envl->name != NULL && ft_strcmp(envl->name, name) == 0)
-			return (ft_strdup(envl->value));
+			return (envl->value);
 		envl = envl->next;
 	}
 	return (NULL);

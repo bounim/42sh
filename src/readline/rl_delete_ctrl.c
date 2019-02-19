@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 13:29:12 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/01 18:49:29 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/19 13:51:18 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void				rl_delete_ctrl_w(t_rl *rl)
 void				rl_ctrl_d(t_rl *rl)
 {
 	if (rl->bufvar.i_char == 0 && rl->bufvar.i_buf == 0 && rl->buf[rl->bufvar.i_buf] == '\0')
-		fatal_exit(singleton_shell(), 6);
+		fatal_exit(6);
 	else
 		rl_delete_underneath(rl);
 }

@@ -6,11 +6,14 @@ SRC := \
 	env/addlast_envl.c \
 	env/envarr_2_envl.c \
 	env/get_env_val.c \
+	env/init_shell_envl.c \
 	env/push_env.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/file_history.c \
+	history/history.c \
 	history/history_cmd.c \
+	history/init_shell_history.c \
 	history/list_history.c \
 	history/up_history.c \
 	lexer/func.c \

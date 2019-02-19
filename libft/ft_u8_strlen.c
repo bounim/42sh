@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_defines.h                                       :+:      :+:    :+:   */
+/*   ft_u8_strlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 12:34:48 by schakor           #+#    #+#             */
-/*   Updated: 2018/12/17 16:39:55 by schakor          ###   ########.fr       */
+/*   Created: 2019/02/15 19:17:13 by schakor           #+#    #+#             */
+/*   Updated: 2019/02/15 19:29:44 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SH_DEFINES_H
-# define SH_DEFINES_H
+#include "libft.h"
 
-# define SH_ENOMEM			1
-# define SH_EINVAL			2
-# define SH_ENOTTY			3
-# define BUF_TMP			32
-
-# define FOUND				1
-# define NOTFOUND			0
-
-# define TRUE				1
-# define FALSE				0
-
-#endif
+size_t			ft_u8_strlen(const uint8_t *s)
+{
+	return (ft_strlen((const char *)s));
+}

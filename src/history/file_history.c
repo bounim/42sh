@@ -6,17 +6,17 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/28 11:38:33 by khsadira          #+#    #+#             */
-/*   Updated: 2019/02/06 16:23:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/18 17:11:02 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static char		**file_to_buffer(int fd, char **buffer)
+static uint8_t		**file_to_buffer(int fd, uint8_t **buffer)
 {
-	int		ret;
-	char	buff[2];
-	char	*str;
+	int			ret;
+	uint8_t		buff[2];
+	uint8_t		*str;
 
 	buff[0] = 0;
 	buff[1] = 0;
@@ -24,31 +24,31 @@ static char		**file_to_buffer(int fd, char **buffer)
 	while ((ret = read(fd, buff, 1)) > 0)
 	{
 		if (str == NULL)
-			str = ft_strdup("");
+			str = ft_u8_strnew(0);
 		buff[ret] = '\0';
-		str = ft_strfjoin(str, buff, 0);
+		str = ft_u8_strfjoin(str, buff, 0);
 	}
 	if (str == NULL)
 		return (NULL);
 	close(fd);
 	if (str)
-		buffer = ft_strsplit(str, '\n');
+		buffer = ft_u8_strsplit(str, '\n');
 	free(str);
 	return (buffer);
 }
 
-static void		init_bufvar(t_bufvar *bufvar, char *str)
+static void		init_bufvar(t_bufvar *bufvar, uint8_t *str)
 {
-	bufvar->i_buf = ft_strlen(str);
-	bufvar->len_buf = ft_strlen(str);
-	bufvar->i_char = ft_wslen(str);
-	bufvar->len_char = ft_wslen(str);
-	bufvar->len_tot = ft_strlen(str);
+	bufvar->i_buf = ft_u8_strlen(str);
+	bufvar->len_buf = ft_u8_strlen(str);
+	bufvar->i_char = ft_wslen((char *)str);
+	bufvar->len_char = ft_wslen((char *)str);
+	bufvar->len_tot = ft_u8_strlen(str);
 }
 
 void			rl_history_from_file(t_rl *rl, char *path)
 {
-	char		**buff;
+	uint8_t		**buff;
 	int			i;
 	int			fd;
 	t_history	*new_ele;
@@ -70,14 +70,15 @@ void			rl_history_from_file(t_rl *rl, char *path)
 		rl->history = rl_add_hist(rl->history, new_ele);
 		i++;
 	}
-	ft_arrdel(buff);
+	ft_arrdel((char**)buff);
 	free(path);
 }
 
 void			rl_file_from_history(t_rl *rl, char *path)
 {
-	int		fd;
-	char	*str;
+	int			fd;
+	uint8_t		*str;
+	t_history	*tmp;
 
 	path = ft_strfjoin(path, "/.21sh_history", 0);
 	fd = open(path, O_WRONLY);
@@ -85,17 +86,18 @@ void			rl_file_from_history(t_rl *rl, char *path)
 		fd = open(path, O_CREAT | O_WRONLY);
 	if (fd > 0)
 	{
-		str = ft_strdup("");
-		while (rl->history && rl->history->bfr)
-			rl->history = rl->history->bfr;
-		while (rl->history)
+		tmp = rl->history;
+		str = ft_u8_strnew(0);
+		while (tmp && tmp->bfr)
+			tmp = tmp->bfr;
+		while (tmp)
 		{
-			str = ft_strfjoin(str, rl->history->buf, 0);
-			str = ft_strfjoin(str, "\n", 0);
-			rl->history = rl->history->next;
+			str = ft_u8_strfjoin(str, tmp->buf, 0);
+			str = ft_u8_strfjoin(str, (uint8_t *)"\n", 0);
+			tmp = tmp->next;
 		}
 		if (str)
-			write(fd, str, ft_strlen(str));
+			write(fd, str, ft_u8_strlen(str));
 		free(str);
 		free(path);
 		close(fd);

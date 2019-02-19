@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 19:30:17 by schakor           #+#    #+#             */
-/*   Updated: 2018/11/10 19:26:11 by schakor          ###   ########.fr       */
+/*   Updated: 2019/02/15 16:18:02 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,28 @@
 void			push_env(t_envl **head, char *name, char *value)
 {
 	t_envl		*tmp;
-	t_envl		*new;
 
-	new = NULL;
 	tmp = NULL;
 	if (!head || !name || !value)
 		return ;
 	tmp = *head;
-	while (tmp->next != NULL)
+	if (tmp)
 	{
-		if (ft_strcmp(tmp->name, name) == 0)
+		while (tmp->next != NULL)
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
-			return ;
+			if (ft_strcmp(tmp->name, name) == 0)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(value);
+				return ;
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
-	if (!(new = (t_envl *)malloc(sizeof(*new))))
+	if (!(tmp = (t_envl *)malloc(sizeof(*tmp))))
 		return ;
-	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	*head = addlast_envl(*head, new);
+	tmp->name = ft_strdup(name);
+	tmp->value = ft_strdup(value);
+	tmp->next = NULL;
+	*head = addlast_envl(*head, tmp);
 }
