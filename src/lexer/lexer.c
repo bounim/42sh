@@ -115,13 +115,15 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 }
 
 /*
-** assumes a token exists
+** assumes a token exists (tests anyway)
 */
 
 int					lexer_append(t_lexer *lex, enum e_lexer_type type)
 {
 	uint8_t	*t;
 
+	if (!lex->foot)
+		return (-1);
 	if (!(t = malloc(lex->foot->size + 1)))
 		return (-1);
 	ft_memcpy(t, lex->foot->buffer, lex->foot->size);
