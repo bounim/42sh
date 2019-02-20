@@ -48,7 +48,8 @@ CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
-LDLIBS += -ltermcap
+#LDLIBS += -ltermcap
+LDLIBS += -lncurses
 
 OBJDIR ?= obj
 SRCDIR := src
