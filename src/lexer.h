@@ -75,7 +75,7 @@ typedef struct					s_lexer
 ** assumes that this function has been called after each line return
 */
 
-uint8_t		lexer_check_line(uint8_t *buffer, size_t size);
+uint8_t							lexer_check_line(uint8_t *buffer, size_t size);
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_length);

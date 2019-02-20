@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_env_val.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/23 16:06:33 by emartine         ###   ########.fr       */
+/*   Created: 2018/10/15 18:52:56 by schakor           #+#    #+#             */
+/*   Updated: 2018/11/10 19:29:27 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-//schakor repo commit 27a3f3151872d9f639afd3b305d4cf71bd37456b
-//schakor repo commit 4ed25fab84387307a86d93d5b084a56919987b7d
 
-t_shell				g_shell;
-
-int		main(int ac, char **av, char **env)
+char		*get_env_val(t_envl *envl, char *name)
 {
-	init_shell(ac, av, env);
-	run_shell();
-	clean_shell();
-	exit(EXIT_SUCCESS);
+	if (envl == NULL || name == NULL)
+		return (NULL);
+	while (envl != NULL)
+	{
+		if (envl->name != NULL && ft_strcmp(envl->name, name) == 0)
+			return (envl->value);
+		envl = envl->next;
+	}
+	return (NULL);
 }

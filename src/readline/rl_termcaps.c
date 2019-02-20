@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   rl_termcaps.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/23 16:06:33 by emartine         ###   ########.fr       */
+/*   Created: 2018/10/15 22:37:56 by schakor           #+#    #+#             */
+/*   Updated: 2019/02/19 15:31:42 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-//schakor repo commit 27a3f3151872d9f639afd3b305d4cf71bd37456b
-//schakor repo commit 4ed25fab84387307a86d93d5b084a56919987b7d
 
-t_shell				g_shell;
-
-int		main(int ac, char **av, char **env)
+void			rl_move_start(t_rl *rl)
 {
-	init_shell(ac, av, env);
-	run_shell();
-	clean_shell();
-	exit(EXIT_SUCCESS);
+	size_t		index;
+
+	index = rl->bufvar.len_char + rl->len_prompt;
+	while (index > 0)
+	{
+		ft_putstr(tgetstr("le", NULL));
+		index--;
+	}
+}
+
+void			rl_ctrl_c(t_rl *rl)
+{
+	rl->reading = FALSE;
+	free(rl->buf);
+	rl->buf = NULL;
 }

@@ -1,9 +1,40 @@
 NAME ?= 21sh
 
 SRC := \
-	main.c \
+	cleaner/fatal_exit.c \
+	cleaner/free_term.c \
+	env/addlast_envl.c \
+	env/envarr_2_envl.c \
+	env/get_env_val.c \
+	env/init_shell_envl.c \
+	env/push_env.c \
+	history/controler_history.c \
+	history/down_history.c \
+	history/file_history.c \
+	history/history.c \
+	history/history_cmd.c \
+	history/init_shell_history.c \
+	history/list_history.c \
+	history/up_history.c \
 	lexer/func.c \
 	lexer/lexer.c \
+	main.c \
+	readline/readline.c \
+	readline/rl_buffer.c \
+	readline/rl_copy.c \
+	readline/rl_cut.c \
+	readline/rl_delete_ctrl.c \
+	readline/rl_delete_line.c \
+	readline/rl_moving_ctrl.c \
+	readline/rl_moving_esc.c \
+	readline/rl_paste.c \
+	readline/rl_prompt.c \
+	readline/rl_termcaps.c \
+	readline/rl_undo.c \
+	signal/ft_signal.c \
+	terminal/shell.c \
+	terminal/terminal.c \
+	tmpfunc.c \
 	utils/canonical_path.c
 
 TEST_CANONICAL_PATH_NAME := canonical_path
@@ -17,6 +48,8 @@ CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
+#LDLIBS += -ltermcap
+LDLIBS += -lncurses
 
 OBJDIR ?= obj
 SRCDIR := src

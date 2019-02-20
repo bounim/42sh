@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/23 16:06:33 by emartine         ###   ########.fr       */
+/*   Created: 2018/10/29 21:45:10 by schakor           #+#    #+#             */
+/*   Updated: 2019/02/19 13:54:22 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-//schakor repo commit 27a3f3151872d9f639afd3b305d4cf71bd37456b
-//schakor repo commit 4ed25fab84387307a86d93d5b084a56919987b7d
 
-t_shell				g_shell;
-
-int		main(int ac, char **av, char **env)
+void			clean_envl(t_envl *list)
 {
-	init_shell(ac, av, env);
-	run_shell();
-	clean_shell();
-	exit(EXIT_SUCCESS);
+	t_envl		*tmp;
+
+	while (list)
+	{
+		free(list->name);
+		free(list->value);
+		tmp = list;
+		list = list->next;
+		if (tmp)
+			free(tmp);
+	}
+}
+
+void			clean_shell(void)
+{
+	clean_envl(g_shell.envl);
 }
