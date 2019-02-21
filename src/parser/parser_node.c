@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "lexer.h"
 
-int		parser_add_node(t_parser *parser, t_parser_node *n)
+/*int		parser_add_node(t_parser *parser, t_parser_node *n)
 {
 	if (!parser->head)
 	{
@@ -40,3 +40,4 @@ t_parser_node	*parser_node(uint8_t *buf, size_t size, enum e_parser_type)
 	n->cmd_type = type;
 	return (n);
 }
+*/

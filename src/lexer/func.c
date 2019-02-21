@@ -42,13 +42,8 @@ static int	op_list(uint8_t *buf, size_t size)
 	i = 0;
 	while (i < 12)
 	{
-		printf("tab[i] = %s\n", tab[i]);
-		printf("buf = %s\n", (char*)buf);
 		if (size == ft_strlen(tab[i]) && !ft_memcmp(buf, tab[i], size))
-		{
-			printf("ouais trouve :: %s\n", tab[i]);
 			return (1);
-		}
 		i++;
 	}
 	return (0);
@@ -206,7 +201,7 @@ int			lexer_inquote(t_lexer *lex)
 			else
 			{
 				lex->state = LEX_ST_QU;
-				if (lex->startqu)
+				if (lex->startqu || (lex->foot && lex->foot->type == LEX_TP_OP))
 				{
 					lex->startqu = 0;
 					return (lexer_token(lex, LEX_TP_WD));

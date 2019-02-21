@@ -18,7 +18,7 @@ void	parser_init(t_parser *parser)
 	ft_memset(parser, 0, sizeof(*parser));
 	parser->head = NULL;
 }
-
+/*
 void	parser_push_left(t_parser *parser, t_parser_node *n, int foot)
 {
 	t_parser_node	*tmp;
@@ -41,7 +41,7 @@ void	parser_push_right(t_parser *parser, t_parser_node *n)
 	t_parser_node	*tmp;
 
 	tmp = parser->head;
-	while (tmp && tmp->type == LEX_TP_OP)
+	while (tmp && tmp->cmd_type == LEX_TP_OP)
 	{
 		if (!tmp->right)
 			break ;
@@ -53,7 +53,7 @@ void	parser_push_right(t_parser *parser, t_parser_node *n)
 
 void	add_child(t_parser *parser, t_parser_node *n)
 {
-	if (parser->head && parser->head->type == LEX_TP_WD)
+	if (parser->head && parser->head->cmd_type == LEX_TP_WD)
 		parser_push_left(parser, n, 0);
 	else
 	{
@@ -108,5 +108,4 @@ int		parser_node(t_parser *parser, uint8_t *buf, size_t size, enum e_lexer_type 
 	n->type = type;
 	return (parser_add_node(parser, n));
 }
-
-
+*/
