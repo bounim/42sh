@@ -30,7 +30,7 @@ int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 {
 	if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
 	{
-		if (lex->i > 0 && lex->line[lex->i - 1] != '\n') // FIXME
+		if (lex->i > 0 && lex->line[lex->i - 1] != '\n') // FIXME we got only one line anyway
 		{
 			lex->impl_error = 1;
 			return (-1);
@@ -73,12 +73,14 @@ int		operator_append(t_lexer *lex)
 	size_t	s;
 	uint8_t	*op;
 
+	if (lex->quoted)
+		return (1);
 	ch = lex->line[lex->i];
 	if (lex->foot != NULL && !lex->foot->cannot_append
 			&& lex->foot->type == TYPE_OPERATOR && ch != ';')
 	{
-		s = lex->foot->operator_size;
-		op = lex->foot->operator;
+		s = lex->foot->buffer_size;
+		op = lex->foot->buffer;
 		if ((ch == '|' && s == 1 && (op[0] == '|' || op[0] == '>'))
 				|| (ch == '&' && s == 1 && (op[0] == '&' || op[0] == '<'
 					|| op[0] == '>'))
@@ -106,14 +108,15 @@ int		quoting(t_lexer *lex) // FIXME is it ok to quote ' " (but != 1)
 	if (!lex->quoted)
 	{
 		if (lex->line[lex->i] == '\\')
-		{
 			lex->quoted = 1;
-			return (0);
-		}
 		else if (lex->line[lex->i] == '\'')
 			lex->quoted = 2;
 		else if (lex->line[lex->i] == '\"')
 			lex->quoted = 3;
+	}
+	else if (lex->quoted == 1)
+	{
+		//lex->quoted = 0;
 	}
 	return (1);
 }
@@ -128,6 +131,8 @@ int		operator_new(t_lexer *lex)
 {
 	uint8_t	ch;
 
+	if (lex->quoted)
+		return (1);
 	ch = lex->line[lex->i];
 	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
 		return (token(lex, TYPE_OPERATOR));
@@ -150,7 +155,17 @@ int		word_append(t_lexer *lex)
 	if (lex->foot != NULL
 			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
 	{
-		// TODO anything special about quoting here?
+		// TODO somehow move to quoting()
+		if (lex->quote_appended && (lex->quoted == 1
+				|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
+				|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
+					&& lex->line[lex->i - 1] != '\\')))
+		{
+			lex->quoted = 0;
+			lex->quote_appended = 0;
+		}
+		else if (lex->quoted && !lex->quote_appended)
+			lex->quote_appended = 1;
 		return (append(lex));
 	}
 	return (1);
@@ -170,6 +185,8 @@ int		comment(t_lexer *lex)
 
 int		word_new(t_lexer *lex)
 {
+	if (lex->quoted && !lex->quote_appended) // TODO somehow move to quoting()
+		lex->quote_appended = 1;
 	return (token(lex, TYPE_WORD));
 }
 

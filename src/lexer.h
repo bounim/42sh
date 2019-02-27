@@ -24,14 +24,6 @@ enum							e_lexer_type
 	TYPE_HEREDOC,
 };
 
-typedef struct					s_wordchr
-{
-	/*uint8_t						b[6];
-	size_t						s;*/
-	uint8_t						ch;
-	int							quoted;
-}								t_wordchr;
-
 /*
 ** cannot_append: delimited token
 */
@@ -43,12 +35,10 @@ struct							s_lexer_token
 	t_lexer_token				*previous;
 	t_lexer_token				*next;
 	enum e_lexer_type			type;
-	size_t						line_y; // TODO
+	size_t						line_y;
 	size_t						line_x;
-	t_wordchr					*word;
-	size_t						word_size;
-	uint8_t						*operator;
-	size_t						operator_size;
+	uint8_t						*buffer;
+	size_t						buffer_size;
 	int							cannot_append;
 };
 
@@ -58,7 +48,7 @@ typedef struct					s_heredoc
 	uint8_t						*delimiter;
 	size_t						delimiter_size;
 	uint8_t						*buffer;
-	size_t						size;
+	size_t						buffer_size;
 	size_t						i;
 }								t_heredoc;
 
@@ -79,6 +69,7 @@ typedef struct					s_lexer
 	size_t						i;
 	int							impl_error;
 	int							quoted;
+	int							quote_appended;
 	t_heredoc					*heredoc_queue;
 	int							heredoc;
 	t_heredoc					*heredoc_ptr;

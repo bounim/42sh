@@ -81,31 +81,20 @@ int					token(t_lexer *lex, enum e_lexer_type type)
 	if (NULL == (t = malloc(sizeof(*t))))
 		return (-1);
 	ft_memset(t, 0, sizeof(*t));
-	if (type == TYPE_WORD)
+	if (type == TYPE_WORD || type == TYPE_OPERATOR)
 	{
-		if (NULL == (t->word = malloc(sizeof(*t->word))))
+		if (NULL == (t->buffer = malloc(1)))
 		{
 			free(t);
 			return (-1);
 		}
-		t->word[0].ch = lex->line[lex->i];
-		t->word[0].quoted = lex->quoted; // FIXME
-		t->word_size = 1;
-	}
-	else if (type == TYPE_OPERATOR)
-	{
-		if (NULL == (t->operator = malloc(1)))
-		{
-			free(t);
-			return (-1);
-		}
-		t->operator[0] = lex->line[lex->i];
-		t->operator_size = 1;
+		t->buffer[0] = lex->line[lex->i];
+		t->buffer_size = 1;
 	}
 	else if (type == TYPE_HEREDOC) // FIXME called only when heredoc buffer == NULL?
 	{
 		//if (t->heredoc_queue[0].buffer == NULL)
-		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].size + heredoc_queue[0].i - lex->i)))
+		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].buffer_size + heredoc_queue[0].i - lex->i)))
 		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].i - lex->i)))
 	}
 	t->line_x = lex->i;
@@ -128,29 +117,19 @@ int					append(t_lexer *lex)
 {
 	uint8_t	*t;
 
-	if (!lex->foot) // TODO check operator_size || word_size
+	if (!lex->foot || lex->foot->buffer_size == 0
+			|| lex->foot->type == TYPE_HEREDOC)
 	{
 		lex->impl_error = 1;
 		return (-1);
 	}
-	if (lex->foot->type == TYPE_WORD)
-	{
-		if (NULL == (t = malloc((lex->foot->word_size + 1)
-						* sizeof(*lex->foot->word))))
-			return (-1);
-		ft_memmove(t, lex->foot->word, lex->foot->word_size
-				* sizeof(*lex->foot->word));
-	}
-	else if (lex->foot->type == TYPE_OPERATOR)
-	{
-		if (NULL == (t = malloc(lex->foot->operator_size + 1)))
-			return (-1);
-		ft_memmove(t, lex->foot->operator, lex->foot->operator_size);
-		free(lex->foot->operator);
-		t[lex->foot->operator_size] = lex->line[lex->i];
-		lex->foot->operator = t;
-		lex->foot->operator_size++;
-	}
+	if (NULL == (t = malloc(lex->foot->buffer_size + 1)))
+		return (-1);
+	ft_memmove(t, lex->foot->buffer, lex->foot->buffer_size);
+	free(lex->foot->buffer);
+	t[lex->foot->buffer_size] = lex->line[lex->i];
+	lex->foot->buffer = t;
+	lex->foot->buffer_size++;
 	return (0);
 }
 
@@ -164,9 +143,9 @@ void				lexer_destroy(t_lexer *lex)
 	{
 		previous = current;
 		current = current->next;
-		if (previous->type == TYPE_OPERATOR)
-			free(previous->operator);
-		// TODO free word
+		if (previous->type == TYPE_WORD || previous->type == TYPE_OPERATOR)
+			free(previous->buffer);
+		// TODO free heredoc
 		free(previous);
 	}
 	lex->head = NULL;
