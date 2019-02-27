@@ -14,6 +14,14 @@ LIBFT_SRC := \
 	ft_strncpy.c \
 	ft_strncpyz.c \
 	ft_strnlen.c \
+	ft_putchar.c \
+	ft_putchar_fd.c \
+	ft_putstr.c \
+	ft_putstr_fd.c \
+	ft_putendl.c \
+	ft_putendl_fd.c \
+	ft_putnbr.c \
+	ft_putnbr_fd.c \
 	hashmap/hashmap_clean.c \
 	hashmap/hashmap_clean_key.c \
 	hashmap/hashmap_get.c \

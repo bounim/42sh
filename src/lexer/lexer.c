@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "parser.h"
 
 #include <stdio.h> // XXX
 #include <unistd.h> // XXX
@@ -60,8 +61,8 @@ int					lexer_read(t_lexer *lex)
 	while (lex->i < lex->buffer_length)
 	{
 		f = 0;
-		printstate(lex->state);
-		printf("lex->buffer[%zu] = '%c'\n", lex->i, lex->buffer[lex->i]);
+		// printstate(lex->state);
+		// printf("lex->buffer[%zu] = '%c'\n", lex->i, lex->buffer[lex->i]);
 		while (f < sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
 			if ((r = g_lexer_func[f](lex)) < 0)
@@ -75,7 +76,7 @@ int					lexer_read(t_lexer *lex)
 			lex->nomatch = 1;
 			return (-1);
 		}
-		printf("lex quote = %d\n", lex->quote);
+		// printf("lex quote = %d\n", lex->quote);
 		lex->i++;
 	}
 	if (lex->quote/* && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)*/)
@@ -113,6 +114,27 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 	return (0);
 }
 
+void					lexer_free_token(t_lexer_token *token)
+{
+	ft_putstr("freeing ");
+	print_token(token->buffer, token->size);
+	free(token->buffer);
+	free(token);
+	token = NULL;
+}
+
+void					lexer_free_list(t_lexer_token *head)
+{
+	t_lexer_token	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		free(head);
+		head = tmp;
+	}
+}
+
 /*
 ** assumes a token exists
 */
@@ -134,7 +156,7 @@ int					lexer_append(t_lexer *lex, enum e_lexer_type type)
 
 void				lexer_destroy(t_lexer *lex)
 {
-t_lexer_token	*current;
+	t_lexer_token	*current;
 	t_lexer_token	*previous;
 
 	current = lex->head;

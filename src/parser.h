@@ -20,8 +20,13 @@
 
 enum				e_parser_type
 {
-	PAR_TP_WD = 0,
-	PAR_TP_OP,
+	PARSER_COMMAND = -1,
+	PARSER_AND,
+	PARSER_OR,
+	PARSER_PIPE,
+	// PARSER_REDIRECT,
+	PARSER_SEMICOLON
+	// HEREDOC
 };
 
 typedef struct s_parser_node	t_parser_node;
@@ -30,7 +35,9 @@ struct							s_parser_node
 {
 	uint8_t						*buffer;
 	size_t						buffer_length;
-	enum e_parser_type			cmd_type;
+	uint8_t						args[1024][1024];
+	size_t						args_nb;
+	enum e_parser_type			type;
 	t_parser_node		*left;
 	t_parser_node		*right;
 };
@@ -45,7 +52,19 @@ struct 							s_parser
 	// size_t		nb_wd;
 };
 
-void	parser_init(t_parser *parser);
-int		parser_node(t_parser *parser, uint8_t *buf, size_t size, enum e_lexer_type type);
+void			structure(t_parser_node *root, int level);
+void			parser_print(t_parser_node *tree);
+void			print_token(uint8_t *buffer, size_t size);
+
+void			parser_init(t_parser *parser);
+int				parser_create_tree(t_lexer *lexer);
+t_parser_node	*parser_new_elem(t_lexer_token *n);
+void			parser_add_tree(t_parser_node **head, t_parser_node *n);
+
+uint8_t		is_or(uint8_t *buffer, size_t buffer_size);
+uint8_t		is_and(uint8_t *buffer, size_t buffer_size);
+uint8_t		is_pipeline(uint8_t *buffer, size_t buffer_size);
+uint8_t		is_semicolon(uint8_t *buffer, size_t buffer_size);
+uint8_t		is_shift(uint8_t *buffer, size_t buffer_size);
 
 #endif

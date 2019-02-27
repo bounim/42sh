@@ -8,7 +8,9 @@ SRC := \
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
-	utils/canonical_path.c
+	parser/parser_printer.c \
+	utils/canonical_path.c \
+	utils/is.c
 	# parser/parser.c \
 
 TEST_CANONICAL_PATH_NAME := canonical_path
@@ -18,8 +20,8 @@ TEST_CANONICAL_PATH_SRC := \
 TEST := \
 	$(TEST_CANONICAL_PATH_NAME)
 
-CFLAGS ?=
-CPPFLAGS ?= -Wall -Wextra -Werror
+CFLAGS ?= -fsanitize=address
+CPPFLAGS ?= -Wall -Wextra -Werror -g3
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
 

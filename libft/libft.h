@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include <unistd.h>
 # include "hashmap.h"
 # include "printer.h"
 
@@ -34,13 +35,13 @@ char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strncpyz(char *dest, const char *src, size_t n);
 size_t	ft_strnlen(const char *str, size_t size);
 void	ft_putchar(char c);
-void	ft_putchar_fd(char c);
+void	ft_putchar_fd(char c, int fd);
 void	ft_putstr(char *c);
-void	ft_putstr_fd(char *c);
+void	ft_putstr_fd(char *c, int fd);
 void	ft_putnbr(int c);
-void	ft_putnbr_fd(int c);
+void	ft_putnbr_fd(int c, int fd);
 void	ft_putendl(char *c);
-void	ft_putendl_fd(char *c);
+void	ft_putendl_fd(char *c, int fd);
 
 
 

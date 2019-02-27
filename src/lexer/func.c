@@ -93,7 +93,6 @@ int			lexer_check_op(t_lexer *lex)
 		return (-1);
 	ft_memcpy(tmp, lex->foot->buffer, lex->foot->size);
 	tmp[lex->foot->size] = lex->buffer[lex->i];
-	printf("tmp = %s\n", tmp);
 	if (op_list(tmp, lex->foot->size + 1))
 	{
 		free(tmp);
@@ -109,7 +108,7 @@ int			lexer_operator(t_lexer *lex)
 
 	if (is_op(lex->buffer[lex->i]) && !lex->quote)
 	{
-		puts("lexer operator");
+		// puts("lexer operator");
 		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK
 				|| lex->state == LEX_ST_WD || (lex->state == LEX_ST_NB
 					&& lex->buffer[lex->i] != '>' && lex->buffer[lex->i] != '<'))
@@ -159,8 +158,8 @@ int			lexer_quote(t_lexer *lex)
 {
 	if (is_quote(lex->buffer[lex->i]) && !lex->quote)
 	{
-		puts("lexer_quote");
-		printf("lex quote = %d\n", lex->quote);
+		// puts("lexer_quote");
+		// printf("lex quote = %d\n", lex->quote);
 		if (lex->buffer[lex->i] == '\\')
 		{
 			lex->bgstate = lex->state;
@@ -183,8 +182,8 @@ int			lexer_inquote(t_lexer *lex)
 {
 	if (lex->state == LEX_ST_QU)
 	{
-		puts("lexer_inquote");
-		printf("lex quote = %d\n", lex->quote);
+		// puts("lexer_inquote");
+		// printf("lex quote = %d\n", lex->quote);
 		if (lex->buffer[lex->i] == lex->quotetype)
 		{
 			lex->state = LEX_ST_WD;
@@ -221,7 +220,7 @@ int		lexer_backslash(t_lexer *lex)
 		lex->quote = 0;
 		if (lex->bgstate == LEX_ST_QU)
 		{
-			puts("lexer_bs");
+			// puts("lexer_bs");
 			lex->state = LEX_ST_QU;
 			lex->quote = 1;
 			lex->bgstate = LEX_ST_GEN; //pas oblige je crois
@@ -231,7 +230,7 @@ int		lexer_backslash(t_lexer *lex)
 		}
 		else if (lex->bgstate == LEX_ST_BLK || lex->bgstate == LEX_ST_GEN || lex->bgstate == LEX_ST_OP)
 		{
-			puts("mdr");
+			// puts("mdr");
 			lex->state = LEX_ST_WD;
 			return (lexer_token(lex, LEX_TP_WD));
 		}
@@ -251,7 +250,7 @@ int			lexer_blank(t_lexer *lex)
 {
 	if (is_blank(lex->buffer[lex->i]) && !lex->quote)
 	{
-		puts("lexer_blk");
+		// puts("lexer_blk");
 		lex->state = LEX_ST_BLK;
 		lex->intoken = 0;
 		return (0);
@@ -263,7 +262,7 @@ int			lexer_word(t_lexer *lex)
 {
 	if (!is_blank(lex->buffer[lex->i]) && (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK))
 	{
-		puts("lexer_word");
+		// puts("lexer_word");
 		if (is_digit(lex->buffer[lex->i]))
 			lex->state = LEX_ST_NB;
 		else

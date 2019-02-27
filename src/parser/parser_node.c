@@ -13,31 +13,34 @@
 #include "parser.h"
 #include "lexer.h"
 
-/*int		parser_add_node(t_parser *parser, t_parser_node *n)
+enum e_parser_type	get_node_type(t_lexer_token *token)
 {
-	if (!parser->head)
-	{
-		parser->head = n;
-		return (0);
-	}
-	if (n->type == LEX_TP_OP)
-		return (parser_add_op(parser, n));
-	else if (n->type == LEX_TP_WD)
-		return (add_child(parser, n));
-	else
-		ft_putendl("IO_NUMBER: what to do ?");
-	return (1);
+	if (is_and(token->buffer, token->size))
+		return (PARSER_AND);
+	if (is_or(token->buffer, token->size))
+		return (PARSER_OR);
+	if (is_pipeline(token->buffer, token->size))
+		return (PARSER_PIPE);
+	// if (is_shift(token->buffer, token->size))
+		// return (PARSER_REDIRECT);
+	if (is_semicolon(token->buffer, token->size))
+		return (PARSER_SEMICOLON);
+	return (PARSER_COMMAND);
 }
 
-t_parser_node	*parser_node(uint8_t *buf, size_t size, enum e_parser_type)
-
+t_parser_node	*parser_new_elem(t_lexer_token *new)
+{
 	t_parser_node	*n;
 
 	if (!(n = malloc(sizeof(*n))))
 		return (NULL);
 	ft_memset(n, 0, sizeof(*n));
-	ft_memcpy(n->buffer, buf, size);
-	n->cmd_type = type;
+	if (!(n->buffer = malloc(new->size)))
+		return (NULL);
+	ft_memcpy(n->buffer, new->buffer, new->size);
+	n->buffer_length = new->size;
+	ft_memcpy(n->args, new->args, new->args_nb);
+	n->args_nb = new->args_nb;
+	n->type = get_node_type(new);
 	return (n);
 }
-*/

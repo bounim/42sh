@@ -20,7 +20,6 @@ int		main(void)
 {
 	uint8_t	line[1024];
 	t_lexer lex;
-	t_parser parser;
 	t_printer_handle out;
 	t_lexer_token *cur;
 	int		r;
@@ -28,25 +27,27 @@ int		main(void)
 	printer_init(&out, 1);
 	while ((r = read(0, line, sizeof(line))) > 0)
 	{
-		printf("line = %s", line);
+		// printf("line = %s", line);
 		//printf("<'%c'>\n", lexer_check_line(line, (size_t)r));
 		if (line[r - 1] == '\n')
 			r--;
 		lexer_init(&lex, line, (size_t)r);
 		//if (lex.quote)
 		//	printf("missing quoteeee\n");
-		printer_int(&out, lexer_read(&lex));
-		printer_str(&out, " - lex.i: ");
+		lexer_read(&lex);
+		// printer_int(&out, lexer_read(&lex));
+/*		printer_str(&out, " - lex.i: ");
 		printer_int(&out, lex.i);
 		printer_str(&out, " - lex.nomatch: ");
-		printer_int(&out, lex.nomatch);
+		printer_int(&out, lex.nomatch);*/
 		printer_endl(&out);
 		if (lex.head)
 		{
 			lexer_print_error(&lex);
 			cur = lex.head;
-			parser_init(&parser);
-			while (cur)
+			if (parser_create_tree(&lex) == -1)
+				ft_putendl("error while parsing");
+			/*while (cur)
 			{
 				printer_str(&out, "token=");
 				printer_int(&out, (int)cur->type);
@@ -59,7 +60,7 @@ int		main(void)
 				//parse(&parser);
 				//parser_node(&parser, cur->buffer, cur->size, cur->type);
 				cur = cur->next;
-			}
+			}*/
 		}
 		lexer_destroy(&lex);
 		printer_flush(&out);

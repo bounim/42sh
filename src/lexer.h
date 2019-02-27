@@ -57,6 +57,8 @@ struct							s_lexer_token
 	size_t						buffer_position;
 	uint8_t						*buffer;
 	size_t						size;
+	uint8_t						args[1024][1024];
+	size_t						args_nb;
 	t_lexer_token				*previous;
 	t_lexer_token				*next;
 };
@@ -90,9 +92,9 @@ typedef struct					s_lexer
 ** assumes that this function has been called after each line return
 */
 
-uint8_t		lexer_check_line(uint8_t *buffer, size_t size);
+uint8_t							lexer_check_line(uint8_t *buffer, size_t size);
 
-void		lexer_print_error(t_lexer *lex);
+void							lexer_print_error(t_lexer *lex);
 
 void							lexer_init(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_length);
@@ -129,5 +131,8 @@ int								lexer_blank(t_lexer *lex);
 int								lexer_token(t_lexer *lex, enum e_lexer_type);
 int								lexer_append(t_lexer *lex,
 		enum e_lexer_type type);
+
+void							lexer_free_token(t_lexer_token *token);
+void							lexer_free_list(t_lexer_token *head);
 
 #endif
