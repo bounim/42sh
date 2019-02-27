@@ -62,9 +62,9 @@ static void				parse_command(uint8_t *line, size_t len)
 			printer_ulong(&g_shell.out, cur->line_y);
 			printer_str(&g_shell.out, " line_x=");
 			printer_ulong(&g_shell.out, cur->line_x);
-			printer_str(&g_shell.out, " buf='");
+			/*printer_str(&g_shell.out, " buf='");
 			printer_bin(&g_shell.out, (char *)cur->buffer, cur->size);
-			printer_str(&g_shell.out, "'");
+			printer_str(&g_shell.out, "'");*/
 			printer_endl(&g_shell.out);
 			cur = cur->next;
 		}

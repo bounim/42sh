@@ -70,23 +70,44 @@ int					lexer_read(t_lexer *lex)
 	}
 	if (line_end(lex) < 0)
 		return (-1);
-	return (parser(lex));
+	//return (parser(lex));
+	return (0);
 }
 
 int					token(t_lexer *lex, enum e_lexer_type type)
 {
 	t_lexer_token	*t;
 
-	if (!(t = malloc(sizeof(*t))))
+	if (NULL == (t = malloc(sizeof(*t))))
 		return (-1);
 	ft_memset(t, 0, sizeof(*t));
-	if (!(t->buffer = malloc(1)))
+	if (type == TYPE_WORD)
 	{
-		free(t);
-		return (-1);
+		if (NULL == (t->word = malloc(sizeof(*t->word))))
+		{
+			free(t);
+			return (-1);
+		}
+		t->word[0].ch = lex->line[lex->i];
+		t->word[0].quoted = lex->quoted; // FIXME
+		t->word_size = 1;
 	}
-	t->buffer[0] = lex->line[lex->i];
-	t->size = 1;
+	else if (type == TYPE_OPERATOR)
+	{
+		if (NULL == (t->operator = malloc(1)))
+		{
+			free(t);
+			return (-1);
+		}
+		t->operator[0] = lex->line[lex->i];
+		t->operator_size = 1;
+	}
+	else if (type == TYPE_HEREDOC) // FIXME called only when heredoc buffer == NULL?
+	{
+		//if (t->heredoc_queue[0].buffer == NULL)
+		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].size + heredoc_queue[0].i - lex->i)))
+		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].i - lex->i)))
+	}
 	t->line_x = lex->i;
 	t->type = type;
 	t->previous = lex->foot;
@@ -103,23 +124,33 @@ int					token(t_lexer *lex, enum e_lexer_type type)
 ** assumes a token exists (tests anyway)
 */
 
-int					append(t_lexer *lex, enum e_lexer_type type)
+int					append(t_lexer *lex)
 {
 	uint8_t	*t;
 
-	if (!lex->foot)
+	if (!lex->foot) // TODO check operator_size || word_size
 	{
 		lex->impl_error = 1;
 		return (-1);
 	}
-	if (!(t = malloc(lex->foot->size + 1)))
-		return (-1);
-	ft_memcpy(t, lex->foot->buffer, lex->foot->size);
-	free(lex->foot->buffer);
-	lex->foot->buffer = t;
-	lex->foot->buffer[lex->foot->size] = lex->line[lex->i];
-	lex->foot->size++;
-	lex->foot->type = type;
+	if (lex->foot->type == TYPE_WORD)
+	{
+		if (NULL == (t = malloc((lex->foot->word_size + 1)
+						* sizeof(*lex->foot->word))))
+			return (-1);
+		ft_memmove(t, lex->foot->word, lex->foot->word_size
+				* sizeof(*lex->foot->word));
+	}
+	else if (lex->foot->type == TYPE_OPERATOR)
+	{
+		if (NULL == (t = malloc(lex->foot->operator_size + 1)))
+			return (-1);
+		ft_memmove(t, lex->foot->operator, lex->foot->operator_size);
+		free(lex->foot->operator);
+		t[lex->foot->operator_size] = lex->line[lex->i];
+		lex->foot->operator = t;
+		lex->foot->operator_size++;
+	}
 	return (0);
 }
 
@@ -133,7 +164,9 @@ void				lexer_destroy(t_lexer *lex)
 	{
 		previous = current;
 		current = current->next;
-		free(previous->buffer);
+		if (previous->type == TYPE_OPERATOR)
+			free(previous->operator);
+		// TODO free word
 		free(previous);
 	}
 	lex->head = NULL;

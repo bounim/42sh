@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#ifndef LEXER_INTERNAL_H
+# define LEXER_INTERNAL_H
+
+# include "lexer.h"
 
 /*
 ** Token functions
@@ -34,11 +37,12 @@ int		line_end(t_lexer *lex);
 /*
 ** Internal functions
 ** token: allocate a token node (linked list)
-** append: add current byte to existing token
+** append: add current byte to existing token (or at least consume it)
 ** parser: load parser TODO
 */
 
-// FIXME enum
 int		token(t_lexer *lex, enum e_lexer_type);
-int		append(t_lexer *lex, enum e_lexer_type type);
-int		parser(t_lexer *lex);
+int		append(t_lexer *lex);
+//int		parser(t_parser *parser, t_lexer *lex);
+
+#endif
