@@ -103,21 +103,27 @@ int		operator_end(t_lexer *lex) // FIXME is it even useful
 	return (1);
 }
 
-int		quoting(t_lexer *lex) // FIXME is it ok to quote ' " (but != 1)
+int		quoting(t_lexer *lex)
 {
-	if (!lex->quoted)
+	if (lex->next_quoted)
+	{
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
+	}
+	else if (!lex->quoted)
 	{
 		if (lex->line[lex->i] == '\\')
-			lex->quoted = 1;
+			lex->next_quoted = 1;
 		else if (lex->line[lex->i] == '\'')
-			lex->quoted = 2;
+			lex->next_quoted = 2;
 		else if (lex->line[lex->i] == '\"')
-			lex->quoted = 3;
+			lex->next_quoted = 3;
 	}
-	else if (lex->quoted == 1)
-	{
-		//lex->quoted = 0;
-	}
+	else if (lex->quoted == 1
+			|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
+			|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
+				&& lex->line[lex->i - 1] != '\\'))
+		lex->quoted = 0;
 	return (1);
 }
 
@@ -154,20 +160,7 @@ int		word_append(t_lexer *lex)
 {
 	if (lex->foot != NULL
 			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
-	{
-		// TODO somehow move to quoting()
-		if (lex->quote_appended && (lex->quoted == 1
-				|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
-				|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
-					&& lex->line[lex->i - 1] != '\\')))
-		{
-			lex->quoted = 0;
-			lex->quote_appended = 0;
-		}
-		else if (lex->quoted && !lex->quote_appended)
-			lex->quote_appended = 1;
 		return (append(lex));
-	}
 	return (1);
 }
 
@@ -185,8 +178,6 @@ int		comment(t_lexer *lex)
 
 int		word_new(t_lexer *lex)
 {
-	if (lex->quoted && !lex->quote_appended) // TODO somehow move to quoting()
-		lex->quote_appended = 1;
 	return (token(lex, TYPE_WORD));
 }
 

@@ -69,7 +69,7 @@ typedef struct					s_lexer
 	size_t						i;
 	int							impl_error;
 	int							quoted;
-	int							quote_appended;
+	int							next_quoted;
 	t_heredoc					*heredoc_queue;
 	int							heredoc;
 	t_heredoc					*heredoc_ptr;
