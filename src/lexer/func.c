@@ -129,7 +129,18 @@ int		quoting(t_lexer *lex)
 
 int		expansion(t_lexer *lex)
 {
-	(void)lex;
+	if (lex->quoted)
+		return (1);
+	if (lex->next_expansion)
+	{
+		// TODO add to stack if ( or {
+		lex->next_expansion = 0;
+	}
+	if (lex->expansion_size > 0)
+	{
+	}
+	if (lex->line[lex->i] == '$')
+		lex->next_expansion = 1;
 	return (1);
 }
 
@@ -137,7 +148,7 @@ int		operator_new(t_lexer *lex)
 {
 	uint8_t	ch;
 
-	if (lex->quoted)
+	if (lex->quoted/* || lex->expansion_size > 0*/) // FIXME
 		return (1);
 	ch = lex->line[lex->i];
 	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
@@ -145,7 +156,7 @@ int		operator_new(t_lexer *lex)
 	return (1);
 }
 
-int		unquoted_blank(t_lexer *lex)
+int		unquoted_blank(t_lexer *lex) // FIXME expansion? echo ${A:=  x     y  }|cat -e
 {
 	if (!lex->quoted && (lex->line[lex->i] == ' ' || lex->line[lex->i] == '\t'))
 	{

@@ -70,6 +70,9 @@ typedef struct					s_lexer
 	int							impl_error;
 	int							quoted;
 	int							next_quoted;
+	uint8_t						*expansion_stack;
+	size_t						expansion_size;
+	int							next_expansion;
 	t_heredoc					*heredoc_queue;
 	int							heredoc;
 	t_heredoc					*heredoc_ptr;
