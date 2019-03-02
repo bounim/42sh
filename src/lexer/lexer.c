@@ -42,6 +42,7 @@ void				lexer_newline(t_lexer *lex, uint8_t *line, size_t line_size)
 	lex->line_size = line_size;
 	lex->line_y++;
 	lex->i = 0;
+	lex->backslash_newline = 0;
 }
 
 int					lexer_read(t_lexer *lex)

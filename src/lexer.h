@@ -59,6 +59,8 @@ typedef struct					s_heredoc
 ** heredoc: TODO
 */
 
+# define EXPANSION_STACK_MAX 128
+
 typedef struct					s_lexer
 {
 	t_lexer_token				*head;
@@ -68,9 +70,10 @@ typedef struct					s_lexer
 	size_t						line_y;
 	size_t						i;
 	int							impl_error;
+	int							backslash_newline;
 	int							quoted;
 	int							next_quoted;
-	uint8_t						*expansion_stack;
+	uint8_t						expansion_stack[EXPANSION_STACK_MAX];
 	size_t						expansion_size;
 	int							next_expansion;
 	t_heredoc					*heredoc_queue;
@@ -85,7 +88,7 @@ void							lexer_newline(t_lexer *lex, uint8_t *line,
 
 /*
 ** Returns -1 on error, 0 on success.
-** When erroring, must check exit variables (nomatch, quote...) to find the
+** When erroring, must check exit variables (quoted...) to find the
 ** reason, if all are 0, a malloc failed (out of memory).
 ** See t_lexer definition above.
 */

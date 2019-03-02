@@ -16,21 +16,27 @@
 
 int		unquoted_backslash_newline(t_lexer *lex)
 {
-	if (!lex->quoted && lex->i + 2 <= lex->line_size
-			&& lex->line[lex->i] == '\\' && lex->line[lex->i] == '\n')
+	if (lex->line[lex->i] == '\n')
 	{
-		lex->i += 2;
+		lex->impl_error = 1;
+		return (-1);
+	}
+	if (!lex->quoted && lex->i + 1 == lex->line_size
+			&& lex->line[lex->i] == '\\')
+	{
+		lex->backslash_newline = 1;
+		lex->i++;
 		return (0);
 	}
 	return (1);
 }
 
-// FIXME where to consume newline???
+// FIXME where to consume newline??? --> no newline at the end
 int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 {
 	if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
 	{
-		if (lex->i > 0 && lex->line[lex->i - 1] != '\n') // FIXME we got only one line anyway
+		if (lex->i > 0) // FIXME we got only one line anyway
 		{
 			lex->impl_error = 1;
 			return (-1);
@@ -38,6 +44,7 @@ int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 		// TODO for << => append the whole line (until LF only) if line != delimiter (char by char because need to exec unquoted_backslash_newline)
 		// TODO for <<- => skip TABS, then same as above (with line starting after tabs)
 		// TODO or remove current element from heredoc_queue and heredoc--
+		// FIXME previous function applies
 		if (lex->heredoc_queue[0].skip_tabs)
 		{
 			while (lex->i < lex->line_size && lex->line[lex->i] == '\t')
@@ -131,15 +138,25 @@ int		expansion(t_lexer *lex)
 {
 	if (lex->quoted)
 		return (1);
-	if (lex->next_expansion)
+	if (lex->next_expansion || lex->expansion_size > 0)
 	{
-		// TODO add to stack if ( or {
+		if (lex->line[lex->i] == '(' || lex->line[lex->i] == '{')
+		{
+			if (lex->expansion_size == EXPANSION_STACK_MAX)
+				return (-1);
+			lex->expansion_stack[lex->expansion_size++] = lex->line[lex->i];
+		}
 		lex->next_expansion = 0;
 	}
 	if (lex->expansion_size > 0)
 	{
+		if ((lex->expansion_stack[lex->expansion_size - 1] == '('
+					&& lex->line[lex->i] == ')')
+				|| (lex->expansion_stack[lex->expansion_size - 1] == '{'
+					&& lex->line[lex->i] == '}'))
+			lex->expansion_size--;
 	}
-	if (lex->line[lex->i] == '$')
+	else if (lex->line[lex->i] == '$')
 		lex->next_expansion = 1;
 	return (1);
 }
@@ -148,7 +165,7 @@ int		operator_new(t_lexer *lex)
 {
 	uint8_t	ch;
 
-	if (lex->quoted/* || lex->expansion_size > 0*/) // FIXME
+	if (lex->quoted || lex->expansion_size > 0)
 		return (1);
 	ch = lex->line[lex->i];
 	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
@@ -156,9 +173,10 @@ int		operator_new(t_lexer *lex)
 	return (1);
 }
 
-int		unquoted_blank(t_lexer *lex) // FIXME expansion? echo ${A:=  x     y  }|cat -e
+int		unquoted_blank(t_lexer *lex)
 {
-	if (!lex->quoted && (lex->line[lex->i] == ' ' || lex->line[lex->i] == '\t'))
+	if (!lex->quoted && lex->expansion_size == 0
+			&& (lex->line[lex->i] == ' ' || lex->line[lex->i] == '\t'))
 	{
 		if (lex->foot != NULL)
 			lex->foot->cannot_append = 1;
@@ -172,6 +190,11 @@ int		word_append(t_lexer *lex)
 	if (lex->foot != NULL
 			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
 		return (append(lex));
+	if (lex->expansion_size > 0)
+	{
+		lex->impl_error = 1;
+		return (-1);
+	}
 	return (1);
 }
 
@@ -194,6 +217,14 @@ int		word_new(t_lexer *lex)
 
 int		line_end(t_lexer *lex)
 {
-	(void)lex;
+	if (lex->next_quoted)
+	{
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
+	}
+	if (lex->foot != NULL)
+		lex->foot->cannot_append = 1;
+	if (lex->backslash_newline || lex->quoted || lex->expansion_size > 0) // TODO heredoc
+		return (-1);
 	return (1);
 }
