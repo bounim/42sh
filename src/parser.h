@@ -21,11 +21,10 @@
 enum				e_parser_type
 {
 	PARSER_COMMAND = -1,
-	PARSER_AND,
-	PARSER_OR,
 	PARSER_PIPE,
-	// PARSER_REDIRECT,
+	PARSER_AND_OR,
 	PARSER_SEMICOLON
+	// PARSER_REDIRECT,
 	// HEREDOC
 };
 
@@ -33,9 +32,11 @@ typedef struct s_parser_node	t_parser_node;
 
 struct							s_parser_node
 {
+	t_lexer_token				*token;
 	uint8_t						*buffer;
 	size_t						buffer_length;
-	uint8_t						args[1024][1024];
+	uint8_t						**args;
+	size_t						*args_size;
 	size_t						args_nb;
 	enum e_parser_type			type;
 	t_parser_node		*left;

@@ -25,6 +25,19 @@ static int			(*g_lexer_func[])(t_lexer *) = {
 	&lexer_word,
 };
 
+void		lexer_print(t_lexer_token **head)
+{
+	t_lexer_token	*tmp;
+
+	tmp = *head;
+	ft_putendl("PRINTING LIST:");
+	while (tmp)
+	{
+		print_token(tmp->buffer, tmp->size);
+		tmp = tmp->next;
+	}
+}
+
 void		printstate(enum e_lexer_state st)
 {
 	if (st == LEX_ST_GEN)
@@ -99,6 +112,15 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 		free(t);
 		return (-1);
 	}
+	if (!(t->args = malloc(PATH_MAX)))
+	{
+		free(t);
+		return (-1);
+	}
+	if (!(t->args_size = malloc(PATH_MAX)))
+		return (-1);
+	if (!(t->redirs = malloc(sizeof(t_redir) * PATH_MAX)))
+		return (-1);
 	t->buffer[0] = lex->buffer[lex->i];
 	t->size = 1;
 	t->buffer_position = lex->i;
@@ -114,13 +136,13 @@ int					lexer_token(t_lexer *lex, enum e_lexer_type type)
 	return (0);
 }
 
-void					lexer_free_token(t_lexer_token *token)
+void					lexer_free_token(t_lexer_token **token)
 {
 	ft_putstr("freeing ");
-	print_token(token->buffer, token->size);
-	free(token->buffer);
-	free(token);
-	token = NULL;
+	print_token((*token)->buffer, (*token)->size);
+	free((*token)->buffer);
+	free(*token);
+	*token = NULL;
 }
 
 void					lexer_free_list(t_lexer_token *head)
@@ -133,6 +155,28 @@ void					lexer_free_list(t_lexer_token *head)
 		free(head);
 		head = tmp;
 	}
+}
+
+void					lexer_free_inlist(t_lexer_token **head, int tofree)
+{
+	t_lexer_token	*tmp;
+	t_lexer_token	*tmphead;
+	int				i;
+
+	i = 0;
+
+	// tmphead = *head;
+	tmphead = (*head);
+	tmphead = tmphead->next;
+	while (i < tofree)
+	{
+		tmp = tmphead->next;
+		free(tmphead);
+		tmphead = tmp;
+		i++;
+	}
+	(*head)->next = tmp;
+	// *head = tmphead;
 }
 
 /*

@@ -15,11 +15,15 @@
 
 # include <stddef.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include <stdint.h>
 # include "hashmap.h"
 # include "printer.h"
 
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);
+int		ft_isdigit(int c);
+int		ft_memtoi(const uint8_t *s, size_t size);
 void	*ft_memcat(size_t *rn, const void *a, size_t an,
 		const void *b, size_t bn);
 void	*ft_memcpy(void *dst, const void *src, size_t n);

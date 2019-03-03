@@ -1,0 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memtoi.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/03 16:12:00 by kberisha          #+#    #+#             */
+/*   Updated: 2019/03/03 16:14:55 by kberisha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_memtoi(const uint8_t *str, size_t size)
+{
+	size_t	i;
+	int		neg;
+	int		nbr;
+
+	i = 0;
+	neg = 0;
+	nbr = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+		neg = 1;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]) && i < size)
+	{
+		nbr *= 10;
+		nbr += ((int)str[i] - 48);
+		i++;
+	}
+	if (neg == 1)
+		return (-nbr);
+	else
+		return (nbr);
+}

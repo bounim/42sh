@@ -115,7 +115,7 @@ int			lexer_operator(t_lexer *lex)
 			r = lexer_token(lex, LEX_TP_OP);
 		else if (lex->state == LEX_ST_NB)
 		{
-			lex->foot->type = LEX_TP_IO;
+			lex->foot->type = LEX_TP_IO; //surtout verifier que le nombre n'est pas quote, sinon pas io number mais wd
 			r = lexer_token(lex, LEX_TP_OP);
 		}
 		else if (lex->state == LEX_ST_OP)

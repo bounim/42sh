@@ -2,8 +2,8 @@ NAME ?= 21sh
 
 SRC := \
 	main.c \
-	lexer/func.c \
 	lexer/lexer.c \
+	lexer/lexer_func.c \
 	lexer/lexer_error.c \
 	parser/parser.c \
 	parser/parser_func.c \
