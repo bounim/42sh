@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 13:07:26 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/05 16:36:43 by khsadira         ###   ########.fr       */
+/*   Created: 2017/11/14 20:01:02 by schakor           #+#    #+#             */
+/*   Updated: 2018/04/06 10:34:48 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#include "libft.h"
 
-/*
-**	environment functions header
-*/
-
-struct					s_envl
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char				*name;
-	char				*value;
-	size_t				exp;
-	struct s_envl		*next;
-};
+	unsigned char	*cptr;
 
-t_envl					*init_shell_envl(char **env);
-t_envl					*addlast_envl(t_envl *head, t_envl *new);
-char					*get_env_val(t_envl *envl, char *name);
-void					push_env(t_envl **envl, char *name, char *value);
-void					clear_envl(t_envl *envl);
-
-#endif
+	cptr = (unsigned char *)s;
+	while (n--)
+	{
+		if (*cptr == (unsigned char)c)
+			return ((void *)cptr);
+		++cptr;
+	}
+	return (NULL);
+}

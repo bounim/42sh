@@ -12,7 +12,6 @@ SRC := \
 	history/down_history.c \
 	history/file_history.c \
 	history/history.c \
-	history/history_cmd.c \
 	history/init_shell_history.c \
 	history/list_history.c \
 	history/up_history.c \
@@ -34,15 +33,15 @@ SRC := \
 	signal/ft_signal.c \
 	terminal/shell.c \
 	terminal/terminal.c \
-	tmpfunc.c \
-	utils/canonical_path.c
-
-TEST_CANONICAL_PATH_NAME := canonical_path
-TEST_CANONICAL_PATH_SRC := \
-	utils/canonical_path.c
-
-TEST := \
-	$(TEST_CANONICAL_PATH_NAME)
+	ft.c \
+	builtin/built_history.c \
+	builtin/built_exclaim.c \
+	builtin/built_cd.c \
+	builtin/built_echo.c \
+	builtin/built_env.c \
+	builtin/built_env_extra.c \
+	builtin/built_setenv.c \
+	builtin/built_unsetenv.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
@@ -55,11 +54,6 @@ OBJDIR ?= obj
 SRCDIR := src
 OBJ_PREFIX := $(OBJDIR)/$(SRCDIR)/
 OBJ := $(addprefix $(OBJ_PREFIX),$(SRC:.c=.o))
-TESTDIR := test
-TEST_OBJ_PREFIX := $(OBJDIR)/$(TESTDIR)/
-
-TEST_CANONICAL_PATH_OBJ := $(TEST_OBJ_PREFIX)$(TEST_CANONICAL_PATH_NAME).o \
-	$(addprefix $(OBJ_PREFIX),$(TEST_CANONICAL_PATH_SRC:.c=.o))
 
 .PHONY: all
 all: $(NAME)
@@ -80,7 +74,7 @@ clean: local_clean libft_clean
 
 .PHONY: fclean
 fclean: local_clean libft_fclean
-	$(RM) $(NAME) test/$(TEST_CANONICAL_PATH_NAME)
+	$(RM) $(NAME)
 
 .PHONY: re
 re:
@@ -89,16 +83,6 @@ re:
 
 .PHONY: local_clean
 local_clean:
-	$(RM) $(OBJ) $(TEST_CANONICAL_PATH_OBJ)
-	@$(RM) $(OBJ:.o=.d) $(TEST_CANONICAL_PATH_OBJ:.o=.d)
+	$(RM) $(OBJ)
+	@$(RM) $(OBJ:.o=.d)
 	@rmdir -p $(sort $(dir $(OBJ))) 2>/dev/null || true
-
-.PHONY: test
-test: $(addprefix test_,$(TEST))
-
-$(TESTDIR)/$(TEST_CANONICAL_PATH_NAME): $(TEST_CANONICAL_PATH_OBJ) $(LIBFT_BIN)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(TEST_CANONICAL_PATH_OBJ) $(LDLIBS)
-
-.PHONY: test_$(TEST_CANONICAL_PATH_NAME)
-test_$(TEST_CANONICAL_PATH_NAME): $(TESTDIR)/$(TEST_CANONICAL_PATH_NAME)
-	$^

@@ -36,11 +36,11 @@
 # include "readline.h"
 # include "history.h"
 # include "lexer.h"
+# include "builtin.h"
+# include "builtin_defines.h"
 
 void						ft_sig_handler(int signo);
 void						ft_signal(int signo);
-
-// FIXME tmp func
 
 # define BUFF_SIZE 100000
 
@@ -48,5 +48,6 @@ void						ft_putendl_fd(char const *s, int fd);
 void						ft_putstr(char const *s);
 void						ft_putchar(char ch);
 void						ft_putnbr(int nb);
+void						ft_putu8str(uint8_t *str);
 
 #endif

@@ -32,9 +32,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strncpyz(char *dest, const char *src, size_t n);
 size_t	ft_strnlen(const char *str, size_t size);
-
-//FIXME
-
 void	ft_arrdel(char **arr);
 char	**ft_arrdup(char **arr);
 char	*ft_strdup(const char *s1);
@@ -54,5 +51,8 @@ uint8_t	*ft_u8_strjoin(uint8_t const *s1, uint8_t const *s2);
 size_t	ft_u8_strlen(const uint8_t *s);
 uint8_t	*ft_u8_strnew(size_t n);
 uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
+int		ft_isalpha(int c);
+int		ft_isalnum(int c);
+void	*ft_memchr(const void *s, int c, size_t n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/16 14:34:27 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/05 16:36:48 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static t_envl	*envarr_to_envl(char **env)
 		ptr = ft_strchr(*env, '=');
 		new->name = ft_strsub(*env, 0, ptr - *env);
 		new->value = ft_strsub(*env, ptr - *env + 1, ft_strlen(ptr));
+		new->exp = 1;
 		new->next = NULL;
 		if (ft_strcmp(new->name, "SHLVL") == 0)
 		{
