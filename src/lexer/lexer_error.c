@@ -55,8 +55,7 @@ void		lexer_print_error(t_lexer *lex)
 
 	if ((tok = lexer_check(lex)))
 	{
-		ft_putstr("42sh: parse error near '");
-		ft_putstr((char*)tok->buffer);
-		ft_putstr("'\n");
+		ft_putstr("42sh: parse error near ");
+		print_token(tok->buffer, tok->size);
 	}
 }

@@ -55,7 +55,7 @@ typedef struct s_redir			t_redir;
 struct							s_redir
 {
 	enum e_redirect_type		redir_type;
-	uint8_t						*redir;
+	uint8_t						*redir_out;
 	size_t						redir_size;
 	int							io_number; //int ?????
 };

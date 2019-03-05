@@ -19,11 +19,16 @@ enum e_parser_type	get_node_type(t_lexer_token *token)
 		return (PARSER_AND_OR);
 	if (is_pipeline(token->buffer, token->size))
 		return (PARSER_PIPE);
-	// if (is_shift(token->buffer, token->size))
-		// return (PARSER_REDIRECT);
+	if (is_shift(token->buffer, token->size))
+		return (PARSER_REDIRECT);
 	if (is_semicolon(token->buffer, token->size))
 		return (PARSER_SEMICOLON);
 	return (PARSER_COMMAND);
+}
+
+void			parser_new_cmd(t_parser_node *n, t_lexer_token *tmp)
+{
+	
 }
 
 t_parser_node	*parser_new_elem(t_lexer_token *new)
@@ -40,19 +45,8 @@ t_parser_node	*parser_new_elem(t_lexer_token *new)
 	if (!(n->token = malloc(sizeof(t_lexer_token*))))
 		return (NULL);
 	n->token = new;
-	// if (!(n->args = malloc((new->args_nb + 1) * (sizeof(uint8_t *)))))
-		// return (NULL);
-	// if (!(n->args_size = malloc(PATH_MAX)))
-		// return (NULL);
-	// ft_memcpy(n->args, new->args, new->args_nb * sizeof(uint8_t *));
-	// ft_memcpy(n->args_size, new->args_size, new->args_nb * sizeof(size_t));
-	// n->args_nb = new->args_nb;
 	n->type = get_node_type(new);
-	// uint32_t i = 0;
-	// while (i < n->args_nb) {
-		// if (!(n->args[i] = malloc(sizeof(*n->args))))
-			// return (NULL);
-		// i++;
-	// }
+	// if ((n->type = get_node_type(new)) == PARSER_COMMAND)
+		// parse_new_cmd(new);
 	return (n);
 }

@@ -14,7 +14,7 @@
 
 uint8_t		is_shift(uint8_t *buffer, size_t buffer_size)
 {
-	if (buffer_size > 2 || buffer[0] != '<' || buffer[0] != '>')
+	if (buffer_size > 2 || (buffer[0] != '<' && buffer[0] != '>'))
 		return (0);
 	if (buffer_size == 1)
 		return (1);

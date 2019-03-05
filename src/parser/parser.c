@@ -81,7 +81,7 @@ void							tokenstr(char *str, t_lexer_token *tok)
 ** cmd is the last command_token and head is the redirect_token
 */
 
-t_lexer_token					*parser_do_redirs(t_lexer_token **cmd, t_lexer_token **op, int io_nb)
+/*t_lexer_token					*parser_do_redirs(t_lexer_token **cmd, t_lexer_token **op, int io_nb)
 {
 	t_lexer_token *cur;
 	t_lexer_token *prev;
@@ -126,16 +126,15 @@ void							parser_light_redirs(t_lexer *lexer)
 	if (cur->type == LEX_TP_WD)
 		cmd = cur;
 	while (cur)
-	{
+	{	
 		tokenstr("DOING REDIRECTION", cur);
 		if (cur->type == LEX_TP_OP && !get_redirect(cur->buffer, cur->size)
 		&& cur->next && cur->next->type == LEX_TP_WD)
 			cmd = cur->next;
 		if (cur->type == LEX_TP_IO)
 		{
-			io_nb = atoi((char*)cur->buffer);
-			last = cur;
-			lexer_free_token(&last);
+			if (cmd)
+				io_nb = ft_memtoi(cur->buffer, cur->size);
 		}
 		if (cur->next && cur->next->type == LEX_TP_OP
 		&& get_redirect(cur->next->buffer, cur->next->size))
@@ -164,6 +163,14 @@ void							parser_light_redirs(t_lexer *lexer)
 		printf("cur addr == %p\n", cur);
 
 	}
+}*/
+
+void							parser_light_redirs(t_lexer *lexer)
+{
+	t_lexer_token	*cur;
+	t_lexer_token	*prev;
+
+
 }
 
 void							parser_light_args(t_lexer *lexer)
@@ -188,41 +195,34 @@ int								parser_create_tree(t_lexer *lexer)
 	t_parser		*parser;
 	t_lexer_token	*tmp;
 	t_parser_node	*n;
+	int				newcmd;
 
 	size_t i = 0;
 	n = NULL;
+	newcmd = 1;
 	if (!(parser = malloc(sizeof(*parser))))
 		return (-1);
 	parser_init(parser);
 	lexer_print(&lexer->head);
-	parser_light_redirs(lexer);
-	parser_light_args(lexer);
+	// parser_light_redirs(lexer);
+	// parser_light_args(lexer);
 	lexer_print(&lexer->head);
 	tmp = lexer->head;
 	while (tmp)
 	{
+		if (tmp->type == LEX_TP_OP && !is_shift(tmp->buffer, tmp->size))
+			newcmd = 1;
 		if (!(n = parser_new_elem(tmp)))
 			return (-1);
-		ft_putstr("currently on ");
-		print_token(n->buffer, n->buffer_length);
-		if (n->token->args_nb)
+		if (newcmd)
 		{
-			ft_putendl("ARGS ::");
-			while (i < n->token->args_nb)
+			tmp = tmp->next;
+			while (tmp)
 			{
-				print_token(n->token->args[i], n->token->args_size[i]);
-				i++;
+				parser_new_cmd(n, tmp);
+				tmp = tmp->next;
 			}
-		}
-		i = 0;
-		if (n->token->redirs_nb)
-		{
-			ft_putendl("REDIRS ::");
-			while (i < n->token->redirs_nb)
-			{
-				print_token(n->token->redirs[i].redir, n->token->redirs[i].redir_size);
-				i++;
-			}
+			newcmd = 0;
 		}
 		parser_add_tree(&parser->head, n);
 		tmp = tmp->next;
