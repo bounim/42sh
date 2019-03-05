@@ -10,210 +10,215 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "lexer_internal.h"
 
 #include <stdio.h> // XXX
 
-static int	is_blank(uint8_t c)
+int		unquoted_backslash_newline(t_lexer *lex)
 {
-	return (c == ' ' || c == '\t');
-}
-
-static int	is_quote(uint8_t c)
-{
-	return (c == '\\' || c == '\'' || c == '\"');
-}
-
-static int	is_op(uint8_t c)
-{
-	return (c == '&' || c == '|' || c == ';' || c == '>' || c == '<');
-}
-
-static int	is_digit(uint8_t c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-uint8_t		lexer_check_line(uint8_t *buffer, size_t size)
-{
-	size_t		i;
-	uint8_t		c;
-
-	i = 0;
-	c = 0;
-	while (i < size)
+	if (lex->line[lex->i] == '\n')
 	{
-		if (buffer[i] == '\\')
-		{
-			if (i == size - 1 && c == 0)
-				return (buffer[i]);
-			if (i == size - 1 && c != '\"')
-				return (c);
-		}
-		else if (buffer[i] == '\'')
-			c = (c == '\'') ? 0 : buffer[i];
-		else if (buffer[i] == '\"' && c == '\"' && buffer[i - 1] != '\\')
-			c = 0;
-		else if (buffer[i] == '\"' && c == 0)
-			c = buffer[i];
-		i++;
+		lex->impl_error = 1;
+		return (-1);
 	}
-	return (c);
-}
-
-int			lexer_operator(t_lexer *lex)
-{
-	int	r;
-
-	if (is_op(lex->buffer[lex->i]) && !lex->quote)
+	if (!lex->quoted && lex->i + 1 == lex->line_size
+			&& lex->line[lex->i] == '\\')
 	{
-		puts("lexer operator");
-		if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK
-				|| lex->state == LEX_ST_WD)
-			r = lexer_token(lex, LEX_TP_OP);
-		else if (lex->state == LEX_ST_NB || lex->state == LEX_ST_OP)
-			r = lexer_append(lex, LEX_TP_OP);
-		else
-			return (1);
-		lex->state = LEX_ST_OP;
-		return (r);
-	}
-	else if (!is_op(lex->buffer[lex->i]) && !lex->quote
-			&& lex->state == LEX_ST_OP && !is_quote(lex->buffer[lex->i]))
-	{
-		if (!is_blank(lex->buffer[lex->i]))
-		{
-			lex->state = LEX_ST_WD;
-			return (lexer_token(lex, LEX_TP_WD));
-		}
-		else
-			lex->state = LEX_ST_BLK;
-	}
-	return (1);
-}
-
-int			lexer_quote(t_lexer *lex)
-{
-	if (is_quote(lex->buffer[lex->i]) && !lex->quote)
-	{
-		puts("lexer_quote");
-		printf("lex quote = %d\n", lex->quote);
-		if (lex->buffer[lex->i] == '\\')
-		{
-			lex->bgstate = lex->state;
-			lex->state = LEX_ST_BS;
-		}
-		else
-		{
-			if (lex->state == LEX_ST_BLK || lex->state == LEX_ST_GEN)
-				lex->startqu = 1;
-			lex->state = LEX_ST_QU;
-			lex->quotetype = lex->buffer[lex->i]; // FIXME
-		}
-		lex->quote = 1;
+		lex->backslash_newline = 1;
+		lex->i++;
 		return (0);
 	}
 	return (1);
 }
 
-int			lexer_inquote(t_lexer *lex)
+// FIXME where to consume newline??? --> no newline at the end
+int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 {
-	if (lex->state == LEX_ST_QU)
+	if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
 	{
-		puts("lexer_inquote");
-		printf("lex quote = %d\n", lex->quote);
-		if (lex->buffer[lex->i] == lex->quotetype)
+		if (lex->i > 0) // FIXME we got only one line anyway
 		{
-			lex->state = LEX_ST_WD;
-			lex->quote = 0;
-			lex->quotetype = 0;
+			lex->impl_error = 1;
+			return (-1);
 		}
-		else
+		// TODO for << => append the whole line if line != delimiter
+		// TODO for <<- => skip TABS, then same as above (with line starting after tabs)
+		// TODO if == delimiter, remove current element from heredoc_queue and heredoc--
+		if (lex->heredoc_queue[0].skip_tabs)
 		{
-			if (lex->buffer[lex->i] == '\\' && lex->quotetype == '\"')
-			{
-				lex->state = LEX_ST_BS;
-				lex->bgstate = LEX_ST_QU;
-			}
-			else
-			{
-				lex->state = LEX_ST_QU;
-				if (lex->startqu)
-				{
-					lex->startqu = 0;
-					return (lexer_token(lex, LEX_TP_WD));
-				}
-				return (lexer_append(lex, LEX_TP_WD));
-			}
+			while (lex->i < lex->line_size && lex->line[lex->i] == '\t')
+				lex->i++;
 		}
-		return (0); //a mettre ici ?....
-	}
-	return (1);
-}
-
-int		lexer_backslash(t_lexer *lex)
-{
-	if (lex->state == LEX_ST_BS)
-	{
-		lex->quote = 0;
-		if (lex->bgstate == LEX_ST_QU)
-		{
-			puts("lexer_bs");
-			lex->state = LEX_ST_QU;
-			lex->quote = 1;
-			lex->bgstate = LEX_ST_GEN; //pas oblige je crois
-			if (lex->intoken)
-				return (lexer_append(lex, LEX_TP_WD)); //voir le cas ou "\", le token n'existe pas encore....
-			return (lexer_token(lex, LEX_TP_WD));
+		if (lex->line_size - lex->i
+				== lex->heredoc_queue[0].delimiter_size
+				&& ft_memcmp(lex->heredoc_queue[0].delimiter,
+					lex->line + lex->i,
+					lex->heredoc_queue[0].delimiter_size) == 0)
+		{ // delimiter
+			lex->heredoc--;
+			lex->heredoc_queue++; // FIXME test
+			//return (token(lex, TYPE_HEREDOC));
 		}
-		else if (lex->bgstate == LEX_ST_BLK || lex->bgstate == LEX_ST_GEN || lex->bgstate == LEX_ST_OP)
+		else // FIXME new token or append line??
 		{
-			puts("mdr");
-			lex->state = LEX_ST_WD;
-			return (lexer_token(lex, LEX_TP_WD));
-		}
-		else
-		{
-			if (is_digit(lex->buffer[lex->i]) && lex->bgstate == LEX_ST_NB)
-				lex->state = LEX_ST_NB;
-			else
-				lex->state = LEX_ST_WD;
-			return (lexer_append(lex, LEX_TP_WD));
 		}
 	}
 	return (1);
 }
 
-int			lexer_blank(t_lexer *lex)
+/*
+** NB: with 1>&- the - is not part of the operator but is a word of length 1
+*/
+
+int		operator_append(t_lexer *lex)
 {
-	if (is_blank(lex->buffer[lex->i]) && !lex->quote)
+	uint8_t	ch;
+	size_t	s;
+	uint8_t	*op;
+
+	if (lex->quoted)
+		return (1);
+	ch = lex->line[lex->i];
+	if (lex->foot != NULL && !lex->foot->cannot_append
+			&& lex->foot->type == TYPE_OPERATOR && ch != ';')
 	{
-	puts("lexer_blk");
-		lex->state = LEX_ST_BLK;
-		lex->intoken = 0;
+		s = lex->foot->buffer_size;
+		op = lex->foot->buffer;
+		if ((ch == '|' && s == 1 && (op[0] == '|' || op[0] == '>'))
+				|| (ch == '&' && s == 1 && (op[0] == '&' || op[0] == '<'
+					|| op[0] == '>'))
+				|| (ch == '<' && s == 1 && op[0] == '<')
+				|| (ch == '>' && s == 1 && (op[0] == '>' || op[0] == '<'))
+				|| (ch == '-' && s == 2 && op[0] == '<' && op[1] == '<'))
+			return (append(lex));
+	}
+	return (1);
+}
+
+/*
+** always returns 1, because it doesn't consume current character
+*/
+
+int		operator_end(t_lexer *lex) // FIXME is it even useful
+{
+	if (lex->foot != NULL && lex->foot->type == TYPE_OPERATOR)
+		lex->foot->cannot_append = 1;
+	return (1);
+}
+
+int		quoting(t_lexer *lex)
+{
+	if (lex->next_quoted)
+	{
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
+	}
+	else if (!lex->quoted)
+	{
+		if (lex->line[lex->i] == '\\')
+			lex->next_quoted = 1;
+		else if (lex->line[lex->i] == '\'')
+			lex->next_quoted = 2;
+		else if (lex->line[lex->i] == '\"')
+			lex->next_quoted = 3;
+	}
+	else if (lex->quoted == 1
+			|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
+			|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
+				&& lex->line[lex->i - 1] != '\\'))
+		lex->quoted = 0;
+	return (1);
+}
+
+int		expansion(t_lexer *lex)
+{
+	if (lex->quoted)
+		return (1);
+	if (lex->next_expansion || lex->expansion_size > 0)
+	{
+		if (lex->line[lex->i] == '(' || lex->line[lex->i] == '{')
+		{
+			if (lex->expansion_size == EXPANSION_STACK_MAX)
+				return (-1);
+			lex->expansion_stack[lex->expansion_size++] = lex->line[lex->i];
+		}
+		lex->next_expansion = 0;
+	}
+	if (lex->expansion_size > 0)
+	{
+		if ((lex->expansion_stack[lex->expansion_size - 1] == '('
+					&& lex->line[lex->i] == ')')
+				|| (lex->expansion_stack[lex->expansion_size - 1] == '{'
+					&& lex->line[lex->i] == '}'))
+			lex->expansion_size--;
+	}
+	else if (lex->line[lex->i] == '$')
+		lex->next_expansion = 1;
+	return (1);
+}
+
+int		operator_new(t_lexer *lex)
+{
+	uint8_t	ch;
+
+	if (lex->quoted || lex->expansion_size > 0)
+		return (1);
+	ch = lex->line[lex->i];
+	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
+		return (token(lex, TYPE_OPERATOR));
+	return (1);
+}
+
+int		unquoted_blank(t_lexer *lex)
+{
+	if (!lex->quoted && lex->expansion_size == 0
+			&& (lex->line[lex->i] == ' ' || lex->line[lex->i] == '\t'))
+	{
+		if (lex->foot != NULL)
+			lex->foot->cannot_append = 1;
 		return (0);
 	}
 	return (1);
 }
 
-int			lexer_word(t_lexer *lex)
+int		word_append(t_lexer *lex)
 {
-	if (lex->state == LEX_ST_GEN || lex->state == LEX_ST_BLK)
+	if (lex->foot != NULL
+			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
+		return (append(lex));
+	if (lex->expansion_size > 0)
 	{
-	puts("lexer_word");
-		if (is_digit(lex->buffer[lex->i]))
-			lex->state = LEX_ST_NB;
-		else
-			lex->state = LEX_ST_WD;
-		return (lexer_token(lex, LEX_TP_WD));
+		lex->impl_error = 1;
+		return (-1);
 	}
-	else if (lex->state == LEX_ST_WD || lex->state == LEX_ST_NB)
+	return (1);
+}
+
+int		comment(t_lexer *lex)
+{
+	if (lex->line[lex->i] == '#')
 	{
-		if (is_digit(lex->buffer[lex->i]) && lex->state == LEX_ST_NB)
-			lex->state = LEX_ST_NB;
-		else
-			lex->state = LEX_ST_WD;
-		return (lexer_append(lex, LEX_TP_WD));
+		lex->i = lex->line_size;
+		return (0);
 	}
+	return (1);
+}
+
+int		word_new(t_lexer *lex)
+{
+	return (token(lex, TYPE_WORD));
+}
+
+int		line_end(t_lexer *lex)
+{
+	if (lex->next_quoted)
+	{
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
+	}
+	if (lex->foot != NULL)
+		lex->foot->cannot_append = 1;
+	if (lex->backslash_newline || lex->quoted || lex->expansion_size > 0) // TODO heredoc
+		return (-1);
 	return (1);
 }
