@@ -41,22 +41,18 @@ int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 			lex->impl_error = 1;
 			return (-1);
 		}
-		// TODO for << => append the whole line (until LF only) if line != delimiter (char by char because need to exec unquoted_backslash_newline)
+		// TODO for << => append the whole line if line != delimiter
 		// TODO for <<- => skip TABS, then same as above (with line starting after tabs)
-		// TODO or remove current element from heredoc_queue and heredoc--
-		// FIXME previous function applies
+		// TODO if == delimiter, remove current element from heredoc_queue and heredoc--
 		if (lex->heredoc_queue[0].skip_tabs)
 		{
 			while (lex->i < lex->line_size && lex->line[lex->i] == '\t')
 				lex->i++;
 		}
-		lex->heredoc_queue[0].i = lex->i;
-		while (lex->i < lex->line_size && lex->line[lex->i] != '\n')
-			lex->i++;
-		if (lex->i - lex->heredoc_queue[0].i
+		if (lex->line_size - lex->i
 				== lex->heredoc_queue[0].delimiter_size
 				&& ft_memcmp(lex->heredoc_queue[0].delimiter,
-					lex->line + lex->heredoc_queue[0].i,
+					lex->line + lex->i,
 					lex->heredoc_queue[0].delimiter_size) == 0)
 		{ // delimiter
 			lex->heredoc--;
@@ -202,9 +198,7 @@ int		comment(t_lexer *lex)
 {
 	if (lex->line[lex->i] == '#')
 	{
-		lex->i++;
-		while (lex->i < lex->line_size && lex->line[lex->i] != '\n')
-			lex->i++;
+		lex->i = lex->line_size;
 		return (0);
 	}
 	return (1);

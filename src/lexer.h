@@ -49,7 +49,6 @@ typedef struct					s_heredoc
 	size_t						delimiter_size;
 	uint8_t						*buffer;
 	size_t						buffer_size;
-	size_t						i;
 }								t_heredoc;
 
 /* FIXME
