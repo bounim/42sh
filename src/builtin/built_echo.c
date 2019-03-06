@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 18:47:35 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 18:49:05 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void	write_operands(uint8_t arg)
+static void	write_operands(char arg)
 {
 	if (arg == 'a')
 		write(1, "\a", 1);
@@ -32,7 +32,7 @@ static void	write_operands(uint8_t arg)
 		write(1, "\\", 1);
 }
 
-static int	find_operands(uint8_t *arg)
+static int	find_operands(char *arg)
 {
 	int		i;
 	char	op[2];
@@ -49,13 +49,13 @@ static int	find_operands(uint8_t *arg)
 				write_operands(arg[i + 1]);
 			i += 2;
 		}
-		write(1, (char *)arg + i, 1);
+		write(1, arg + i, 1);
 		i++;
 	}
 	return (0);
 }
 
-int			built_echo(uint8_t **arg, int *arg_size)
+int			built_echo(char **arg, int *arg_size)
 {
 	int		i;
 
@@ -64,7 +64,7 @@ int			built_echo(uint8_t **arg, int *arg_size)
 	write(1, "\n", 1);
 	while (arg[i])
 	{
-		if (ft_strchr((char *)arg[i], '\\'))
+		if (ft_strchr(arg[i], '\\'))
 		{
 			if ((find_operands(arg[i])) == 1)
 				return (0);
