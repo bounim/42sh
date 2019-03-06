@@ -6,31 +6,75 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/04 12:07:32 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 18:47:35 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-int	built_echo(uint8_t **arg, int *arg_size)
+static void	write_operands(uint8_t arg)
 {
-	int		n;
-	int		i;
+	if (arg == 'a')
+		write(1, "\a", 1);
+	else if (arg == 'b')
+		write(1, "\b", 1);
+	else if (arg == 't')
+		write(1, "\t", 1);
+	else if (arg == 'n')
+		write(1, "\n", 1);
+	else if (arg == 'v')
+		write(1, "\v", 1);
+	else if (arg == 'f')
+		write(1, "\f", 1);
+	else if (arg == 'r')
+		write(1, "\r", 1);
+	else if (arg == '\\')
+		write(1, "\\", 1);
+}
 
+static int	find_operands(uint8_t *arg)
+{
+	int		i;
+	char	op[2];
+
+	op[0] = '\\';
 	i = 0;
-	n = 0;
-	if (arg[0] && !ft_memcmp(arg[0], "-n\0", 3))
-	{
-		n = 1;
-		i++;
-	}
 	while (arg[i])
 	{
+		if (arg[i] == '\\')
+		{
+			if (arg[i + 1] == 'c')
+				return (1);
+			else
+				write_operands(arg[i + 1]);
+			i += 2;
+		}
+		write(1, (char *)arg + i, 1);
+		i++;
+	}
+	return (0);
+}
+
+int			built_echo(uint8_t **arg, int *arg_size)
+{
+	int		i;
+
+	i = 1;
+	ft_putstr("start of line");
+	write(1, "\n", 1);
+	while (arg[i])
+	{
+		if (ft_strchr((char *)arg[i], '\\'))
+		{
+			if ((find_operands(arg[i])) == 1)
+				return (0);
+		}
+		else
+			write(1, arg[i], arg_size[i]);
 		if (arg[i + 1])
 			write(1, " ", 1);
-		write(1, arg[i], arg_size[i]);
+		i++;
 	}
-	if (!n)
-		write(1, "\n", 1);
+	write(1, "\n", 1);
 	return (0);
 }
