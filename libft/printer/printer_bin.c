@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "printer.h"
 
-void	printer_bin(t_printer_handle *handle, char *bin, size_t size)
+void	printer_bin(t_printer *handle, const uint8_t *bin, size_t size)
 {
 	size_t	diff;
 
@@ -23,7 +23,7 @@ void	printer_bin(t_printer_handle *handle, char *bin, size_t size)
 	{
 		if (handle->length + size <= PRINTER_BUFFER_SIZE)
 		{
-			ft_memcpy(handle->buffer + handle->length, bin, size);
+			ft_memmove(handle->buffer + handle->length, bin, size);
 			handle->length += size;
 			size = 0;
 			if (handle->length == PRINTER_BUFFER_SIZE)
@@ -32,7 +32,7 @@ void	printer_bin(t_printer_handle *handle, char *bin, size_t size)
 		else
 		{
 			diff = PRINTER_BUFFER_SIZE - handle->length;
-			ft_memcpy(handle->buffer + handle->length, bin, diff);
+			ft_memmove(handle->buffer + handle->length, bin, diff);
 			handle->length += diff;
 			bin += diff;
 			size -= diff;

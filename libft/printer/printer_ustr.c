@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printer_uint.c                                     :+:      :+:    :+:   */
+/*   printer_ustr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/07 16:36:12 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Created: 2018/03/07 15:50:07 by emartine          #+#    #+#             */
+/*   Updated: 2018/03/07 15:50:09 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printer.h"
+#include "libft.h"
 
-void	printer_uint(t_printer_handle *handle, unsigned int n)
+void	printer_ustr(t_printer *handle, const uint8_t *ustr)
 {
-	char	buffer[10];
-	size_t	length;
-	size_t	i;
-
-	length = printer_uint_length(n);
-	if (length > 10)
-		return ;
-	i = length;
-	while (i--)
-	{
-		buffer[i] = '0' + n % 10;
-		n /= 10;
-	}
-	printer_bin(handle, buffer, length);
+	printer_str(handle, (char *)ustr);
 }

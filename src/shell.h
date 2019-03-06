@@ -25,8 +25,8 @@ struct						s_shell
 	t_hist					hist;
 	t_termios				cooked_tio;
 	t_termios				raw_tio;
-	t_printer_handle		out;
-	t_printer_handle		err;
+	t_printer				out;
+	t_printer				err;
 };
 
 /*

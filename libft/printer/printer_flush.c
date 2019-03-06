@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "printer.h"
 
-void	printer_flush(t_printer_handle *handle)
+void	printer_flush(t_printer *handle)
 {
 	size_t	i;
 	ssize_t	r;

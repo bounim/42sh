@@ -12,7 +12,7 @@
 
 #include "printer.h"
 
-void	printer_endl(t_printer_handle *handle)
+void	printer_endl(t_printer *handle)
 {
-	printer_char(handle, '\n');
+	printer_bin(handle, (uint8_t *)("\n" + 1) - 1, 1);
 }

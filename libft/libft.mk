@@ -23,16 +23,14 @@ LIBFT_SRC := \
 	hashmap/hashmap_set.c \
 	hashmap/hashmap_unset.c \
 	printer/printer_bin.c \
-	printer/printer_char.c \
 	printer/printer_endl.c \
 	printer/printer_flush.c \
 	printer/printer_init.c \
 	printer/printer_int.c \
 	printer/printer_long.c \
-	printer/printer_numeric_length.c \
 	printer/printer_str.c \
-	printer/printer_uint.c \
 	printer/printer_ulong.c \
+	printer/printer_ustr.c \
 	ft_arrdel.c \
 	ft_arrdup.c \
 	ft_arrlen.c \

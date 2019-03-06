@@ -12,7 +12,7 @@
 
 #include "printer.h"
 
-void	printer_init(t_printer_handle *handle, int fd)
+void	printer_init(t_printer *handle, int fd)
 {
 	handle->fd = fd;
 	handle->length = 0;

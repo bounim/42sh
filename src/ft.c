@@ -24,7 +24,7 @@ void	ft_putstr(char const *s)
 
 void	ft_putchar(char ch)
 {
-	printer_char(&g_shell.out, ch);
+	printer_bin(&g_shell.out, (uint8_t *)&ch, 1);
 	printer_flush(&g_shell.out);
 }
 
