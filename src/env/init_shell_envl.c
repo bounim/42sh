@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/05 16:36:48 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 22:29:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,23 @@ static t_envl	*envarr_to_envl(char **env)
 	return (ret);
 }
 
+static t_envl	*add_cd_path(t_envl *ret)
+{
+	t_envl	*new;
+
+	if (!(new = (t_envl *)malloc(sizeof(*new))))
+		return (NULL);
+	new->name = ft_strdup("CANONICAL_PATH");
+	new_value = NULL;
+	new->exp = 0;
+}
+
 t_envl			*init_shell_envl(char **env)
 {
 	t_envl		*ret;
 
 	ret = envarr_to_envl(env);
+	ret = add_cd_path(ret);
 	set_envl_default_value(&ret);
 	return (ret);
 }
