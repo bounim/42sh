@@ -62,6 +62,7 @@ typedef struct					s_heredoc
 
 typedef struct					s_lexer
 {
+	int							init;
 	t_lexer_token				*head;
 	t_lexer_token				*foot;
 	uint8_t						*line;
@@ -80,19 +81,18 @@ typedef struct					s_lexer
 	t_heredoc					*heredoc_ptr;
 }								t_lexer;
 
-void							lexer_init(t_lexer *lex, uint8_t *line,
-		size_t line_size);
-void							lexer_newline(t_lexer *lex, uint8_t *line,
-		size_t line_size);
-
 /*
+** Run lexer and parser on a line.
+** Must memset to 0 before first call.
+** line doesn't contain a LF.
 ** Returns -1 on error, 0 on success.
 ** When erroring, must check exit variables (quoted...) to find the
 ** reason, if all are 0, a malloc failed (out of memory).
 ** See t_lexer definition above.
 */
 
-int								lexer_read(t_lexer *lex);
+int								lexer_read(t_lexer *lex, uint8_t *line,
+		size_t line_size);
 void							lexer_destroy(t_lexer *lex);
 
 #endif

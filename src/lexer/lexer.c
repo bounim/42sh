@@ -29,28 +29,28 @@ static int			(*g_lexer_func[])(t_lexer *) = {
 	word_new,
 };
 
-void				lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
-{
-	ft_memset(lex, 0, sizeof(*lex));
-	lex->line = line;
-	lex->line_size = line_size;
-}
-
-void				lexer_newline(t_lexer *lex, uint8_t *line, size_t line_size)
+static void			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 {
 	lex->line = line;
 	lex->line_size = line_size;
-	lex->line_y++;
 	lex->i = 0;
-	lex->backslash_newline = 0;
+	if (lex->init)
+	{
+		lex->line_y++;
+		lex->i = 0;
+		lex->backslash_newline = 0;
+		// TODO add newline if quoted
+	}
+	else
+		lex->init = 1;
 }
 
-int					lexer_read(t_lexer *lex)
+int					lexer_read(t_lexer *lex, uint8_t *line, size_t line_size)
 {
 	size_t	f;
 	int		r;
 
-	lex->i = 0;
+	lexer_init(lex, line, line_size);
 	while (lex->i < lex->line_size)
 	{
 		f = 0;
@@ -73,6 +73,26 @@ int					lexer_read(t_lexer *lex)
 		return (-1);
 	//return (parser(lex));
 	return (0);
+}
+
+void				lexer_destroy(t_lexer *lex)
+{
+	t_lexer_token	*current;
+	t_lexer_token	*previous;
+
+	current = lex->head;
+	while (current)
+	{
+		previous = current;
+		current = current->next;
+		if (previous->type == TYPE_WORD || previous->type == TYPE_OPERATOR)
+			free(previous->buffer);
+		// TODO free heredoc
+		free(previous);
+	}
+	lex->head = NULL;
+	lex->foot = NULL;
+	// TODO destroy parser?
 }
 
 int					token(t_lexer *lex, enum e_lexer_type type)
@@ -132,24 +152,4 @@ int					append(t_lexer *lex)
 	lex->foot->buffer = t;
 	lex->foot->buffer_size++;
 	return (0);
-}
-
-void				lexer_destroy(t_lexer *lex)
-{
-	t_lexer_token	*current;
-	t_lexer_token	*previous;
-
-	current = lex->head;
-	while (current)
-	{
-		previous = current;
-		current = current->next;
-		if (previous->type == TYPE_WORD || previous->type == TYPE_OPERATOR)
-			free(previous->buffer);
-		// TODO free heredoc
-		free(previous);
-	}
-	lex->head = NULL;
-	lex->foot = NULL;
-	// TODO destroy parser?
 }

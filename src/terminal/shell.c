@@ -47,8 +47,9 @@ static void				parse_command(uint8_t *line, size_t len)
 	t_lexer 		lex;
 	t_lexer_token	*cur;
 
-	lexer_init(&lex, line, len);
-	printer_int(&g_shell.err, lexer_read(&lex));
+	ft_memset(&lex, 0, sizeof(lex));
+	printer_int(&g_shell.err,
+			lexer_read(&lex, line, len));
 	printer_endl(&g_shell.err);
 	printer_flush(&g_shell.err);
 	if (lex.head)
@@ -62,9 +63,9 @@ static void				parse_command(uint8_t *line, size_t len)
 			printer_ulong(&g_shell.out, cur->line_y);
 			printer_str(&g_shell.out, " line_x=");
 			printer_ulong(&g_shell.out, cur->line_x);
-			/*printer_str(&g_shell.out, " buf='");
-			printer_bin(&g_shell.out, (char *)cur->buffer, cur->size);
-			printer_str(&g_shell.out, "'");*/
+			printer_str(&g_shell.out, " buf='");
+			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
+			printer_str(&g_shell.out, "'");
 			printer_endl(&g_shell.out);
 			cur = cur->next;
 		}
