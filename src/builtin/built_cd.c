@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/02 18:02:06 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 19:29:20 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,18 @@ static int			check_error_path(char *path, char *arg)
 		closedir(diropen);
 	return (1);
 }
-
-static t_env		*init_pwd(t_env *env)
+*/
+static t_envl		*init_pwd(t_env *env)
 {
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
 	env = ft_setenv_c("PWD", cwd, env);
+	push_env,
 	return (env);
 }
 
-static t_env		*ft_cd_oldpwd(t_env *env)
+static t_envl		*ft_cd_oldpwd(t_envl *env)
 {
 	char	*tmp;
 	char	*pwd;
@@ -82,27 +83,24 @@ static t_env		*ft_cd_oldpwd(t_env *env)
 		return (env);
 	}
 	cwd = ft_strdup(tmp);
-	if (!(pwd = ft_search_env("PWD", env)))
+	if (!(pwd = get_env_val(env, "PWD")))
 		pwd = "";
-	env = ft_setenv_c("OLDPWD", ft_strdup(pwd), env);
+	push_env(&env, "OLDPWD", pwd);
 	chdir(cwd);
 	ft_strdel(&cwd);
 	cwd = getcwd(NULL, 0);
-	env = ft_setenv_c("PWD", cwd, env);
+	push_env(&env, "PWD", cwd);
 	return (env);
 }
 
-t_env				*built_cd(t_lst *list, t_env *env)
+t_env				*built_cd(char **arg, t_envl *env)
 {
 	char	*path;
 	char	*cwd;
 	char	*pwd;
+	size_t	i;
 
-	if (ft_dstrlen(list->arg) > 2)
-	{
-		ft_putendl_fd("cd: too many arguments", 2);
-		return (env);
-	}
+	i = first_arg(arg);
 	if (ft_strequ(list->arg[1], "-"))
 		return (env = ft_cd_oldpwd(env));
 	env = init_pwd(env);
@@ -118,8 +116,4 @@ t_env				*built_cd(t_lst *list, t_env *env)
 		env = ft_setenv_c("PWD", cwd, env);
 	}
 	return (env);
-}
-*/
-void	built_cd()
-{
 }

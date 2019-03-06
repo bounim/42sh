@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/19 15:32:21 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/06 18:49:54 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,20 @@ static void				parse_command(uint8_t *line, size_t len)
 void					run_shell(void)
 {
 	t_bool run;
+	char *arg[6];
+	int arg_size[5];
+
+	arg[0] = "echo";
+	arg[1] = "salfaut les genstest";
+	arg[2] = "salbutltlasalut";
+	arg[3] = "test\\tctest";
+	arg[4] = "clean\\nuptest";
+	arg[5] = 0;
+	arg_size[0] = 4;
+	arg_size[1] = ft_strlen(arg[1]);
+	arg_size[2] = ft_strlen(arg[2]);
+	arg_size[3] = ft_strlen(arg[3]);
+	arg_size[4] = ft_strlen(arg[4]);
 
 	run = TRUE;
 	while (run == TRUE)
@@ -88,8 +102,9 @@ void					run_shell(void)
 		if (g_shell.line)
 		{
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
-			ft_putstr((char*)g_shell.line);
-			write(1, "\n", 1);
+			built_echo(arg, arg_size);
+			//ft_putstr((char*)g_shell.line);
+			//write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
 				;
 			else if (ft_u8_strequ(g_shell.line, (const uint8_t *)"exit"))
