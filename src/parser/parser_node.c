@@ -142,7 +142,7 @@ int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 	{
 		if (is_shift((*tmp)->buffer, (*tmp)->size))
 			r = add_redirection(n, tmp);
-		else if ((*tmp)->type == LEX_TP_IO)
+    else if ((*tmp)->type == LEX_TP_IO)
 			n->next_io = ft_memtoi((*tmp)->buffer, (*tmp)->size);
 		else if (!n->arg_head && (uint8_t *)ft_memchr((*tmp)->buffer, (*tmp)->size, '=') > (*tmp)->buffer)
 			r = add_assignement_word(n, tmp);

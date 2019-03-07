@@ -17,8 +17,11 @@ uint8_t		is_shift(uint8_t *buffer, size_t buffer_size)
 	if (buffer_size > 2 || (buffer[0] != '<' && buffer[0] != '>'))
 		return (0);
 	if (buffer_size == 1)
-		return (1);
-	return (buffer[0] == buffer[1]);
+    return (1);
+  if (buffer[1] && buffer[1] == '&')
+    return (1);
+  else
+    return (buffer[0] == buffer[1]);
 }
 
 uint8_t		is_semicolon(uint8_t *buffer, size_t buffer_size)
