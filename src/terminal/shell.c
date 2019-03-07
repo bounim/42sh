@@ -42,17 +42,13 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_cc[VTIME] = 0;
 }
 
-static void				parse_command(uint8_t *line, size_t len)
+static void				parse_command(void)
 {
-	t_lexer 		lex;
-	t_lexer_token	*cur;
-
-	ft_memset(&lex, 0, sizeof(lex));
 	printer_int(&g_shell.err,
-			lexer_read(&lex, line, len));
+			lexer());
 	printer_endl(&g_shell.err);
 	printer_flush(&g_shell.err);
-	if (lex.head)
+	/*if (lex.head)
 	{
 		cur = lex.head;
 		while (cur)
@@ -70,7 +66,7 @@ static void				parse_command(uint8_t *line, size_t len)
 			cur = cur->next;
 		}
 	}
-	lexer_destroy(&lex);
+	lexer_destroy(&lex);*/
 }
 
 void					run_shell(void)
@@ -89,7 +85,7 @@ void					run_shell(void)
 		write(1, "\n", 1);
 		if (g_shell.line)
 		{
-			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
+			parse_command();
 			ft_putstr((char*)g_shell.line);
 			write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))

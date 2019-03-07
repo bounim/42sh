@@ -16,6 +16,7 @@ SRC := \
 	history/up_history.c \
 	lexer/func.c \
 	lexer/lexer.c \
+	lexer/token.c \
 	main.c \
 	signal/ft_signal.c \
 	terminal/shell.c \
