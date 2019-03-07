@@ -41,8 +41,10 @@ void	structure(t_parser_node *root, int level)
 	else
 	{
 		structure(root->right, level + 1);
-		padding('\t', level);
-		if (root->arg_head)
+    padding('\t', level);
+    if (root->type != PARSER_COMMAND)
+      print_token(root->buffer, root->size);
+		else if (root->arg_head)
 			print_token(root->arg_head->buf, root->arg_head->size);
 		structure(root->left, level + 1);
 	}

@@ -152,7 +152,9 @@ int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 			r = add_argument(n, tmp);
 		}
 		if (r != 0)
-			return (r);
+      return (r);
+    if ((*tmp)->next && is_sep_operator((*tmp)->next))
+      break;
 		(*tmp) = (*tmp)->next;		
 	}
 	return (0);
@@ -167,7 +169,16 @@ t_parser_node	*parser_new_elem(t_lexer_token **tmp)
 	ft_memset(n, 0, sizeof(*n));
 	if ((n->type = get_node_type(*tmp)) == PARSER_COMMAND || is_shift((*tmp)->buffer, (*tmp)->size))
 		parser_new_command(n, tmp);
-	else
-		*tmp = (*tmp)->next;
+  else
+  {
+    if (!(n->buffer = malloc(sizeof(uint8_t) * (*tmp)->size)))
+    {
+      free(n);
+      return (NULL);
+    }
+    ft_memcpy(n->buffer, (*tmp)->buffer, (*tmp)->size);
+    n->size = (*tmp)->size;
+    // *tmp = (*tmp)->next;
+  }
 	return (n);
 }

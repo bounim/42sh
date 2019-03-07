@@ -60,7 +60,7 @@ void			parser_add_tree(t_parser_node **head, t_parser_node *new)
 	else
 	{
 		ft_putendl("adding ope:");
-		print_token(new->arg_head->buf, new->arg_head->size);
+		// print_token(new->arg_head->buf, new->arg_head->size);
 		parser_add_operator(head, new);
 	}
 }

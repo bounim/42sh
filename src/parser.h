@@ -43,7 +43,9 @@ typedef struct s_parser_node	t_parser_node;
 
 struct							s_parser_node
 {
-	t_lexer_token				*token;
+  t_lexer_token			*token;
+  uint8_t           *buffer;
+  size_t            size;
 	t_redir						*redir_head;
 	t_redir						*redir_foot;
 	size_t						redir_nb;
