@@ -42,7 +42,8 @@ void	structure(t_parser_node *root, int level)
 	{
 		structure(root->right, level + 1);
 		padding('\t', level);
-		print_token(root->buffer, root->buffer_length);
+		if (root->arg_head)
+			print_token(root->arg_head->buf, root->arg_head->size);
 		structure(root->left, level + 1);
 	}
 	
@@ -57,7 +58,7 @@ void	parser_print(t_parser_node *tree)
 		ft_putendl("printing left");
 		parser_print(tree->right);
 	}
-	print_token(tree->buffer, tree->buffer_length);
+	print_token(tree->arg_head->buf, tree->arg_head->size);
 	if (tree->left)
 	{
 		ft_putendl("printing left");

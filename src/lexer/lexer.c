@@ -157,28 +157,6 @@ void					lexer_free_list(t_lexer_token *head)
 	}
 }
 
-void					lexer_free_inlist(t_lexer_token **head, int tofree)
-{
-	t_lexer_token	*tmp;
-	t_lexer_token	*tmphead;
-	int				i;
-
-	i = 0;
-
-	// tmphead = *head;
-	tmphead = (*head);
-	tmphead = tmphead->next;
-	while (i < tofree)
-	{
-		tmp = tmphead->next;
-		free(tmphead);
-		tmphead = tmp;
-		i++;
-	}
-	(*head)->next = tmp;
-	// *head = tmphead;
-}
-
 /*
 ** assumes a token exists
 */

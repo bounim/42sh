@@ -77,119 +77,6 @@ void							tokenstr(char *str, t_lexer_token *tok)
 	print_token(tok->buffer, tok->size);
 }
 
-/* detects redirections in token list and saves them in redirect tab of last cmd
-** cmd is the last command_token and head is the redirect_token
-*/
-
-/*t_lexer_token					*parser_do_redirs(t_lexer_token **cmd, t_lexer_token **op, int io_nb)
-{
-	t_lexer_token *cur;
-	t_lexer_token *prev;
-
-	cur = (*op);
-	if (!*cmd)
-		return (NULL);
-	(*cmd)->redirs[(*cmd)->redirs_nb].io_number = io_nb;//ft_memtoi((*io_nb)->buffer);
-	(*cmd)->redirs[(*cmd)->redirs_nb].redir_type = get_redirect(cur->buffer, cur->size);
-	if (cur->next && cur->next->type == LEX_TP_WD)
-	{
-		prev = cur;
-		cur = cur->next;
-		if (!((*cmd)->redirs[(*cmd)->redirs_nb].redir = malloc(cur->size * sizeof(uint8_t))))
-			return (NULL);
-		ft_memcpy((*cmd)->redirs[(*cmd)->redirs_nb].redir, cur->buffer, cur->size);
-		(*cmd)->redirs[(*cmd)->redirs_nb].redir_size = cur->size;
-		lexer_free_token(&prev);
-		prev = cur;
-		cur = cur->next;
-		lexer_free_token(&prev);
-		(*cmd)->redirs_nb++;
-	}
-	else
-	{
-		lexer_free_token(&cur);
-		(*cmd)->redir_err++;
-	}
-	return (cur);
-}
-
-void							parser_light_redirs(t_lexer *lexer)
-{
-	int				io_nb;
-	t_lexer_token	*cur;
-	t_lexer_token	*cmd;
-	t_lexer_token	*last;
-
-	io_nb = -1;
-	last = NULL;
-	cur = lexer->head;
-	if (cur->type == LEX_TP_WD)
-		cmd = cur;
-	while (cur)
-	{	
-		tokenstr("DOING REDIRECTION", cur);
-		if (cur->type == LEX_TP_OP && !get_redirect(cur->buffer, cur->size)
-		&& cur->next && cur->next->type == LEX_TP_WD)
-			cmd = cur->next;
-		if (cur->type == LEX_TP_IO)
-		{
-			if (cmd)
-				io_nb = ft_memtoi(cur->buffer, cur->size);
-		}
-		if (cur->next && cur->next->type == LEX_TP_OP
-		&& get_redirect(cur->next->buffer, cur->next->size))
-		{
-			ft_putendl("IN IT");
-			last = cur;
-			last->next = parser_do_redirs(&cmd, &cur->next, io_nb);
-		}
-		if (cur->type == LEX_TP_OP && get_redirect(cur->buffer, cur->size))
-		{
-			if (!last)
-			{
-				parser_do_redirs(&lexer->nullredir, &cur, io_nb);
-				last = cur;
-			}
-			else
-				last->next = parser_do_redirs(&cmd, &cur, io_nb);
-			printf("cur addr inside == %p\n", cur);
-		}
-		// else
-		if (!cur)
-			cur = last->next;
-		else
-			cur = cur->next;
-			// break;
-		printf("cur addr == %p\n", cur);
-
-	}
-}*/
-
-void							parser_light_redirs(t_lexer *lexer)
-{
-	t_lexer_token	*cur;
-	t_lexer_token	*prev;
-
-
-}
-
-void							parser_light_args(t_lexer *lexer)
-{
-	t_lexer_token	*prev;
-	t_lexer_token	*cur;
-
-	prev = NULL;
-	cur = lexer->head;
-	while (cur)
-	{
-		if (cur->type == LEX_TP_WD)
-			parser_create_args(&cur);
-		prev = cur;
-		if (cur)
-			cur = cur->next;
-	}
-}
-
 int								parser_create_tree(t_lexer *lexer)
 {
 	t_parser		*parser;
@@ -197,35 +84,29 @@ int								parser_create_tree(t_lexer *lexer)
 	t_parser_node	*n;
 	int				newcmd;
 
-	size_t i = 0;
 	n = NULL;
 	newcmd = 1;
 	if (!(parser = malloc(sizeof(*parser))))
 		return (-1);
 	parser_init(parser);
 	lexer_print(&lexer->head);
-	// parser_light_redirs(lexer);
-	// parser_light_args(lexer);
-	lexer_print(&lexer->head);
 	tmp = lexer->head;
 	while (tmp)
 	{
-		if (tmp->type == LEX_TP_OP && !is_shift(tmp->buffer, tmp->size))
-			newcmd = 1;
-		if (!(n = parser_new_elem(tmp)))
+		if (!(n = parser_new_elem(&tmp)))
 			return (-1);
-		if (newcmd)
-		{
-			tmp = tmp->next;
-			while (tmp)
-			{
-				parser_new_cmd(n, tmp);
-				tmp = tmp->next;
-			}
-			newcmd = 0;
-		}
 		parser_add_tree(&parser->head, n);
-		tmp = tmp->next;
+			ft_putendl("args");
+		print_word(n->arg_head);
+		ft_putendl("END.");
+		ft_putendl("redirs");
+		print_redir(n->redir_head);
+		ft_putendl("END.");
+		ft_putendl("assignement words");
+		print_word(n->assign_head);
+		ft_putendl("END.");
+		if (tmp)
+			tmp = tmp->next;
 	}
 	structure(parser->head, 0);
 	return (0);

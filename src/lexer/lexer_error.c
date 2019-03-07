@@ -30,7 +30,7 @@ t_lexer_token				*lexer_check(t_lexer *lex)
 	t_lexer_token	*cur;
 
 	cur = lex->head;
-	if (cur && cur->type == LEX_TP_OP)
+	if (cur && cur->type == LEX_TP_OP && !is_shift(cur->buffer, cur->size))
 		return (cur);
 	while (cur)
 	{

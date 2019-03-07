@@ -58,6 +58,8 @@ struct							s_redir
 	uint8_t						*redir_out;
 	size_t						redir_size;
 	int							io_number; //int ?????
+	uint8_t						heredoc;
+	t_redir						*next;
 };
 
 typedef struct s_lexer_token	t_lexer_token;
@@ -123,6 +125,7 @@ void							lexer_init(t_lexer *lex, uint8_t *buffer,
 */
 
 int								lexer_read(t_lexer *lex);
+enum e_redirect_type			get_redirect(uint8_t *buffer, size_t size);
 void							lexer_print(t_lexer_token **head);
 void							lexer_destroy(t_lexer *lex);
 

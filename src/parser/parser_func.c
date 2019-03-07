@@ -45,19 +45,22 @@ void			parser_add_tree(t_parser_node **head, t_parser_node *new)
 	if (!*head)
 	{
 		ft_putendl("adding x:");
-		print_token(new->buffer, new->buffer_length);
+		if (new->type == PARSER_COMMAND)
+			print_token(new->arg_head->buf, new->arg_head->size);
+		else
+			ft_putnbr(new->type);
 		*head = new;
 	}
 	else if (new->type == PARSER_COMMAND)
 	{
 		ft_putendl("adding cmd:");
-		print_token(new->buffer, new->buffer_length);
+		print_token(new->arg_head->buf, new->arg_head->size);
 		parser_add_cmd(head, new);
 	}
 	else
 	{
 		ft_putendl("adding ope:");
-		print_token(new->buffer, new->buffer_length);
+		print_token(new->arg_head->buf, new->arg_head->size);
 		parser_add_operator(head, new);
 	}
 }
