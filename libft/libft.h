@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2018/01/17 17:20:45 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:35:26 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 void	*ft_memchr(const void *s, int c, size_t n);
+int	ft_strequ(char const *s1, char const *s2);
 
 #endif

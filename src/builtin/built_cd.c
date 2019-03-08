@@ -6,16 +6,17 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 22:31:19 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:38:01 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static char			*get_cd_path(t_envl *env, char *arg)
+static char			*get_cd_path(t_envl *env, char *arg, int opts)
 {
 	char	*tmp;
 
+	opts = 0;
 	tmp = NULL;
 	if (arg == NULL)
 	{
@@ -27,18 +28,18 @@ static char			*get_cd_path(t_envl *env, char *arg)
 			return (NULL);
 		}
 	}
-	else if (ft_strequ(arg, ".."))
+/*	else if (ft_strequ(arg, ".."))
 	{
 		tmp;
-	}
+	}*/
 	return (arg);
 }
 
+/*
 static int			check_error_path(char *path, char *arg)
 {
 	struct stat		stbuf;
 	DIR				*diropen;
-	/*
 	   if (path == NULL)
 	   return (-1);
 	   if (lstat(path, &stbuf) == -1)
@@ -62,16 +63,16 @@ static int			check_error_path(char *path, char *arg)
 	   }
 	   */
 
-static int		init_pwd(t_env **env)
+static int		init_pwd(t_envl **env)
 {
 	char	*cwd;
 
 	if (!(cwd = getcwd(NULL, 0)))
 	{
-		ft_putendl_fd("cd: GETCWD error");
+		write(2, "cd: GETCWD error\n", 17);
 		return (1);
 	}
-	push_env(&env, "PWD", cwd);
+	push_env(env, "PWD", cwd);
 	return (0);
 }
 
@@ -84,27 +85,27 @@ static int		cd_oldpwd(t_envl **env)
 	tmp = NULL;
 	pwd = NULL;
 	cwd = NULL;
-	if (!(tmp = ft_search_env("OLDPWD", env)))
+	if (!(tmp = get_env_val(*env, "OLDPWD")))
 	{
 		ft_putendl_fd("cd: OLDPWD not set", 2);
 		return (1);
 	}
 	cwd = ft_strdup(tmp);
-	if (!(pwd = get_env_val(env, "PWD")))
+	if (!(pwd = get_env_val(*env, "PWD")))
 		pwd = "";
-	push_env(&env, "OLDPWD", pwd);
+	push_env(env, "OLDPWD", pwd);
 	if (chdir(cwd) == -1)
 	{
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	ft_strdel(&cwd);
+	free(&cwd);
 	if (!(cwd = getcwd(NULL, 0)))
 	{
 		ft_putendl_fd("cd: GETCWD error", 2);
 		return (1);
 	}
-	push_env(&env, "PWD", cwd);
+	push_env(env, "PWD", cwd);
 	return (0);
 }
 
@@ -116,12 +117,11 @@ static int		cd_first_arg(char **arg, int *opts)
 	while (arg[i])
 	{
 		if (ft_strequ(arg[i], "-P"))
-			opts = 1;
-		if (arg[i][0] && arg[i][0] == '-' &&
-				arg[i][1] && (arg[i][1] != 'P' ||
-					arg[i][1] != 'L' || arg[i][1] == '-'))
-			return (i)
-		else if (arg[i][0] && !arg[i][1])
+			*opts = 1;
+		if ((arg[i][0] && arg[i][0] == '-' &&
+			arg[i][1] && (arg[i][1] != 'P' ||
+			arg[i][1] != 'L' || arg[i][1] == '-')) ||
+			(arg[i][0] && !arg[i][1]))
 			return (i);
 		i++;
 	}
@@ -136,17 +136,18 @@ int				built_cd(char **arg, t_envl **env)
 	size_t	i;
 	int		opts;
 
+	ft_putchar('a');
 	i = cd_first_arg(arg, &opts);
-	if (ft_strequ(list->arg[i], "-"))
+	if (ft_strequ(arg[i], "-"))
 		return (cd_oldpwd(env));
 	if (init_pwd(env))
 		return (1);
-	if (!(path = get_cd_path(env, arg[i], opts)))
+	if (!(path = get_cd_path(*env, arg[i], opts)))
 		return (1);
-	if (check_error_path(path, arg[i]) == -1)
-		return (1);
-	pwd = get_env_val(env, "PWD");
-	push_env(&env, "OLDPWD", pwd);
+//	if (check_error_path(path, arg[i]) == -1)
+//		return (1);
+	pwd = get_env_val(*env, "PWD");
+	push_env(env, "OLDPWD", pwd);
 	if (chdir(path) == -1)
 	{
 		ft_putendl_fd("cd: CHDIR error", 2);
@@ -157,6 +158,6 @@ int				built_cd(char **arg, t_envl **env)
 		ft_putendl_fd("cd: GETCWD error", 2);
 		return (1);
 	}
-	push_env(&env, "PWD", cwd);
+	push_env(env, "PWD", cwd);
 	return (0);
 }

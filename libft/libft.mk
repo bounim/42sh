@@ -40,6 +40,7 @@ LIBFT_SRC := \
 	ft_itoa.c \
 	ft_strdup.c \
 	ft_strsub.c \
+	ft_strequ.c \
 	ft_memalloc.c \
 	ft_strfjoin.c \
 	ft_strsplit.c \
