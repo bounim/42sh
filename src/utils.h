@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 16:01:13 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/30 16:01:16 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/08 16:56:37 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,5 @@
 ** returns 0 on success, < 0 on error
 **  -1 path too long to be canonicalized
 */
-
-int		canonical_path(char *result, char *workdir, char *input);
 
 #endif

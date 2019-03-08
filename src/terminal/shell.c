@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/06 22:25:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:47:13 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_oflag &= ~(OPOST);
 	g_shell.raw_tio.c_cc[VMIN] = 1;
 	g_shell.raw_tio.c_cc[VTIME] = 0;
+	g_shell.canonic_path = NULL;
 }
 
 static void				parse_command(uint8_t *line, size_t len)
@@ -75,20 +76,17 @@ static void				parse_command(uint8_t *line, size_t len)
 void					run_shell(void)
 {
 	t_bool run;
-	char *arg[6];
-	int arg_size[5];
+	char *arg[5];
+	char	*str[2];
 
-	arg[0] = "echo";
-	arg[1] = "salfaut les genstest";
-	arg[2] = "salbutltlasalut";
-	arg[3] = "test\\tctest";
-	arg[4] = "clean\\nuptest";
-	arg[5] = 0;
-	arg_size[0] = 4;
-	arg_size[1] = ft_strlen(arg[1]);
-	arg_size[2] = ft_strlen(arg[2]);
-	arg_size[3] = ft_strlen(arg[3]);
-	arg_size[4] = ft_strlen(arg[4]);
+	printf("la\n");
+	arg[0] = "cd";
+	arg[1] = "-L";
+	arg[2] = "/etc";
+	arg[3] = "/test";
+	arg[4] = 0;
+	str[0] = "cd";
+	str[1] = "..";
 
 	run = TRUE;
 	while (run == TRUE)
@@ -102,7 +100,8 @@ void					run_shell(void)
 		if (g_shell.line)
 		{
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
-			built_echo(arg, arg_size);
+			built_cd(arg, &g_shell.envl);
+			built_cd(str, &g_shell.envl);
 			//ft_putstr((char*)g_shell.line);
 			//write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
