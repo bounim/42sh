@@ -36,7 +36,8 @@ void			get_prev_history(void)
 		return ;
 	if (g_shell.hist.history_save == -2)
 		return ;
-	switch_history();
+	if (g_shell.hist.history_save >= 0)
+		switch_history();
 	if (g_shell.hist.history_save == -1)
 	{
 		print_history();
