@@ -48,25 +48,6 @@ static void				parse_command(void)
 			lexer());
 	printer_endl(&g_shell.err);
 	printer_flush(&g_shell.err);
-	/*if (lex.head)
-	{
-		cur = lex.head;
-		while (cur)
-		{
-			printer_str(&g_shell.out, "token=");
-			printer_int(&g_shell.out, (int)cur->type);
-			printer_str(&g_shell.out, " line_y=");
-			printer_ulong(&g_shell.out, cur->line_y);
-			printer_str(&g_shell.out, " line_x=");
-			printer_ulong(&g_shell.out, cur->line_x);
-			printer_str(&g_shell.out, " buf='");
-			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
-			printer_str(&g_shell.out, "'");
-			printer_endl(&g_shell.out);
-			cur = cur->next;
-		}
-	}
-	lexer_destroy(&lex);*/
 }
 
 void					run_shell(void)

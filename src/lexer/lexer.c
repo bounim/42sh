@@ -92,35 +92,61 @@ static void			lexer_destroy(t_lexer *lex)
 	// TODO destroy parser?
 }
 
+static void			lexer_debug(t_lexer *lex)
+{
+	t_lexer_token	*cur;
+
+	if (lex->head)
+	{
+		cur = lex->head;
+		while (cur)
+		{
+			printer_str(&g_shell.out, "token=");
+			printer_int(&g_shell.out, (int)cur->type);
+			printer_str(&g_shell.out, " line_y=");
+			printer_ulong(&g_shell.out, cur->line_y);
+			printer_str(&g_shell.out, " line_x=");
+			printer_ulong(&g_shell.out, cur->line_x);
+			printer_str(&g_shell.out, " buf='");
+			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
+			printer_str(&g_shell.out, "'");
+			printer_endl(&g_shell.out);
+			cur = cur->next;
+		}
+	}
+}
+
 int 				lexer(void)
 {
 	t_lexer	lex;
 	int		r;
 	size_t	i;
 
-	if (g_shell->line == NULL || g_shell->line_size == 0)
+	if (g_shell.line == NULL || g_shell.line_size == 0)
 		return (0);
 	i = 0;
 	while (1)
 	{
 		ft_memset(&lex, 0, sizeof(lex));
-		lexer_init(lex, g_shell->line + i, g_shell->line_size - i);
+		lexer_init(lex, g_shell.line + i, g_shell.line_size - i);
 		if ((r = lexer_read(&lex)) < 0)
 			break ;
-		if (lex->i < g_shell->line_size - i)
+		if (lex.i < g_shell.line_size - i)
 		{
-			i += lex->i;
+			i += lex.i;
 			// TODO call parser
+			lexer_debug(&lex);
 			lexer_destroy(&lex);
 			continue ;
 		}
 		readline("> ");
-		if (g_shell->line == NULL || g_shell->line_size == 0)
+		if (g_shell.line == NULL || g_shell.line_size == 0)
 			break ;
 	}
 	if (r == 0)
 	{
 		// TODO call parser
+		lexer_debug(&lex);
 	}
 	lexer_destroy(&lex);
 	return (r);
