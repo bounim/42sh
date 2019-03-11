@@ -55,8 +55,6 @@ uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 void	*ft_memchr(const void *s, int c, size_t n);
-void	ft_putstr(char const *str);
-size_t	ft_strsize(const char *str);
 ssize_t	ft_carac_size(uint8_t *buf, size_t ulen);
 ssize_t	ft_carac_nb(uint8_t *str);
 size_t	ft_wchar_len(unsigned char *str);

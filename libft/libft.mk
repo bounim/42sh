@@ -54,8 +54,6 @@ LIBFT_SRC := \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_memchr.c \
-	ft_strsize.c \
-	ft_putstr.c \
 	ft_carac_nb.c \
 	ft_wchar_len.c \
 	ft_ustrlen.c \
