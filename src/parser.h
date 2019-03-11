@@ -43,9 +43,9 @@ typedef struct s_parser_node	t_parser_node;
 
 struct							s_parser_node
 {
-  t_lexer_token			*token;
-  uint8_t           *buffer;
-  size_t            size;
+	t_lexer_token			*token;
+	uint8_t           *buffer;
+	size_t            size;
 	t_redir						*redir_head;
 	t_redir						*redir_foot;
 	size_t						redir_nb;
@@ -69,23 +69,30 @@ struct 							s_parser
 	t_parser_node	*foot;
 };
 
-void			structure(t_parser_node *root, int level);
-void			parser_print(t_parser_node *tree);
-void			print_redir(t_redir *r);
-void			print_word(t_word *r);
+void					structure(t_parser_node *root, int level);
+void					parser_print(t_parser_node *tree);
+void					print_redir(t_redir *r);
+void					print_word(t_word *r);
 
 
-void			print_token(uint8_t *buffer, size_t size);
+void					print_token(uint8_t *buffer, size_t size);
+void					print_word(t_word *r);
+void					print_redir(t_redir *r);
 
-void			parser_init(t_parser *parser);
-int				parser_create_tree(t_lexer *lexer);
-t_parser_node	*parser_new_elem(t_lexer_token **tmp);
-void			parser_add_tree(t_parser_node **head, t_parser_node *n);
 
-uint8_t			is_or(uint8_t *buffer, size_t buffer_size);
-uint8_t			is_and(uint8_t *buffer, size_t buffer_size);
-uint8_t			is_pipeline(uint8_t *buffer, size_t buffer_size);
-uint8_t			is_semicolon(uint8_t *buffer, size_t buffer_size);
-uint8_t			is_shift(uint8_t *buffer, size_t buffer_size);
+
+void					parser_init(t_parser *parser);
+int						parser_create_tree(t_lexer *lexer);
+t_parser_node			*parser_new_elem(t_lexer_token **tmp);
+void					parser_add_tree(t_parser_node **head, t_parser_node *n);
+
+uint8_t					is_or(uint8_t *buffer, size_t buffer_size);
+uint8_t					is_and(uint8_t *buffer, size_t buffer_size);
+uint8_t					is_pipeline(uint8_t *buffer, size_t buffer_size);
+uint8_t					is_semicolon(uint8_t *buffer, size_t buffer_size);
+uint8_t					is_shift(uint8_t *buffer, size_t buffer_size);
+uint8_t					is_sep_operator(t_lexer_token *t);
+enum e_parser_type		get_node_type(t_lexer_token *token);
+
 
 #endif

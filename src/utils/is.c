@@ -52,4 +52,24 @@ uint8_t		is_or(uint8_t *buffer, size_t buffer_size)
     if (buffer_size == 2 && buffer[0] == '|' && buffer[1] == '|')
         return (1);
     return (0);
+  }
+  
+uint8_t			is_sep_operator(t_lexer_token *t)
+{
+	if (t && t->type == LEX_TP_OP && !is_shift(t->buffer, t->size))
+		return (1);
+	return (0);
+}
+
+enum e_parser_type	get_node_type(t_lexer_token *token)
+{
+	if (is_and(token->buffer, token->size) || is_or(token->buffer, token->size))
+		return (PARSER_AND_OR);
+	if (is_pipeline(token->buffer, token->size))
+		return (PARSER_PIPE);
+	if (is_shift(token->buffer, token->size))
+		return (PARSER_REDIRECT);
+	if (is_semicolon(token->buffer, token->size))
+		return (PARSER_SEMICOLON);
+	return (PARSER_COMMAND);
 }

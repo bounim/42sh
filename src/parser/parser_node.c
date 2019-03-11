@@ -13,27 +13,7 @@
 #include "parser.h"
 #include "lexer.h"
 
-enum e_parser_type	get_node_type(t_lexer_token *token)
-{
-	if (is_and(token->buffer, token->size) || is_or(token->buffer, token->size))
-		return (PARSER_AND_OR);
-	if (is_pipeline(token->buffer, token->size))
-		return (PARSER_PIPE);
-	if (is_shift(token->buffer, token->size))
-		return (PARSER_REDIRECT);
-	if (is_semicolon(token->buffer, token->size))
-		return (PARSER_SEMICOLON);
-	return (PARSER_COMMAND);
-}
-
-uint8_t			is_sep_operator(t_lexer_token *t)
-{
-	if (t && t->type == LEX_TP_OP && !is_shift(t->buffer, t->size))
-		return (1);
-	return (0);
-}
-
-int				add_argument(t_parser_node *n, t_lexer_token **tmp)
+static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 {
 	t_word	*new;
 
@@ -56,23 +36,10 @@ int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 	return (0);
 }
 
-void		print_word(t_word *r)
-{
-	t_word *tmp;
-
-	tmp = r;
-	while (tmp)
-	{
-		print_token(tmp->buf, tmp->size);
-		tmp = tmp->next;
-	}
-}
-
-int				add_assignement_word(t_parser_node *n, t_lexer_token **tmp)
+static int				add_assignement_word(t_parser_node *n, t_lexer_token **tmp)
 {
 	t_word	*new;
 
-	ft_putendl("adding assign");
 	if (!(new = malloc(sizeof(*new))))
 		return (-1);
 	ft_memset(new, 0, sizeof(*new));
@@ -92,19 +59,7 @@ int				add_assignement_word(t_parser_node *n, t_lexer_token **tmp)
 	return (0);
 }
 
-void		print_redir(t_redir *r)
-{
-	t_redir *tmp;
-
-	tmp = r;
-	while (tmp)
-	{
-		print_token(tmp->redir_out, tmp->redir_size);
-		tmp = tmp->next;
-	}
-}
-
-int				add_redirection(t_parser_node *n, t_lexer_token **tmp)
+static int				add_redirection(t_parser_node *n, t_lexer_token **tmp)
 {
 	t_redir		*new;
 
@@ -134,7 +89,7 @@ int				add_redirection(t_parser_node *n, t_lexer_token **tmp)
 	return (0);
 }
 
-int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
+static int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 {
 	int		r;
 
@@ -147,10 +102,7 @@ int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 		else if (!n->arg_head && (uint8_t *)ft_memchr((*tmp)->buffer, (*tmp)->size, '=') > (*tmp)->buffer)
 			r = add_assignement_word(n, tmp);
 		else
-		{
-			ft_putendl("mdrrr");
 			r = add_argument(n, tmp);
-		}
 		if (r != 0)
       return (r);
     if ((*tmp)->next && is_sep_operator((*tmp)->next))
@@ -160,7 +112,7 @@ int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 	return (0);
 }
 
-t_parser_node	*parser_new_elem(t_lexer_token **tmp)
+t_parser_node	  *parser_new_elem(t_lexer_token **tmp)
 {
 	t_parser_node	*n;
 
@@ -178,7 +130,6 @@ t_parser_node	*parser_new_elem(t_lexer_token **tmp)
     }
     ft_memcpy(n->buffer, (*tmp)->buffer, (*tmp)->size);
     n->size = (*tmp)->size;
-    // *tmp = (*tmp)->next;
   }
 	return (n);
 }

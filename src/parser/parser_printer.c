@@ -23,6 +23,30 @@ void	print_token(uint8_t *buffer, size_t size)
 	ft_putchar('\n');
 }
 
+void		print_word(t_word *r)
+{
+	t_word *tmp;
+
+	tmp = r;
+	while (tmp)
+	{
+		print_token(tmp->buf, tmp->size);
+		tmp = tmp->next;
+	}
+}
+
+void		print_redir(t_redir *r)
+{
+	t_redir *tmp;
+
+	tmp = r;
+	while (tmp)
+	{
+		print_token(tmp->redir_out, tmp->redir_size);
+		tmp = tmp->next;
+	}
+}
+
 void	padding(char c, char n)
 {
 	int i;
