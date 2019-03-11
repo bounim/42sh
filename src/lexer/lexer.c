@@ -122,6 +122,7 @@ int 				lexer(void)
 	int		r;
 	size_t	i;
 
+	/*
 	if (g_shell.line == NULL || g_shell.line_size == 0)
 		return (0);
 	i = 0;
@@ -150,4 +151,13 @@ int 				lexer(void)
 	}
 	lexer_destroy(&lex);
 	return (r);
+	*/
+	(void)lex;
+	(void)r;
+	(void)i;
+	(void)lexer_init;
+	(void)lexer_read;
+	(void)lexer_destroy;
+	(void)lexer_debug;
+	return (-1);
 }
