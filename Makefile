@@ -10,7 +10,6 @@ SRC := \
 	env/push_env.c \
 	history/controler_history.c \
 	history/down_history.c \
-	history/file_history.c \
 	history/history.c \
 	history/init_shell_history.c \
 	history/list_history.c \
@@ -18,18 +17,6 @@ SRC := \
 	lexer/func.c \
 	lexer/lexer.c \
 	main.c \
-	readline/readline.c \
-	readline/rl_buffer.c \
-	readline/rl_copy.c \
-	readline/rl_cut.c \
-	readline/rl_delete_ctrl.c \
-	readline/rl_delete_line.c \
-	readline/rl_moving_ctrl.c \
-	readline/rl_moving_esc.c \
-	readline/rl_paste.c \
-	readline/rl_prompt.c \
-	readline/rl_termcaps.c \
-	readline/rl_undo.c \
 	signal/ft_signal.c \
 	terminal/shell.c \
 	terminal/terminal.c \
@@ -41,7 +28,20 @@ SRC := \
 	builtin/built_env.c \
 	builtin/built_env_extra.c \
 	builtin/built_setenv.c \
-	builtin/built_unsetenv.c
+	builtin/built_unsetenv.c\
+	readline/line_editing.c \
+    readline/signal_handler.c\
+    readline/line_editing_errors_controler.c\
+	readline/character_controler.c\
+	readline/calculate_pos.c\
+	readline/print_controler.c\
+	readline/input_controler.c\
+	readline/movement_controler.c\
+	readline/special_movement_controler.c\
+	readline/del_controler.c\
+	readline/copy_controler.c\
+	readline/utils.c\
+	readline/free_controler.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror

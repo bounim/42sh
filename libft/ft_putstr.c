@@ -1,13 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_copy.c                                          :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/26 13:32:33 by schakor           #+#    #+#             */
-/*   Updated: 2019/01/30 19:19:19 by schakor          ###   ########.fr       */
+/*   Created: 2017/11/22 11:54:51 by aguillot          #+#    #+#             */
+/*   Updated: 2019/02/20 18:32:39 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putstr(char const *str)
+{
+	if (str)
+		write(1, str, ft_strsize(str));
+}

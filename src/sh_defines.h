@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 12:34:48 by schakor           #+#    #+#             */
-/*   Updated: 2018/12/17 16:39:55 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/11 13:35:15 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,9 @@
 
 # define TRUE				1
 # define FALSE				0
-
+# define MODE_EMACS			0
+# define MODE_VI			1
+# define EDIT_MODE			3
+# define KEYMAP_SIZE		26
+# define TERM_SET			1
 #endif

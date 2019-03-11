@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 21:30:11 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 **	builtin functions header
 */
 
-void		built_history(t_rl rl);
+/*void		built_history(t_rl rl);*/
 t_history	*built_exclaim(uint8_t *word, int size, t_history *head);
-int			built_cd(char **arg, t_envl **env);
-int			built_echo(char **arg, int *arg_size);
+void		built_cd();
+int			built_echo(uint8_t **arg, int *arg_size);
 int			built_env(t_envl *head, uint8_t **arg, int *arg_size, int last_cmd, int curr_arg);
 int			built_env_check_error(uint8_t **arg, int *arg_size, t_envl *head);
 int			built_env_find_last_cmd(uint8_t **arg, int *arg_size);

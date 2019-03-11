@@ -1,13 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_undo.c                                          :+:      :+:    :+:   */
+/*   ft_strsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/26 13:33:21 by schakor           #+#    #+#             */
-/*   Updated: 2019/01/30 19:19:19 by schakor          ###   ########.fr       */
+/*   Created: 2019/02/20 16:45:52 by emartine          #+#    #+#             */
+/*   Updated: 2019/02/20 16:45:53 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include <libft.h>
+
+size_t	ft_strsize(const char *str)
+{
+	char *ptr;
+
+	ptr = (char *)str;
+	while (*ptr)
+		ptr++;
+	return ((uint8_t *)ptr - (uint8_t *)str);
+}

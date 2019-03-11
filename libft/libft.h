@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/08 16:35:26 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:24:20 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include <sys/types.h>
 # include "hashmap.h"
 # include "printer.h"
 
@@ -54,6 +55,12 @@ uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 void	*ft_memchr(const void *s, int c, size_t n);
-int	ft_strequ(char const *s1, char const *s2);
+void	ft_putstr(char const *str);
+size_t	ft_strsize(const char *str);
+ssize_t	ft_carac_size(uint8_t *buf, size_t ulen);
+ssize_t	ft_carac_nb(uint8_t *str);
+size_t	ft_wchar_len(unsigned char *str);
+size_t	ft_ustrlen(const uint8_t *ustr);
+uint8_t	*ft_u8_strdup(const uint8_t *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 15:28:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/16 10:53:57 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/07 16:32:00 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,10 @@
 **		readline utility that allows the user to edit the command line
 */
 
-struct					s_keymap
+struct					s_keymapi
 {
 	char				*key;
 	t_rl_command_func	rl_command_func;
-};
-
-struct					s_bufvar
-{
-	size_t				i_char;
-	size_t				len_char;
-	size_t				i_buf;
-	size_t				len_buf;
-	size_t				len_tot;
-};
-
-struct					s_history
-{
-	uint8_t					*buf;
-	t_bufvar				bufvar;
-	t_history				*next;
-	t_history				*bfr;
 };
 
 struct					s_rl
@@ -86,7 +69,7 @@ void					rl_add_history(t_rl *rl);
 void					rl_end_of_read(t_rl *rl);
 void					rl_switch_history(t_rl *rl);
 void					rl_print_history(t_rl *rl);
-t_history				*rl_new_hist(uint8_t *buffer, t_bufvar bufvar);
+t_history				*rl_new_hist(uint8_t *buffer);
 t_history				*rl_add_hist(t_history *list, t_history *new_hist);
 void					rl_history_from_file(t_rl *rl, char *path);
 void					rl_file_from_history(t_rl *rl, char *path);

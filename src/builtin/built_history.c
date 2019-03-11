@@ -6,12 +6,12 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:52 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/02 18:10:07 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
+/*
 static int		ft_nblen(int nb)
 {
 	int			i;
@@ -53,3 +53,4 @@ void			built_history(t_rl rl)
 	}
 	ft_putchar('\n');
 }
+*/

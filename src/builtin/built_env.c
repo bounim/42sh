@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 16:08:03 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ int		built_env(t_envl *head, uint8_t **arg, int *arg_size, int last_cmd, int cur
 	exec_env(arg, arg_size, curr_arg, head);
 	return (ENV_OK);
 }
-//built_env_check_error + return last cmd;
-//send dulicate env to built_env ???
+//built_env_check_error +  return last cmd;
+//send dulicate env to built_env 

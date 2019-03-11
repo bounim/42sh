@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/06 22:25:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:10:50 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.el_mode = MODE_EMACS;
 	g_shell.line = NULL;
 	g_shell.envl = init_shell_envl(env);
-	g_shell.history_save = -1;
-	g_shell.history_size = 0;
-	g_shell.history = init_shell_history();
+	g_shell.hist.history_size = 0;
+	g_shell.hist.history_save = -1;
+	g_shell.hist.history = init_shell_history();
 	g_shell.term_set = 0;
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
@@ -75,20 +75,6 @@ static void				parse_command(uint8_t *line, size_t len)
 void					run_shell(void)
 {
 	t_bool run;
-	char *arg[6];
-	int arg_size[5];
-
-	arg[0] = "echo";
-	arg[1] = "salfaut les genstest";
-	arg[2] = "salbutltlasalut";
-	arg[3] = "test\\tctest";
-	arg[4] = "clean\\nuptest";
-	arg[5] = 0;
-	arg_size[0] = 4;
-	arg_size[1] = ft_strlen(arg[1]);
-	arg_size[2] = ft_strlen(arg[2]);
-	arg_size[3] = ft_strlen(arg[3]);
-	arg_size[4] = ft_strlen(arg[4]);
 
 	run = TRUE;
 	while (run == TRUE)
@@ -97,14 +83,14 @@ void					run_shell(void)
 			fatal_exit(SH_EINVAL);
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
-		readline();
+		//readline(char *prompt);
+		line_editing();
 		write(1, "\n", 1);
 		if (g_shell.line)
 		{
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
-			built_echo(arg, arg_size);
-			//ft_putstr((char*)g_shell.line);
-			//write(1, "\n", 1);
+			ft_putstr((char*)g_shell.line);
+			write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
 				;
 			else if (ft_u8_strequ(g_shell.line, (const uint8_t *)"exit"))

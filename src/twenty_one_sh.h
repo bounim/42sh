@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/01 13:06:41 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/08 16:38:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/07 17:37:41 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@
 
 # include "sh_typedefs.h"
 # include "sh_defines.h"
-# include "shell.h"
 # include "env.h"
-# include "readline.h"
 # include "history.h"
+# include "line_editing.h"
 # include "lexer.h"
 # include "builtin.h"
 # include "builtin_defines.h"
+# include "shell.h"
 
 void						ft_sig_handler(int signo);
 void						ft_signal(int signo);

@@ -1,13 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_cut.c                                           :+:      :+:    :+:   */
+/*   ft_ustrlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/26 13:32:21 by schakor           #+#    #+#             */
-/*   Updated: 2019/01/30 19:19:19 by schakor          ###   ########.fr       */
+/*   Created: 2019/02/20 16:45:45 by emartine          #+#    #+#             */
+/*   Updated: 2019/02/20 16:45:46 by emartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "libft.h"
+
+size_t	ft_ustrlen(const uint8_t *ustr)
+{
+	uint8_t *ptr;
+
+	ptr = (uint8_t *)ustr;
+	while (*ptr)
+		ptr++;
+	return (ptr - ustr);
+}
