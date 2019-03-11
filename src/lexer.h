@@ -59,6 +59,7 @@ struct							s_redir
 	size_t						redir_size;
 	int							io_number; //int ?????
 	uint8_t						heredoc;
+	uint8_t						tilded;
 	t_redir						*next;
 };
 

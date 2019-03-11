@@ -61,6 +61,11 @@ uint8_t			is_sep_operator(t_lexer_token *t)
 	return (0);
 }
 
+uint8_t          is_quote(uint8_t c)
+{
+    return (c == '\'' || c == '\"' || c == '\\');
+}
+
 enum e_parser_type	get_node_type(t_lexer_token *token)
 {
 	if (is_and(token->buffer, token->size) || is_or(token->buffer, token->size))

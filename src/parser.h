@@ -34,6 +34,7 @@ struct 							s_word
 {
 	uint8_t		*buf;
 	size_t		size;
+	uint8_t		tilded;
 	t_word		*next;
 };
 
@@ -91,6 +92,7 @@ uint8_t					is_and(uint8_t *buffer, size_t buffer_size);
 uint8_t					is_pipeline(uint8_t *buffer, size_t buffer_size);
 uint8_t					is_semicolon(uint8_t *buffer, size_t buffer_size);
 uint8_t					is_shift(uint8_t *buffer, size_t buffer_size);
+uint8_t         		is_quote(uint8_t c);
 uint8_t					is_sep_operator(t_lexer_token *t);
 enum e_parser_type		get_node_type(t_lexer_token *token);
 
