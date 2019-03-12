@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line_editing.c                                     :+:      :+:    :+:   */
+/*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/20 16:35:23 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/11 13:28:08 by schakor          ###   ########.fr       */
+/*   Created: 2019/03/12 15:57:28 by aguillot          #+#    #+#             */
+/*   Updated: 2019/03/12 15:57:31 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,23 @@ void	init_char_list(void)
 	g_shell.edit.char_list.char_nb = 0;
 }
 
-void	init_prompt(void)
+void	init_prompt(int prompt_id)
 {
 	size_t	i;
 
 	i = 0;
-	while (PROMPT[i])
-		add_char_to_list((uint8_t *)&(PROMPT[i++]), 1, 1);
+	if (prompt_id == BASIC_PROMPT)
+		while (BASIC_PRMPT[i])
+			add_char_to_list((uint8_t *)&(BASIC_PRMPT[i++]), 1, 1);
+	else if (prompt_id == QUOTE_PROMPT)
+		while (QUOTE_PRMPT[i])
+			add_char_to_list((uint8_t *)&(QUOTE_PRMPT[i++]), 1, 1);
+	else if (prompt_id == BACKSLASH_PROMPT)
+		while (BACKSLASH_PRMPT[i])
+			add_char_to_list((uint8_t *)&(BACKSLASH_PRMPT[i++]), 1, 1);
+	else if (prompt_id == HEREDOC_PROMPT)
+		while (HEREDOC_PRMPT[i])
+			add_char_to_list((uint8_t *)&(HEREDOC_PRMPT[i++]), 1, 1);
 	g_shell.edit.mark = g_shell.edit.point_char;
 }
 
@@ -97,12 +107,12 @@ void	init_edit(void)
 	g_shell.edit.cpy_buff = NULL;
 }
 
-void	line_editing(void)
+void	readline(int prompt_id)
 {
 	raw_terminal();
 	init_edit();
 	init_char_list();
-	init_prompt();
+	init_prompt(prompt_id);
 	print_prompt();
 	input_controller();
 	cooked_terminal();

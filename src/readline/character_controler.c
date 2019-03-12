@@ -61,7 +61,7 @@ void	add_char_to_list(uint8_t *charac, size_t len, int is_prompt)
 
 	prev_char = g_shell.edit.point_char;
 	if (!(new_char = malloc(sizeof(*new_char))))
-		line_editing_errors_controler(MALLOC_ERROR);
+		readline_errors_controler(MALLOC_ERROR);
 	ft_memset(new_char, 0, sizeof(*new_char));
 	ft_memmove(new_char->charac, charac, len);
 	new_char->len = len;

@@ -121,7 +121,7 @@ void	print_history(void)
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
-	init_prompt();
+	init_prompt(BASIC_PROMPT);
 	print_prompt();
 	buff_to_charlist(g_shell.hist.history->buf);
 	clean_and_print();

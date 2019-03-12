@@ -37,7 +37,7 @@ uint8_t	*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end)
 	curr = cpy_begin;
 	cpy_size = get_cpy_size(curr, cpy_end);
 	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (cpy_size + 1))))
-		line_editing_errors_controler(MALLOC_ERROR);
+		readline_errors_controler(MALLOC_ERROR);
 	buff[cpy_size] = '\0';
 	i = 0;
 	while (curr && curr != cpy_end)
