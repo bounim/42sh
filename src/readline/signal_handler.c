@@ -17,7 +17,7 @@ static void	window_modif(void)
 	int base_y;
 
 	if ((ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max)) == -1)
-		line_editing_errors_controler(NO_TERM_INFO);
+		readline_errors_controler(NO_TERM_INFO);
 	base_y = g_shell.edit.cur_base_y;
 	while (base_y)
 	{

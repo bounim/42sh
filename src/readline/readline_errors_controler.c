@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line_editing_errors_controler.c                    :+:      :+:    :+:   */
+/*   readline_errors_controler.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 17:19:08 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/06 18:40:06 by schakor          ###   ########.fr       */
+/*   Created: 2019/03/12 15:57:49 by aguillot          #+#    #+#             */
+/*   Updated: 2019/03/12 15:57:53 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	print_usage(void)
 	ft_putstr("a prompt will appear, than you can edit line\n");
 }
 
-void		line_editing_errors_controler(int errnum)
+void		readline_errors_controler(int errnum)
 {
 	if (errnum == PRINT_USAGE)
 		print_usage();

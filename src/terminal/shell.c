@@ -61,8 +61,8 @@ void					run_shell(void)
 			fatal_exit(SH_EINVAL);
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
-		//readline(char *prompt);
-		line_editing();
+		readline(BASIC_PROMPT);
+		//line_editing();
 		write(1, "\n", 1);
 		if (g_shell.line)
 		{

@@ -43,7 +43,7 @@ void	return_fn(void)
 		return ;
 	buff_size = get_buff_size(head);
 	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 2))))
-		line_editing_errors_controler(MALLOC_ERROR);
+		readline_errors_controler(MALLOC_ERROR);
 	buff[buff_size + 1] = '\0';
 	buff[buff_size] = '\n';
 	i = 0;

@@ -23,6 +23,18 @@
 # include "libft.h"
 
 /*
+*** DEFINE PROMPT IDENTIFIERS
+*/
+
+enum 					e_prompt
+{
+	BASIC_PROMPT = 0,
+	QUOTE_PROMPT,
+	BACKSLASH_PROMPT,
+	HEREDOC_PROMPT
+};
+
+/*
 *** DEFINE ERROR CODES
 */
 
@@ -49,7 +61,10 @@ enum 					e_freenum
 *** DEFINE SHORTCUTS
 */
 
-# define PROMPT "<21sh> "
+# define BASIC_PRMPT "<21sh> "
+# define QUOTE_PRMPT "pquote> "
+# define BACKSLASH_PRMPT "> "
+# define HEREDOC_PRMPT "heredoc> "
 # define MATCH 1
 # define PARTIAL_MATCH 0
 # define NO_MATCH -1
@@ -189,8 +204,8 @@ void					init_signals(void);
 void					signal_handler(int signo);
 void					modify_term(void);
 void					reset_term(void);
-void					line_editing_errors_controler(int errnum);
-void					line_editing(void);
+void					readline(int prompt_id);
+void					readline_errors_controler(int errnum);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
 size_t					get_x_pos(t_char *prev_char);
@@ -225,7 +240,7 @@ void					free_controler(int code);
 void					get_prev_history(void);
 void					get_next_history(void);
 void					free_all(void);
-void					init_prompt(void);
+void					init_prompt(int prompt_id);
 void					init_char_list(void);
 void					init_edit(void);
 void					place_cursor_after_print(void);

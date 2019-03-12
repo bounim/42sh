@@ -30,9 +30,9 @@ SRC := \
 	builtin/built_env_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
-	readline/line_editing.c \
+	readline/readline.c \
     readline/signal_handler.c\
-    readline/line_editing_errors_controler.c\
+    readline/readline_errors_controler.c\
 	readline/character_controler.c\
 	readline/calculate_pos.c\
 	readline/print_controler.c\
