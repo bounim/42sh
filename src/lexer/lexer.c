@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:42:16 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,14 @@ int 				lexer(void)
 	int		r;
 	size_t	i;
 
-	/*
+	r = 0;
 	if (g_shell.line == NULL || g_shell.line_size == 0)
 		return (0);
 	i = 0;
 	while (1)
 	{
 		ft_memset(&lex, 0, sizeof(lex));
-		lexer_init(lex, g_shell.line + i, g_shell.line_size - i);
+		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
 		if ((r = lexer_read(&lex)) < 0)
 			break ;
 		if (lex.i < g_shell.line_size - i)
@@ -140,7 +140,9 @@ int 				lexer(void)
 			lexer_destroy(&lex);
 			continue ;
 		}
-		readline("> ");
+		else if (r == 0)
+				break;
+		readline(QUOTE_PROMPT);
 		if (g_shell.line == NULL || g_shell.line_size == 0)
 			break ;
 	}
@@ -151,13 +153,4 @@ int 				lexer(void)
 	}
 	lexer_destroy(&lex);
 	return (r);
-	*/
-	(void)lex;
-	(void)r;
-	(void)i;
-	(void)lexer_init;
-	(void)lexer_read;
-	(void)lexer_destroy;
-	(void)lexer_debug;
-	return (-1);
 }
