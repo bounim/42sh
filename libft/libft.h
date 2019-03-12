@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/08 16:35:26 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/12 16:47:51 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 # include "printer.h"
 
 int		ft_isspace(int c);
+void	ft_strdel(char **as);
+void	ft_memdel(void **ap);
 int		ft_isspace_n(int c);
+int		ft_strichr(char *str, char c);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_memcmp(void *a, const void *b, size_t len);
 void	*ft_memmove(void *dst, const void *src, size_t len);

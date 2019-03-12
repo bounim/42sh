@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 18:25:42 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/04 17:25:09 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:45:02 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				built_setenv_check_error(uint8_t **arg, int *arg_size)
 	return (0);
 }
 
-int				built_env_find_last_cmd(uint8_t **arg, int *arg_size)
+int				built_env_find_last_cmd(char **arg)
 {
 	int	stock;
 	int	i;
@@ -57,17 +57,17 @@ int				built_env_find_last_cmd(uint8_t **arg, int *arg_size)
 	stock = 0;
 	while (arg[i])
 	{
-		if (arg_size[i] >= 4 && ft_memcmp(arg[i], "env\0", 4))
+		if (ft_memcmp(arg[i], "env\0", 4))
 		{
 			stock = 1;
 			i++;
 		}
-		else if (arg_size[i] >= 3 && ft_memcmp(arg[i], "-i\0", 3) && stock == 1)
+		else if (ft_memcmp(arg[i], "-i\0", 3) && stock == 1)
 		{
 			stock = 1;
 			i++;
 		}
-		else if (ft_memchr(arg[i], '=', arg_size[i]) && (stock == 1 || stock == 2))
+		else if (ft_memchr(arg[i], '=', ft_strlen(arg[i])) && (stock == 1 || stock == 2))
 		{
 			stock = 2;
 			i++;

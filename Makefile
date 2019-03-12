@@ -8,6 +8,9 @@ SRC := \
 	env/get_env_val.c \
 	env/init_shell_envl.c \
 	env/push_env.c \
+	env/dup_envl.c \
+	env/free_envl.c \
+	env/print_envl.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/file_history.c \

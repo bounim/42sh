@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/12 14:56:27 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:31:45 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ static int		cd_oldpwd(t_envl **env)
 	char	*oldpwd;
 	char	*tmp;
 
-	printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
 	tmp = NULL;
 	pwd = NULL;
 	oldpwd = NULL;
@@ -161,15 +160,12 @@ static int		cd_oldpwd(t_envl **env)
 		}
 		pwd = ft_strdup(tmp);
 	}
-	printf("pwd = %s\n", pwd);
-	printf("oldpwd = %s\n", oldpwd);
 	if (chdir(oldpwd) == -1)
 	{
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	//ft_strdel(g_shell.canonic_path);
-	//g_shell.canonic_path = ft_strdup(oldpwd);
+	g_shell.canonic_path = ft_strdup(oldpwd);
 	push_env(env, "OLDPWD", pwd);
 	push_env(env, "PWD", oldpwd);
 	return (0);
@@ -202,17 +198,12 @@ int				built_cd(char **arg, t_envl **env)
 	size_t	i;
 	int		opts;
 
-	printf("\n-----------CD----------\n");
 	i = cd_first_arg(arg, &opts);
-	printf("CMD = %s | PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n\n", arg[i], get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
-	//printf("arg[i] = %s | opts = %d\n", arg[i], opts);
-
 	if (init_pwd(env))
 		return (1);
 	if (ft_strequ(arg[i], "-"))
 	{
 		cd_oldpwd(env);
-		printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n---------------END----------\n\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
 		return (1);
 	}
 	if ((oldpwd = get_env_val(*env, "PWD")))
@@ -229,6 +220,5 @@ int				built_cd(char **arg, t_envl **env)
 	}
 	push_env(env, "OLDPWD", oldpwd);
 	push_env(env, "PWD", path);
-	printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
 	return (0);
 }

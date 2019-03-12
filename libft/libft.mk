@@ -10,9 +10,12 @@ LIBFT_SRC := \
 	ft_stpncpyz.c \
 	ft_strchr.c \
 	ft_strcmp.c \
+	ft_strdel.c \
 	ft_strjoin.c \
 	ft_strlen.c \
+	ft_memdel.c \
 	ft_strncpy.c \
+	ft_strichr.c \
 	ft_strncpyz.c \
 	ft_strnlen.c \
 	hashmap/hashmap_clean.c \
