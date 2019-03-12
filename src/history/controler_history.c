@@ -32,7 +32,7 @@ static int		get_buf_size(t_char *head)
 	return (buff_size);
 }
 
-static uint8_t	*list_to_buf(void)
+uint8_t			*list_to_buf(void)
 {
 	uint8_t		*ret;
 	t_char		*tmp;
@@ -68,7 +68,7 @@ void	switch_history(void)
 	buf = list_to_buf();
 	head = g_shell.hist.history;
 	if (!buf || buf[0] == '\0')
-		return ;
+		buf = (uint8_t*)ft_strdup("");
 	while (i < g_shell.hist.history_save && g_shell.hist.history->bfr)
 	{
 		g_shell.hist.history = g_shell.hist.history->bfr;
@@ -97,7 +97,7 @@ int		listlen(t_history *list)
 	return (i);
 }
 
-static void		buff_to_charlist(uint8_t *buf)
+void		buff_to_charlist(uint8_t *buf)
 {
 	size_t		i;
 	ssize_t		r;

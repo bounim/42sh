@@ -25,6 +25,7 @@ struct					s_history
 struct					s_hist
 {
 	t_history			*history;
+	uint8_t				*buf;
 	int					history_save;
 	int					history_size;
 };
@@ -35,4 +36,6 @@ void				switch_history(void);
 t_history			*rl_new_hist(uint8_t *buf);
 t_history			*rl_add_hist(t_history *list, t_history *new_hist);
 int					listlen(t_history *list);
+uint8_t				*list_to_buf(void);
+void				buff_to_charlist(uint8_t *buf);
 #endif

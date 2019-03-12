@@ -121,6 +121,7 @@ t_history			*init_shell_history(void)
 	t_history		*ret;
 	uint8_t 		*cont;
 
+	g_shell.hist.buf = NULL;
 	if (!(cont = get_histfile_content()))
 		return (NULL);
 	ret = parse_histfile_content(cont);

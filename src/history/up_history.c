@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 16:38:20 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/11 16:04:05 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 11:56:21 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void			get_prev_history(void)
 		switch_history();
 	if (g_shell.hist.history_save == -1)
 	{
+		if (g_shell.hist.buf)
+			free(g_shell.hist.buf);
+		g_shell.hist.buf = list_to_buf();
 		print_history();
 		g_shell.hist.history_save = 0;
 	}
