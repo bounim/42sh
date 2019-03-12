@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/08 20:51:16 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:56:27 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	rework_canonic_path(void)
+char	*rework_canonic_path(char *canonic_path)
 {
 	int		nb_bfr;
 	int		i;
@@ -21,9 +21,9 @@ void	rework_canonic_path(void)
 	char	**canonic_tab;
 
 	j = 0;
-	if (!g_shell.canonic_path)
-		return ;
-	tmp = g_shell.canonic_path;
+	if (!canonic_path)
+		return (canonic_path);
+	tmp = canonic_path;
 	if (tmp && tmp[0] == '/')
 		j = 1;
 	canonic_tab = ft_strsplit(tmp, '/');
@@ -36,7 +36,7 @@ void	rework_canonic_path(void)
 		i++;
 	}
 	if (nb_bfr == 0)
-			return ;
+		return (canonic_path);
 	i -= nb_bfr;
 	if (j)
 		tmp = ft_strdup("/");
@@ -48,8 +48,11 @@ void	rework_canonic_path(void)
 		i++;
 		if (j < i)
 			tmp = ft_strfjoin(tmp, "/", 0);
+		free(canonic_tab[j]);
 	}
+	free(canonic_tab);
 	g_shell.canonic_path = tmp;
+	return (tmp);
 }
 
 static char			*get_opts_path(char *arg)
@@ -59,7 +62,6 @@ static char			*get_opts_path(char *arg)
 	int			rl;
 	char		*tmp;
 
-	printf("laaha\n");
 	rl = 0;
 	if (lstat(arg, &buf) == -1)
 		return (NULL);
@@ -77,9 +79,7 @@ static char			*get_cd_path(t_envl *env, char *arg, int opts)
 {
 	char	*tmp;
 
-	printf("get_cd_path | %d\n", opts);
 	tmp = NULL;
-
 	if (arg == NULL)
 	{
 		if ((tmp = get_env_val(env, "HOME")))
@@ -94,8 +94,7 @@ static char			*get_cd_path(t_envl *env, char *arg, int opts)
 	{
 		tmp = ft_strdup(g_shell.canonic_path);
 		tmp = ft_strfjoin(tmp, "/..", 0);
-		ft_putstr(tmp);
-		ft_putchar(10);
+		tmp = rework_canonic_path(tmp);
 		return (tmp);
 	}
 	else if (opts == 1)
@@ -110,48 +109,69 @@ static int		init_pwd(t_envl **env)
 {
 	char	*cwd;
 	char	*tmp;
+	int		stock;
 
+	stock = 0;
 	tmp = get_env_val(*env, "PWD");
 	if (tmp)
 		return (0);
 	if (g_shell.canonic_path)
+	{
+		stock = 1;
 		cwd = ft_strdup(g_shell.canonic_path);
+	}
 	else if (!(cwd = getcwd(NULL, 0)))
 	{
 		write(2, "cd: GETCWD error\n", 17);
 		return (1);
 	}
+	if (stock)
+		g_shell.canonic_path = cwd;
 	push_env(env, "PWD", cwd);
 	return (0);
 }
 
 static int		cd_oldpwd(t_envl **env)
 {
-	char	*tmp;
 	char	*pwd;
-	char	*cwd;
+	char	*oldpwd;
+	char	*tmp;
 
+	printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
 	tmp = NULL;
 	pwd = NULL;
-	cwd = NULL;
+	oldpwd = NULL;
 	if (!(tmp = get_env_val(*env, "OLDPWD")))
 	{
-		ft_putendl_fd("cd: OLDPWD not set", 2);
+		write(2, "cd: OLDPWD not set\n", 19);
 		return (1);
 	}
-	printf("%s\n", tmp);
-	cwd = ft_strdup(tmp);
-	rework_canonic_path();
-	if (!(pwd = get_env_val(*env, "PWD")))
-		pwd = g_shell.canonic_path;
+	oldpwd = ft_strdup(tmp);
+	if (g_shell.canonic_path)
+		pwd = ft_strdup(g_shell.canonic_path);
+	else
+	{
+		if (!(tmp = ft_strdup(get_env_val(*env, "PWD"))))
+		{
+			if (!(tmp = getcwd(NULL, 0)))
+			{
+				write(2, "cd: GETCWD error\n", 17);
+				return (1);
+			}
+		}
+		pwd = ft_strdup(tmp);
+	}
 	printf("pwd = %s\n", pwd);
-	push_env(env, "OLDPWD", pwd);
-	if (chdir(cwd) == -1)
+	printf("oldpwd = %s\n", oldpwd);
+	if (chdir(oldpwd) == -1)
 	{
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	push_env(env, "PWD", cwd);
+	//ft_strdel(g_shell.canonic_path);
+	//g_shell.canonic_path = ft_strdup(oldpwd);
+	push_env(env, "OLDPWD", pwd);
+	push_env(env, "PWD", oldpwd);
 	return (0);
 }
 
@@ -182,17 +202,23 @@ int				built_cd(char **arg, t_envl **env)
 	size_t	i;
 	int		opts;
 
-	printf("\nCD\n\n");
+	printf("\n-----------CD----------\n");
 	i = cd_first_arg(arg, &opts);
-	printf("arg[i] = %s | opts = %d\n", arg[i], opts);
+	printf("CMD = %s | PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n\n", arg[i], get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
+	//printf("arg[i] = %s | opts = %d\n", arg[i], opts);
+
+	if (init_pwd(env))
+		return (1);
+	if (ft_strequ(arg[i], "-"))
+	{
+		cd_oldpwd(env);
+		printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n---------------END----------\n\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
+		return (1);
+	}
 	if ((oldpwd = get_env_val(*env, "PWD")))
 		oldpwd = ft_strdup(oldpwd);
 	else
 		oldpwd = ft_strdup("");
-	if (init_pwd(env))
-		return (1);
-	if (ft_strequ(arg[i], "-"))
-		return (cd_oldpwd(env));
 	if (!(path = get_cd_path(*env, arg[i], opts)))
 		return (1);
 	g_shell.canonic_path = ft_strdup(path);
@@ -201,12 +227,8 @@ int				built_cd(char **arg, t_envl **env)
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	rework_canonic_path();
 	push_env(env, "OLDPWD", oldpwd);
 	push_env(env, "PWD", path);
 	printf("PWD = %s | OLDPWD = %s | CANONIC_PATH = %s\n", get_env_val(*env, "PWD"), get_env_val(*env, "OLDPWD"), g_shell.canonic_path);
-	ft_putstr(path);
-	ft_putchar(10);
-
 	return (0);
 }

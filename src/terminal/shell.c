@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/08 20:47:13 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:15:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,18 @@ void					run_shell(void)
 	t_bool run;
 	char *arg[5];
 	char	*str[2];
+	char	*retest[2];
 
 	printf("la\n");
 	arg[0] = "cd";
-	arg[1] = "-L";
+	arg[1] = "-P";
 	arg[2] = "/etc";
 	arg[3] = "/test";
 	arg[4] = 0;
 	str[0] = "cd";
 	str[1] = "..";
+	retest[0] = "cd";
+	retest[1] = "-";
 
 	run = TRUE;
 	while (run == TRUE)
@@ -102,6 +105,8 @@ void					run_shell(void)
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
 			built_cd(arg, &g_shell.envl);
 			built_cd(str, &g_shell.envl);
+			built_cd(retest, &g_shell.envl);
+			built_cd(retest, &g_shell.envl);
 			//ft_putstr((char*)g_shell.line);
 			//write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
