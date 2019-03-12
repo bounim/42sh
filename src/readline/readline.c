@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 15:57:28 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 15:57:31 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/03/12 19:17:00 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ void	init_edit(void)
 	size_t 	line;
 	size_t	col;
 
+	g_shell.edit.reading = TRUE;
+	g_shell.edit.ret_ctrl_c = FALSE;
 	g_shell.edit.edit_mode = MODE_EMACS;
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.mark = NULL;

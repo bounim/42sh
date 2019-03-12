@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/11 13:58:41 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:23:26 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,19 @@ enum 					e_freenum
 
 # define CTRL_A "\001"
 # define CTRL_B "\002"
+# define CTRL_C "\003"
+# define CTRL_D "\004"
 # define CTRL_E "\005"
 # define CTRL_F "\006"
 # define CTRL_U "\025"
 # define CTRL_K "\013"
+# define CTRL_Y "\031"
+# define CTRL_W "\027"
 # define CTRL_X_CTRL_X "\030\030"
 # define ESC_B "\033b"
 # define ESC_F "\033f"
+# define ESC_D "\033d"
 # define RET "\012"
-# define EOT "\004"
 # define DEL "\177"
 # define CPY_CURR_WORD "\033c"
 # define CPY_ALL_LINE "\033a"
@@ -188,6 +192,8 @@ typedef struct 				 s_term
 typedef struct 					s_edit
 {
 	t_char 				*point_char;
+	int					reading;
+	int					ret_ctrl_c;
 	int					edit_mode;
 	t_char				*mark;
 	size_t				cur_base_x;
@@ -229,6 +235,8 @@ void					del_charac(void);
 void					supr_charac(void);
 void					delete_backline(void);
 void					delete_endline(void);
+void					delete_word_forward(void);
+void					delete_word_backward(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
 void					copy_current_word(void);
 void					copy_all_line(void);
@@ -244,5 +252,6 @@ void					init_prompt(int prompt_id);
 void					init_char_list(void);
 void					init_edit(void);
 void					place_cursor_after_print(void);
+void					handle_ctrl_c(void);
 
 #endif

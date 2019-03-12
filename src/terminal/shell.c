@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/11 16:10:50 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:33:35 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.hist.history_save = -1;
 	g_shell.hist.history = init_shell_history();
 	g_shell.term_set = 0;
+	g_shell.line_size = 0;
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);
@@ -62,9 +63,7 @@ void					run_shell(void)
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
 		readline(BASIC_PROMPT);
-		//line_editing();
-		write(1, "\n", 1);
-		if (g_shell.line)
+		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
 		{
 			parse_command();
 			ft_putstr((char*)g_shell.line);

@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/11 14:00:15 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:26:34 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	{
-		{CTRL_B, 1, move_left},
 		{CTRL_A, 1, go_to_home},
+		{CTRL_B, 1, move_left},
+		{CTRL_D, 1, eot_fn},
+		{CTRL_C, 1, handle_ctrl_c},
 		{CTRL_E, 1, go_to_end},
 		{CTRL_F, 1, move_right},
 		{CTRL_U, 1, delete_backline},
 		{CTRL_K, 1, delete_endline},
+		{CTRL_Y, 1, paste_copy},
+		{CTRL_W, 1, delete_word_backward},
 		{CTRL_X_CTRL_X, 2, exchange_point_mark},
 		{ESC_B, 2, jump_word_backward},
+		{ESC_D, 2, delete_word_forward},
 		{ESC_F, 2, jump_word_forward},
 		{RIGHT_ARROW, 3, move_right},
 		{LEFT_ARROW, 3, move_left},
@@ -35,7 +40,6 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{BACKWARD_WORD, 2, jump_word_backward},
 		{DEL, 1, del_charac},
 		{SUPR, 4, supr_charac},
-		{EOT, 1, eot_fn},
 		{CPY_CURR_WORD, 2, copy_current_word},
 		{CPY_ALL_LINE, 2, copy_all_line},
 		{PASTE, 2, paste_copy},
@@ -89,7 +93,7 @@ void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
-void	build_key(uint8_t *key, size_t *keylen, uint8_t *input)
+void	build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
 {
 	*(key + *keylen) = *input;
 	(*keylen)++;
@@ -102,8 +106,10 @@ void	input_controller(void)
 	size_t	keylen;
 
 	keylen = 0;
-	while (read(0, input, 1) > 0)
+	while (g_shell.edit.reading == TRUE)
 	{
+		if (read(0, input, 1) < 0)
+			fatal_exit(SH_EINVAL);
 		build_key(key, &keylen, input);
 		if (check_key(key, &keylen) == NO_MATCH)
 			check_printable(key, &keylen);

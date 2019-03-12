@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:17:36 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/06 21:06:56 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:40:23 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_char	*find_first_non_prompt(t_char *head)
 	return (head);
 }
 
-int		get_buff_size(t_char *head)
+static size_t		get_buff_size(t_char *head)
 {
-	int	buff_size;
+	size_t	buff_size;
 
 	buff_size = 0;
 	while (head)
@@ -36,7 +36,7 @@ void	return_fn(void)
 {
 	uint8_t		*buff;
 	t_char		*head;
-	int			buff_size;
+	size_t		buff_size;
 	int			i;
 
 	if ((head = find_first_non_prompt(g_shell.edit.char_list.head)) == NULL)
@@ -54,9 +54,10 @@ void	return_fn(void)
 		head = head->next;
 	}
 	free_controler(FREE_ALL);
-	cooked_terminal();
-	printf("\nBuffer created from chained list. Exiting..\n");
-	exit(0);
+	write(1, "\n", 1);
+	g_shell.edit.reading = FALSE;
+	g_shell.line = buff;
+	g_shell.line_size = buff_size;
 }
 
 void	check_all_pos(void)
@@ -78,6 +79,9 @@ void	check_all_pos(void)
 void	eot_fn(void)
 {
 	if (g_shell.edit.char_list.tail->is_prompt == 1)
+	{
+		cooked_terminal();
 		free_controler(FREE_ALL_AND_EXIT);
+	}
 	supr_charac();
 }
