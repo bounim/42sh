@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 15:28:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/07 16:32:00 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/13 18:49:37 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void					rl_history_from_file(t_rl *rl, char *path);
 void					rl_file_from_history(t_rl *rl, char *path);
 int						listlen(t_history *list);
 void					rl_ctrl_c(t_rl *rl);
+char					*replace_exclaim(char *line, t_history *hist);
 
 #endif

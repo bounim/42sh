@@ -26,7 +26,6 @@ SRC := \
 	terminal/terminal.c \
 	ft.c \
 	builtin/built_history.c \
-	builtin/built_exclaim.c \
 	builtin/built_cd.c \
 	builtin/built_echo.c \
 	builtin/built_env.c \
@@ -53,6 +52,7 @@ SRC := \
 	readline/utils.c\
 	readline/free_controler.c\
 	readline/special_del_controler.c\
+	readline/replace_exclaim.c\
 	readline/handle_ctrl_c.c\
 
 CFLAGS ?=
