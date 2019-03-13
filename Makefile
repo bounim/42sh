@@ -36,6 +36,9 @@ SRC := \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
+	builtin/built_alias.c \
+	builtin/built_unalias.c \
+	builtin/built_alias_extra.c \
 	readline/readline.c \
     readline/signal_handler.c\
     readline/readline_errors_controler.c\

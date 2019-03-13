@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 16:20:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 18:04:16 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ struct						s_shell
 	uint8_t 				el_mode;
 	uint8_t					*line;
 	size_t					line_size;
+	t_alias					*alias;
 	t_envl					*envl;
 	t_hist					hist;
 	t_termios				cooked_tio;

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 12:00:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 12:09:27 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 18:35:35 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ static int		unset_var(char *arg, t_envl **envl)
 {
 	t_envl	*h_env;
 	t_envl	*tmp;
-	t_envl	*head;
 
-	head = *envl;
-	h_env = head;
+	h_env = *envl;
 	if (ft_strequ(arg, h_env->name))
 	{
 		*envl = h_env->next;

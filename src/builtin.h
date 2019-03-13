@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 16:12:28 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 18:36:04 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 /*
 **	builtin functions header
 */
+
+struct					s_alias
+{
+	char				*name;
+	char				*value;
+	struct s_alias		*next;
+};
 
 /*void		built_history(t_rl rl);*/
 
@@ -31,5 +38,12 @@ int			built_unsetenv(char **arg, t_envl **envl);
 int			built_set(t_envl *envl);
 int			built_unset(char **arg, t_envl **envl);
 int			built_export(char **arg, t_envl **envl);
+int			built_alias(char **arg, t_alias **alias);
+int			built_unalias(char **arg, t_alias **alias);
+t_alias		*new_alias(char *name, char *value);
+void		push_alias(t_alias **alias, char *name, char *value);
+t_alias		*addlast_alias(t_alias *head, t_alias *new);
+void		print_alias(t_alias *alias);
+void		free_alias(t_alias *alias);
 
 #endif
