@@ -6,59 +6,57 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/05 17:13:35 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 12:20:15 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static t_envl	*setenv_nullarg(uint8_t *arg, int size, t_envl *head)
+static int	setenv_nullarg(char *arg, t_envl **head)
 {
 	t_envl	*tmp;
 
-	tmp = head;
+	tmp = *head;
 	while (tmp)
 	{
-		if (!ft_memcmp(tmp->name, arg, size))
+		if (ft_strequ(tmp->name, arg))
 		{
-			//free(tmp->value);
-			//tmp->value = "" malloc;
-			return (head);
+			ft_strdel(&(tmp->value));
+			tmp->value = ft_strdup("");
+			return (0);
 		}
 		tmp = tmp->next;
 	}
-	//tmp = newenv(arg, "");
-	//head = add_env(head, tmp);
-	return (head);
-
+	push_env(head, arg, "", 1);
+	return (0);
 }
 
-t_envl	*built_sentenv(uint8_t **arg, int *arg_size, t_envl *head)
+int			built_setenv(char **arg, t_envl **envl)
 {
 	t_envl	*tmp;
 	int		len;
 
-	tmp = head;
-	if ((len = ft_arrlen((char **)arg)) == 1)
+	tmp = *envl;
+	if ((len = ft_arrlen(arg)) == 1)
 	{
-		//printenv
-		return (head);
+		print_envl(*envl);
+		return (0);
 	}
-	else if (built_setenv_check_error(arg, arg_size))
-		return (head);
+	else if (built_setenv_check_error(arg))
+		return (1);
 	else if (len == 2)
-		return (setenv_nullarg(arg[1], arg_size[1], tmp));
+		return (setenv_nullarg(arg[1], envl));
 	while (tmp)
 	{
-		if (!ft_memcmp(tmp->name, arg[1], arg_size[1]) && tmp->exp == 0)
+		if (ft_strequ(tmp->name, arg[1]) && tmp->exp == 0)
 		{
-			//free(tmp->value);
-			tmp->value = (char *)arg[2];
-			return (head);
+			ft_strdel(&(tmp->value));
+			tmp->value = ft_strdup(arg[2]);
+			tmp->exp = 1;
+			return (0);
 		}
 		tmp = tmp->next;
 	}
-	//tmp = new_env(arg[1], arg[2]);
-	//head = add_env(head, tmp);
-	return (head);
+	push_env(envl, arg[1], arg[2], 1);
+	return (0);
 }

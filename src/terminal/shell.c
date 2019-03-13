@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 12:15:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 12:26:33 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,24 @@ void					run_shell(void)
 {
 	t_bool run;
 	char *arg[5];
-	char	*str[2];
-	char	*retest[2];
+	char	*str[4];
+	char	*retest[3];
 
 	printf("la\n");
-	arg[0] = "cd";
-	arg[1] = "-P";
+	arg[0] = "setenv";
+	arg[1] = "NEWTEST";
 	arg[2] = "/etc";
-	arg[3] = "/test";
-	arg[4] = 0;
-	str[0] = "cd";
-	str[1] = "..";
-	retest[0] = "cd";
-	retest[1] = "-";
+	arg[3] = NULL;
+	arg[4] = NULL;
+	str[0] = "unsetenv";
+	str[1] = "TEST";
+	str[2] = "NEWTEST";
+	str[3] = NULL;
+	retest[0] = "unset";
+	retest[1] = "HOME";
+	retest[2] = NULL;
 
+	push_env(&g_shell.envl, "HOME", "khsadira",  0);
 	run = TRUE;
 	while (run == TRUE)
 	{
@@ -103,10 +107,20 @@ void					run_shell(void)
 		if (g_shell.line)
 		{
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
-			built_cd(arg, &g_shell.envl);
-			built_cd(str, &g_shell.envl);
-			built_cd(retest, &g_shell.envl);
-			built_cd(retest, &g_shell.envl);
+/*			printf("-------PRINT_ENV----------\n\n");
+			print_envl(g_shell.envl);
+			printf("\n\n------SETENV--------\n\n");
+			built_setenv(arg, &g_shell.envl);
+			printf("\n\n------PRINT_ENV--------\n\n");
+			print_envl(g_shell.envl);
+			printf("\n\n------UNSETENV--------\n\n");
+			built_unsetenv(str, &g_shell.envl);
+			printf("\n\n------SET--------\n\n");
+			built_set(g_shell.envl);
+			printf("\n\n------UNSET--------\n\n");
+			built_unset(retest, &g_shell.envl);
+			printf("\n\n------SET--------\n\n");
+			built_set(g_shell.envl);*/
 			//ft_putstr((char*)g_shell.line);
 			//write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))

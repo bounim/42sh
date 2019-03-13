@@ -44,7 +44,10 @@ SRC := \
 	builtin/built_env.c \
 	builtin/built_env_extra.c \
 	builtin/built_setenv.c \
-	builtin/built_unsetenv.c
+	builtin/built_unsetenv.c \
+	builtin/built_set.c \
+	builtin/built_unset.c \
+	builtin/built_export.c 
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror

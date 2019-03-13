@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/12 15:31:45 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 11:35:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static int		init_pwd(t_envl **env)
 	}
 	if (stock)
 		g_shell.canonic_path = cwd;
-	push_env(env, "PWD", cwd);
+	push_env(env, "PWD", cwd, 1);
 	return (0);
 }
 
@@ -166,8 +166,8 @@ static int		cd_oldpwd(t_envl **env)
 		return (1);
 	}
 	g_shell.canonic_path = ft_strdup(oldpwd);
-	push_env(env, "OLDPWD", pwd);
-	push_env(env, "PWD", oldpwd);
+	push_env(env, "OLDPWD", pwd, 1);
+	push_env(env, "PWD", oldpwd, 1);
 	return (0);
 }
 
@@ -191,7 +191,7 @@ static int		cd_first_arg(char **arg, int *opts)
 	return (i);
 }
 
-int				built_cd(char **arg, t_envl **env)
+int				built_cd(char **arg, t_envl **envl)
 {
 	char	*path;
 	char	*oldpwd;
@@ -199,18 +199,18 @@ int				built_cd(char **arg, t_envl **env)
 	int		opts;
 
 	i = cd_first_arg(arg, &opts);
-	if (init_pwd(env))
+	if (init_pwd(envl))
 		return (1);
 	if (ft_strequ(arg[i], "-"))
 	{
-		cd_oldpwd(env);
+		cd_oldpwd(envl);
 		return (1);
 	}
-	if ((oldpwd = get_env_val(*env, "PWD")))
+	if ((oldpwd = get_env_val(*envl, "PWD")))
 		oldpwd = ft_strdup(oldpwd);
 	else
 		oldpwd = ft_strdup("");
-	if (!(path = get_cd_path(*env, arg[i], opts)))
+	if (!(path = get_cd_path(*envl, arg[i], opts)))
 		return (1);
 	g_shell.canonic_path = ft_strdup(path);
 	if (chdir(path) == -1)
@@ -218,7 +218,7 @@ int				built_cd(char **arg, t_envl **env)
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	push_env(env, "OLDPWD", oldpwd);
-	push_env(env, "PWD", path);
+	push_env(envl, "OLDPWD", oldpwd, 1);
+	push_env(envl, "PWD", path, 1);
 	return (0);
 }

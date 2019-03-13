@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 16:08:18 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/12 16:17:09 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 10:55:22 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_envl	*dup_envl(t_envl *env)
 			return (NULL);
 		new->name = ft_strdup(tmp->name);
 		new->value = ft_strdup(tmp->value);
+		new->exp = tmp->exp;
 		new->next = NULL;
 		head = addlast_envl(head, new);
 		tmp = tmp->next;

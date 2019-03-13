@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/12 17:08:38 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 11:37:10 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg
 		{
 			tmp = ft_strsub(arg[curr_arg], 0, c);
 			tmp2 = ft_strsub(arg[curr_arg], c + 1, ft_strlen(arg[curr_arg]) - c);
-			push_env(&head, tmp, tmp2);
+			push_env(&head, tmp, tmp2, 1);
 			ft_strdel(&tmp);
 			ft_strdel(&tmp2);
 			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
@@ -127,13 +127,13 @@ static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg
 	return (0);
 }
 
-int		built_env(t_envl *env, char **arg)
+int		built_env(char **arg, t_envl *envl)
 {
 	int		last_cmd;
 	t_envl	*tmp;
 	
 	tmp = NULL;
 	last_cmd = built_env_find_last_cmd(arg);
-	tmp = dup_envl(env);
+	tmp = dup_envl(envl);
 	return (start_built_env(tmp, arg, last_cmd, 0));
 }
