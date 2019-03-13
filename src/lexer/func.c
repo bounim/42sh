@@ -18,26 +18,14 @@ int		line_end(t_lexer *lex)
 {
 	if (lex->line[lex->i] != '\n')
 		return (1);
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
-	if (lex->foot != NULL)
-	{
+	quoting(lex);
+	if (!lex->quoted)
 		lex->foot->cannot_append = 1;
-		if (lex->quoted && lex->foot->type == TYPE_WORD)
-		{
-			if (append(lex) < 0) // TODO
-				return (-1);
-		}
-	}
-	lex->i++;
-	if (lex->backslash_newline || lex->quoted
-			|| lex->expansion_size > 0) // TODO heredoc
-	{
+	else if (word_append(lex) < 0)
+		return (-1);
+	if (!lex->backslash_newline && !lex->quoted
+			&& lex->expansion_size == 0) // TODO heredoc
 		lex->input_end = 1;
-	}
 	return (0);
 }
 

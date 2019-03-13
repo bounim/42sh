@@ -40,6 +40,7 @@ static int			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 		lex->line_y++;
 		lex->i = 0;
 		lex->backslash_newline = 0;
+		lex->input_end = 0;
 	}
 	else
 		lex->init = 1;
@@ -107,6 +108,8 @@ static void			lexer_debug(t_lexer *lex)
 			printer_ulong(&g_shell.out, cur->line_y);
 			printer_str(&g_shell.out, " line_x=");
 			printer_ulong(&g_shell.out, cur->line_x);
+			printer_str(&g_shell.out, " size=");
+			printer_ulong(&g_shell.out, cur->buffer_size);
 			printer_str(&g_shell.out, " buf='");
 			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
 			printer_str(&g_shell.out, "'");
@@ -114,6 +117,7 @@ static void			lexer_debug(t_lexer *lex)
 			cur = cur->next;
 		}
 	}
+	printer_flush(&g_shell.out);
 }
 
 int 				lexer(void)
@@ -122,34 +126,30 @@ int 				lexer(void)
 	int		r;
 	size_t	i;
 
-	r = 0;
-	if (g_shell.line == NULL || g_shell.line_size == 0)
+	if (g_shell.line == NULL || g_shell.line_size <= 1)
 		return (0);
 	i = 0;
+	ft_memset(&lex, 0, sizeof(lex));
 	while (1)
 	{
-		ft_memset(&lex, 0, sizeof(lex));
 		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
 		if ((r = lexer_read(&lex)) < 0)
 			break ;
-		if (lex.i < g_shell.line_size - i)
+		lexer_debug(&lex);
+		if (!lex.input_end)
 		{
-			i += lex.i;
-			// TODO call parser
-			lexer_debug(&lex);
-			lexer_destroy(&lex);
+			readline(QUOTE_PROMPT);
+			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
+				break ;
+			i = 0;
 			continue ;
 		}
-		else if (r == 0)
-				break;
-		readline(QUOTE_PROMPT);
-		if (g_shell.line == NULL || g_shell.line_size == 0)
-			break ;
-	}
-	if (r == 0)
-	{
 		// TODO call parser
-		lexer_debug(&lex);
+		if (i + lex.i == g_shell.line_size)
+			break ;
+		i += lex.i;
+		lexer_destroy(&lex);
+		ft_memset(&lex, 0, sizeof(lex));
 	}
 	lexer_destroy(&lex);
 	return (r);

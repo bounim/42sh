@@ -43,14 +43,6 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_cc[VTIME] = 0;
 }
 
-static void				parse_command(void)
-{
-	printer_int(&g_shell.err,
-			lexer());
-	printer_endl(&g_shell.err);
-	printer_flush(&g_shell.err);
-}
-
 void					run_shell(void)
 {
 	t_bool run;
@@ -64,14 +56,6 @@ void					run_shell(void)
 			fatal_exit(SH_EINVAL);
 		readline(BASIC_PROMPT);
 		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
-		{
-			parse_command();
-			ft_putstr((char*)g_shell.line);
-			write(1, "\n", 1);
-			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))
-				;
-			else if (ft_u8_strequ(g_shell.line, (const uint8_t *)"exit"))
-				exit(EXIT_SUCCESS);
-		}
+			lexer();
 	}
 }
