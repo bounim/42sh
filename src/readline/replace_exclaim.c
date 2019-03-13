@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:46:49 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 18:53:20 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 19:24:05 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-/*
-static t_history	*replace_exclaim_word(t_history *history, char *word)
+
+static char		*replace_exclaim_word(t_history *history, char *word)
 {
 	int			i;
 
@@ -21,21 +21,21 @@ static t_history	*replace_exclaim_word(t_history *history, char *word)
 	{
 		if (word[i] == history->buf[0])
 		{
-			if (ft_strequ(word, history))
-				return (history);
+			if (ft_strequ(word, (char *)history->buf))
+				return ((char *)history->buf);
 		}
 		history = history->bfr;
 	}
 	return (NULL);
 }
 
-static t_history	*replace_exclaim_nb(t_history *history, char *word)
+static char		*replace_exclaim_nb(t_history *history, char *word)
 {
-	size_t	nb;
+	int		nb;
 	size_t	stock;
 
 	nb = 0;
-	stock = size;
+	stock = ft_strlen(word);
 	while (stock--)
 	{
 		nb *= 10;
@@ -47,17 +47,17 @@ static t_history	*replace_exclaim_nb(t_history *history, char *word)
 		history = history->bfr;
 	while (--nb)
 		history = history->next;
-	return (history);
+	return ((char *)history->buf);
 }
 
-static t_history	*replace_exclaim_neg(t_history *history, char *word)
+static char		*replace_exclaim_neg(t_history *history, char *word)
 {
-	size_t	nb;
+	int		nb;
 	size_t	stock;
 
 	nb = 0;
 	word++;
-	stock = size;
+	stock = ft_strlen(word);
 	while (stock--)
 	{
 		nb *= 10;
@@ -67,21 +67,65 @@ static t_history	*replace_exclaim_neg(t_history *history, char *word)
 		return (NULL);
 	while (--nb)
 		history = history->bfr;
-	return (history);
+	return ((char *)history->buf);
 }
 
-static t_history	*find_exclaim(char *word, t_history *head)
+static char		*find_exclaim(char *word, t_history *hist)
 {
-	if (!word[1])
+	if (!word || !word[1])
 		return (NULL);
 	if (word[1] == '!')
-		return (head->bfr);
+		return ((char *)hist->bfr->buf);
 	else if (word[1] >= 0 && word[1] <= 9)
-		return (replace_exclaim_nb(head, word++, size--));
+		return (replace_exclaim_nb(hist, word++));
 	else if (word[0] == '-')
-		return (replace_exclaim_neg(head, word++, (size -= 2)));
+		return (replace_exclaim_neg(hist, word++));
 	else
-		return (replace_exclaim_word(head, word++, size--));
+		return (replace_exclaim_word(hist, word++));
 }
-*/
-char				*replace_exclaim(char *line, t_history *hist);
+
+static int		concat_exclaim(char *line, int i)
+{
+	int	j;
+	
+	j = i + 1;
+	if (!line[j])
+		return (0);
+	else if (line[j] == '!')
+		j++;
+	else if (ft_isalpha(line[j]))
+		while (ft_isalnum(line[j]))
+			j++;
+	else if (ft_isdigit(line[j]))
+		while (ft_isdigit(line[j]))
+			j++;
+	return (j - 1);
+}
+
+char				*replace_exclaim(char *line, t_history *hist)
+{
+	int		i;
+	int		j;
+	char	*concat;
+	char	*bfr;
+	char	*next;
+	char	*tmp;
+
+	while ((i = ft_strichr(line, '!')))
+	{
+		if ((j = concat_exclaim(line, i)) == 0)
+			return (NULL);
+		if (!(concat = ft_strsub(line, i, j - i + 1)) || !(bfr = ft_strsub(line, 0, i)) ||
+			!(tmp = find_exclaim(concat, hist)) || !(next = ft_strsub(line, j, ft_strlen(line))))
+		{
+			ft_putstr_fd("event not found: ", 2);
+			ft_putstr_fd(line + i + 1, 2);
+			write(2, "\n", 1);
+			return (NULL);
+		}
+		ft_strdel(&line);
+		line = ft_strfjoin(bfr, tmp, 2);
+		line = ft_strfjoin(line, next, 2);
+	}
+	return (line);
+}

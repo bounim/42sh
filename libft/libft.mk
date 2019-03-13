@@ -11,6 +11,7 @@ LIBFT_SRC := \
 	ft_memcmp.c \
 	ft_memmove.c \
 	ft_memset.c \
+	ft_isdigit.c \
 	ft_stpncpy.c \
 	ft_stpncpyz.c \
 	ft_strchr.c \
