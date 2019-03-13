@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_set.c                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/13 11:29:37 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 14:42:34 by khsadira         ###   ########.fr       */
+/*   Created: 2017/11/16 09:50:26 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/13 13:51:27 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include <unistd.h>
+#include "libft.h"
 
-int		built_set(t_envl *envl)
+void	ft_putchar_fd(char c, int fd)
 {
-	while (envl)
-	{
-		ft_putstr(envl->name);
-		ft_putchar('=');
-		ft_putstr(envl->value);
-		ft_putchar(10);
-		envl = envl->next;
-	}
-	return (0);
+	write(fd, &c, 1);
 }

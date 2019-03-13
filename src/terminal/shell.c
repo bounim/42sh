@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 12:26:33 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 15:53:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void					run_shell(void)
 	char *arg[5];
 	char	*str[4];
 	char	*retest[3];
+	char	*s3[5];
+	char	*s4[2];
 
 	printf("la\n");
 	arg[0] = "setenv";
@@ -93,8 +95,16 @@ void					run_shell(void)
 	retest[0] = "unset";
 	retest[1] = "HOME";
 	retest[2] = NULL;
+	s3[0] = "export";
+	s3[1] = "-p";
+	s3[2] = "PATH=/bin";
+	s3[3] = "UNHOME=/Users/khsadira";
+	s3[4] = NULL;
+	s4[0] = "export";
+	s4[1] = NULL;
 
 	push_env(&g_shell.envl, "HOME", "khsadira",  0);
+	push_env(&g_shell.envl, "TRY", "khsadira",  0);
 	run = TRUE;
 	while (run == TRUE)
 	{
@@ -107,12 +117,12 @@ void					run_shell(void)
 		if (g_shell.line)
 		{
 			parse_command(g_shell.line, ft_u8_strlen(g_shell.line));
-/*			printf("-------PRINT_ENV----------\n\n");
-			print_envl(g_shell.envl);
+			printf("-------PRINT_ENV----------\n\n");
+			print_envl(g_shell.envl, 0);
 			printf("\n\n------SETENV--------\n\n");
 			built_setenv(arg, &g_shell.envl);
 			printf("\n\n------PRINT_ENV--------\n\n");
-			print_envl(g_shell.envl);
+			print_envl(g_shell.envl, 0);
 			printf("\n\n------UNSETENV--------\n\n");
 			built_unsetenv(str, &g_shell.envl);
 			printf("\n\n------SET--------\n\n");
@@ -120,7 +130,14 @@ void					run_shell(void)
 			printf("\n\n------UNSET--------\n\n");
 			built_unset(retest, &g_shell.envl);
 			printf("\n\n------SET--------\n\n");
-			built_set(g_shell.envl);*/
+			built_set(g_shell.envl);
+			printf("\n\n------EXPORT--------\n\n");
+			built_export(s3, &g_shell.envl);
+			printf("\n\n------EXPORT--------\n\n");
+			built_export(s4, &g_shell.envl);
+			printf("\n\n------SET--------\n\n");
+			built_set(g_shell.envl);
+
 			//ft_putstr((char*)g_shell.line);
 			//write(1, "\n", 1);
 			if (ft_u8_strequ(g_shell.line, (const uint8_t *)"history"))

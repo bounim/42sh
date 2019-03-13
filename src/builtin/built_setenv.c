@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 12:20:15 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:42:42 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			built_setenv(char **arg, t_envl **envl)
 	tmp = *envl;
 	if ((len = ft_arrlen(arg)) == 1)
 	{
-		print_envl(*envl);
+		print_envl(*envl, 0);
 		return (0);
 	}
 	else if (built_setenv_check_error(arg))

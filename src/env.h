@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:26 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 10:53:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:42:02 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ struct					s_envl
 	struct s_envl		*next;
 };
 
-void					print_envl(t_envl *env);
+void					print_envl(t_envl *env, int exp);
 void					free_envl(t_envl *env);
 t_envl					*init_shell_envl(char **env);
 t_envl					*addlast_envl(t_envl *head, t_envl *new);

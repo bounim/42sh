@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/12 16:47:51 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:51:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "hashmap.h"
 # include "printer.h"
 
+void	ft_putstr_fd(char const *s, int fd);
+void	ft_putchar_fd(char c, int fd);
 int		ft_isspace(int c);
 void	ft_strdel(char **as);
 void	ft_memdel(void **ap);

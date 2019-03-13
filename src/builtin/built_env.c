@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 11:37:10 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:42:17 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void		exec_env(char **arg, int curr_arg, t_envl *head)
 	i = 0;
 	if (!arg[curr_arg])
 	{
-		print_envl(head);
+		print_envl(head, 0);
 		free_envl(head);
 	}
 	else
