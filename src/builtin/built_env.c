@@ -6,13 +6,46 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/13 14:42:17 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static char	**from_arg_to_cmd(uint8_t **arg, int *arg_size, int curr_arg)
+static char	**from_lenv_to_tab(t_envl *head)
+{
+	char	**ret;
+	t_envl	*tmp;
+	int		i;
+	char	*buf;
+
+	i = 0;
+	ret = NULL;
+	tmp = head;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	if (!(ret = (char **)malloc(sizeof(char *) * (i + 1))))
+		return (NULL);
+	tmp = head;
+	buf = ft_strdup("");
+	i = 0;
+	while (tmp)
+	{
+		buf = ft_strfjoin(buf, tmp->name, 0);
+		buf = ft_strfjoin(buf, tmp->value, 0);
+		///if (!(ret[i] = (char *)malloc(sizeof(char) * ft_strlen(buf))))
+		//	return (NULL);
+		ret[i] = buf;
+		i++;
+		tmp = tmp->next;
+	}
+	return (ret);
+}
+
+static char	**from_arg_to_cmd(char **arg, int curr_arg)
 {
 	int		nb_arg;
 	char	**ret;
@@ -23,12 +56,12 @@ static char	**from_arg_to_cmd(uint8_t **arg, int *arg_size, int curr_arg)
 	nb_arg = curr_arg;
 	while (arg[nb_arg])
 		nb_arg++;
-	if (!(ret = (char **)malloc(sizeof(char *) * 	nb_arg)))
+	if (!(ret = (char **)malloc(sizeof(char *) * nb_arg)))
 		return (NULL);
 	while (ret[i] && arg[curr_arg])
 	{
-		tmp = ft_memalloc(arg_size[curr_arg]);
-		tmp = ft_memcpy(tmp, arg[curr_arg], arg_size[curr_arg]);
+		tmp = ft_memalloc(ft_strlen(arg[curr_arg]));
+		tmp = ft_memcpy(tmp, arg[curr_arg], ft_strlen(arg[curr_arg]));
 		ret[i] = tmp;
 		i++;
 		curr_arg++;
@@ -36,69 +69,71 @@ static char	**from_arg_to_cmd(uint8_t **arg, int *arg_size, int curr_arg)
 	return (ret);
 }
 
-static void		exec_env(uint8_t **arg, int *arg_size, int curr_arg, t_envl *head)
+static void		exec_env(char **arg, int curr_arg, t_envl *head)
 {
 	char	**ret;
-	(void)head;
+	int		i;
+	char	**env;
+
+	i = 0;
 	if (!arg[curr_arg])
 	{
-		//print_env(head);
-		//free_env(head);
+		print_envl(head, 0);
+		free_envl(head);
 	}
 	else
 	{
-		ret = from_arg_to_cmd(arg, arg_size, curr_arg);
-		//execution;
-		//free_tab;
-		//free_env;
+		ret = from_arg_to_cmd(arg, curr_arg);
+		while (ret[i])
+			ft_strdel(&ret[i++]);
+		free(ret);
+		free_envl(head);
+		env = from_lenv_to_tab(head);
+		//execution(ret, env);
+		i = 0;
+		while (ret[i])
+			ft_strdel(&ret[i++]);
+		free(ret);
 	}
 }
 
-static int		my_memchr_w(uint8_t *arg, int c, int arg_size)
-{
-	int		i;
-	
-	i = 0;
-	while (i < arg_size)
-	{
-		if (arg[i] == c)
-			return (i);
-		i++;
-	}
-	if (arg[i] == c)
-		return (i);
-	return (-1);
-}
-
-int		built_env(t_envl *head, uint8_t **arg, int *arg_size, int last_cmd, int curr_arg)
+static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg)
 {
 	int		c;
-	uint8_t	*tmp;
-	uint8_t *tmp2;
+	char	*tmp;
+	char	 *tmp2;
 
 	while (arg[curr_arg] && curr_arg != last_cmd)
 	{
-		if (ft_memcmp(arg[curr_arg], "env\0", 4))
-			return (built_env(head, arg, arg_size, last_cmd, curr_arg + 1));
-		else if (ft_memcmp(arg[curr_arg], "-i", 2))
+		if (ft_strcmp(arg[curr_arg], "env"))
+			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
+		else if (ft_strcmp(arg[curr_arg], "-i"))
 		{
-			//free env;
-			return (built_env(head, arg, arg_size, last_cmd, curr_arg + 1));
+			free_envl(head);
+			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
 		}
-		else if ((c = my_memchr_w(arg[curr_arg], '=', arg_size[curr_arg])) != -1)
+		else if ((c = ft_strichr(arg[curr_arg], '=')))
 		{
-			tmp = ft_memalloc(c);
-			tmp = ft_memcpy(tmp, arg[curr_arg], c);
-			tmp2 = ft_memalloc(arg_size[curr_arg] - c);
-			tmp2 = ft_memcpy(tmp2, arg[curr_arg] + c, arg_size[curr_arg] - c);
-			push_env(&head, (char *)tmp, (char *)tmp2);
-			//free tmp & tmp2 ??
-			return (built_env(head, arg, arg_size, last_cmd, curr_arg + 1));
+			tmp = ft_strsub(arg[curr_arg], 0, c);
+			tmp2 = ft_strsub(arg[curr_arg], c + 1, ft_strlen(arg[curr_arg]) - c);
+			push_env(&head, tmp, tmp2, 1);
+			ft_strdel(&tmp);
+			ft_strdel(&tmp2);
+			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
 		}
 		curr_arg++;
 	}
-	exec_env(arg, arg_size, curr_arg, head);
-	return (ENV_OK);
+	exec_env(arg, curr_arg, head);
+	return (0);
 }
-//built_env_check_error +  return last cmd;
-//send dulicate env to built_env 
+
+int		built_env(char **arg, t_envl *envl)
+{
+	int		last_cmd;
+	t_envl	*tmp;
+	
+	tmp = NULL;
+	last_cmd = built_env_find_last_cmd(arg);
+	tmp = dup_envl(envl);
+	return (start_built_env(tmp, arg, last_cmd, 0));
+}

@@ -6,13 +6,13 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 19:30:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/13 10:53:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			push_env(t_envl **head, char *name, char *value)
+void			push_env(t_envl **head, char *name, char *value, int exp)
 {
 	t_envl		*tmp;
 
@@ -28,6 +28,7 @@ void			push_env(t_envl **head, char *name, char *value)
 			{
 				free(tmp->value);
 				tmp->value = ft_strdup(value);
+				tmp->exp = exp;
 				return ;
 			}
 			tmp = tmp->next;
@@ -37,6 +38,7 @@ void			push_env(t_envl **head, char *name, char *value)
 		return ;
 	tmp->name = ft_strdup(name);
 	tmp->value = ft_strdup(value);
+	tmp->exp = exp;
 	tmp->next = NULL;
 	*head = addlast_envl(*head, tmp);
 }

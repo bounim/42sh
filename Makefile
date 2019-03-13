@@ -8,6 +8,9 @@ SRC := \
 	env/get_env_val.c \
 	env/init_shell_envl.c \
 	env/push_env.c \
+	env/dup_envl.c \
+	env/free_envl.c \
+	env/print_envl.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/history.c \
@@ -27,9 +30,12 @@ SRC := \
 	builtin/built_cd.c \
 	builtin/built_echo.c \
 	builtin/built_env.c \
-	builtin/built_env_extra.c \
+	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
+	builtin/built_set.c \
+	builtin/built_unset.c \
+	builtin/built_export.c \
 	readline/readline.c \
     readline/signal_handler.c\
     readline/readline_errors_controler.c\

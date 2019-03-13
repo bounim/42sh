@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 16:52:57 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/13 16:20:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ struct						s_shell
 	t_termios				raw_tio;
 	t_printer				out;
 	t_printer				err;
+	char					*canonic_path;
 };
 
 /*
