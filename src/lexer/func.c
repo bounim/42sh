@@ -14,30 +14,28 @@
 
 #include <stdio.h> // XXX
 
-int		line_end(t_lexer *lex)
+int		next_quoted(t_lexer *lex)
 {
-	if (lex->line[lex->i] != '\n')
-		return (1);
 	if (lex->next_quoted)
 	{
 		lex->quoted = lex->next_quoted;
 		lex->next_quoted = 0;
 	}
-	if (lex->foot != NULL)
-	{
+	return (1);
+}
+
+int		line_end(t_lexer *lex)
+{
+	if (lex->line[lex->i] != '\n')
+		return (1);
+	quoting(lex);
+	if (!lex->quoted)
 		lex->foot->cannot_append = 1;
-		if (lex->quoted && lex->foot->type == TYPE_WORD)
-		{
-			if (append(lex) < 0) // TODO
-				return (-1);
-		}
-	}
-	lex->i++;
-	if (lex->backslash_newline || lex->quoted
-			|| lex->expansion_size > 0) // TODO heredoc
-	{
+	else if (word_append(lex) < 0)
+		return (-1);
+	if (!lex->backslash_newline && !lex->quoted
+			&& lex->expansion_size == 0) // TODO heredoc
 		lex->input_end = 1;
-	}
 	return (0);
 }
 
@@ -136,12 +134,7 @@ int		operator_end(t_lexer *lex) // FIXME is it even useful
 
 int		quoting(t_lexer *lex)
 {
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
-	else if (!lex->quoted)
+	if (!lex->quoted)
 	{
 		if (lex->line[lex->i] == '\\')
 			lex->next_quoted = 1;

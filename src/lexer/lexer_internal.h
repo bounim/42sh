@@ -88,6 +88,8 @@ typedef struct					s_lexer
 ** Return -1 on fatal error, 0 on success, 1 if it can't match the character.
 */
 
+int								next_quoted(t_lexer *lex);
+int								line_end(t_lexer *lex);
 int								unquoted_backslash_newline(t_lexer *lex);
 int								heredoc(t_lexer *lex);
 int								operator_append(t_lexer *lex);
@@ -99,7 +101,6 @@ int								unquoted_blank(t_lexer *lex);
 int								word_append(t_lexer *lex);
 int								comment(t_lexer *lex);
 int								word_new(t_lexer *lex);
-int								line_end(t_lexer *lex);
 
 /*
 ** token: allocate a token node (linked list)
