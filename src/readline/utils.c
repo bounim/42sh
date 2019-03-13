@@ -57,7 +57,7 @@ void	return_fn(void)
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
 	g_shell.line = buff;
-	g_shell.line_size = buff_size;
+	g_shell.line_size = buff_size + 1;
 }
 
 void	check_all_pos(void)
