@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "lexer.h"
+// #include "expansion.h"
 
 enum				e_parser_type
 {
@@ -70,7 +71,7 @@ struct 							s_parser
 	t_parser_node	*foot;
 };
 
-void					structure(t_parser_node *root, int level);
+void					structure(char **env, t_parser_node *root, int level);
 void					parser_print(t_parser_node *tree);
 void					print_redir(t_redir *r);
 void					print_word(t_word *r);
@@ -79,11 +80,12 @@ void					print_word(t_word *r);
 void					print_token(uint8_t *buffer, size_t size);
 void					print_word(t_word *r);
 void					print_redir(t_redir *r);
+void	do_expansions(char **env, t_parser_node *tree);
 
 
 
 void					parser_init(t_parser *parser);
-int						parser_create_tree(t_parser *parser, t_lexer *lexer);
+int						parser_create_tree(char **env, t_parser *parser, t_lexer *lexer);
 t_parser_node			*parser_new_elem(t_lexer_token **tmp);
 void					parser_add_tree(t_parser_node **head, t_parser_node *n);
 

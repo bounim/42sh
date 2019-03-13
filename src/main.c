@@ -37,9 +37,10 @@ int		main(int ac, char **av, char **env)
 		if (lex.head)
 		{
 			lexer_print_error(&lex);
-			if (parser_create_tree(&parser, &lex) == -1)
+			if (parser_create_tree(env, &parser, &lex) == -1)
 				ft_putendl("error while parsing");
-			do_expansions(env, &parser.head);
+			// printf("parser_head = %p\n", parser.head);
+			// do_expansions(env, parser.head);
 		}
 		lexer_destroy(&lex);
 		printer_flush(&out);

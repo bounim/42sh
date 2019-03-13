@@ -58,9 +58,15 @@ char     *tilde_result(char **env, t_word *tmp, size_t len)
   if (len == 1)
   {
     result = get_env(env, "HOME");
+    free(tmp->buf);
+    tmp->buf = malloc(sizeof(uint8_t) * ft_strlen(result));
+    if (!tmp->buf)
+        return (NULL);
     ft_memset(tmp->buf, 0, tmp->size);
-    ft_memcpy(result, tmp->buf, ft_strlen(result));
+    ft_memcpy(tmp->buf, result, ft_strlen(result));
+    tmp->size = ft_strlen(result);
     printf("DONE TILDE\n");
+    print_token(tmp->buf, tmp->size);
   }
   // replace tilde prefix by HOME value, if set
   // else if
@@ -91,27 +97,32 @@ int     do_tilde_arg(char **env, t_word *arg_head)
 
 int     tilde_expansion(char **env, t_parser_node **head)
 {
-  ft_putendl("DOING EXPANSIONS");
+    t_word   *tmp;
+
+    ft_putendl("DOING EXPANSIONS");
     do_tilde_arg(env, (*head)->arg_head);
+    ft_putendl("IN TILDE EXPANSIONS\n");
+    tmp = (*head)->arg_head;
+    while (tmp)
+    {
+        print_token(tmp->buf, tmp->size);
+        tmp = tmp->next;
+    }
     // do_tilde_assign((*head)->assign_head);
     // do_tilde_redir((*head)->redir_head);
     return (0);
 }
 
-void	do_expansions(char **env, t_parser_node **tree)
+void	do_expansions(char **env, t_parser_node *tree)
 {
-	if (!*tree)
+	if (!tree)
 		return ;
-	if ((*tree)->right)
+    else
 	{
-		ft_putendl("printing left");
-		do_expansions(env, &(*tree)->right);
-	}
-	// print_token((*tree)->arg_head->buf, (*tree)->arg_head->size);
-    tilde_expansion(env, tree);
-	if ((*tree)->left)
-	{
-		ft_putendl("printing left");
-		do_expansions(env, &(*tree)->left);
+		do_expansions(env, tree->right);
+        if (tree->type == PARSER_COMMAND)
+        // print_token(tree->arg_head->buf, tree->arg_head->size);
+            tilde_expansion(env, &tree);
+		do_expansions(env, tree->left);
 	}
 }

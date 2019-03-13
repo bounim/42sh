@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "lexer.h"
+#include "expansion.h"
 
 void	print_token(uint8_t *buffer, size_t size)
 {
@@ -55,7 +56,7 @@ void	padding(char c, char n)
 		ft_putchar(c);
 }
 
-void	structure(t_parser_node *root, int level)
+void	structure(char **env, t_parser_node *root, int level)
 {
 	if (!root)
 	{
@@ -64,15 +65,14 @@ void	structure(t_parser_node *root, int level)
 	}
 	else
 	{
-		structure(root->right, level + 1);
+		structure(env, root->right, level + 1);
 		padding('\t', level);
 		if (root->type != PARSER_COMMAND)
 			print_token(root->buffer, root->size);
 		else if (root->arg_head)
 			print_token(root->arg_head->buf, root->arg_head->size);
-		structure(root->left, level + 1);
-	}
-	
+		structure(env, root->left, level + 1);
+	}	
 }
 
 void	parser_print(t_parser_node *tree)

@@ -77,7 +77,7 @@ void							tokenstr(char *str, t_lexer_token *tok)
 	print_token(tok->buffer, tok->size);
 }
 
-int								parser_create_tree(t_parser *parser, t_lexer *lexer)
+int								parser_create_tree(char **env, t_parser *parser, t_lexer *lexer)
 {
 	// t_parser		*parser;
 	t_lexer_token	*tmp;
@@ -94,7 +94,7 @@ int								parser_create_tree(t_parser *parser, t_lexer *lexer)
 		if (!(n = parser_new_elem(&tmp)))
 			return (-1);
 		parser_add_tree(&parser->head, n);
-    ft_putendl("args");
+		ft_putendl("args");
 		print_word(n->arg_head);
 		ft_putendl("END.");
 		ft_putendl("redirs");
@@ -106,6 +106,7 @@ int								parser_create_tree(t_parser *parser, t_lexer *lexer)
 		if (tmp)
 			tmp = tmp->next;
 	}
-	structure(parser->head, 0);
+	do_expansions(env, parser->head);
+	structure(env, parser->head, 0);
 	return (0);
 }
