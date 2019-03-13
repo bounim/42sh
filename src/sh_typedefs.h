@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:27:19 by schakor           #+#    #+#             */
-/*   Updated: 2018/12/17 14:15:09 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/13 16:47:28 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct passwd			t_passwd;
 typedef struct termios			t_termios;
 typedef struct s_shell			t_shell;
 typedef struct s_envl			t_envl;
+typedef struct s_alias			t_alias;
 typedef struct s_history		t_history;
 
 #endif

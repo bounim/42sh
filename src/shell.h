@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/08 16:58:27 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:58:22 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ struct						s_shell
 	uint8_t 				el_mode;
 	uint8_t					*line;
 	t_envl					*envl;
+	t_alias					*alias;
 	t_history				*history;
 	int						history_size;
 	int						history_save;
