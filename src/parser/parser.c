@@ -77,15 +77,13 @@ void							tokenstr(char *str, t_lexer_token *tok)
 	print_token(tok->buffer, tok->size);
 }
 
-int								parser_create_tree(t_lexer *lexer)
+int								parser_create_tree(t_parser *parser, t_lexer *lexer)
 {
-	t_parser		*parser;
+	// t_parser		*parser;
 	t_lexer_token	*tmp;
 	t_parser_node	*n;
-	int				newcmd;
 
 	n = NULL;
-	newcmd = 1;
 	if (!(parser = malloc(sizeof(*parser))))
 		return (-1);
 	parser_init(parser);

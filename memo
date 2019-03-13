@@ -10,5 +10,20 @@
 #                                                                              #
 # **************************************************************************** #
 
-- echo mdr >> lol << xd
-  what to doooo
+to do:
+
+WORD EXPANSION:
+	- tilde expansion
+	- parameter expansion
+	- command substitution
+	- arithmetic expansion
+	- field splitting
+	- pathname expansion
+	- quote removal
+
+REDIRECTION:
+
+EXECUTION:
+	-
+	-
+	-

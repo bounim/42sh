@@ -9,6 +9,7 @@ SRC := \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \
+	expansions/tilde.c \
 	utils/canonical_path.c \
 	utils/is.c
 	# parser/parser.c \

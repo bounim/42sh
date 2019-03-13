@@ -13,17 +13,20 @@
 #include "libft.h"
 #include "lexer.h"
 #include "parser.h"
+#include "expansion.h"
 #include <stdio.h>
 #include <unistd.h>
 
-int		main(void)
+int		main(int ac, char **av, char **env)
 {
-	uint8_t	line[1024];
-	t_lexer lex;
-	t_printer_handle out;
-	t_lexer_token *cur;
+	uint8_t						line[1024];
+	t_lexer						lex;
+	t_parser					parser;
+	t_printer_handle	out;
 	int		r;
 
+	(void)ac;
+	(void)av;
 	printer_init(&out, 1);
 	while ((r = read(0, line, sizeof(line))) > 0)
 	{
@@ -34,9 +37,9 @@ int		main(void)
 		if (lex.head)
 		{
 			lexer_print_error(&lex);
-			cur = lex.head;
-			if (parser_create_tree(&lex) == -1)
+			if (parser_create_tree(&parser, &lex) == -1)
 				ft_putendl("error while parsing");
+			do_expansions(env, &parser.head);
 		}
 		lexer_destroy(&lex);
 		printer_flush(&out);

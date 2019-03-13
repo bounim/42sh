@@ -4,6 +4,8 @@
 # include "parser.h"
 # include "lexer.h"
 
+
+void	do_expansions(char **env, t_parser_node **tree);
 /*
 ** Tilde expansion
 */
