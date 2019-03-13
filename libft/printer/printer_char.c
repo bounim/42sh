@@ -6,13 +6,13 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 15:57:25 by emartine          #+#    #+#             */
-/*   Updated: 2018/03/07 15:57:26 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printer.h"
 
-void	printer_char(t_printer_handle *handle, char ch)
+void	printer_char(t_printer *handle, char ch)
 {
 	printer_bin(handle, &ch, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 18:23:38 by emartine          #+#    #+#             */
-/*   Updated: 2019/02/01 18:23:40 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,55 @@
 
 #include <stdio.h> // XXX
 
-int		unquoted_backslash_newline(t_lexer *lex)
+int		next_quoted(t_lexer *lex)
 {
-	if (lex->line[lex->i] == '\n')
+	if (lex->next_quoted)
 	{
-		lex->impl_error = 1;
-		return (-1);
-	}
-	if (!lex->quoted && lex->i + 1 == lex->line_size
-			&& lex->line[lex->i] == '\\')
-	{
-		lex->backslash_newline = 1;
-		lex->i++;
-		return (0);
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
 	}
 	return (1);
 }
 
-// FIXME where to consume newline??? --> no newline at the end
+int		line_end(t_lexer *lex)
+{
+	if (lex->line[lex->i] != '\n')
+		return (1);
+	quoting(lex);
+	if (!lex->quoted)
+		lex->foot->cannot_append = 1;
+	else if (word_append(lex) < 0)
+		return (-1);
+	if (!lex->backslash_newline && !lex->quoted
+			&& lex->expansion_size == 0) // TODO heredoc
+		lex->input_end = 1;
+	return (0);
+}
+
+int		unquoted_backslash_newline(t_lexer *lex)
+{
+	if (!lex->quoted && lex->line[lex->i] == '\\')
+	{
+		if (lex->i == lex->line_size - 1)
+		{
+			lex->impl_error = 1;
+			return (-1);
+		}
+		if (lex->line[lex->i + 1] == '\n')
+		{
+			lex->backslash_newline = 1;
+			lex->i++;
+			return (0);
+		}
+	}
+	return (1);
+}
+
 int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 {
 	if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
 	{
-		if (lex->i > 0) // FIXME we got only one line anyway
+		if (lex->i > 0)
 		{
 			lex->impl_error = 1;
 			return (-1);
@@ -108,12 +134,7 @@ int		operator_end(t_lexer *lex) // FIXME is it even useful
 
 int		quoting(t_lexer *lex)
 {
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
-	else if (!lex->quoted)
+	if (!lex->quoted)
 	{
 		if (lex->line[lex->i] == '\\')
 			lex->next_quoted = 1;
@@ -164,8 +185,14 @@ int		operator_new(t_lexer *lex)
 	if (lex->quoted || lex->expansion_size > 0)
 		return (1);
 	ch = lex->line[lex->i];
+	if ((ch == '<' || ch == '>') && lex->foot != NULL && lex->foot->is_number
+			&& lex->i > 0 && (lex->line[lex->i - 1] >= '0'
+				&& lex->line[lex->i - 1] <= '9'))
+		lex->foot->type = TYPE_IO_NUMBER;
 	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
+	{
 		return (token(lex, TYPE_OPERATOR));
+	}
 	return (1);
 }
 
@@ -185,7 +212,14 @@ int		word_append(t_lexer *lex)
 {
 	if (lex->foot != NULL
 			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
-		return (append(lex));
+	{
+		if (append(lex) < 0)
+			return (-1);
+		if (lex->foot->is_number
+				&& (lex->line[lex->i] < '0' || lex->line[lex->i] > '9'))
+			lex->foot->is_number = 0;
+		return (0);
+	}
 	if (lex->expansion_size > 0)
 	{
 		lex->impl_error = 1;
@@ -198,7 +232,8 @@ int		comment(t_lexer *lex)
 {
 	if (lex->line[lex->i] == '#')
 	{
-		lex->i = lex->line_size;
+		while (lex->i < lex->line_size && lex->line[lex->i] != '\n')
+			lex->i++;
 		return (0);
 	}
 	return (1);
@@ -206,19 +241,9 @@ int		comment(t_lexer *lex)
 
 int		word_new(t_lexer *lex)
 {
-	return (token(lex, TYPE_WORD));
-}
-
-int		line_end(t_lexer *lex)
-{
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
-	if (lex->foot != NULL)
-		lex->foot->cannot_append = 1;
-	if (lex->backslash_newline || lex->quoted || lex->expansion_size > 0) // TODO heredoc
+	if (token(lex, TYPE_WORD) < 0)
 		return (-1);
-	return (1);
+	if (lex->line[lex->i] >= '0' && lex->line[lex->i] <= '9')
+		lex->foot->is_number = 1;
+	return (0);
 }

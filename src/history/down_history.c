@@ -6,48 +6,51 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 16:37:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/06 16:23:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 13:19:40 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void		rl_down_history_here(t_rl *rl)
+static void		down_history_here(void)
 {
 	int			i;
 	t_history	*head;
 
-	head = rl->history;
+	head = g_shell.hist.history;
 	i = 0;
-	while (i < rl->history_save && rl->history->bfr)
+	while (i < g_shell.hist.history_save && g_shell.hist.history->bfr)
 	{
-		rl->history = rl->history->bfr;
+		g_shell.hist.history = g_shell.hist.history->bfr;
 		i++;
 	}
-	rl_print_history(rl);
-	rl->history = head;
+	print_history();
+	g_shell.hist.history = head;
 }
 
-void			rl_get_next_history(t_rl *rl)
+void			get_next_history(void)
 {
-	if (!rl->history)
+	if (!g_shell.hist.history)
 		return ;
-	rl_switch_history(rl);
-	if (rl->history_save == 0)
+	if (g_shell.hist.history_save == -1 || g_shell.hist.history_save == -2)
+		return ;
+	switch_history();
+	if (g_shell.hist.history_save == 0)
 	{
-		rl_move_start(rl);
-		ft_putstr(tgetstr("cd", NULL));
-		rl_display_prompt(rl->prompt);
-		ft_memset(rl->buf, '\0', rl->bufvar.len_tot);
-		rl->history_save = -1;
-		ft_memset(&(rl->bufvar), 0, sizeof(rl->bufvar));
+		free_all();
+		g_shell.edit.point_char = NULL;
+		g_shell.edit.cur_base_x = 0;
+		init_char_list();
+		init_prompt(BASIC_PROMPT);
+		if (g_shell.hist.buf)
+			buff_to_charlist(g_shell.hist.buf);
+		clean_and_print();
+		g_shell.hist.history_save = -1;
 		return ;
 	}
-	if (rl->history_save == -1 || rl->history_save == -2)
-		return ;
 	else
 	{
-		rl->history_save--;
-		rl_down_history_here(rl);
+		g_shell.hist.history_save--;
+		down_history_here();
 	}
 }

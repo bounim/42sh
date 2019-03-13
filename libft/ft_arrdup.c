@@ -6,10 +6,11 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/16 11:07:28 by schakor           #+#    #+#             */
-/*   Updated: 2018/10/16 15:21:11 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
 char		**ft_arrdup(char **arr)

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 16:58:22 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:20:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,17 @@ extern t_shell				g_shell;
 
 struct						s_shell
 {
+	t_edit					edit;
 	size_t 					term_set;
 	uint8_t 				el_mode;
 	uint8_t					*line;
+	size_t					line_size;
 	t_envl					*envl;
-	t_alias					*alias;
-	t_history				*history;
-	int						history_size;
-	int						history_save;
+	t_hist					hist;
 	t_termios				cooked_tio;
 	t_termios				raw_tio;
-	t_printer_handle		out;
-	t_printer_handle		err;
+	t_printer				out;
+	t_printer				err;
 	char					*canonic_path;
 };
 

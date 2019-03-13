@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 16:52:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:12:28 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,10 @@
 **	builtin functions header
 */
 
-struct					s_alias
-{
-	char				*name;
-	char				*value;
-	struct s_envl		*next;
-};
+/*void		built_history(t_rl rl);*/
 
-void		built_history(t_rl rl);
-t_history	*built_exclaim(uint8_t *word, int size, t_history *head);
+t_history	*built_exclaim(uint8_t *word, int size, t_history *head); // ????
+
 int			built_cd(char **arg, t_envl **envl);
 int			built_echo(char **arg, int *arg_size);
 int			built_env(char **arg, t_envl *envl);

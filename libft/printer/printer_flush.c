@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 15:16:25 by emartine          #+#    #+#             */
-/*   Updated: 2018/03/07 15:16:26 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "printer.h"
 
-void	printer_flush(t_printer_handle *handle)
+void	printer_flush(t_printer *handle)
 {
 	size_t	i;
 	ssize_t	r;

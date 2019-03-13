@@ -6,46 +6,50 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 16:38:20 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/08 14:16:39 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/12 11:56:21 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void		rl_up_history_here(t_rl *rl)
+static void		up_history_here(void)
 {
 	int			i;
 	t_history	*head;
 
-	head = rl->history;
+	head = g_shell.hist.history;
 	i = 0;
-	while (i < rl->history_save && rl->history->bfr)
+	while (i < g_shell.hist.history_save && g_shell.hist.history->bfr)
 	{
-		rl->history = rl->history->bfr;
+		g_shell.hist.history = g_shell.hist.history->bfr;
 		i++;
 	}
-	rl_print_history(rl);
-	rl->history = head;
+	print_history();
+	g_shell.hist.history = head;
 }
 
-void			rl_get_prev_history(t_rl *rl)
+void			get_prev_history(void)
 {
-	if (!rl->history)
+	if (!g_shell.hist.history)
 		return ;
-	rl_switch_history(rl);
-	if (listlen(rl->history) == rl->history_save + 1)
+	if (listlen(g_shell.hist.history) == g_shell.hist.history_save + 1)
 		return ;
-	if (!(rl->bufvar.i_buf) && (rl->history_save == -2))
+	if (g_shell.hist.history_save == -2)
 		return ;
-	if (rl->history_save == -2 || rl->history_save == -1)
+	if (g_shell.hist.history_save >= 0)
+		switch_history();
+	if (g_shell.hist.history_save == -1)
 	{
-		rl_print_history(rl);
-		rl->history_save = 0;
+		if (g_shell.hist.buf)
+			free(g_shell.hist.buf);
+		g_shell.hist.buf = list_to_buf();
+		print_history();
+		g_shell.hist.history_save = 0;
 	}
 	else
 	{
-		if (listlen(rl->history) != rl->history_save + 1)
-			rl->history_save++;
-		rl_up_history_here(rl);
+		if (listlen(g_shell.hist.history) != g_shell.hist.history_save + 1)
+			g_shell.hist.history_save++;
+		up_history_here();
 	}
 }

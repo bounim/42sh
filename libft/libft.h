@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/13 13:51:24 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:21:40 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include <sys/types.h>
 # include "hashmap.h"
 # include "printer.h"
 
-void	ft_putstr_fd(char const *s, int fd);
 void	ft_putchar_fd(char c, int fd);
-int		ft_isspace(int c);
+void	ft_putstr_fd(char const *s, int fd);
 void	ft_strdel(char **as);
-void	ft_memdel(void **ap);
-int		ft_isspace_n(int c);
 int		ft_strichr(char *str, char c);
+void	ft_memdel(void **ap);
+int		ft_strequ(char const *s1, char const *s2);
+int		ft_isspace(int c);
+int		ft_isspace_n(int c);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_memcmp(void *a, const void *b, size_t len);
 void	*ft_memmove(void *dst, const void *src, size_t len);
@@ -59,6 +61,10 @@ uint8_t	**ft_u8_strsplit(uint8_t const *s, uint8_t c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 void	*ft_memchr(const void *s, int c, size_t n);
-int	ft_strequ(char const *s1, char const *s2);
+ssize_t	ft_carac_size(uint8_t *buf, size_t ulen);
+ssize_t	ft_carac_nb(uint8_t *str);
+size_t	ft_wchar_len(unsigned char *str);
+size_t	ft_ustrlen(const uint8_t *ustr);
+uint8_t	*ft_u8_strdup(const uint8_t *s);
 
 #endif

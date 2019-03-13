@@ -2,8 +2,11 @@ LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
 	ft_isspace.c \
-	ft_putstr_fd.c \
 	ft_putchar_fd.c \
+	ft_putstr_fd.c \
+	ft_strdel.c \
+	ft_strichr.c \
+	ft_memdel.c \
 	ft_memcpy.c \
 	ft_memcmp.c \
 	ft_memmove.c \
@@ -12,14 +15,12 @@ LIBFT_SRC := \
 	ft_stpncpyz.c \
 	ft_strchr.c \
 	ft_strcmp.c \
-	ft_strdel.c \
 	ft_strjoin.c \
 	ft_strlen.c \
-	ft_memdel.c \
 	ft_strncpy.c \
-	ft_strichr.c \
 	ft_strncpyz.c \
 	ft_strnlen.c \
+	ft_strequ.c \
 	hashmap/hashmap_clean.c \
 	hashmap/hashmap_clean_key.c \
 	hashmap/hashmap_get.c \
@@ -28,16 +29,14 @@ LIBFT_SRC := \
 	hashmap/hashmap_set.c \
 	hashmap/hashmap_unset.c \
 	printer/printer_bin.c \
-	printer/printer_char.c \
 	printer/printer_endl.c \
 	printer/printer_flush.c \
 	printer/printer_init.c \
 	printer/printer_int.c \
 	printer/printer_long.c \
-	printer/printer_numeric_length.c \
 	printer/printer_str.c \
-	printer/printer_uint.c \
 	printer/printer_ulong.c \
+	printer/printer_ustr.c \
 	ft_arrdel.c \
 	ft_arrdup.c \
 	ft_arrlen.c \
@@ -60,7 +59,11 @@ LIBFT_SRC := \
 	ft_u8_strsplit.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
-	ft_memchr.c
+	ft_memchr.c \
+	ft_carac_nb.c \
+	ft_wchar_len.c \
+	ft_ustrlen.c \
+	ft_u8_strdup.c \
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)

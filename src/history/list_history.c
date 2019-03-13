@@ -6,22 +6,20 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 11:28:39 by khsadira          #+#    #+#             */
-/*   Updated: 2018/11/28 11:38:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/07 16:17:45 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-t_history	*rl_new_hist(uint8_t *buf, t_bufvar bufvar)
+t_history	*rl_new_hist(uint8_t *buf)
 {
 	t_history	*list;
 
 	if (!(list = (t_history *)malloc(sizeof(*list))))
 		return (NULL);
-	if (!(list->buf = (uint8_t *)ft_memalloc(bufvar.len_tot)))
+	if (!(list->buf = ft_u8_strdup(buf)))
 		return (NULL);
-	ft_memcpy(list->buf, buf, bufvar.len_buf);
-	list->bufvar = bufvar;
 	list->next = NULL;
 	list->bfr = NULL;
 	return (list);

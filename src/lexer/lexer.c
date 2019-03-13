@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/23 16:06:33 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/12 19:42:16 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <unistd.h> // XXX
 
 static int			(*g_lexer_func[])(t_lexer *) = {
+	next_quoted,
+	line_end,
 	unquoted_backslash_newline,
 	heredoc,
 	operator_append,
@@ -29,35 +31,35 @@ static int			(*g_lexer_func[])(t_lexer *) = {
 	word_new,
 };
 
-void				lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
-{
-	ft_memset(lex, 0, sizeof(*lex));
-	lex->line = line;
-	lex->line_size = line_size;
-}
-
-void				lexer_newline(t_lexer *lex, uint8_t *line, size_t line_size)
+static int			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 {
 	lex->line = line;
 	lex->line_size = line_size;
-	lex->line_y++;
 	lex->i = 0;
-	lex->backslash_newline = 0;
+	if (lex->init)
+	{
+		lex->line_y++;
+		lex->i = 0;
+		lex->backslash_newline = 0;
+		lex->input_end = 0;
+	}
+	else
+		lex->init = 1;
+	return (0);
 }
 
-int					lexer_read(t_lexer *lex)
+static int			lexer_read(t_lexer *lex)
 {
 	size_t	f;
 	int		r;
 
-	lex->i = 0;
-	while (lex->i < lex->line_size)
+	while (!lex->input_end && lex->i < lex->line_size)
 	{
 		f = 0;
 		while (f < sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
 			if ((r = g_lexer_func[f](lex)) < 0)
-				return (-1);
+				return (r);
 			if (r == 0)
 				break ;
 			f++;
@@ -69,72 +71,10 @@ int					lexer_read(t_lexer *lex)
 		}
 		lex->i++;
 	}
-	if (line_end(lex) < 0)
-		return (-1);
-	//return (parser(lex));
 	return (0);
 }
 
-int					token(t_lexer *lex, enum e_lexer_type type)
-{
-	t_lexer_token	*t;
-
-	if (NULL == (t = malloc(sizeof(*t))))
-		return (-1);
-	ft_memset(t, 0, sizeof(*t));
-	if (type == TYPE_WORD || type == TYPE_OPERATOR)
-	{
-		if (NULL == (t->buffer = malloc(1)))
-		{
-			free(t);
-			return (-1);
-		}
-		t->buffer[0] = lex->line[lex->i];
-		t->buffer_size = 1;
-	}
-	else if (type == TYPE_HEREDOC) // FIXME called only when heredoc buffer == NULL?
-	{
-		//if (t->heredoc_queue[0].buffer == NULL)
-		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].buffer_size + heredoc_queue[0].i - lex->i)))
-		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].i - lex->i)))
-	}
-	t->line_x = lex->i;
-	t->type = type;
-	t->previous = lex->foot;
-	t->next = NULL;
-	if (lex->head)
-		lex->foot->next = t;
-	else
-		lex->head = t;
-	lex->foot = t;
-	return (0);
-}
-
-/*
-** assumes a token exists (tests anyway)
-*/
-
-int					append(t_lexer *lex)
-{
-	uint8_t	*t;
-
-	if (!lex->foot || lex->foot->buffer_size == 0
-			|| lex->foot->type == TYPE_HEREDOC)
-	{
-		lex->impl_error = 1;
-		return (-1);
-	}
-	if (NULL == (t = malloc(lex->foot->buffer_size + 1)))
-		return (-1);
-	ft_memmove(t, lex->foot->buffer, lex->foot->buffer_size);
-	free(lex->foot->buffer);
-	t[lex->foot->buffer_size] = lex->line[lex->i];
-	lex->foot->buffer = t;
-	lex->foot->buffer_size++;
-	return (0);
-}
-
-void				lexer_destroy(t_lexer *lex)
+static void			lexer_destroy(t_lexer *lex)
 {
 	t_lexer_token	*current;
 	t_lexer_token	*previous;
@@ -152,4 +92,78 @@ void				lexer_destroy(t_lexer *lex)
 	lex->head = NULL;
 	lex->foot = NULL;
 	// TODO destroy parser?
+}
+
+static void			lexer_debug(t_lexer *lex)
+{
+	t_lexer_token	*cur;
+
+	printer_str(&g_shell.out, "lexer_debug:\nbs=");
+	printer_int(&g_shell.out, lex->backslash_newline);
+	printer_str(&g_shell.out, " qu=");
+	printer_int(&g_shell.out, lex->quoted);
+	printer_str(&g_shell.out, " nq=");
+	printer_int(&g_shell.out, lex->next_quoted);
+	printer_str(&g_shell.out, " es=");
+	printer_ulong(&g_shell.out, lex->expansion_size);
+	printer_endl(&g_shell.out);
+	if (lex->head)
+	{
+		cur = lex->head;
+		while (cur)
+		{
+			printer_str(&g_shell.out, "token=");
+			printer_int(&g_shell.out, (int)cur->type);
+			printer_str(&g_shell.out, " line_y=");
+			printer_ulong(&g_shell.out, cur->line_y);
+			printer_str(&g_shell.out, " line_x=");
+			printer_ulong(&g_shell.out, cur->line_x);
+			printer_str(&g_shell.out, " size=");
+			printer_ulong(&g_shell.out, cur->buffer_size);
+			printer_str(&g_shell.out, " buf='");
+			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
+			printer_str(&g_shell.out, "'");
+			printer_endl(&g_shell.out);
+			cur = cur->next;
+		}
+	}
+	printer_flush(&g_shell.out);
+}
+
+int 				lexer(void)
+{
+	t_lexer	lex;
+	int		r;
+	size_t	i;
+
+	if (g_shell.line == NULL || g_shell.line_size <= 1)
+		return (0);
+	i = 0;
+	ft_memset(&lex, 0, sizeof(lex));
+	while (1)
+	{
+		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
+		if ((r = lexer_read(&lex)) < 0)
+			break ;
+		lexer_debug(&lex);
+		if (!lex.input_end)
+		{
+			if (lex.quoted)
+				readline(QUOTE_PROMPT);
+			else
+				readline(BACKSLASH_PROMPT);
+			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
+				break ;
+			i = 0;
+			continue ;
+		}
+		// TODO call parser
+		if (i + lex.i == g_shell.line_size)
+			break ;
+		i += lex.i;
+		lexer_destroy(&lex);
+		ft_memset(&lex, 0, sizeof(lex));
+	}
+	lexer_destroy(&lex);
+	return (r);
 }

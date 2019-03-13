@@ -3,167 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 18:04:47 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/19 14:07:10 by schakor          ###   ########.fr       */
+/*   Created: 2019/03/12 15:57:28 by aguillot          #+#    #+#             */
+/*   Updated: 2019/03/12 19:17:00 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static t_keymap				g_keymap[MODES][KEYMAP_SIZE] = {
-	{
-		{KEYSTR_CTRL_A, rl_beg_of_line},
-		{KEYSTR_CTRL_B, rl_backward_char},
-		{KEYSTR_CTRL_C, rl_ctrl_c},
-		{KEYSTR_CTRL_D, rl_ctrl_d},
-		{KEYSTR_CTRL_E, rl_end_of_line},
-		{KEYSTR_CTRL_F, rl_forward_char},
-		{KEYSTR_ESC_B, rl_backward_word},
-		{KEYSTR_ESC_F, rl_forward_word},
-		{KEYSTR_CTRL_X_X, rl_ctrl_x_x},
-		{KEYSTR_BACKSPACE, rl_delete_buffer},
-		{KEYSTR_DEL, rl_delete_underneath},
-		{KEYSTR_CTRL_U, rl_delete_backline},
-		{KEYSTR_CTRL_K, rl_delete_endline},
-		{KEYSTR_ESC_D, rl_delete_esc_d},
-		{KEYSTR_CTRL_W, rl_delete_ctrl_w},
-		{KEYSTR_LEFT_ARROW, rl_backward_char},
-		{KEYSTR_RIGHT_ARROW, rl_forward_char},
-		{KEYSTR_UP_ARROW, rl_get_prev_history},
-		{KEYSTR_DOWN_ARROW, rl_get_next_history},
-		{KEYSTR_HOME, rl_beg_of_line},
-		{KEYSTR_END, rl_end_of_line},
-		{KEYSTR_RETURN, rl_end_of_read}
-
-	},
-	{
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL}
-	},
-	{
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL},
-		{NULL, NULL}
-	}
-};
-
-static int					find_key_in_keymap(t_rl *rl)
+void	init_char_list(void)
 {
-	int						i;
-	int						cmp;
-	int 					mode = g_shell.el_mode;
+	g_shell.edit.char_list.head = NULL;
+	g_shell.edit.char_list.tail = NULL;
+	g_shell.edit.char_list.char_nb = 0;
+}
+
+void	init_prompt(int prompt_id)
+{
+	size_t	i;
 
 	i = 0;
-	while (i < KEYMAP_SIZE)
+	if (prompt_id == BASIC_PROMPT)
+		while (BASIC_PRMPT[i])
+			add_char_to_list((uint8_t *)&(BASIC_PRMPT[i++]), 1, 1);
+	else if (prompt_id == QUOTE_PROMPT)
+		while (QUOTE_PRMPT[i])
+			add_char_to_list((uint8_t *)&(QUOTE_PRMPT[i++]), 1, 1);
+	else if (prompt_id == BACKSLASH_PROMPT)
+		while (BACKSLASH_PRMPT[i])
+			add_char_to_list((uint8_t *)&(BACKSLASH_PRMPT[i++]), 1, 1);
+	else if (prompt_id == HEREDOC_PROMPT)
+		while (HEREDOC_PRMPT[i])
+			add_char_to_list((uint8_t *)&(HEREDOC_PRMPT[i++]), 1, 1);
+	g_shell.edit.mark = g_shell.edit.point_char;
+}
+
+int		get_term_pos(size_t *line, size_t *col)
+{
+	char	buff[32];
+	size_t	n;
+	int		r;
+
+	write(1, "\033[6n", 4);
+	buff[0] = '\0';
+	while (buff[0] != '\033')
 	{
-		cmp = ft_memcmp(g_keymap[mode][i].key, rl->bufkey, rl->bufkey_index);
-		if (cmp == 0 && rl->bufkey_index == ft_strlen(g_keymap[mode][i].key))
-		{
-			rl->keymap_index = i;
-			return (PERFECT_KEY_MATCH);
-		}
-		else if (cmp == 0)
-			return (PARTIAL_KEY_MATCH);
-		i++;
+		if (read(0, buff, 1) <= 0)
+			return (-1);
 	}
-	return (NO_KEY_MATCH);
-}
-
-static void					read_stdin(t_rl *rl)
-{
-	t_bool					stop;
-	int						find_key;
-
-	stop = FALSE;
-	rl->keymap_index = -1;
-	rl->bufkey_index = 0;
-	ft_memset(rl->bufkey, 0, 8);
-	while (stop == FALSE)
+	if (read(0, buff, 1) <= 0 || buff[0] != '[')
+		return (-1);
+	n = 0;
+	while (n < sizeof(buff) - 1 && (n == 0 || buff[n - 1] != ';'))
 	{
-		if (read(STDIN_FILENO, &rl->bufkey[rl->bufkey_index++], 1) < 0)
-			fatal_exit(SH_ENOMEM);
-		//printf("%d\n", rl->bufkey[rl->bufkey_index - 1]);
-		find_key = find_key_in_keymap(rl);
-		if (find_key == PERFECT_KEY_MATCH)
-			stop = TRUE;
-		else if (find_key == NO_KEY_MATCH)
-			stop = TRUE;
+		if(read (0, buff + n, 1) <= 0)
+			return (-1);
+		n++;
 	}
-}
-
-static void					rl_main_work(t_rl *rl)
-{
-	while (rl->reading == TRUE)
+	if (n == sizeof(buff) - 1)
+		return (-1);
+	buff[n] = '\0';
+	r = atoi(buff);
+	if (r < 1)
+		return (-1);
+	*line = (size_t)r - 1;
+	n = 0;
+	while (n < sizeof(buff) - 1 && (n == 0 || buff[n - 1] != 'R'))
 	{
-		read_stdin(rl);
-		if (rl->keymap_index >= 0)
-			g_keymap[g_shell.el_mode][rl->keymap_index].rl_command_func(rl);
-		else if (rl->keymap_index == -1)
-			rl_insert_buffer(rl, rl->bufkey[0]);
-		if (rl->bufvar.len_buf >= rl->bufvar.len_tot)
-			rl_increase_buffer(rl);
+		if(read (0, buff + n, 1) <= 0)
+			return (-1);
+		n++;
 	}
+	if (n == sizeof(buff) - 1)
+		return (-1);
+	buff[n] = '\0';
+	r = atoi(buff);
+	if (r < 1)
+		return (-1);
+	*col = (size_t)r - 1;
+	return (0);
 }
 
-static void					rl_init(t_rl *rl)
+void	init_edit(void)
 {
-	if (!(rl->buf = (uint8_t *)ft_memalloc(BUF_TMP + 1)))
-		fatal_exit(SH_ENOMEM);
-	rl->bufvar.i_char = 0;
-	rl->bufvar.len_char = 0;
-	rl->bufvar.i_buf = 0;
-	rl->bufvar.len_buf = 0;
-	rl->bufvar.len_tot = BUF_TMP;
-	ft_memset(rl->bufkey, 0, sizeof(rl->bufkey));
-	rl->bufkey_index = 0;
-	rl->reading = TRUE;
-	rl->history = g_shell.history;
-	rl->history_size = g_shell.history_size;
-	rl->history_save = g_shell.history_save;
+	size_t 	line;
+	size_t	col;
+
+	g_shell.edit.reading = TRUE;
+	g_shell.edit.ret_ctrl_c = FALSE;
+	g_shell.edit.edit_mode = MODE_EMACS;
+	g_shell.edit.point_char = NULL;
+	g_shell.edit.mark = NULL;
+	g_shell.edit.cur_base_x = 0;
+	g_shell.edit.cur_base_y = 0;
+	g_shell.edit.term_info.capa = g_shell.raw_tio;
+	g_shell.edit.term_info.origin = g_shell.cooked_tio;
+	ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max);
+	if (get_term_pos(&line, &col) < 0)
+	{
+		// TODO
+	}
+	g_shell.edit.cur_base_x = col;
+	g_shell.edit.cur_base_y = (int)line;
+	g_shell.edit.cpy_buff = NULL;
 }
 
-void						readline()
+void	readline(int prompt_id)
 {
-	t_rl					rl;
-
 	raw_terminal();
-	rl_init(&rl);
-	rl_get_prompt(&rl);
-	rl_display_prompt(rl.prompt);
-	rl_main_work(&rl);
-	g_shell.line = rl.buf;
-	g_shell.history = rl.history;
-	g_shell.history_size = rl.history_size;
-	g_shell.history_save = rl.history_save;
-	free(rl.prompt);
+	init_edit();
+	init_char_list();
+	init_prompt(prompt_id);
+	print_prompt();
+	input_controller();
 	cooked_terminal();
 }

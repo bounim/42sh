@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_delete_line.c                                   :+:      :+:    :+:   */
+/*   ft_u8_strdup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/01 18:45:35 by schakor           #+#    #+#             */
-/*   Updated: 2019/02/01 18:49:29 by schakor          ###   ########.fr       */
+/*   Created: 2019/02/16 09:41:04 by schakor           #+#    #+#             */
+/*   Updated: 2019/03/05 16:10:22 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "libft.h"
 
-void		rl_delete_backline(t_rl *rl)
+uint8_t		*ft_u8_strdup(const uint8_t *s)
 {
-	(void)rl;
-}
-
-void		rl_delete_endline(t_rl *rl)
-{
-	(void)rl;
+	return ((uint8_t *)ft_strdup((const char *)s));
 }
