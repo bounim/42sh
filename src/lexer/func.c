@@ -14,6 +14,16 @@
 
 #include <stdio.h> // XXX
 
+int		next_quoted(t_lexer *lex)
+{
+	if (lex->next_quoted)
+	{
+		lex->quoted = lex->next_quoted;
+		lex->next_quoted = 0;
+	}
+	return (1);
+}
+
 int		line_end(t_lexer *lex)
 {
 	if (lex->line[lex->i] != '\n')
@@ -124,12 +134,7 @@ int		operator_end(t_lexer *lex) // FIXME is it even useful
 
 int		quoting(t_lexer *lex)
 {
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
-	else if (!lex->quoted)
+	if (!lex->quoted)
 	{
 		if (lex->line[lex->i] == '\\')
 			lex->next_quoted = 1;

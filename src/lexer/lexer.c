@@ -16,6 +16,7 @@
 #include <unistd.h> // XXX
 
 static int			(*g_lexer_func[])(t_lexer *) = {
+	next_quoted,
 	line_end,
 	unquoted_backslash_newline,
 	heredoc,
@@ -97,6 +98,15 @@ static void			lexer_debug(t_lexer *lex)
 {
 	t_lexer_token	*cur;
 
+	printer_str(&g_shell.out, "lexer_debug:\nbs=");
+	printer_int(&g_shell.out, lex->backslash_newline);
+	printer_str(&g_shell.out, " qu=");
+	printer_int(&g_shell.out, lex->quoted);
+	printer_str(&g_shell.out, " nq=");
+	printer_int(&g_shell.out, lex->next_quoted);
+	printer_str(&g_shell.out, " es=");
+	printer_ulong(&g_shell.out, lex->expansion_size);
+	printer_endl(&g_shell.out);
 	if (lex->head)
 	{
 		cur = lex->head;
@@ -138,7 +148,10 @@ int 				lexer(void)
 		lexer_debug(&lex);
 		if (!lex.input_end)
 		{
-			readline(QUOTE_PROMPT);
+			if (lex.quoted)
+				readline(QUOTE_PROMPT);
+			else
+				readline(BACKSLASH_PROMPT);
 			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
 				break ;
 			i = 0;
