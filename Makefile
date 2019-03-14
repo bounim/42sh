@@ -21,7 +21,6 @@ SRC := \
 	lexer/lexer.c \
 	lexer/token.c \
 	main.c \
-	readline/replace_exclaim.c\
 	signal/ft_signal.c \
 	terminal/shell.c \
 	terminal/terminal.c \
@@ -39,6 +38,7 @@ SRC := \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
+	builtin/replace_exclaim.c\
 	readline/readline.c \
     readline/signal_handler.c\
     readline/readline_errors_controler.c\

@@ -48,10 +48,6 @@ void					run_shell(void)
 	t_bool run;
 
 	run = TRUE;
-	char *line;
-	line = ft_strdup("sal!12ut les gens !! vous allez bien ?");
-	line = replace_exclaim(line, g_shell.hist.history);
-	exit(1);
 	while (run == TRUE)
 	{
 		if (signal(SIGINT, ft_signal) < 0)
