@@ -219,6 +219,7 @@ size_t					get_y_pos(t_char *prev_char);
 void					update_all_pos(void);
 void					check_all_pos(void);
 void					shift_pos_up(void);
+void					shift_pos_down(void);
 void					print_prompt(void);
 void					clean_and_print(void);
 void					input_controller(void);

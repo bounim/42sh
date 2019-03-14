@@ -14,7 +14,7 @@
 
 void	supr_charac(void)
 {
-	t_char *curr;
+	t_char 			*curr;
 
 	curr = g_shell.edit.point_char;
 	if (!curr || curr == g_shell.edit.char_list.tail)
@@ -28,13 +28,24 @@ void	supr_charac(void)
 void	del_charac(void)
 {
 	t_char 			*curr;
+	struct winsize	max;
+	int				t = 0;
 
 	curr = g_shell.edit.point_char;
+	max = g_shell.edit.term_info.max;
 	if (!curr || curr->is_prompt == 1)
 		return ;
+	if (curr->prev && curr->prev->x_pos + 1 == max.ws_col
+		&& curr->prev->y_pos + 2 == max.ws_row)
+		t = 1;
 	delete_char_from_list(curr);
 	update_all_pos();
 	clean_and_print();
+	if (t == 1 && g_shell.edit.char_list.head->y_pos < 0)
+	{
+		write(1, "\n", 1);
+		shift_pos_down();
+	}
 }
 
 void	delete_backline(void)

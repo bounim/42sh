@@ -25,6 +25,19 @@ void	shift_pos_up(void)
 	}
 }
 
+void	shift_pos_down(void)
+{
+	t_char	*curr;
+
+	curr = g_shell.edit.char_list.head;
+	g_shell.edit.cur_base_y++;
+	while (curr)
+	{
+		curr->y_pos++;
+		curr = curr->next;
+	}
+}
+
 void	check_all_pos(void)
 {
 	t_char			*curr;
@@ -65,6 +78,7 @@ void	update_all_pos(void)
 {
 	t_char *curr;
 
+	//check_all_pos();
 	curr = g_shell.edit.char_list.head;
 	while (curr)
 	{
@@ -72,5 +86,4 @@ void	update_all_pos(void)
 		curr->y_pos = get_y_pos(curr->prev);
 		curr = curr->next;
 	}
-	check_all_pos();
 }

@@ -44,12 +44,15 @@ void	clean_screen(void)
 	y = g_shell.edit.cur_base_y;
 	if (y < 0)
 	{
+		while (y++ < 0)
+			ft_putstr(tgetstr("sr", NULL));
 		x = 0;
 		y = 0;
+		//sleep(2);
 	}
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	while (++i < max.ws_row)
-		ft_putstr(tgetstr("dl", NULL));
+		ft_putstr(tgetstr("dl", NULL));	
 }
 
 void	place_cursor_after_print(void)
