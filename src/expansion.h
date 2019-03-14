@@ -1,6 +1,9 @@
 #ifndef EXPANSION_H
 #define EXPANSION_H
 
+# include <sys/types.h>
+# include <pwd.h>
+# include <uuid/uuid.h>
 # include "parser.h"
 # include "lexer.h"
 

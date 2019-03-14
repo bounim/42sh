@@ -45,7 +45,7 @@ void			parser_add_tree(t_parser_node **head, t_parser_node *new)
 	if (!*head)
 	{
 		ft_putendl("adding x:");
-		if (new->type == PARSER_COMMAND)
+		if (new->type == PARSER_COMMAND && new->arg_head)
 			print_token(new->arg_head->buf, new->arg_head->size);
 		else
 			ft_putnbr(new->type);
