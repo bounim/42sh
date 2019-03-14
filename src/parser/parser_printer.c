@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "lexer.h"
+#include "expansion.h"
 
 void	print_token(uint8_t *buffer, size_t size)
 {
@@ -71,8 +72,7 @@ void	structure(t_parser_node *root, int level)
 		else if (root->arg_head)
 			print_token(root->arg_head->buf, root->arg_head->size);
 		structure(root->left, level + 1);
-	}
-	
+	}	
 }
 
 void	parser_print(t_parser_node *tree)

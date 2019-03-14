@@ -80,6 +80,8 @@ void					print_token(uint8_t *buffer, size_t size);
 void					print_word(t_word *r);
 void					print_redir(t_redir *r);
 
+void					do_expansions(t_parser_node *tree);
+
 
 
 void					parser_init(t_parser *parser);

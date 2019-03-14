@@ -22,6 +22,8 @@ static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 	ft_memset(new, 0, sizeof(*new));
 	if (*tmp)
 	{
+		printf("adding node %p to node %p of tree\n", new, n);
+		print_token((*tmp)->buffer, (*tmp)->size);
 		if (!(new->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
 			return (-1);
 		ft_memcpy(new->buf, (*tmp)->buffer, (*tmp)->size);
@@ -33,6 +35,7 @@ static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 		n->arg_head = new;
 	n->arg_foot = new;
 	n->arg_nb++;
+	printf("new node next == %p\n", n->right);
 	return (0);
 }
 
