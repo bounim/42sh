@@ -46,7 +46,7 @@ void			parser_add_tree(t_parser_node **head, t_parser_node *new)
 	{
 		ft_putendl("adding x:");
 		if (new->type == PARSER_COMMAND && new->arg_head)
-			print_token(new->arg_head->buf, new->arg_head->size);
+			print_token(new->arg_head->buffer->buf, new->arg_head->buffer->size);
 		else
 			ft_putnbr(new->type);
 		*head = new;
@@ -54,7 +54,7 @@ void			parser_add_tree(t_parser_node **head, t_parser_node *new)
 	else if (new->type == PARSER_COMMAND)
 	{
 		ft_putendl("adding cmd:");
-		print_token(new->arg_head->buf, new->arg_head->size);
+		print_token(new->arg_head->buffer->buf, new->arg_head->buffer->size);
 		parser_add_cmd(head, new);
 	}
 	else

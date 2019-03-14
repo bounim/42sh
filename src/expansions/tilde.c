@@ -12,15 +12,15 @@
 
 #include "expansion.h"
 
-size_t  tilde_prefix_len(uint8_t *buf, size_t size, size_t start, uint8_t assign)
+size_t  tilde_prefix_len(t_buffer *buffer, size_t start, uint8_t assign)
 {
 	size_t  len;
 
 	len = start;
-	if (buf[start] == '~')
+	if (buffer->buf[start] == '~')
 	{
-		while (len < size && buf[len] != '/' && (buf[len] != ':' || assign == 0)
-				&& !is_quote(buf[len])) //rajouter state quoted
+		while (len < buffer->size && buffer->buf[len] != '/' && (buffer->buf[len] != ':' || assign == 0)
+				&& !is_quote(buffer->buf[len])) //rajouter state quoted
 			len++;
 	}
 	printf("len - start = %zu\n", len - start);
@@ -61,7 +61,7 @@ char	*tilde_home(void)
 	return (result);
 }
 
-char	*tilde_login(size_t tilde_prefix_len, t_word *tmp, size_t start)
+char	*tilde_login(size_t tilde_prefix_len, t_buffer *buffer, size_t start)
 {
 	char			*login;
 	char			*result;
@@ -73,7 +73,7 @@ char	*tilde_login(size_t tilde_prefix_len, t_word *tmp, size_t start)
 	passwd = NULL;
 	if (!(login = malloc(tilde_prefix_len)))
 		return (NULL);												//set une erreur de memoire qq part
-	ft_memcpy(login, tmp->buf + start + 1, tilde_prefix_len - 1);
+	ft_memcpy(login, buffer->buf + start + 1, tilde_prefix_len - 1);
 	login[tilde_prefix_len - 1] = '\0';
 	if (!(passwd = getpwnam(login)))
 		return (NULL);
@@ -84,7 +84,7 @@ char	*tilde_login(size_t tilde_prefix_len, t_word *tmp, size_t start)
 	return (result);
 }
 
-char	*tilde_prestamp_buffer(t_word *tmp, size_t start)
+char	*tilde_prestamp_buffer(t_buffer *buffer, size_t start)
 {
 	char	*stamp;
 
@@ -93,30 +93,30 @@ char	*tilde_prestamp_buffer(t_word *tmp, size_t start)
 	{
 		if (!(stamp = malloc(start + 1)))
 			return (NULL);
-		ft_memcpy(stamp, tmp->buf, start);
+		ft_memcpy(stamp, buffer->buf, start);
 		stamp[start] = '\0';
 	}
 	return (stamp);
 }
 
-char	*tilde_stamp_buffer(t_word *tmp, size_t tilde_prefix_len, size_t start)
+char	*tilde_stamp_buffer(t_buffer *buffer, size_t tilde_prefix_len, size_t start)
 {
 	size_t	size;
 	char	*stamp;
 
 	stamp = NULL;
-	if (tmp->size != tilde_prefix_len)
+	if (buffer->size != tilde_prefix_len)
 	{
-		size = tmp->size - tilde_prefix_len - start;
+		size = buffer->size - tilde_prefix_len - start;
 		if (!(stamp = malloc(size + 1)))
 			return (NULL);
-		ft_memcpy(stamp, tmp->buf + start + tilde_prefix_len, size);
+		ft_memcpy(stamp, buffer->buf + start + tilde_prefix_len, size);
 		stamp[size] = '\0';
 	}
 	return (stamp);
 }
 
-int		tilde_append(t_word *tmp, char *pre_stamp, char *post_stamp, char *result)
+int		tilde_append(t_buffer *buffer, char *pre_stamp, char *post_stamp, char *result)
 {
 	size_t	pre_stamp_size;
 	size_t	post_stamp_size;
@@ -131,19 +131,19 @@ int		tilde_append(t_word *tmp, char *pre_stamp, char *post_stamp, char *result)
 		post_stamp_size = ft_strlen(post_stamp);
 	if (result)
 		result_size = ft_strlen(result);
-	free(tmp->buf);
-	tmp->buf = malloc(sizeof(uint8_t) * (result_size + pre_stamp_size + post_stamp_size));
-	if (!tmp->buf)
+	free(buffer->buf);
+	buffer->buf = malloc(sizeof(uint8_t) * (result_size + pre_stamp_size + post_stamp_size));
+	if (!buffer->buf)
 		return (-1);
-	ft_memset(tmp->buf, 0, tmp->size);
-	ft_memcpy(tmp->buf, pre_stamp, pre_stamp_size);
-	ft_memcpy(tmp->buf + pre_stamp_size, result, result_size);
-	ft_memcpy(tmp->buf + pre_stamp_size + result_size, post_stamp, post_stamp_size);
-	tmp->size = pre_stamp_size + result_size + post_stamp_size;
+	ft_memset(buffer->buf, 0, buffer->size);
+	ft_memcpy(buffer->buf, pre_stamp, pre_stamp_size);
+	ft_memcpy(buffer->buf + pre_stamp_size, result, result_size);
+	ft_memcpy(buffer->buf + pre_stamp_size + result_size, post_stamp, post_stamp_size);
+	buffer->size = pre_stamp_size + result_size + post_stamp_size;
 	return (0);
 }
 
-int     tilde_result(t_word *tmp, size_t start, size_t tilde_prefix_len)
+int     tilde_result(t_buffer *buffer, size_t start, size_t tilde_prefix_len)
 {
 	char		*result; //ou uint8_t ??
 	char		*pre_stamp;
@@ -153,23 +153,38 @@ int     tilde_result(t_word *tmp, size_t start, size_t tilde_prefix_len)
 	pre_stamp = NULL;
 	post_stamp = NULL;
 	if (start != 0)
+		pre_stamp = tilde_prestamp_buffer(buffer, start);
+	post_stamp = tilde_stamp_buffer(buffer, tilde_prefix_len, start);
+	if (!ft_memchr(buffer->buf, tilde_prefix_len, '\"') && !ft_memchr(buffer->buf, tilde_prefix_len, '\'')
+			&& !ft_memchr(buffer->buf, tilde_prefix_len, '\\'))
 	{
-		pre_stamp = tilde_prestamp_buffer(tmp, start);
-		printf("prestamp = %s\n", pre_stamp);
-	}
-	post_stamp = tilde_stamp_buffer(tmp, tilde_prefix_len, start);
-	if (!ft_memchr(tmp->buf, tilde_prefix_len, '\"') && !ft_memchr(tmp->buf, tilde_prefix_len, '\'')
-			&& !ft_memchr(tmp->buf, tilde_prefix_len, '\\'))
-	{
-		printf("tilde prefix len = %zu\n", tilde_prefix_len);
 		if (tilde_prefix_len == 1)
 			result = tilde_home();
 		else
-			result = tilde_login(tilde_prefix_len, tmp, start);
+			result = tilde_login(tilde_prefix_len, buffer, start);
 		if (!result)
 			return (1);
 	}
-	return (tilde_append(tmp, pre_stamp, post_stamp, result));
+	return (tilde_append(buffer, pre_stamp, post_stamp, result));
+}
+
+int     do_tilde_redir(t_redir *redir_head)
+{
+	t_redir  *tmp;
+	size_t  len;
+
+	tmp = redir_head;
+	while (tmp)
+	{
+		if (tmp->buffer->size >= 1 && tmp->buffer->buf[0] == '~')
+		{
+			len = tilde_prefix_len(tmp->buffer, 0, 0);
+			tilde_result(tmp->buffer, 0, len);
+			tmp->tilded = 1;
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 int     do_tilde_arg(t_word *arg_head)
@@ -180,10 +195,10 @@ int     do_tilde_arg(t_word *arg_head)
 	tmp = arg_head;
 	while (tmp)
 	{
-		if (tmp->size >= 1 && tmp->buf[0] == '~')
+		if (tmp->buffer->size >= 1 && tmp->buffer->buf[0] == '~')
 		{
-			len = tilde_prefix_len(tmp->buf, tmp->size, 0, 0);
-			tilde_result(tmp, 0, len);
+			len = tilde_prefix_len(tmp->buffer, 0, 0);
+			tilde_result(tmp->buffer, 0, len);
 			tmp->tilded = 1;
 		}
 		tmp = tmp->next;
@@ -201,17 +216,17 @@ int		do_tilde_assign(t_word *assign_head)
 	tmp = assign_head;
 	while (tmp)
 	{
-		if (tmp->size >= 1)
+		if (tmp->buffer->size >= 1)
 		{
 			i = 0;
-			while (i < tmp->size)
+			while (i < tmp->buffer->size)
 			{
-				if (tmp->buf[i] == '~' && tmp->buf[i - 1]
-					&& (tmp->buf[i - 1] == '=' || tmp->buf[i - 1] == ':'))
+				if (tmp->buffer->buf[i] == '~' && tmp->buffer->buf[i - 1]
+					&& (tmp->buffer->buf[i - 1] == '=' || tmp->buffer->buf[i - 1] == ':'))
 				{
-					len = tilde_prefix_len(tmp->buf, tmp->size, i, 1);
-					printf("buf[%zu] = %c\n", i, tmp->buf[i]);
-					tilde_result(tmp, i, len);
+					len = tilde_prefix_len(tmp->buffer, i, 1);
+					printf("buf[%zu] = %c\n", i, tmp->buffer->buf[i]);
+					tilde_result(tmp->buffer, i, len);
 				}
 				i++;
 			}
@@ -224,16 +239,33 @@ int		do_tilde_assign(t_word *assign_head)
 int     tilde_expansion(t_parser_node **head)
 {
 	t_word   *tmp;
+	t_redir	*redir;
 
 	ft_putendl("DOING EXPANSIONS");
 	do_tilde_arg((*head)->arg_head);
 	do_tilde_assign((*head)->assign_head);
+	do_tilde_redir((*head)->redir_head);
 	ft_putendl("IN TILDE EXPANSIONS\n");
-	tmp = (*head)->assign_head;
+	tmp = (*head)->arg_head;
+	ft_putendl("\nPRINTING EXP ARGS");
 	while (tmp)
 	{
-		print_token(tmp->buf, tmp->size);
+		print_token(tmp->buffer->buf, tmp->buffer->size);
 		tmp = tmp->next;
+	}
+	tmp = (*head)->assign_head;
+	ft_putendl("\nPRINTING EXP ASSIGNS");
+	while (tmp)
+	{
+		print_token(tmp->buffer->buf, tmp->buffer->size);
+		tmp = tmp->next;
+	}
+	redir = (*head)->redir_head;
+	ft_putendl("\nPRINTING EXP REDIRS");
+	while (redir)
+	{
+		print_token(redir->buffer->buf, redir->buffer->size);
+		redir = redir->next;
 	}
 	// do_tilde_assign((*head)->assign_head);
 	// do_tilde_redir((*head)->redir_head);

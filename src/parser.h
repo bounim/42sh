@@ -32,10 +32,9 @@ typedef struct s_word			t_word;
 
 struct 							s_word
 {
-	uint8_t		*buf;
-	size_t		size;
-	uint8_t		tilded;
-	t_word		*next;
+	t_buffer					*buffer; //changer le nom
+	uint8_t						tilded;
+	t_word						*next;
 };
 
 

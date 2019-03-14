@@ -13,7 +13,7 @@
 to do:
 
 WORD EXPANSION:
-	- tilde expansion
+	- tilde expansion				DONE
 	- parameter expansion
 	- command substitution
 	- arithmetic expansion

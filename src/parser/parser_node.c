@@ -22,12 +22,15 @@ static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 	ft_memset(new, 0, sizeof(*new));
 	if (*tmp)
 	{
-		printf("adding node %p to node %p of tree\n", new, n);
-		print_token((*tmp)->buffer, (*tmp)->size);
-		if (!(new->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		if (!(new->buffer = malloc(sizeof(*new->buffer))))
+		{
+			free(new);
 			return (-1);
-		ft_memcpy(new->buf, (*tmp)->buffer, (*tmp)->size);
-		new->size = (*tmp)->size;
+		}
+		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
+			return (-1);
+		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
+		new->buffer->size = (*tmp)->size;
 	}
 	if (n->arg_head)
 		n->arg_foot->next = new;
@@ -48,10 +51,19 @@ static int				add_assignement_word(t_parser_node *n, t_lexer_token **tmp)
 	ft_memset(new, 0, sizeof(*new));
 	if (*tmp)
 	{
-		if (!(new->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		if (!(new->buffer = malloc(sizeof(*new->buffer))))
+		{
+			free(new);
 			return (-1);
-		ft_memcpy(new->buf, (*tmp)->buffer, (*tmp)->size);
-		new->size = (*tmp)->size;
+		}
+		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		{
+			free(new->buffer);
+			free(new);
+			return (-1);
+		}
+		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
+		new->buffer->size = (*tmp)->size;
 	}
 	if (n->assign_head)
 		n->assign_foot->next = new;
@@ -73,13 +85,18 @@ static int				add_redirection(t_parser_node *n, t_lexer_token **tmp)
 	*tmp = (*tmp)->next;
 	if (*tmp)
 	{
-		if (!(new->redir_out = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		if (!(new->buffer = malloc(sizeof(*new->buffer))))
 		{
 			free(new);
 			return (-1);
 		}
-		ft_memcpy(new->redir_out, (*tmp)->buffer, (*tmp)->size);
-		new->redir_size = (*tmp)->size;
+		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		{
+			free(new);
+			return (-1);
+		}
+		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
+		new->buffer->size = (*tmp)->size;
 	}
 	if (new->redir_type == DLESS || new->redir_type == DLESSDASH)
 		new->heredoc = 1;

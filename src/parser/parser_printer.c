@@ -31,7 +31,7 @@ void		print_word(t_word *r)
 	tmp = r;
 	while (tmp)
 	{
-		print_token(tmp->buf, tmp->size);
+		print_token(tmp->buffer->buf, tmp->buffer->size);
 		tmp = tmp->next;
 	}
 }
@@ -43,7 +43,7 @@ void		print_redir(t_redir *r)
 	tmp = r;
 	while (tmp)
 	{
-		print_token(tmp->redir_out, tmp->redir_size);
+		print_token(tmp->buffer->buf, tmp->buffer->size);
 		tmp = tmp->next;
 	}
 }
@@ -70,9 +70,9 @@ void	structure(t_parser_node *root, int level)
 		if (root->type != PARSER_COMMAND)
 			print_token(root->buffer, root->size);
 		else if (root->arg_head)
-			print_token(root->arg_head->buf, root->arg_head->size);
+			print_token(root->arg_head->buffer->buf, root->arg_head->buffer->size);
 		structure(root->left, level + 1);
-	}	
+	}
 }
 
 void	parser_print(t_parser_node *tree)
@@ -84,7 +84,7 @@ void	parser_print(t_parser_node *tree)
 		ft_putendl("printing left");
 		parser_print(tree->right);
 	}
-	print_token(tree->arg_head->buf, tree->arg_head->size);
+	print_token(tree->arg_head->buffer->buf, tree->arg_head->buffer->size);
 	if (tree->left)
 	{
 		ft_putendl("printing left");

@@ -35,6 +35,12 @@ enum							e_redirect_type
 	DLESSDASH,
 };
 
+typedef struct					s_buffer
+{
+	uint8_t						*buf;
+	size_t						size;
+}								t_buffer;
+
 /*
 ** cannot_append: delimited token
 */
@@ -43,6 +49,7 @@ typedef struct s_redir			t_redir;
 struct							s_redir
 {
 	enum e_redirect_type		redir_type;
+	t_buffer					*buffer; //changer le nom
 	uint8_t						*redir_out;
 	size_t						redir_size;
 	int							io_number; //int ?????
