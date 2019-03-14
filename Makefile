@@ -21,6 +21,7 @@ SRC := \
 	lexer/lexer.c \
 	lexer/token.c \
 	main.c \
+	readline/replace_exclaim.c\
 	signal/ft_signal.c \
 	terminal/shell.c \
 	terminal/terminal.c \
@@ -52,7 +53,6 @@ SRC := \
 	readline/utils.c\
 	readline/free_controler.c\
 	readline/special_del_controler.c\
-	readline/replace_exclaim.c\
 	readline/handle_ctrl_c.c\
 
 CFLAGS ?=

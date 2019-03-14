@@ -35,18 +35,25 @@ static char		*replace_exclaim_nb(t_history *history, char *word)
 	size_t	stock;
 
 	nb = 0;
+	word++;
 	stock = ft_strlen(word);
 	while (stock--)
 	{
 		nb *= 10;
-		nb += (int)(word++) - 48;
-	}	
-	if (g_shell.hist.history_size > nb)
+		nb += (int)(*word) - 48;
+		word++;
+	}
+//	printf("ici\n");
+//	printf("size = %d | nb = %d\n", g_shell.hist.history_size, nb);
+	if (g_shell.hist.history_size < nb)
 		return (NULL);
+//	printf("ici\n");
 	while (history->bfr)
 		history = history->bfr;
+//	printf("tjr la\n");
 	while (--nb)
 		history = history->next;
+//	printf("history = %s\n", history->buf);
 	return ((char *)history->buf);
 }
 
@@ -63,7 +70,7 @@ static char		*replace_exclaim_neg(t_history *history, char *word)
 		nb *= 10;
 		nb += (int)(word++) - 48;
 	}
-	if (g_shell.hist.history_size > nb)
+	if (g_shell.hist.history_size < nb)
 		return (NULL);
 	while (--nb)
 		history = history->bfr;
@@ -72,13 +79,15 @@ static char		*replace_exclaim_neg(t_history *history, char *word)
 
 static char		*find_exclaim(char *word, t_history *hist)
 {
-	if (!word || !word[1])
+//	printf("word=%s\n", word);
+	if (!word && (!word[0] || !word[1]))
 		return (NULL);
+//	printf("%c\n",word[1]);
 	if (word[1] == '!')
 		return ((char *)hist->bfr->buf);
-	else if (word[1] >= 0 && word[1] <= 9)
+	else if (ft_isdigit(word[1]))
 		return (replace_exclaim_nb(hist, word++));
-	else if (word[0] == '-')
+	else if (word[1] == '-')
 		return (replace_exclaim_neg(hist, word++));
 	else
 		return (replace_exclaim_word(hist, word++));
@@ -115,9 +124,11 @@ char				*replace_exclaim(char *line, t_history *hist)
 	{
 		if ((j = concat_exclaim(line, i)) == 0)
 			return (NULL);
+	//	printf("%c %c\n", line[i], line[j]);
 		if (!(concat = ft_strsub(line, i, j - i + 1)) || !(bfr = ft_strsub(line, 0, i)) ||
-			!(tmp = find_exclaim(concat, hist)) || !(next = ft_strsub(line, j, ft_strlen(line))))
+			!(tmp = find_exclaim(concat, hist)) || !(next = ft_strsub(line, j + 1, ft_strlen(line) - j)))
 		{
+		//	printf("%s | %s | %s | %s\n", concat, bfr, tmp, next);
 			ft_putstr_fd("event not found: ", 2);
 			ft_putstr_fd(line + i + 1, 2);
 			write(2, "\n", 1);
@@ -126,6 +137,7 @@ char				*replace_exclaim(char *line, t_history *hist)
 		ft_strdel(&line);
 		line = ft_strfjoin(bfr, tmp, 2);
 		line = ft_strfjoin(line, next, 2);
+		printf("line = %s\n", line);
 	}
 	return (line);
 }
