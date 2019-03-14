@@ -26,6 +26,7 @@ struct					s_alias
 
 /*void		built_history(t_rl rl);*/
 
+char					*replace_exclaim(char *line, t_history *hist);
 int			built_cd(char **arg, t_envl **envl);
 int			built_echo(char **arg, int *arg_size);
 int			built_env(char **arg, t_envl *envl);

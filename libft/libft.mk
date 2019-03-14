@@ -2,15 +2,18 @@ LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
 	ft_isspace.c \
+	ft_strncmp.c \
 	ft_putchar_fd.c \
 	ft_putstr_fd.c \
 	ft_strdel.c \
+	ft_strnequ.c \
 	ft_strichr.c \
 	ft_memdel.c \
 	ft_memcpy.c \
 	ft_memcmp.c \
 	ft_memmove.c \
 	ft_memset.c \
+	ft_isdigit.c \
 	ft_stpncpy.c \
 	ft_stpncpyz.c \
 	ft_strchr.c \

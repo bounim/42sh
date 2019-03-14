@@ -38,6 +38,7 @@ SRC := \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
+	builtin/replace_exclaim.c\
 	readline/readline.c \
     readline/signal_handler.c\
     readline/readline_errors_controler.c\
@@ -52,7 +53,6 @@ SRC := \
 	readline/utils.c\
 	readline/free_controler.c\
 	readline/special_del_controler.c\
-	readline/replace_exclaim.c\
 	readline/handle_ctrl_c.c\
 
 CFLAGS ?=

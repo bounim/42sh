@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/13 16:21:40 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/13 19:22:52 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "hashmap.h"
 # include "printer.h"
 
+int		ft_isdigit(int c);
+int	ft_strnequ(char const *s1, char const *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char const *s, int fd);
 void	ft_strdel(char **as);

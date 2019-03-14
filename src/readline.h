@@ -75,6 +75,5 @@ void					rl_history_from_file(t_rl *rl, char *path);
 void					rl_file_from_history(t_rl *rl, char *path);
 int						listlen(t_history *list);
 void					rl_ctrl_c(t_rl *rl);
-char					*replace_exclaim(char *line, t_history *hist);
 
 #endif
