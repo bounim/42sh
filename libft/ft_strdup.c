@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/28 17:50:08 by emartine          #+#    #+#             */
-/*   Updated: 2019/01/28 17:50:09 by emartine         ###   ########.fr       */
+/*   Created: 2017/11/27 15:53:13 by schakor           #+#    #+#             */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#include <stdlib.h>
+#include "libft.h"
 
-typedef struct	s_test
+char	*ft_strdup(const char *s1)
 {
-	char *workdir;
-	char *input;
-	char *result;
-}				t_test;
+	char	*ret;
+	size_t	len;
 
-#endif
+	len = ft_strlen(s1);
+	if (!(ret = (char*)malloc(sizeof(*ret) * (len + 1))))
+		return (NULL);
+	return (ft_strncpyz(ret, s1, len + 1));
+}

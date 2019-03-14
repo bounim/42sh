@@ -6,177 +6,76 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2018/10/23 16:06:33 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/12 19:42:16 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "lexer_internal.h"
 #include "parser.h"
 
 #include <stdio.h> // XXX
 #include <unistd.h> // XXX
+
 static int			(*g_lexer_func[])(t_lexer *) = {
-	&lexer_operator,
-	&lexer_end_operator,
-	&lexer_quote,
-	&lexer_inquote,
-	&lexer_backslash,
-	&lexer_blank,
-	&lexer_word,
+	next_quoted,
+	line_end,
+	unquoted_backslash_newline,
+	heredoc,
+	operator_append,
+	operator_end,
+	quoting,
+	expansion,
+	operator_new,
+	unquoted_blank,
+	word_append,
+	comment,
+	word_new,
 };
 
-void		lexer_print(t_lexer_token **head)
+static int			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 {
-	t_lexer_token	*tmp;
-
-	tmp = *head;
-	ft_putendl("PRINTING LIST:");
-	while (tmp)
+	lex->line = line;
+	lex->line_size = line_size;
+	lex->i = 0;
+	if (lex->init)
 	{
-		print_token(tmp->buffer, tmp->size);
-		tmp = tmp->next;
+		lex->line_y++;
+		lex->i = 0;
+		lex->backslash_newline = 0;
+		lex->input_end = 0;
 	}
+	else
+		lex->init = 1;
+	return (0);
 }
 
-void		printstate(enum e_lexer_state st)
-{
-	if (st == LEX_ST_GEN)
-		puts("ST_GEN");
-	if (st == LEX_ST_OP)
-		puts("ST_OP");
-	if (st == LEX_ST_BLK)
-		puts("ST_BLK");
-	if (st == LEX_ST_QU)
-		puts("ST_QU");
-	if (st == LEX_ST_BS)
-		puts("ST_BS");
-	if (st == LEX_ST_WD)
-		puts("ST_WD");
-	if (st == LEX_ST_DLR)
-		puts("ST_DLR");
-	if (st == LEX_ST_NB)
-		puts("ST_NB");
-}
-
-void				lexer_init(t_lexer *lex, uint8_t *buffer, size_t length)
-{
-	ft_memset(lex, 0, sizeof(*lex));
-	lex->buffer = buffer;
-	lex->buffer_length = length;
-}
-
-int					lexer_read(t_lexer *lex)
+static int			lexer_read(t_lexer *lex)
 {
 	size_t	f;
 	int		r;
 
-	lex->i = 0;
-	while (lex->i < lex->buffer_length)
+	while (!lex->input_end && lex->i < lex->line_size)
 	{
 		f = 0;
-		// printstate(lex->state);
-		// printf("lex->buffer[%zu] = '%c'\n", lex->i, lex->buffer[lex->i]);
 		while (f < sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
 			if ((r = g_lexer_func[f](lex)) < 0)
-				return (-1);
+				return (r);
 			if (r == 0)
 				break ;
 			f++;
 		}
 		if (f == sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
 		{
-			lex->nomatch = 1;
+			lex->impl_error = 1;
 			return (-1);
 		}
-		// printf("lex quote = %d\n", lex->quote);
 		lex->i++;
 	}
-	if (lex->quote/* && (lex->state == LEX_ST_QU || lex->state == LEX_ST_BS)*/)
-	{
-		//lex->intoken = 1;
-		puts("missing quote");
-	}
 	return (0);
 }
 
-int					lexer_token(t_lexer *lex, enum e_lexer_type type)
-{
-	t_lexer_token	*t;
-
-	if (!(t = malloc(sizeof(*t))))
-		return (-1);
-	ft_memset(t, 0, sizeof(*t));
-	if (!(t->buffer = malloc(1)))
-	{
-		free(t);
-		return (-1);
-	}
-	if (!(t->args = malloc(PATH_MAX)))
-	{
-		free(t);
-		return (-1);
-	}
-	if (!(t->args_size = malloc(PATH_MAX)))
-		return (-1);
-	if (!(t->redirs = malloc(sizeof(t_redir) * PATH_MAX)))
-		return (-1);
-	t->buffer[0] = lex->buffer[lex->i];
-	t->size = 1;
-	t->buffer_position = lex->i;
-	t->type = type;
-	t->previous = lex->foot;
-	t->next = NULL;
-	if (lex->head)
-		lex->foot->next = t;
-	else
-		lex->head = t;
-	lex->foot = t;
-	lex->intoken = 1;
-	return (0);
-}
-
-void					lexer_free_token(t_lexer_token **token)
-{
-	ft_putstr("freeing ");
-	print_token((*token)->buffer, (*token)->size);
-	free((*token)->buffer);
-	free(*token);
-	*token = NULL;
-}
-
-void					lexer_free_list(t_lexer_token *head)
-{
-	t_lexer_token	*tmp;
-
-	while (head)
-	{
-		tmp = head->next;
-		free(head);
-		head = tmp;
-	}
-}
-
-/*
-** assumes a token exists
-*/
-
-int					lexer_append(t_lexer *lex, enum e_lexer_type type)
-{
-	uint8_t	*t;
-
-	if (!(t = malloc(lex->foot->size + 1)))
-		return (-1);
-	ft_memcpy(t, lex->foot->buffer, lex->foot->size);
-	free(lex->foot->buffer);
-	lex->foot->buffer = t;
-	lex->foot->buffer[lex->foot->size] = lex->buffer[lex->i];
-	lex->foot->size++;
-	lex->foot->type = type;
-	return (0);
-}
-
-void				lexer_destroy(t_lexer *lex)
+static void			lexer_destroy(t_lexer *lex)
 {
 	t_lexer_token	*current;
 	t_lexer_token	*previous;
@@ -186,9 +85,87 @@ void				lexer_destroy(t_lexer *lex)
 	{
 		previous = current;
 		current = current->next;
-		free(previous->buffer);
+		if (previous->type == LEX_TP_WD || previous->type == LEX_TP_OP)
+			free(previous->buffer);
+		// TODO free heredoc
 		free(previous);
 	}
 	lex->head = NULL;
 	lex->foot = NULL;
+	// TODO destroy parser?
+}
+
+static void			lexer_debug(t_lexer *lex)
+{
+	t_lexer_token	*cur;
+
+	printer_str(&g_shell.out, "lexer_debug:\nbs=");
+	printer_int(&g_shell.out, lex->backslash_newline);
+	printer_str(&g_shell.out, " qu=");
+	printer_int(&g_shell.out, lex->quoted);
+	printer_str(&g_shell.out, " nq=");
+	printer_int(&g_shell.out, lex->next_quoted);
+	printer_str(&g_shell.out, " es=");
+	printer_ulong(&g_shell.out, lex->expansion_size);
+	printer_endl(&g_shell.out);
+	if (lex->head)
+	{
+		cur = lex->head;
+		while (cur)
+		{
+			printer_str(&g_shell.out, "token=");
+			printer_int(&g_shell.out, (int)cur->type);
+			printer_str(&g_shell.out, " line_y=");
+			printer_ulong(&g_shell.out, cur->line_y);
+			printer_str(&g_shell.out, " line_x=");
+			printer_ulong(&g_shell.out, cur->line_x);
+			printer_str(&g_shell.out, " size=");
+			printer_ulong(&g_shell.out, cur->size);
+			printer_str(&g_shell.out, " buf='");
+			printer_bin(&g_shell.out, cur->buffer, cur->size);
+			printer_str(&g_shell.out, "'");
+			printer_endl(&g_shell.out);
+			cur = cur->next;
+		}
+	}
+	printer_flush(&g_shell.out);
+}
+
+int 				lexer(void)
+{
+	t_lexer		lex;
+	t_parser	parser;
+	int			r;
+	size_t		i;
+
+	if (g_shell.line == NULL || g_shell.line_size <= 1)
+		return (0);
+	i = 0;
+	ft_memset(&lex, 0, sizeof(lex));
+	while (1)
+	{
+		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
+		if ((r = lexer_read(&lex)) < 0)
+			break ;
+		lexer_debug(&lex);
+		if (!lex.input_end)
+		{
+			if (lex.quoted)
+				readline(QUOTE_PROMPT);
+			else
+				readline(BACKSLASH_PROMPT);
+			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
+				break ;
+			i = 0;
+			continue ;
+		}
+		parser_create_tree(&parser, &lex); // XXX
+		if (i + lex.i == g_shell.line_size)
+			break ;
+		i += lex.i;
+		lexer_destroy(&lex);
+		ft_memset(&lex, 0, sizeof(lex));
+	}
+	lexer_destroy(&lex);
+	return (r);
 }

@@ -34,7 +34,7 @@ void						parser_create_args(t_lexer_token **head)
 		(*head)->args_nb++;
 		prev = cur;
 		cur = cur->next;
-		lexer_free_token(&prev);
+		//lexer_free_token(&prev);
 	}
 	if (cur && cur->type != LEX_TP_WD)
 		(*head)->next = cur;
@@ -87,7 +87,7 @@ int								parser_create_tree(t_parser *parser, t_lexer *lexer)
 	if (!(parser = malloc(sizeof(*parser))))
 		return (-1);
 	parser_init(parser);
-	lexer_print(&lexer->head);
+	//lexer_print(&lexer->head);
 	tmp = lexer->head;
 	while (tmp)
 	{

@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   free_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/18 01:28:24 by kberisha          #+#    #+#             */
-/*   Updated: 2017/11/22 17:01:13 by kberisha         ###   ########.fr       */
+/*   Created: 2018/10/29 21:45:10 by schakor           #+#    #+#             */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "twenty_one_sh.h"
 
-void	ft_putstr(char *s)
+void			clean_envl(t_envl *list)
 {
-	size_t	i;
+	t_envl		*tmp;
 
-	i = 0;
-	if (s)
+	while (list)
 	{
-		while (s[i])
-		{
-			ft_putchar(s[i]);
-			i++;
-		}
+		free(list->name);
+		free(list->value);
+		tmp = list;
+		list = list->next;
+		if (tmp)
+			free(tmp);
 	}
+}
+
+void			clean_shell(void)
+{
+	clean_envl(g_shell.envl);
 }

@@ -6,16 +6,29 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 16:17:22 by emartine          #+#    #+#             */
-/*   Updated: 2018/03/07 16:17:24 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printer.h"
 
-void	printer_int(t_printer_handle *handle, int n)
+static size_t	printer_int_length(int nbr)
 {
-	char	buffer[6];
-	char	*bufferptr;
+	size_t	length;
+
+	length = nbr < 0 ? 2 : 1;
+	while (nbr < -9 || nbr > 9)
+	{
+		length++;
+		nbr /= 10;
+	}
+	return (length);
+}
+
+void			printer_int(t_printer *handle, int n)
+{
+	uint8_t	buffer[6];
+	uint8_t	*bufferptr;
 	size_t	length;
 	size_t	i;
 
@@ -23,7 +36,7 @@ void	printer_int(t_printer_handle *handle, int n)
 	if (length > 6)
 		return ;
 	i = length;
-	bufferptr = (char *)buffer;
+	bufferptr = (uint8_t *)buffer;
 	if (n < 0)
 	{
 		*(bufferptr++) = '-';

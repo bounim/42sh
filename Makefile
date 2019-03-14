@@ -1,40 +1,77 @@
 NAME ?= 21sh
 
 SRC := \
-	main.c \
+	cleaner/fatal_exit.c \
+	cleaner/free_term.c \
+	env/addlast_envl.c \
+	env/envarr_2_envl.c \
+	env/get_env_val.c \
+	env/init_shell_envl.c \
+	env/push_env.c \
+	env/dup_envl.c \
+	env/free_envl.c \
+	env/print_envl.c \
+	history/controler_history.c \
+	history/down_history.c \
+	history/history.c \
+	history/init_shell_history.c \
+	history/list_history.c \
+	history/up_history.c \
+	lexer/func.c \
 	lexer/lexer.c \
-	lexer/lexer_func.c \
-	lexer/lexer_error.c \
+	lexer/token.c \
+	main.c \
+	signal/ft_signal.c \
+	terminal/shell.c \
+	terminal/terminal.c \
+	ft.c \
+	builtin/built_history.c \
+	builtin/built_cd.c \
+	builtin/built_echo.c \
+	builtin/built_env.c \
+	builtin/built_extra.c \
+	builtin/built_setenv.c \
+	builtin/built_unsetenv.c\
+	builtin/built_set.c \
+	builtin/built_unset.c \
+	builtin/built_export.c \
+	builtin/built_alias.c \
+	builtin/built_unalias.c \
+	builtin/built_alias_extra.c \
+	readline/readline.c \
+    readline/signal_handler.c\
+    readline/readline_errors_controler.c\
+	readline/character_controler.c\
+	readline/calculate_pos.c\
+	readline/print_controler.c\
+	readline/input_controler.c\
+	readline/movement_controler.c\
+	readline/special_movement_controler.c\
+	readline/del_controler.c\
+	readline/copy_controler.c\
+	readline/utils.c\
+	readline/free_controler.c\
+	readline/special_del_controler.c\
+	readline/replace_exclaim.c\
+	readline/handle_ctrl_c.c\
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \
 	expansions/tilde.c \
-	utils/canonical_path.c \
 	utils/is.c
-	# parser/parser.c \
 
-TEST_CANONICAL_PATH_NAME := canonical_path
-TEST_CANONICAL_PATH_SRC := \
-	utils/canonical_path.c
-
-TEST := \
-	$(TEST_CANONICAL_PATH_NAME)
-
-CFLAGS ?= -fsanitize=address
+CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror -g3
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
+#LDLIBS += -ltermcap
+LDLIBS += -lncurses
 
 OBJDIR ?= obj
 SRCDIR := src
 OBJ_PREFIX := $(OBJDIR)/$(SRCDIR)/
 OBJ := $(addprefix $(OBJ_PREFIX),$(SRC:.c=.o))
-TESTDIR := test
-TEST_OBJ_PREFIX := $(OBJDIR)/$(TESTDIR)/
-
-TEST_CANONICAL_PATH_OBJ := $(TEST_OBJ_PREFIX)$(TEST_CANONICAL_PATH_NAME).o \
-	$(addprefix $(OBJ_PREFIX),$(TEST_CANONICAL_PATH_SRC:.c=.o))
 
 .PHONY: all
 all: $(NAME)
@@ -55,7 +92,7 @@ clean: local_clean libft_clean
 
 .PHONY: fclean
 fclean: local_clean libft_fclean
-	$(RM) $(NAME) test/$(TEST_CANONICAL_PATH_NAME)
+	$(RM) $(NAME)
 
 .PHONY: re
 re:
@@ -64,16 +101,6 @@ re:
 
 .PHONY: local_clean
 local_clean:
-	$(RM) $(OBJ) $(TEST_CANONICAL_PATH_OBJ)
-	@$(RM) $(OBJ:.o=.d) $(TEST_CANONICAL_PATH_OBJ:.o=.d)
+	$(RM) $(OBJ)
+	@$(RM) $(OBJ:.o=.d)
 	@rmdir -p $(sort $(dir $(OBJ))) 2>/dev/null || true
-
-.PHONY: test
-test: $(addprefix test_,$(TEST))
-
-$(TESTDIR)/$(TEST_CANONICAL_PATH_NAME): $(TEST_CANONICAL_PATH_OBJ) $(LIBFT_BIN)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(TEST_CANONICAL_PATH_OBJ) $(LDLIBS)
-
-.PHONY: test_$(TEST_CANONICAL_PATH_NAME)
-test_$(TEST_CANONICAL_PATH_NAME): $(TESTDIR)/$(TEST_CANONICAL_PATH_NAME)
-	$^

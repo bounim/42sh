@@ -16,7 +16,7 @@
 #include <stdio.h> //a enleverrrr
 #include <stdlib.h>
 #include <unistd.h>
-#include "lexer.h"
+#include "lexer/lexer_internal.h"
 
 enum				e_parser_type
 {
@@ -96,5 +96,6 @@ uint8_t         		is_quote(uint8_t c);
 uint8_t					is_sep_operator(t_lexer_token *t);
 enum e_parser_type		get_node_type(t_lexer_token *token);
 
+enum e_redirect_type	get_redirect(uint8_t *buffer, size_t size);
 
 #endif
