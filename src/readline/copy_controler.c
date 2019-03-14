@@ -65,9 +65,11 @@ void	paste_copy(void)
 	{
 		len = ft_wchar_len(buff + i);
 		add_char_to_list(buff + i, len, 0);
-		clean_and_print();
+		check_all_pos();
+		update_all_pos();
 		i += len;
 	}
+	clean_and_print();
 }
 
 void	copy_all_line(void)

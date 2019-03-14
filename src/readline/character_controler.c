@@ -20,6 +20,7 @@ void	delete_char_from_list(t_char *curr)
 	next = curr->next;
 	prev = curr->prev;
 	free(curr);
+	curr = NULL;
 	if (next)
 		next->prev = prev;
 	else

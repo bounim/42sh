@@ -126,11 +126,3 @@ void	print_history(void)
 	buff_to_charlist(g_shell.hist.history->buf);
 	clean_and_print();
 }
-/*
-void	rl_add_history(t_rl *rl)
-{
-	t_history	*new_ele;
-
-	new_ele = new_hist(rl->buf);
-	rl->history = add_hist(rl->history, new_ele);
-}*/

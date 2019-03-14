@@ -25,6 +25,22 @@ void	shift_pos_up(void)
 	}
 }
 
+void	check_all_pos(void)
+{
+	t_char			*curr;
+	struct winsize	max;
+
+	curr = g_shell.edit.char_list.tail;
+	max = g_shell.edit.term_info.max;
+	if (curr->y_pos + 1 == max.ws_row
+			&& (curr->x_pos + 1 == max.ws_col || curr->charac[0] == '\n'))
+	{
+		if (curr->charac[0] != '\n')
+			write(1, "\n", 1);
+		shift_pos_up();
+	}
+}
+
 size_t	get_x_pos(t_char *prev_char)
 {
 	if (prev_char == NULL || prev_char->charac[0] == '\n'
@@ -56,4 +72,5 @@ void	update_all_pos(void)
 		curr->y_pos = get_y_pos(curr->prev);
 		curr = curr->next;
 	}
+	check_all_pos();
 }

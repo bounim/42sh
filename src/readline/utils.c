@@ -60,22 +60,6 @@ void	return_fn(void)
 	g_shell.line_size = buff_size + 1;
 }
 
-void	check_all_pos(void)
-{
-	t_char			*curr;
-	struct winsize	max;
-
-	curr = g_shell.edit.char_list.tail;
-	max = g_shell.edit.term_info.max;
-	if (curr->y_pos + 1 == max.ws_row
-			&& (curr->x_pos + 1 == max.ws_col || curr->charac[0] == '\n'))
-	{
-		if (curr->charac[0] != '\n')
-			write(1, "\n", 1);
-		shift_pos_up();
-	}
-}
-
 void	eot_fn(void)
 {
 	if (g_shell.edit.char_list.tail->is_prompt == 1)

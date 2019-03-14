@@ -27,7 +27,7 @@ void	supr_charac(void)
 
 void	del_charac(void)
 {
-	t_char *curr;
+	t_char 			*curr;
 
 	curr = g_shell.edit.point_char;
 	if (!curr || curr->is_prompt == 1)
