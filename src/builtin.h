@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 14:34:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:40:36 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void		print_alias(t_alias *alias);
 void		free_alias(t_alias *alias);
 int			built_type(char **arg, t_envl **envl);
 int			put_error(char *sh, char *cmd, char *arg, char *error);
-int			check_opts(char **arg, t_opts *flag);
+int			check_opts(char **arg, t_opts *flag, char opts);
 
 #endif

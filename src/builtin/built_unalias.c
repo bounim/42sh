@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 11:23:54 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:52:20 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,18 @@
 
 static int	start_arg_unalias(char **arg, int *opts)
 {
-	int	i;
-	
-	i = 1;
-	*opts = 0;
-	while (arg[i])
+	t_opts	flag;
+	int		i;
+
+	i = 0;
+	if ((i = check_opts(arg, &flag, 'a')) != -1)
 	{
-		if (ft_strequ(arg[i], "-a"))
+		if (flag.a == 1)
 			*opts = 1;
-		else if (ft_strequ(arg[i], "--"))
-			return (i + 1);
-		else if (arg[i][0] == '-' && !ft_strequ(arg[i], "-a"))
-		{
-			ft_putstr_fd("sh: unalias: ", 2);
-			ft_putstr_fd(arg[i], 2);
-			ft_putstr_fd(": invalid option\n", 2);
-			return (-1);
-		}
-		else
-			return (i);
-		i++;
+		return (i);
 	}
-	return (i);
+	ft_putstr_fd("unalias: usage: unalias [-a] name [name ...]\n", 2);
+	return (-1);
 }
 
 int		unset_alias(char *arg, t_alias **alias)
@@ -78,10 +68,7 @@ int		built_unalias(char **arg, t_alias **alias)
 	int	i;
 
 	if ((i = start_arg_unalias(arg, &opts)) == -1)
-	{
-		ft_putstr_fd("unalias: usage: unalias [-a] name [name ...]\n", 2);
-		return (1);
-	}
+		return (0);
 	if (opts == 1)
 		free_alias(*alias);
 	else

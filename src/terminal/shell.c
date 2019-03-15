@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/15 14:35:11 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:02:18 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,20 @@ void					run_shell(void)
 {
 	t_bool run;
 
-	char	*arg[5];
+/*	char	*arg[5];
 	t_opts	flag;
 	int		i;
 
 	arg[0] = "cd";
-	arg[1] = "-apPflti";
+	arg[1] = "-ap-flti";
 	arg[2] = "salut les gens";
 	arg[3] = 0;
 	i = 0;
-	i = check_opts(arg, &flag);
+	if ((i = check_opts(arg, &flag) == -1))
+			exit(1);
 	printf("i = %d\n", i);
 	printf("%d | %d | %d\n", flag.a, flag.pp, flag.f);
+	exit(1);*/
 	run = TRUE;
 	while (run == TRUE)
 	{

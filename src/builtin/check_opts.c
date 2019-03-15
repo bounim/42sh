@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:18:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 14:34:33 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:48:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ static void		print_flag_error(char *str, int i, char *cmd)
 	buf = ft_strdup("-");
 	buf2 = ft_strsub(str, i, 1);
 	buf = ft_strfjoin(buf, buf2, 2);
-	put_error("sh: ", cmd, buf, "invalid option");
+	put_error("sh: ", cmd, buf, "invalid option\n");
 }
 
-static t_opts	*empty_flag(char *arg, t_opts *flag, char *cmd)
+static t_opts	*empty_flag(char *arg, t_opts *flag, char *cmd, char opts)
 {
 	int	i;
 
 	i = 1;
 	while (arg[i])
 	{
-		if (!ft_isalnum(arg[i]))
+		if (!ft_isalnum(arg[i]) || arg[i] == opts)
 		{
 			print_flag_error(arg, i, cmd);
 			return (NULL);
@@ -66,7 +66,7 @@ static t_opts	*init_flag(t_opts *flag)
 	return (flag);
 }
 
-int		check_opts(char **arg, t_opts *flag)
+int		check_opts(char **arg, t_opts *flag, char opts)
 {
 	int		i;
 	
@@ -76,7 +76,7 @@ int		check_opts(char **arg, t_opts *flag)
 	{
 		if (arg[i][0] == '-')
 		{
-			if ((flag = empty_flag(arg[i], flag, arg[0])))
+			if ((flag = empty_flag(arg[i], flag, arg[0], opts)) == NULL)
 				return (-1);
 		}
 		else if (ft_strequ(arg[i], "--"))

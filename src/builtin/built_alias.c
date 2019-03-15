@@ -6,37 +6,29 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 11:48:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:49:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static int	start_arg_alias(char **arg, int *opts)
+static int		check_opts_alias(char **arg, int *opts)
 {
-	int	i;
-	
-	i = 1;
-	*opts = 0;
-	while (arg[i])
+	t_opts	flag;
+	int		i;
+
+	i = 0;
+	if ((i = check_opts(arg, &flag, 'p')) != -1)
 	{
-		if (ft_strequ(arg[i], "-p"))
+		if (flag.p == 1)
 			*opts = 1;
-		else if (ft_strequ(arg[i], "--"))
-			return (i + 1);
-		else if ((arg[i][0] == '-') && !ft_strequ(arg[i], "-p"))
-		{
-			put_error("sh: ", "alias", arg[i], "invalid option\n");
-			return (-1);
-		}
-		else
-			return (i);
-		i++;
+		return (i);
 	}
-	return (i);
+	ft_putstr_fd("alias: usage: alias [-p] [name[=value] ... ]\n", 2);
+	return (-1);
 }
 
-int		alias_var_egual(char *arg, t_alias **alias)
+static int		alias_var_egual(char *arg, t_alias **alias)
 {
 	t_alias	*tmp;
 	char	*name;
@@ -65,7 +57,7 @@ int		alias_var_egual(char *arg, t_alias **alias)
 	return (1);
 }
 
-int		alias_var(char *arg, t_alias **alias)
+static int		alias_var(char *arg, t_alias **alias)
 {
 	t_alias	*tmp;
 
@@ -93,11 +85,8 @@ int		built_alias(char **arg, t_alias **alias)
 	int	i;
 	int	opts;
 
-	if ((i = start_arg_alias(arg, &opts)) == -1)
-	{
-		ft_putstr_fd("alias: usage: alias [-p] [name[=value] ... ]\n", 2);
-		return (0);
-	}
+	if ((i = check_opts_alias(arg, &opts)) == -1)
+		return (1);
 	if (opts == 1)
 		print_alias(*alias);
 	while (arg[i])

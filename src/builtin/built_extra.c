@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 14:39:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 11:45:12 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:57:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int				built_env_find_last_cmd(char **arg)
 			stock = 1;
 			i++;
 		}
-		else if (ft_strequ(arg[i], "-i") && stock == 1)
+		else if (ft_strnequ(arg[i], "-i", 2) && stock == 1)
 		{
 			stock = 1;
 			i++;
