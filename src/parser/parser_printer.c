@@ -12,7 +12,7 @@
 
 #include "parser.h"
 #include "lexer.h"
-#include "expansion.h"
+#include "expansions.h"
 
 void	print_token(uint8_t *buffer, size_t size)
 {
