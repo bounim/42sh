@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 11:35:06 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 11:50:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,8 +184,10 @@ static int		cd_first_arg(char **arg, int *opts)
 			l = 1;
 		else if (ft_strequ(arg[i], "-P") && l == 0)
 			*opts = 1;
-		else if (!ft_strequ(arg[i], "-P") || !ft_strequ(arg[i], "-L") || !ft_strequ(arg[i], "--"))
-			return (i);
+		else if (ft_strequ(arg[i], "--"))
+			return (i + 1);
+		else if (arg[i][0] == '-' && arg[i][1] != 'P')
+			return (-1);
 		i++;
 	}
 	return (i);

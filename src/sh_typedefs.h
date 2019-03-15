@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:27:19 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 18:04:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 13:08:22 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ typedef struct s_char_list		t_char_list;
 typedef struct s_keymap			t_keymap;
 typedef struct s_term			t_term;
 typedef struct s_hist			t_hist;
+typedef struct s_opts			t_opts;
 
 #endif

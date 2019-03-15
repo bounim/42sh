@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 19:33:35 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/15 14:35:11 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,22 @@ void					run_shell(void)
 {
 	t_bool run;
 
+	char	*arg[5];
+	t_opts	flag;
+	int		i;
+
+	arg[0] = "cd";
+	arg[1] = "-apPflti";
+	arg[2] = "salut les gens";
+	arg[3] = 0;
+	i = 0;
+	i = check_opts(arg, &flag);
+	printf("i = %d\n", i);
+	printf("%d | %d | %d\n", flag.a, flag.pp, flag.f);
 	run = TRUE;
 	while (run == TRUE)
 	{
+
 		if (signal(SIGINT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
 		if (signal(SIGABRT, ft_signal) < 0)

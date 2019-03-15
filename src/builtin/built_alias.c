@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 18:13:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 11:48:08 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ static int	start_arg_alias(char **arg, int *opts)
 			*opts = 1;
 		else if (ft_strequ(arg[i], "--"))
 			return (i + 1);
+		else if ((arg[i][0] == '-') && !ft_strequ(arg[i], "-p"))
+		{
+			put_error("sh: ", "alias", arg[i], "invalid option\n");
+			return (-1);
+		}
 		else
 			return (i);
 		i++;
@@ -88,7 +93,11 @@ int		built_alias(char **arg, t_alias **alias)
 	int	i;
 	int	opts;
 
-	i = start_arg_alias(arg, &opts);
+	if ((i = start_arg_alias(arg, &opts)) == -1)
+	{
+		ft_putstr_fd("alias: usage: alias [-p] [name[=value] ... ]\n", 2);
+		return (0);
+	}
 	if (opts == 1)
 		print_alias(*alias);
 	while (arg[i])

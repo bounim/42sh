@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/06 18:49:05 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:17:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int			built_echo(char **arg, int *arg_size)
 	int		i;
 
 	i = 1;
-	ft_putstr("start of line");
 	write(1, "\n", 1);
 	while (arg[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 18:36:35 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 11:23:54 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ static int	start_arg_unalias(char **arg, int *opts)
 			*opts = 1;
 		else if (ft_strequ(arg[i], "--"))
 			return (i + 1);
+		else if (arg[i][0] == '-' && !ft_strequ(arg[i], "-a"))
+		{
+			ft_putstr_fd("sh: unalias: ", 2);
+			ft_putstr_fd(arg[i], 2);
+			ft_putstr_fd(": invalid option\n", 2);
+			return (-1);
+		}
 		else
 			return (i);
 		i++;
@@ -70,11 +77,13 @@ int		built_unalias(char **arg, t_alias **alias)
 	int	opts;
 	int	i;
 
-	i = start_arg_unalias(arg, &opts);
+	if ((i = start_arg_unalias(arg, &opts)) == -1)
+	{
+		ft_putstr_fd("unalias: usage: unalias [-a] name [name ...]\n", 2);
+		return (1);
+	}
 	if (opts == 1)
 		free_alias(*alias);
-	else if (!arg[i])
-		ft_putstr_fd("unalias: usage: unalias [-a] name [name ...]\n", 2);
 	else
 	{
 		while (arg[i])

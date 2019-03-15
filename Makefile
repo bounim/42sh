@@ -38,7 +38,10 @@ SRC := \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
+	builtin/built_type.c\
 	builtin/replace_exclaim.c\
+	builtin/print_general_error.c\
+	builtin/check_opts.c\
 	readline/readline.c \
     readline/signal_handler.c\
     readline/readline_errors_controler.c\

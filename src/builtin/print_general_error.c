@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_defines.h                                  :+:      :+:    :+:   */
+/*   print_general_error.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/04 12:17:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 11:55:15 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/15 11:53:16 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/15 13:07:17 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_DEFINES_H
-# define BUILTIN_DEFINES_H
+#include "twenty_one_sh.h"
 
-# define	ENV_OK					0
-# define	ENV_ERROR				125
-# define	ENV_FLAG_ERROR			126
-# define	ENV_UTILITY_ERROR		127
-# define	ENV_USAGE_ERROR			124
-
-#endif
+int				put_error(char *sh, char *cmd, char *arg, char *error)
+{
+	if (sh)
+		ft_putstr_fd("sh: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error, 2);
+	return (0);
+}

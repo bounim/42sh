@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 18:46:19 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:34:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@
 **	builtin functions header
 */
 
+struct					s_opts
+{
+	int		a;
+	int		p;
+	int		l;
+	int		f;
+	int		pp;
+	int		t;
+	int		i;
+};
+
+
 struct					s_alias
 {
 	char				*name;
@@ -26,7 +38,7 @@ struct					s_alias
 
 /*void		built_history(t_rl rl);*/
 
-char					*replace_exclaim(char *line, t_history *hist);
+char		*replace_exclaim(char *line, t_history *hist);
 int			built_cd(char **arg, t_envl **envl);
 int			built_echo(char **arg, int *arg_size);
 int			built_env(char **arg, t_envl *envl);
@@ -44,5 +56,8 @@ void		push_alias(t_alias **alias, char *name, char *value);
 t_alias		*addlast_alias(t_alias *head, t_alias *new);
 void		print_alias(t_alias *alias);
 void		free_alias(t_alias *alias);
+int			built_type(char **arg, t_envl **envl);
+int			put_error(char *sh, char *cmd, char *arg, char *error);
+int			check_opts(char **arg, t_opts *flag);
 
 #endif
