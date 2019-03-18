@@ -20,5 +20,4 @@ void	put_in_background(t_job *job, int cont)
 	if (cont)
 		if (kill(-job->pgid, SIGCONT) < 0)
 			ft_putstr_fd("kill (SIGCONT)", 2);
-
 }

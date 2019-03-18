@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:18:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 15:48:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/18 13:35:55 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_opts	*empty_flag(char *arg, t_opts *flag, char *cmd, char opts)
 	i = 1;
 	while (arg[i])
 	{
-		if (!ft_isalnum(arg[i]) || arg[i] == opts)
+		if (!ft_isalnum(arg[i]) || (opts != 0 && arg[i] != opts))
 		{
 			print_flag_error(arg, i, cmd);
 			return (NULL);
@@ -83,6 +83,7 @@ int		check_opts(char **arg, t_opts *flag, char opts)
 			return (i + 1);
 		else
 			return (i);
+		i++;
 	}
 	return (i);
 }
