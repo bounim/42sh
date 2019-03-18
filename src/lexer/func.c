@@ -160,6 +160,8 @@ int		expansion(t_lexer *lex)
 			lex->expansion_stack[lex->expansion_size++] = lex->line[lex->i];
 		}
 		lex->next_expansion = 0;
+		if (lex->line[lex->i] == '$')
+			return (1);
 	}
 	if (lex->expansion_size > 0)
 	{
