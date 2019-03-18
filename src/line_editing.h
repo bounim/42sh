@@ -44,7 +44,8 @@ enum					e_errnum
 	NO_TERM_ENV, 
 	NO_TERM_INFO,
 	CANT_MODIFY_TERM,
-	MALLOC_ERROR
+	MALLOC_ERROR,
+	EXIT
 };
 
 /*
@@ -192,19 +193,16 @@ typedef struct 				 s_term
 typedef struct 					s_edit
 {
 	t_char 				*point_char;
+	t_char				*mark;
+	t_char_list			char_list;
+	t_term				term_info;
 	int					reading;
 	int					ret_ctrl_c;
 	int					edit_mode;
-	t_char				*mark;
 	size_t				cur_base_x;
 	int					cur_base_y;
 	uint8_t				*cpy_buff;
-	t_char_list			char_list;
-	t_term				term_info;
-	//t_cpy				cpy;
 }								t_edit;
-
-//t_edit			g_edit;
 
 void					init_signals(void);
 void					signal_handler(int signo);
@@ -221,6 +219,7 @@ void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
 void					print_prompt(void);
+void					clean_screen(void);
 void					clean_and_print(void);
 void					input_controller(void);
 void					move_up(void);

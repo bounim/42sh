@@ -20,6 +20,8 @@ static void	print_usage(void)
 
 void		readline_errors_controler(int errnum)
 {
+	cooked_terminal();
+	ft_putstr(tgetstr("cr", NULL));
 	if (errnum == PRINT_USAGE)
 		print_usage();
 	else if (errnum == NO_TERM_ENV)
@@ -28,7 +30,8 @@ void		readline_errors_controler(int errnum)
 		ft_putstr("Can't retreive term info. Exit\n");
 	else if (errnum == MALLOC_ERROR)
 		ft_putstr("Malloc error\n");
+	else if (errnum == EXIT)
+		ft_putstr("Exit(0)\n");
 	//free_shit();
-	cooked_terminal();
 	exit(1);
 }

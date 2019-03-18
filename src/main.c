@@ -16,7 +16,7 @@ t_shell				g_shell;
 
 int		main(int ac, char **av, char **env)
 {
-	//init_signals();
+	init_signals();
 	init_shell(ac, av, env);
 	run_shell();
 	clean_shell();

@@ -22,6 +22,7 @@ SRC := \
 	lexer/token.c \
 	main.c \
 	signal/ft_signal.c \
+	signal/signal_handler.c \
 	terminal/shell.c \
 	terminal/terminal.c \
 	ft.c \
