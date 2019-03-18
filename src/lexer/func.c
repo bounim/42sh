@@ -83,7 +83,7 @@ int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 		{ // delimiter
 			lex->heredoc--;
 			lex->heredoc_queue++; // FIXME test
-			//return (token(lex, TYPE_HEREDOC));
+			//return (token(lex, LEX_TP_HD));
 		}
 		else // FIXME new token or append line??
 		{
@@ -106,9 +106,9 @@ int		operator_append(t_lexer *lex)
 		return (1);
 	ch = lex->line[lex->i];
 	if (lex->foot != NULL && !lex->foot->cannot_append
-			&& lex->foot->type == TYPE_OPERATOR && ch != ';')
+			&& lex->foot->type == LEX_TP_OP && ch != ';')
 	{
-		s = lex->foot->buffer_size;
+		s = lex->foot->size;
 		op = lex->foot->buffer;
 		if ((ch == '|' && s == 1 && (op[0] == '|' || op[0] == '>'))
 				|| (ch == '&' && s == 1 && (op[0] == '&' || op[0] == '<'
@@ -127,7 +127,7 @@ int		operator_append(t_lexer *lex)
 
 int		operator_end(t_lexer *lex) // FIXME is it even useful
 {
-	if (lex->foot != NULL && lex->foot->type == TYPE_OPERATOR)
+	if (lex->foot != NULL && lex->foot->type == LEX_TP_OP)
 		lex->foot->cannot_append = 1;
 	return (1);
 }
@@ -188,10 +188,10 @@ int		operator_new(t_lexer *lex)
 	if ((ch == '<' || ch == '>') && lex->foot != NULL && lex->foot->is_number
 			&& lex->i > 0 && (lex->line[lex->i - 1] >= '0'
 				&& lex->line[lex->i - 1] <= '9'))
-		lex->foot->type = TYPE_IO_NUMBER;
+		lex->foot->type = LEX_TP_IO;
 	if (ch == ';' || ch == '|' || ch == '&' || ch == '<' || ch == '>')
 	{
-		return (token(lex, TYPE_OPERATOR));
+		return (token(lex, LEX_TP_OP));
 	}
 	return (1);
 }
@@ -211,7 +211,7 @@ int		unquoted_blank(t_lexer *lex)
 int		word_append(t_lexer *lex)
 {
 	if (lex->foot != NULL
-			&& lex->foot->type == TYPE_WORD && !lex->foot->cannot_append)
+			&& lex->foot->type == LEX_TP_WD && !lex->foot->cannot_append)
 	{
 		if (append(lex) < 0)
 			return (-1);
@@ -241,7 +241,7 @@ int		comment(t_lexer *lex)
 
 int		word_new(t_lexer *lex)
 {
-	if (token(lex, TYPE_WORD) < 0)
+	if (token(lex, LEX_TP_WD) < 0)
 		return (-1);
 	if (lex->line[lex->i] >= '0' && lex->line[lex->i] <= '9')
 		lex->foot->is_number = 1;

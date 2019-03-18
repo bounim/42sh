@@ -38,30 +38,36 @@ SRC := \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
-	builtin/built_type.c\
-	builtin/replace_exclaim.c\
-	builtin/print_general_error.c\
-	builtin/check_opts.c\
+	builtin/built_type.c \
+	builtin/replace_exclaim.c \
+	builtin/print_general_error.c \
+	builtin/check_opts.c \
 	readline/readline.c \
-  	readline/signal_handler.c\
-  	readline/readline_errors_controler.c\
-	readline/character_controler.c\
-	readline/calculate_pos.c\
-	readline/print_controler.c\
-	readline/input_controler.c\
-	readline/movement_controler.c\
-	readline/special_movement_controler.c\
-	readline/del_controler.c\
-	readline/copy_controler.c\
-	readline/utils.c\
-	readline/free_controler.c\
-	readline/special_del_controler.c\
-	readline/handle_ctrl_c.c\
-	job_control/manage_job.c\
-	job_control/put_in_xground.c\
-	job_control/launch_job.c\
-	job_control/stop_job.c\
-	job_control/continue_job.c
+	readline/signal_handler.c \
+	readline/readline_errors_controler.c \
+	readline/character_controler.c \
+	readline/calculate_pos.c \
+	readline/print_controler.c \
+	readline/input_controler.c \
+	readline/movement_controler.c \
+	readline/special_movement_controler.c \
+	readline/del_controler.c \
+	readline/copy_controler.c \
+	readline/utils.c \
+	readline/free_controler.c \
+	readline/special_del_controler.c \
+	readline/handle_ctrl_c.c \
+	job_control/manage_job.c \
+	job_control/put_in_xground.c \
+	job_control/launch_job.c \
+	job_control/stop_job.c \
+	job_control/continue_job.c \
+	parser/parser.c \
+	parser/parser_func.c \
+	parser/parser_node.c \
+	parser/parser_printer.c \
+	expansions/tilde.c \
+	utils/is.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
