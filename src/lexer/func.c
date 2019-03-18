@@ -16,11 +16,7 @@
 
 int		next_quoted(t_lexer *lex)
 {
-	if (lex->next_quoted)
-	{
-		lex->quoted = lex->next_quoted;
-		lex->next_quoted = 0;
-	}
+	lex->quoted = lex->next_quoted;
 	return (1);
 }
 
@@ -29,7 +25,7 @@ int		line_end(t_lexer *lex)
 	if (lex->line[lex->i] != '\n')
 		return (1);
 	quoting(lex);
-	if (!lex->quoted)
+	if (!lex->quoted && lex->expansion_size == 0)
 		lex->foot->cannot_append = 1;
 	else if (word_append(lex) < 0)
 		return (-1);
@@ -147,7 +143,7 @@ int		quoting(t_lexer *lex)
 			|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
 			|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
 				&& lex->line[lex->i - 1] != '\\'))
-		lex->quoted = 0;
+		lex->next_quoted = 0;
 	return (1);
 }
 
