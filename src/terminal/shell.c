@@ -26,7 +26,9 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.hist.history = init_shell_history();
 	g_shell.term_set = 0;
 	g_shell.line_size = 0;
-	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) ||\
+	g_shell.term = STDIN_FILENO;
+	g_shell.is_interactive = isatty(g_shell.term);
+	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);
 	if (!(term = get_env_val(g_shell.envl, "TERM")))
@@ -34,9 +36,26 @@ void					init_shell(int ac, char **av, char **env)
 	if (!tgetent(NULL, term))
 		return ;
 	g_shell.term_set = 1;
-	if (tcgetattr(STDIN_FILENO, &(g_shell.cooked_tio)) ||\
-			tcgetattr(STDIN_FILENO, &(g_shell.raw_tio)))
+	/* job control start */
+	while (my_tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
+		kill(-g_shell.pgid, SIGTTIN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGCHLD, SIG_IGN);
+	g_shell.pgid = getpid();
+	if (setpgid(g_shell.pgid, g_shell.pgid) < 0)
+	{
+		ft_putstr_fd("Couldn't put the shell in its own process group\n", 2);
+		exit (1);
+	}
+	my_tcsetpgrp(g_shell.term, g_shell.pgid);
+	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) ||\
+			tcgetattr(g_shell.term, &(g_shell.raw_tio)))
 		fatal_exit(SH_EINVAL);
+	/* job control end */
 	g_shell.raw_tio.c_lflag &= ~(ECHO | ICANON | ISIG);
 	g_shell.raw_tio.c_oflag &= ~(OPOST);
 	g_shell.raw_tio.c_cc[VMIN] = 1;
@@ -47,20 +66,6 @@ void					run_shell(void)
 {
 	t_bool run;
 
-/*	char	*arg[5];
-	t_opts	flag;
-	int		i;
-
-	arg[0] = "cd";
-	arg[1] = "-ap-flti";
-	arg[2] = "salut les gens";
-	arg[3] = 0;
-	i = 0;
-	if ((i = check_opts(arg, &flag) == -1))
-			exit(1);
-	printf("i = %d\n", i);
-	printf("%d | %d | %d\n", flag.a, flag.pp, flag.f);
-	exit(1);*/
 	run = TRUE;
 	while (run == TRUE)
 	{

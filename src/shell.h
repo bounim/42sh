@@ -18,10 +18,12 @@ extern t_shell				g_shell;
 struct						s_shell
 {
 	t_edit					edit;
+	int					term;
 	size_t 					term_set;
 	uint8_t 				el_mode;
 	uint8_t					*line;
 	size_t					line_size;
+	int					is_interactive;
 	t_alias					*alias;
 	t_envl					*envl;
 	t_hist					hist;
@@ -30,6 +32,9 @@ struct						s_shell
 	t_printer				out;
 	t_printer				err;
 	char					*canonic_path;
+	t_job					*head_job;
+	pid_t					pgid;
+
 };
 
 /*

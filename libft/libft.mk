@@ -2,6 +2,7 @@ LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
 	ft_isspace.c \
+	ft_putnbr_fd.c \
 	ft_strncmp.c \
 	ft_putchar_fd.c \
 	ft_putstr_fd.c \

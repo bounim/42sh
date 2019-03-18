@@ -43,8 +43,8 @@ SRC := \
 	builtin/print_general_error.c\
 	builtin/check_opts.c\
 	readline/readline.c \
-    readline/signal_handler.c\
-    readline/readline_errors_controler.c\
+  	readline/signal_handler.c\
+  	readline/readline_errors_controler.c\
 	readline/character_controler.c\
 	readline/calculate_pos.c\
 	readline/print_controler.c\
@@ -57,6 +57,11 @@ SRC := \
 	readline/free_controler.c\
 	readline/special_del_controler.c\
 	readline/handle_ctrl_c.c\
+	job_control/manage_job.c\
+	job_control/put_in_xground.c\
+	job_control/launch_job.c\
+	job_control/stop_job.c\
+	job_control/continue_job.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror

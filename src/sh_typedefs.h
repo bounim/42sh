@@ -31,5 +31,7 @@ typedef struct s_keymap			t_keymap;
 typedef struct s_term			t_term;
 typedef struct s_hist			t_hist;
 typedef struct s_opts			t_opts;
+typedef struct s_proc			t_proc;
+typedef struct s_job			t_job;
 
 #endif

@@ -37,6 +37,7 @@
 # include "lexer.h"
 # include "builtin.h"
 # include "builtin_defines.h"
+# include "job_control.h"
 # include "shell.h"
 
 void						ft_sig_handler(int signo);
