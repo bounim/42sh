@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lexer_internal.h"
+#include "parser.h"
 
 #include <stdio.h> // XXX
 #include <unistd.h> // XXX
@@ -84,7 +85,7 @@ static void			lexer_destroy(t_lexer *lex)
 	{
 		previous = current;
 		current = current->next;
-		if (previous->type == TYPE_WORD || previous->type == TYPE_OPERATOR)
+		if (previous->type == LEX_TP_WD || previous->type == LEX_TP_OP)
 			free(previous->buffer);
 		// TODO free heredoc
 		free(previous);
@@ -119,9 +120,9 @@ static void			lexer_debug(t_lexer *lex)
 			printer_str(&g_shell.out, " line_x=");
 			printer_ulong(&g_shell.out, cur->line_x);
 			printer_str(&g_shell.out, " size=");
-			printer_ulong(&g_shell.out, cur->buffer_size);
+			printer_ulong(&g_shell.out, cur->size);
 			printer_str(&g_shell.out, " buf='");
-			printer_bin(&g_shell.out, cur->buffer, cur->buffer_size);
+			printer_bin(&g_shell.out, cur->buffer, cur->size);
 			printer_str(&g_shell.out, "'");
 			printer_endl(&g_shell.out);
 			cur = cur->next;
@@ -132,9 +133,10 @@ static void			lexer_debug(t_lexer *lex)
 
 int 				lexer(void)
 {
-	t_lexer	lex;
-	int		r;
-	size_t	i;
+	t_lexer		lex;
+	t_parser	parser;
+	int			r;
+	size_t		i;
 
 	if (g_shell.line == NULL || g_shell.line_size <= 1)
 		return (0);
@@ -157,7 +159,7 @@ int 				lexer(void)
 			i = 0;
 			continue ;
 		}
-		// TODO call parser
+		parser_create_tree(&parser, &lex); // XXX
 		if (i + lex.i == g_shell.line_size)
 			break ;
 		i += lex.i;

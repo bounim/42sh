@@ -1,18 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdel.c                                        :+:      :+:    :+:   */
+/*   parameter_expansion.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 14:04:25 by khsadira          #+#    #+#             */
-/*   Updated: 2017/11/13 14:25:05 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/14 22:38:35 by kberisha          #+#    #+#             */
+/*   Updated: 2019/03/14 22:38:38 by kberisha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "expansions.h"
 
-void	ft_strdel(char **as)
-{
-	ft_memdel((void **)as);
-}
