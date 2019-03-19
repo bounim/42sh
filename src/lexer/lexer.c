@@ -159,7 +159,12 @@ int 				lexer(void)
 			i = 0;
 			continue ;
 		}
-		parser_create_tree(&parser, &lex); // XXX
+		if (lex.head != NULL)
+		{
+			if ((r = parser_create_tree(&parser, &lex)) < 0)
+				break ;
+			// TODO exec?
+		}
 		if (i + lex.i == g_shell.line_size)
 			break ;
 		i += lex.i;
