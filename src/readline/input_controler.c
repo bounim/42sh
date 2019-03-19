@@ -14,6 +14,7 @@
 
 static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	{
+		{CTRL_R, 1, search_in_history},
 		{CTRL_A, 1, go_to_home},
 		{CTRL_B, 1, move_left},
 		{CTRL_D, 1, eot_fn},
@@ -82,7 +83,7 @@ int		check_key(uint8_t *key, size_t *keylen)
 
 void	check_printable(uint8_t *key, size_t *keylen)
 {
-	if (ft_carac_nb(key) != -1)
+	if (ft_carac_nb(key, *keylen) != -1)
 	{
 		if ((!(key[0] >= 0 && key[0] < 32)) || key[0] == '\n')
 			add_char_to_list(key, *keylen, 0);

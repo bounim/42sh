@@ -31,8 +31,24 @@ enum 					e_prompt
 	BASIC_PROMPT = 0,
 	QUOTE_PROMPT,
 	BACKSLASH_PROMPT,
-	HEREDOC_PROMPT
+	HEREDOC_PROMPT,
+	SEARCH_PROMPT
 };
+
+/*
+*** DEFINE SHORTCUTS
+*/
+
+# define BASIC_PRMPT "<21sh> "
+# define QUOTE_PRMPT "pquote> "
+# define BACKSLASH_PRMPT "> "
+# define HEREDOC_PRMPT "heredoc> "
+# define SEARCH_PRMPT "(reverse-i-search)`\'"
+# define MATCH 1
+# define PARTIAL_MATCH 0
+# define NO_MATCH -1
+# define NBSP "\302\240"
+
 
 /*
 *** DEFINE ERROR CODES
@@ -44,7 +60,8 @@ enum					e_errnum
 	NO_TERM_ENV, 
 	NO_TERM_INFO,
 	CANT_MODIFY_TERM,
-	MALLOC_ERROR
+	MALLOC_ERROR,
+	EXIT
 };
 
 /*
@@ -56,19 +73,6 @@ enum 					e_freenum
 	FREE_ALL_AND_EXIT = 0,
 	FREE_ALL
 };
-
-/*
-*** DEFINE SHORTCUTS
-*/
-
-# define BASIC_PRMPT "<21sh> "
-# define QUOTE_PRMPT "pquote> "
-# define BACKSLASH_PRMPT "> "
-# define HEREDOC_PRMPT "heredoc> "
-# define MATCH 1
-# define PARTIAL_MATCH 0
-# define NO_MATCH -1
-# define NBSP "\302\240"
 
 /*
 *** DEFINE BASIC ENV VAR
@@ -90,7 +94,10 @@ enum 					e_freenum
 # define CTRL_K "\013"
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
+# define CTRL_R "\022"
 # define CTRL_X_CTRL_X "\030\030"
+# define TAB "\011"
+# define ESC "\033"
 # define ESC_B "\033b"
 # define ESC_F "\033f"
 # define ESC_D "\033d"
@@ -192,19 +199,16 @@ typedef struct 				 s_term
 typedef struct 					s_edit
 {
 	t_char 				*point_char;
+	t_char				*mark;
+	t_char_list			char_list;
+	t_term				term_info;
 	int					reading;
 	int					ret_ctrl_c;
 	int					edit_mode;
-	t_char				*mark;
 	size_t				cur_base_x;
 	int					cur_base_y;
 	uint8_t				*cpy_buff;
-	t_char_list			char_list;
-	t_term				term_info;
-	//t_cpy				cpy;
 }								t_edit;
-
-//t_edit			g_edit;
 
 void					init_signals(void);
 void					signal_handler(int signo);
@@ -212,6 +216,7 @@ void					modify_term(void);
 void					reset_term(void);
 void					readline(int prompt_id);
 void					readline_errors_controler(int errnum);
+void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
 size_t					get_x_pos(t_char *prev_char);
@@ -221,6 +226,7 @@ void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
 void					print_prompt(void);
+void					clean_screen(void);
 void					clean_and_print(void);
 void					input_controller(void);
 void					move_up(void);

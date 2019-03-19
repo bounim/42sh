@@ -17,11 +17,14 @@ SRC := \
 	history/init_shell_history.c \
 	history/list_history.c \
 	history/up_history.c \
+	history/search_in_history.c\
+	history/search_in_history_actions.c\
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \
 	main.c \
 	signal/ft_signal.c \
+	signal/signal_handler.c \
 	terminal/shell.c \
 	terminal/terminal.c \
 	ft.c \
