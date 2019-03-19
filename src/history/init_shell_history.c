@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/07 17:04:20 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/19 13:26:46 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ static uint8_t		*get_histfile_content()
 	return (ret);
 }
 
-static void			build_tmp(uint8_t *tmp, uint8_t *cont, size_t i, size_t j)
+static void			build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i, size_t j)
 {
 	size_t			ind;
 
 	ind = 0;
 	while (j < i)
 	{
-		if (cont[j] == '\\')
+		if (cont[j] == '\\' && cont[j + 1] && cont[j + 1] == '\n')
 			j++;
 		tmp[ind++] = cont[j++];
 	}
@@ -73,12 +73,12 @@ static size_t		skip_backslash(const uint8_t *str, size_t *i, size_t j, int bs)
 	size_t			len;
 
 	len = *i - j - bs;
-	if (*i > 0 && str[*i - 1] != '\\')
+	if (*i > 0 && str[*i - 1] && str[*i - 1] != '\\')
 		return (len);
 	(*i)++;
 	while (str[*i] && str[*i] != '\n')
 		(*i)++;
-	if (str[*i] == '\n' && str[*i - 1] == '\\')
+	if (str[*i] && str[*i] == '\n' && str[*i - 1] == '\\')
 		skip_backslash(str, i, j, bs++);
 	return (len);
 }
@@ -105,13 +105,17 @@ static t_history	*parse_histfile_content(uint8_t *cont)
 				fatal_exit(SH_ENOMEM);
 			tmp[len] = '\0';
 			build_tmp(tmp, cont, i, j);
-			new = rl_new_hist(tmp);
-			ret = rl_add_hist(ret, new);
-			g_shell.hist.history_size++;
+			if (tmp)
+			{
+				new = rl_new_hist(tmp);
+				ret = rl_add_hist(ret, new);
+				g_shell.hist.history_size++;
+			}
 			i++;
 			j = i;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (ret);
 }
