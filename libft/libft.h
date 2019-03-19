@@ -30,6 +30,8 @@ void	ft_memdel(void **ap);
 int		ft_strequ(char const *s1, char const *s2);
 int		ft_isspace(int c);
 int		ft_isspace_n(int c);
+int		ft_isdigit(int c);
+int		ft_memtoi(const uint8_t *s, size_t size);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_memcmp(void *a, const void *b, size_t len);
 void	*ft_memmove(void *dst, const void *src, size_t len);

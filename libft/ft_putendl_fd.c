@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdel.c                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 14:04:25 by khsadira          #+#    #+#             */
-/*   Updated: 2017/11/13 14:25:05 by khsadira         ###   ########.fr       */
+/*   Created: 2017/11/18 01:50:00 by kberisha          #+#    #+#             */
+/*   Updated: 2017/11/24 15:30:51 by kberisha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_strdel(char **as)
+void	ft_putendl_fd(char *s, int fd)
 {
-	ft_memdel((void **)as);
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

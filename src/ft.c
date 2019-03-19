@@ -38,3 +38,10 @@ void	ft_putu8str(uint8_t *str)
 {
 	ft_putstr((char *)str);
 }
+
+void	ft_putendl(char *str)
+{
+	printer_str(&g_shell.out, str);
+	printer_endl(&g_shell.out);
+	printer_flush(&g_shell.out);
+}

@@ -17,15 +17,46 @@
 
 enum							e_lexer_type
 {
-	TYPE_OPERATOR = 0,
-	TYPE_WORD,
-	TYPE_IO_NUMBER,
-	TYPE_HEREDOC,
+	LEX_TP_WD = 0,
+	LEX_TP_OP,
+	LEX_TP_IO,
+	LEX_TP_HD,
 };
+
+enum							e_redirect_type
+{
+	LESS = 0,
+	GREAT,
+	DLESS,
+	DGREAT,
+	LESSAND,
+	GREATAND,
+	LESSGREAT,
+	DLESSDASH,
+};
+
+typedef struct					s_buffer
+{
+	uint8_t						*buf;
+	size_t						size;
+}								t_buffer;
 
 /*
 ** cannot_append: delimited token
 */
+typedef struct s_redir			t_redir;
+
+struct							s_redir
+{
+	enum e_redirect_type		redir_type;
+	t_buffer					*buffer; //changer le nom
+	uint8_t						*redir_out;
+	size_t						redir_size;
+	int							io_number; //int ?????
+	uint8_t						heredoc;
+	uint8_t						tilded;
+	t_redir						*next;
+};
 
 typedef struct s_lexer_token	t_lexer_token;
 
@@ -37,9 +68,15 @@ struct							s_lexer_token
 	size_t						line_y;
 	size_t						line_x;
 	uint8_t						*buffer;
-	size_t						buffer_size;
+	size_t						size;
 	int							cannot_append;
 	int							is_number;
+	uint8_t						**args;
+	size_t						args_nb;
+	size_t						*args_size;
+	t_redir						*redirs; //voir si on a un nb de redir max
+	size_t						redirs_nb;
+	size_t						redir_err;
 };
 
 typedef struct					s_heredoc
@@ -48,7 +85,7 @@ typedef struct					s_heredoc
 	uint8_t						*delimiter;
 	size_t						delimiter_size;
 	uint8_t						*buffer;
-	size_t						buffer_size;
+	size_t						size;
 }								t_heredoc;
 
 /* FIXME
