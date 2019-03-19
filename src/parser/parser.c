@@ -84,8 +84,8 @@ int								parser_create_tree(t_parser *parser, t_lexer *lexer)
 	t_parser_node	*n;
 
 	n = NULL;
-	if (!(parser = malloc(sizeof(*parser))))
-		return (-1);
+	/*if (!(parser = malloc(sizeof(*parser))))
+		return (-1);*/
 	parser_init(parser);
 	//lexer_print(&lexer->head);
 	tmp = lexer->head;
