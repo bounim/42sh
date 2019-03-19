@@ -155,8 +155,9 @@ int     tilde_result(t_buffer *buffer, size_t start, size_t tilde_prefix_len)
 	if (start != 0)
 		pre_stamp = tilde_prestamp_buffer(buffer, start);
 	post_stamp = tilde_stamp_buffer(buffer, tilde_prefix_len, start);
-	if (!ft_memchr(buffer->buf, tilde_prefix_len, '\"') && !ft_memchr(buffer->buf, tilde_prefix_len, '\'')
-			&& !ft_memchr(buffer->buf, tilde_prefix_len, '\\'))
+	if (!ft_memchr(buffer->buf, '\"', tilde_prefix_len)
+			&& !ft_memchr(buffer->buf, '\'', tilde_prefix_len)
+			&& !ft_memchr(buffer->buf, '\\', tilde_prefix_len))
 	{
 		if (tilde_prefix_len == 1)
 			result = tilde_home();

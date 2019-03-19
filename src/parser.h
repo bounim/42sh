@@ -32,7 +32,7 @@ typedef struct s_word			t_word;
 
 struct 							s_word
 {
-	t_buffer					*buffer; //changer le nom
+	t_buffer					*buffer; //changer le nom TODO statically allocate
 	uint8_t						tilded;
 	t_word						*next;
 };
