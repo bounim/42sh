@@ -13,13 +13,13 @@
 #include "parser.h"
 #include "lexer.h"
 
-void						parser_init(t_parser *parser)
+void					parser_init(t_parser *parser)
 {
 	ft_memset(parser, 0, sizeof(*parser));
 	parser->head = NULL;
 }
 
-void						parser_create_args(t_lexer_token **head)
+void					parser_create_args(t_lexer_token **head)
 {
 	t_lexer_token	*cur;
 	t_lexer_token	*prev;
@@ -46,7 +46,7 @@ void						parser_create_args(t_lexer_token **head)
 **	logique
 */
 
-enum	e_redirect_type		get_redirect(uint8_t *buffer, size_t size)
+enum e_redirect_type	get_redirect(uint8_t *buffer, size_t size)
 {
 	if (size == 2)
 	{
@@ -71,23 +71,18 @@ enum	e_redirect_type		get_redirect(uint8_t *buffer, size_t size)
 	return (0);
 }
 
-void							tokenstr(char *str, t_lexer_token *tok)
+void					tokenstr(char *str, t_lexer_token *tok)
 {
 	ft_putendl(str);
 	print_token(tok->buffer, tok->size);
 }
 
-int								parser_create_tree(t_parser *parser, t_lexer *lexer)
+int						parser_create_tree(t_parser *parser, t_lexer *lexer)
 {
-	// t_parser		*parser;
 	t_lexer_token	*tmp;
 	t_parser_node	*n;
 
-	n = NULL;
-	/*if (!(parser = malloc(sizeof(*parser))))
-		return (-1);*/
 	parser_init(parser);
-	//lexer_print(&lexer->head);
 	tmp = lexer->head;
 	while (tmp)
 	{
