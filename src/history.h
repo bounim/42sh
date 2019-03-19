@@ -38,4 +38,10 @@ t_history			*rl_add_hist(t_history *list, t_history *new_hist);
 int					listlen(t_history *list);
 uint8_t				*list_to_buf(void);
 void				buff_to_charlist(uint8_t *buf);
+void				search_in_history(void);
+void				del_charac_in_search(void);
+void				execute_search_command(void);
+void				give_up_search(void);
+void				back_to_readline(void);
+void				find_in_history(uint8_t	*buff, size_t *len);
 #endif

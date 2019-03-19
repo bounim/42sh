@@ -31,8 +31,24 @@ enum 					e_prompt
 	BASIC_PROMPT = 0,
 	QUOTE_PROMPT,
 	BACKSLASH_PROMPT,
-	HEREDOC_PROMPT
+	HEREDOC_PROMPT,
+	SEARCH_PROMPT
 };
+
+/*
+*** DEFINE SHORTCUTS
+*/
+
+# define BASIC_PRMPT "<21sh> "
+# define QUOTE_PRMPT "pquote> "
+# define BACKSLASH_PRMPT "> "
+# define HEREDOC_PRMPT "heredoc> "
+# define SEARCH_PRMPT "(reverse-i-search)`\'"
+# define MATCH 1
+# define PARTIAL_MATCH 0
+# define NO_MATCH -1
+# define NBSP "\302\240"
+
 
 /*
 *** DEFINE ERROR CODES
@@ -59,19 +75,6 @@ enum 					e_freenum
 };
 
 /*
-*** DEFINE SHORTCUTS
-*/
-
-# define BASIC_PRMPT "<21sh> "
-# define QUOTE_PRMPT "pquote> "
-# define BACKSLASH_PRMPT "> "
-# define HEREDOC_PRMPT "heredoc> "
-# define MATCH 1
-# define PARTIAL_MATCH 0
-# define NO_MATCH -1
-# define NBSP "\302\240"
-
-/*
 *** DEFINE BASIC ENV VAR
 */
 
@@ -91,7 +94,10 @@ enum 					e_freenum
 # define CTRL_K "\013"
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
+# define CTRL_R "\022"
 # define CTRL_X_CTRL_X "\030\030"
+# define TAB "\011"
+# define ESC "\033"
 # define ESC_B "\033b"
 # define ESC_F "\033f"
 # define ESC_D "\033d"
@@ -210,6 +216,7 @@ void					modify_term(void);
 void					reset_term(void);
 void					readline(int prompt_id);
 void					readline_errors_controler(int errnum);
+void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
 size_t					get_x_pos(t_char *prev_char);

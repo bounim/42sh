@@ -17,6 +17,8 @@ SRC := \
 	history/init_shell_history.c \
 	history/list_history.c \
 	history/up_history.c \
+	history/search_in_history.c\
+	history/search_in_history_actions.c\
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \

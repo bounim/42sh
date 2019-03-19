@@ -48,7 +48,6 @@ void	clean_screen(void)
 			ft_putstr(tgetstr("sr", NULL));
 		x = 0;
 		y = 0;
-		//sleep(2);
 	}
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	while (++i < max.ws_row)

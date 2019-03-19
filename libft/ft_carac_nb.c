@@ -12,7 +12,6 @@
 
 #include "libft.h"
 
-
 ssize_t		ft_carac_size(uint8_t *buf, size_t ulen)
 {
 	if (ulen == 0)
@@ -32,16 +31,14 @@ ssize_t		ft_carac_size(uint8_t *buf, size_t ulen)
 	return (-1);
 }
 
-ssize_t			ft_carac_nb(uint8_t *str)
+ssize_t		ft_carac_nb(uint8_t *str, size_t ulen)
 {
 	size_t	i;
-	size_t	ulen;
 	ssize_t	r;
 	ssize_t	size;
 
 	if (str == NULL)
 		return (0);
-	ulen = ft_ustrlen(str);
 	i = 0;
 	size = 0;
 	while (i < ulen)
