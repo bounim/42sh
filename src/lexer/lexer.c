@@ -131,6 +131,26 @@ static void			lexer_debug(t_lexer *lex)
 	printer_flush(&g_shell.out);
 }
 
+static void			test_exec(t_lexer *lex, t_parser *parser)
+{
+	t_word	*cur;
+
+	if (parser_create_tree(parser, lex) < 0)
+		return ;
+	if (parser->head == NULL || parser->head->type != PARSER_COMMAND)
+		return ;
+	printer_str(&g_shell.out, "test exec cmd: ");
+	cur = parser->head->arg_head;
+	while (cur)
+	{
+		printer_bin(&g_shell.out, cur->buffer->buf, cur->buffer->size);
+		printer_str(&g_shell.out, " ");
+		cur = cur->next;
+	}
+	printer_endl(&g_shell.out);
+	printer_flush(&g_shell.out);
+}
+
 int 				lexer(void)
 {
 	t_lexer		lex;
@@ -160,11 +180,7 @@ int 				lexer(void)
 			continue ;
 		}
 		if (lex.head != NULL)
-		{
-			if ((r = parser_create_tree(&parser, &lex)) < 0)
-				break ;
-			// TODO exec?
-		}
+			test_exec(&lex, &parser);
 		if (i + lex.i == g_shell.line_size)
 			break ;
 		i += lex.i;

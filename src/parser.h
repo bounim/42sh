@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #ifndef PARSER_H
-#define PARSER_H
+# define PARSER_H
 
-#include <stdio.h> //a enleverrrr
-#include <stdlib.h>
-#include <unistd.h>
-#include "lexer/lexer_internal.h"
+# include <stdio.h> //a enleverrrr
+# include <stdlib.h>
+# include <unistd.h>
+# include "lexer/lexer_internal.h"
 
 enum							e_parser_type
 {
@@ -30,14 +30,12 @@ enum							e_parser_type
 
 typedef struct s_word			t_word;
 
-struct 							s_word
+struct							s_word
 {
 	t_buffer					*buffer; //changer le nom TODO statically allocate
 	uint8_t						tilded;
 	t_word						*next;
 };
-
-
 
 typedef struct s_parser_node	t_parser_node;
 
