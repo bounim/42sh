@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 15:40:36 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:32:16 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ struct					s_alias
 
 /*void		built_history(t_rl rl);*/
 
-char		*replace_exclaim(char *line, t_history *hist);
+char		*replace_exclaim(char *line, t_history *hist, char *bfr, char *next);
 int			built_cd(char **arg, t_envl **envl);
 int			built_echo(char **arg, int *arg_size);
 int			built_env(char **arg, t_envl *envl);
