@@ -122,6 +122,9 @@ t_history			*init_shell_history(void)
 	t_history		*ret;
 	uint8_t 		*cont;
 
+	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
+	g_shell.hist.search_len = 0;
+	g_shell.hist.search_point = NULL;
 	g_shell.hist.buf = NULL;
 	if (!(cont = get_histfile_content()))
 		return (NULL);

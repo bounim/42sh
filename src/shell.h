@@ -34,7 +34,7 @@ struct						s_shell
 	char					*canonic_path;
 	t_job					*head_job;
 	pid_t					pgid;
-
+	int 					state;
 };
 
 /*

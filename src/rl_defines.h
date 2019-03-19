@@ -47,4 +47,9 @@
 # define KEYMAP_SIZE			22
 # define TERM_SET				1
 
+# define RL_STATE				0
+# define HIST_STATE				1
+# define LEX_STATE				2
+# define PARS_STATE				3
+# define EXEC_STATE				4
 #endif

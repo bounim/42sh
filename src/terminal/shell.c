@@ -46,6 +46,7 @@ void					init_shell(int ac, char **av, char **env)
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGCHLD, SIG_IGN);
 	g_shell.pgid = getpid();
+	g_shell.state = -1;
 	if (setpgid(g_shell.pgid, g_shell.pgid) < 0)
 	{
 		ft_putstr_fd("Couldn't put the shell in its own process group\n", 2);
