@@ -46,7 +46,6 @@ SRC := \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \
 	readline/readline.c \
-	readline/signal_handler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \
 	readline/calculate_pos.c \
