@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:46:49 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 19:24:05 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:46:20 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,11 @@ static int		concat_exclaim(char *line, int i)
 	return (j - 1);
 }
 
-char				*replace_exclaim(char *line, t_history *hist)
+char				*replace_exclaim(char *line, t_history *hist, char *bfr, char *next)
 {
 	int		i;
 	int		j;
 	char	*concat;
-	char	*bfr;
-	char	*next;
 	char	*tmp;
 
 	while ((i = ft_strichr(line, '!')) != -1)

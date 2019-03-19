@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:17:36 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/19 15:26:16 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:45:58 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ void	return_fn(void)
 	buff_size = get_buff_size(head);
 	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 2))))
 		readline_errors_controler(MALLOC_ERROR);
-	buff[buff_size] = '\n';
-	buff[buff_size + 1] = '\0';
+	buff[buff_size] = '\0';
 	i = 0;
 	while (head)
 	{
@@ -56,18 +55,21 @@ void	return_fn(void)
 	free_controler(FREE_ALL);
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
-	/*
-	if ((buff = (uint8_t *)replace_exclaim((char *)buff, g_shell.hist.history)))
+	if ((buff = (uint8_t *)replace_exclaim((char *)buff, g_shell.hist.history, NULL, NULL)))
 	{
 		g_shell.hist.history = rl_add_hist(g_shell.hist.history, rl_new_hist(buff));
-		buff = ft_strfjoin(buff, "\n", 0);
-		buff[buff_size] = '\n';
-		buff[buff_size + 1] = '\0';
-		g_shell.line_size = ft_u8_strlen(buff);
+		g_shell.hist.history_size++;
+		g_shell.hist.history_save = -1;
+		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
+		buff_size = ft_u8_strlen(buff);
+		g_shell.line = buff;
+		g_shell.line_size = buff_size;
 	}
-	*/
-	g_shell.line = buff;
-	g_shell.line_size = buff_size + 1;
+	else
+	{
+		g_shell.line = buff;
+		g_shell.line_size = buff_size;
+	}
 }
 
 void	eot_fn(void)
