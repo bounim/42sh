@@ -95,6 +95,8 @@ void	search_in_history(void)
 	clean_screen();
 	ft_putstr("(reverse-i-search)`\': ");
 	search_read();
-	g_shell.edit.reading = TRUE;
-	clean_and_print();
+	if (g_shell.edit.reading == FALSE)
+		g_shell.edit.reading = TRUE;
+	else
+		g_shell.edit.reading = FALSE;
 }

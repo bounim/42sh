@@ -77,7 +77,9 @@ void	del_charac_in_search(void)
 
 void	execute_search_command(void)
 {
-	printf("EXEC\n");
+	back_to_readline();
+	return_fn();
+	g_shell.edit.reading = 42;
 }
 
 void	give_up_search(void)
@@ -85,6 +87,7 @@ void	give_up_search(void)
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
 	g_shell.hist.search_len = 0;
 	g_shell.edit.reading = FALSE;
+	clean_and_print();
 }
 
 void	back_to_readline(void)
@@ -102,6 +105,7 @@ void	back_to_readline(void)
 	g_shell.hist.history = tail;
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));	
 	g_shell.hist.search_len = 0;
+	clean_and_print();
 }
 
 void	find_in_history(int save)

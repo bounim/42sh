@@ -52,7 +52,7 @@ void	return_fn(void)
 		i += head->len;
 		head = head->next;
 	}
-	free_controler(FREE_ALL);
+	//free_controler(FREE_ALL);
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff, g_shell.hist.history, NULL, NULL)))
