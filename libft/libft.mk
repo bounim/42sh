@@ -1,6 +1,8 @@
 LIBFT_SHORT_NAME := ft
 
 LIBFT_SRC := \
+	ft_carac_nb.c \
+	ft_count_bn.c \
 	ft_isspace.c \
 	ft_putnbr_fd.c \
 	ft_strncmp.c \
@@ -65,7 +67,6 @@ LIBFT_SRC := \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_memchr.c \
-	ft_carac_nb.c \
 	ft_wchar_len.c \
 	ft_ustrlen.c \
 	ft_u8_strdup.c \

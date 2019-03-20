@@ -117,12 +117,8 @@ void		buff_to_charlist(uint8_t *buf)
 
 void	print_history(void)
 {
-	int x;
-
-	//free_all();
-	x = ((21 + ft_carac_nb(g_shell.hist.history, ft_ustrlen(g_shell.hist.history)) + ft_carac_nb(g_shell.hist.search_buff, ft_ustrlen(g_shell.hist.history))) / g_shell.edit.term_info.max.ws_col);
-	if (((21 + ft_carac_nb(g_shell.hist.history, ft_ustrlen(g_shell.hist.history)) + ft_carac_nb(g_shell.hist.search_buff, ft_ustrlen(g_shell.hist.history)) % g_shell.edit.term_info.max) == 0)
-		g_shell.cur_base_y -= x;
+	//free_all()
+	//update_base_y_in_search();
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
