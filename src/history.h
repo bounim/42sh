@@ -25,12 +25,26 @@ struct					s_history
 struct					s_hist
 {
 	t_history			*history;
+	t_history			*search_point;
 	uint8_t				*buf;
+	uint8_t				search_buff[15000];
+	size_t				search_len;
 	int					history_save;
 	int					history_size;
 };
 
+typedef void			(*t_search_func)(void);
+
+typedef struct 			s_searchmap
+{
+	char 				*seq;
+	size_t				len;
+	t_search_func		searchfunc;
+}						t_searchmap;
+
+
 t_history			*init_shell_history(void);
+void				update_base_y_in_search(t_history *curr);
 void				print_history(void);
 void				switch_history(void);
 t_history			*rl_new_hist(uint8_t *buf);
@@ -43,5 +57,5 @@ void				del_charac_in_search(void);
 void				execute_search_command(void);
 void				give_up_search(void);
 void				back_to_readline(void);
-void				find_in_history(uint8_t	*buff, size_t *len);
+void				find_in_history(int save);
 #endif

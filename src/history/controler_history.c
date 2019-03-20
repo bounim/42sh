@@ -117,12 +117,13 @@ void		buff_to_charlist(uint8_t *buf)
 
 void	print_history(void)
 {
-	//free_all();
+	//free_all()
+	//update_base_y_in_search();
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
 	init_prompt(BASIC_PROMPT);
 	print_prompt();
 	buff_to_charlist(g_shell.hist.history->buf);
-	clean_and_print();
+	clean_and_print(); //YEN A 2 UN DANS BUFF TO CHARLIST LAUTRE LA
 }

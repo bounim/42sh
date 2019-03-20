@@ -12,46 +12,117 @@
 
 #include "twenty_one_sh.h"
 
+void	update_base_y_in_search(t_history *curr)
+{
+	int one_line;
+	int i;
+	int in_line;
+	int y_pos;
+
+	one_line = g_shell.edit.term_info.max.ws_col;
+	i = 0;
+	in_line = ft_strlen(SEARCH_PRMPT) + g_shell.hist.search_len;
+	y_pos = g_shell.edit.cur_base_y;
+	if (curr && !curr->buf)
+		return ;
+	while (curr->buf[i])
+	{
+		if (in_line % one_line == 0 || curr->buf[i] == '\n')
+		{
+			y_pos++;
+			if (y_pos >= g_shell.edit.term_info.max.ws_row)
+				g_shell.edit.cur_base_y--;
+			if (curr->buf[i] == '\n')
+				in_line = 0;
+		}
+		in_line++;
+		i++;
+	}
+}
+
+void	print_search_result(t_history *curr)
+{
+	update_base_y_in_search(curr);
+	ft_putstr((char*)curr->buf);
+}
+
+void	print_search_prompt(void)
+{
+	clean_screen();
+	ft_putstr("(reverse-i-search)`");
+	write(1, g_shell.hist.search_buff, g_shell.hist.search_len);
+	ft_putstr("\': ");
+}
+
 void	del_charac_in_search(void)
 {
-	printf("\nDEL\n");
-	exit (1);
+	int 	i;
+	int 	c;
+
+	if (g_shell.hist.search_len == 0)
+		return ;
+	i = g_shell.hist.search_len - 1;
+	c = 1;
+	while (i >= 0 && g_shell.hist.search_buff[i] >= 128 && g_shell.hist.search_buff[i] <= 191)
+	{
+		i--;
+		c++;
+	}
+	i = g_shell.hist.search_len - 1;
+	g_shell.hist.search_len -= c;
+	while (c-- > 0)
+		g_shell.hist.search_buff[i--] = 0;
+	find_in_history(0);
 }
 
 void	execute_search_command(void)
 {
-	printf("EXEC\n");
+	back_to_readline();
+	return_fn();
+	g_shell.edit.reading = 42;
 }
 
 void	give_up_search(void)
 {
-	printf("\nGIVE UP\n");
+	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
+	g_shell.hist.search_len = 0;
+	g_shell.edit.reading = FALSE;
+	clean_and_print();
 }
 
 void	back_to_readline(void)
 {
-	printf("\nBACK TO READLINE\n");
+	t_history 	*curr;
+	t_history	*tail;
+
+	find_in_history(1);
+	tail = g_shell.hist.history;
+	while (tail && tail->next)
+		tail = tail->next;
+	curr = g_shell.hist.history;
+	g_shell.edit.reading = FALSE;
+	print_history();
+	g_shell.hist.history = tail;
+	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));	
+	g_shell.hist.search_len = 0;
+	clean_and_print();
 }
 
-void	print_search_result(uint8_t *buff, size_t buff_len, t_history *curr)
-{
-	clean_screen();
-	ft_putstr("(reverse-i-search)`");
-	write(1, buff, buff_len);
-	ft_putstr("\': ");
-	write(1, curr->buf, curr->len);
-}
-
-void	find_in_history(uint8_t	*buff, size_t *len)
+void	find_in_history(int save)
 {
 	t_history	*curr;
 
 	curr = g_shell.hist.history;
+	print_search_prompt();
+	if (!g_shell.hist.search_buff[0])
+		return ;
 	while (curr)
 	{
-		if (ft_strstr((char*)buff, (char*)curr->buf) != 0)
+		if (ft_strstr((char*)curr->buf, (char*)g_shell.hist.search_buff) != 0)
 		{
-			print_search_result(buff, *len, curr);
+			print_search_result(curr);
+			if (save == 1)
+				g_shell.hist.history = curr;
 			break ;
 		}
 		curr = curr->bfr;
