@@ -92,6 +92,7 @@ void	search_read(void)
 
 void	search_in_history(void)
 {
+	g_shell.hist.unicode_err = 0;
 	clean_screen();
 	ft_putstr("(reverse-i-search)`\': ");
 	search_read();
