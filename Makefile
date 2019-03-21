@@ -60,6 +60,7 @@ SRC := \
 	readline/free_controler.c \
 	readline/special_del_controler.c \
 	readline/handle_ctrl_c.c \
+	readline/drag_char.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \

@@ -14,6 +14,7 @@
 
 static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	{
+		{CTRL_T, 1, drag_char},
 		{CTRL_R, 1, search_in_history},
 		{CTRL_A, 1, go_to_home},
 		{CTRL_B, 1, move_left},

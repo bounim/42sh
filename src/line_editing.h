@@ -95,6 +95,7 @@ enum 					e_freenum
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
 # define CTRL_R "\022"
+# define CTRL_T "\024"
 # define CTRL_X_CTRL_X "\030\030"
 # define TAB "\011"
 # define ESC "\033"
@@ -244,6 +245,7 @@ void					delete_backline(void);
 void					delete_endline(void);
 void					delete_word_forward(void);
 void					delete_word_backward(void);
+void					drag_char(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
 void					copy_current_word(void);
 void					copy_all_line(void);
