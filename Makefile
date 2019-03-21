@@ -30,6 +30,7 @@ SRC := \
 	terminal/shell.c \
 	terminal/terminal.c \
 	ft.c \
+	builtin/start_builtin.c \
 	builtin/built_history.c \
 	builtin/built_cd.c \
 	builtin/built_echo.c \
@@ -44,6 +45,7 @@ SRC := \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
 	builtin/built_type.c \
+	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \

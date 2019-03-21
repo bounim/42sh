@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 17:23:14 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 19:55:18 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct					s_alias
 
 char		*replace_exclaim(char *line, t_history *hist, char *bfr, char *next);
 int			built_cd(char **arg, t_envl *envl);
-int			built_echo(char **arg, int *arg_size);
+int			built_echo(char **arg);
 int			built_env(char **arg, t_envl *envl);
 int			built_env_find_last_cmd(char **arg);
 int			built_setenv_check_error(char **arg);
@@ -51,7 +51,7 @@ int			built_unset(char **arg, t_envl *envl);
 int			built_export(char **arg, t_envl *envl);
 int			built_alias(char **arg, t_alias **alias);
 int			built_unalias(char **arg, t_alias **alias);
-int			built_history(char **arg, t_history *hist);
+int			built_history(char **arg, t_history **hist);
 t_alias		*new_alias(char *name, char *value);
 void		push_alias(t_alias **alias, char *name, char *value);
 t_alias		*addlast_alias(t_alias *head, t_alias *new);
@@ -61,5 +61,6 @@ int			built_type(char **arg, t_envl *envl);
 int			put_error(char *sh, char *cmd, char *arg, char *error);
 int			check_opts(char **arg, t_opts *flag, char opts);
 void		start_builtin(char **arg, t_envl *envl);
+int			built_debug(char **arg);
 
 #endif

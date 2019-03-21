@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:52 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 17:23:16 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 19:57:10 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,3 +53,10 @@ void			built_history(t_rl rl)
 	}
 	ft_putchar('\n');
 }*/
+
+int	built_history(char **arg, t_history **hist)
+{
+	hist++;
+	arg++;
+	return (0);
+}

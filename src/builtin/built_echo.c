@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 14:53:24 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 19:54:10 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	find_operands(char *arg)
 	return (0);
 }
 
-int			built_echo(char **arg, int *arg_size)
+int			built_echo(char **arg)
 {
 	int		i;
 
@@ -69,7 +69,7 @@ int			built_echo(char **arg, int *arg_size)
 				return (0);
 		}
 		else
-			write(1, arg[i], arg_size[i]);
+			write(1, arg[i], ft_strlen(arg[i]));
 		if (arg[i + 1])
 			write(1, " ", 1);
 		i++;
