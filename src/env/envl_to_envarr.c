@@ -6,39 +6,40 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:29:27 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 18:53:12 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 19:34:08 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-/*
-static char	*memmove_to_arr(char *buff, t_envl *envl)
+
+static char	*memmove_to_arr(char *name, char *value)
 {
 	int		n_size;
 	int		v_size;
 	int		g_size;
+	char	*ret;
 
-	n_size = ft_strlen(envl->name);
-	v_size = ft_strlen(envl->value);
+	ret = NULL;
+	n_size = ft_strlen(name);
+	v_size = ft_strlen(value);
 	g_size = n_size + v_size + 1;
-	if (!(buff = (char *)malloc(sizeof(char) * g_size)))
+	if (!(ret = (char *)malloc(sizeof(char) * g_size + 1)))
 		return (NULL);
-	buff = ft_memmove(buff, envl->name, n_size);
-	buff = ft_memmove(buff + n_size, "=", 1);
-	buff = ft_memmove(buff + g_size, envl->value, v_size);
-	buff[g_size + 1] = '\0';
-	printf("%s\n", buff);
-	return (buff);
+	ret[g_size] = 0;
+	ft_memmove(ret, name, n_size);
+	ft_memmove(ret + n_size, "=", 1);
+	ft_memmove(ret + n_size + 1, value, v_size);
+	return (ret);
 }
-*/
+
 char		**envl_to_envarr(t_envl *envl)
 {
 	char	**buff;
-	t_envl	*head;
+	t_envl	*tmp;
 	int		i;
 
 	buff = NULL;
-	head = envl;
+	tmp = envl;
 	i = 0;
 	while (envl)
 	{
@@ -46,35 +47,18 @@ char		**envl_to_envarr(t_envl *envl)
 			i++;
 		envl = envl->next;
 	}
-	if (!(buff = (char **)malloc(sizeof(char) * i + 1)))
+	if (!(buff = (char **)malloc(sizeof(char *) * (i + 1))))
 		return (NULL);
-	envl = head;
+	buff[i] = NULL;
 	i = 0;
-	while (envl)
+	while (tmp)
 	{
-	/*	size[0] = ft_strlen(envl->name);
-		size[1] = ft_strlen(envl->value);
-		if (!(buff[i] = (char *)malloc(sizeof(char) * size[0] + size[1] + 1)))
-			return (NULL);
-		buff[i] = ft_memmove(buff, envl->name, size[0]);
-		buff[i] = ft_memmove(buff + size[0], "=", 1);
-		buff[i] = ft_memmove(buff + size[0] + size[1] + 1, envl->value, size[1]);
-		buff[i][size[0] + size[1] + 1] = '\0';*/
-		if (envl->exp == 1)
+		if (tmp->exp == 1)
 		{
-			buff[i] = ft_strdup(envl->name);
-			buff[i] = ft_strfjoin(buff[i], "=", 0);
-			buff[i] = ft_strfjoin(buff[i], envl->value, 0);
+			buff[i] = memmove_to_arr(tmp->name, tmp->value);
 			i++;
 		}
-		envl = envl->next;
-	/*	if (envl->exp == 1)
-		{
-			buff[i] = memmove_to_arr(buff[i], envl);
-			i++;
-		}
-		envl = envl->next;*/
+		tmp = tmp->next;
 	}
-	buff[i] = 0;
 	return (buff);
 }
