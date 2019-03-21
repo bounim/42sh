@@ -12,6 +12,7 @@
 
 #include "lexer_internal.h"
 #include "parser.h"
+#include "execution.h"
 
 #include <stdio.h> // XXX
 #include <unistd.h> // XXX
@@ -126,32 +127,6 @@ static void			lexer_debug(t_lexer *lex)
 			cur = cur->next;
 		}
 	}
-	printer_flush(&g_shell.out);
-}
-
-static void			test_exec(t_lexer *lex, t_parser *parser)
-{
-	t_word	*cur;
-
-	if (parser_create_tree(parser, lex) < 0)
-		return ;
-	if (parser->head == NULL)
-		return ;
-	if (parser->head->type != PARSER_COMMAND)
-	{
-		parser_destroy(parser);
-		return ;
-	}
-	printer_str(&g_shell.out, "test exec cmd: ");
-	cur = parser->head->arg_head;
-	while (cur)
-	{
-		printer_bin(&g_shell.out, cur->buffer->buf, cur->buffer->size);
-		printer_str(&g_shell.out, " ");
-		cur = cur->next;
-	}
-	parser_destroy(parser);
-	printer_endl(&g_shell.out);
 	printer_flush(&g_shell.out);
 }
 
