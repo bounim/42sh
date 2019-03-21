@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "execution.h"
 
 static char	**arg_to_argv(t_word *head)
@@ -65,6 +66,7 @@ void		test_exec(t_lexer *lex, t_parser *parser)
 	if ((av = arg_to_argv(parser->head->arg_head)))
 	{
 		// TODO exec
+		start_builtin(av, NULL);
 	}
 	parser_destroy(parser);
 }
