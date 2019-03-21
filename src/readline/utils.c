@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:17:36 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/19 16:45:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 14:16:12 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,9 @@ void	return_fn(void)
 		g_shell.hist.history_save = -1;
 		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
 		buff_size = ft_u8_strlen(buff);
-		g_shell.line = buff;
-		g_shell.line_size = buff_size;
 	}
-	else
-	{
-		g_shell.line = buff;
-		g_shell.line_size = buff_size;
-	}
+	g_shell.line = buff;
+	g_shell.line_size = buff_size;
 }
 
 void	eot_fn(void)
