@@ -57,6 +57,7 @@ struct							s_parser_node
 	enum e_parser_type			type;
 	t_parser_node				*left;
 	t_parser_node				*right;
+	t_parser_node				*listNext;
 };
 
 typedef struct s_parser			t_parser;
@@ -64,7 +65,7 @@ typedef struct s_parser			t_parser;
 struct							s_parser
 {
 	t_parser_node				*head;
-	t_parser_node				*foot;
+	t_parser_node				*nodeList;
 };
 
 void							structure(t_parser_node *root, int level);
@@ -97,5 +98,7 @@ uint8_t							is_sep_operator(t_lexer_token *t);
 enum e_parser_type				get_node_type(t_lexer_token *token);
 
 enum e_redirect_type			get_redirect(uint8_t *buffer, size_t size);
+
+void							parser_destroy(t_parser *parser);
 
 #endif

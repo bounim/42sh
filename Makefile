@@ -65,6 +65,7 @@ SRC := \
 	job_control/stop_job.c \
 	job_control/continue_job.c \
 	parser/parser.c \
+	parser/parser_destroy.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \

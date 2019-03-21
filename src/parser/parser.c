@@ -88,6 +88,8 @@ int						parser_create_tree(t_parser *parser, t_lexer *lexer)
 	{
 		if (!(n = parser_new_elem(&tmp)))
 			return (-1);
+		n->listNext = parser->nodeList;
+		parser->nodeList = n;
 		parser_add_tree(&parser->head, n);
 		ft_putendl("args");
 		print_word(n->arg_head);
