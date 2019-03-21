@@ -108,15 +108,6 @@ void	clean_and_print(void)
 		return ;
 	len = ft_ustrlen(buff + print_from);
 	write(1, buff + print_from, len);
-	/*while ((curr && curr->is_prompt == 1) || (curr && curr->y_pos < 0))
-		curr = curr->next;
-	while (curr)
-	{
-		write(1, curr->charac, curr->len);
-		if (curr->charac[0] == '\n')
-			ft_putstr(tgetstr("cr", NULL));
-		curr = curr->next;
-	}*/
 	check_all_pos();
 	place_cursor_after_print();
 }

@@ -75,13 +75,6 @@ void	del_charac_in_search(void)
 	find_in_history(0);
 }
 
-void	execute_search_command(void)
-{
-	back_to_readline();
-	return_fn();
-	g_shell.edit.reading = 42;
-}
-
 void	give_up_search(void)
 {
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
@@ -90,7 +83,24 @@ void	give_up_search(void)
 	clean_and_print();
 }
 
-void	back_to_readline(void)
+void	execute_search_command(void)
+{
+	uint8_t *buff;
+
+	buff = g_shell.hist.search_buff;
+	if (!buff[0])
+		return ;
+	back_to_readline();
+	if (g_shell.hist.unicode_err == 1)
+	{
+		give_up_search();
+		return ;
+	}
+	return_fn();
+	g_shell.edit.reading = 42;
+}
+
+void 	back_to_readline(void)
 {
 	t_history 	*curr;
 	t_history	*tail;
@@ -101,6 +111,8 @@ void	back_to_readline(void)
 		tail = tail->next;
 	curr = g_shell.hist.history;
 	g_shell.edit.reading = FALSE;
+	if (ft_carac_nb(curr->buf, ft_u8_strlen(curr->buf)) == -1)
+		g_shell.hist.unicode_err = 1;
 	print_history();
 	g_shell.hist.history = tail;
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));	
