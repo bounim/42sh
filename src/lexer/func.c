@@ -26,7 +26,10 @@ int		line_end(t_lexer *lex)
 		return (1);
 	quoting(lex);
 	if (!lex->quoted && lex->expansion_size == 0)
-		lex->foot->cannot_append = 1;
+	{
+		if (lex->foot)
+			lex->foot->cannot_append = 1;
+	}
 	else if (word_append(lex) < 0)
 		return (-1);
 	if (!lex->backslash_newline && !lex->quoted
