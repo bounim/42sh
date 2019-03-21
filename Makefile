@@ -11,6 +11,7 @@ SRC := \
 	env/dup_envl.c \
 	env/free_envl.c \
 	env/print_envl.c \
+	env/envl_to_envarr.c \
 	execution/execution.c \
 	history/controler_history.c \
 	history/down_history.c \
