@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/13 14:42:42 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:20:11 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	setenv_nullarg(char *arg, t_envl **head)
 	return (0);
 }
 
-int			built_setenv(char **arg, t_envl **envl)
+static int	start_setenv(char **arg, t_envl **envl)
 {
 	t_envl	*tmp;
 	int		len;
@@ -59,4 +59,14 @@ int			built_setenv(char **arg, t_envl **envl)
 	}
 	push_env(envl, arg[1], arg[2], 1);
 	return (0);
+}
+
+int		built_setenv(char **arg, t_envl *envl)
+{
+	if (envl)
+	{
+		free_envl(g_shell.envl);
+		g_shell.envl = dup_envl(envl);
+	}
+	return (start_setenv(arg, &g_shell.envl));
 }

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/15 15:02:18 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 16:30:27 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_oflag &= ~(OPOST);
 	g_shell.raw_tio.c_cc[VMIN] = 1;
 	g_shell.raw_tio.c_cc[VTIME] = 0;
+	g_shell.debug_mode = 0;
 }
 
 void					run_shell(void)

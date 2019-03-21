@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_envl.c                                       :+:      :+:    :+:   */
+/*   built_debug.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/12 16:42:59 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 16:35:55 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/21 15:30:30 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/21 15:33:49 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	print_envl(t_envl *env, int exp)
+int		built_debug(char **arg)
 {
-	while (env)
+	if (!arg[1])
 	{
-		if (env->exp == 1)
-		{
-			if (exp == 1)
-				ft_putstr("export ");
-			ft_putstr(env->name);
-			if (env->value)
-			{
-				ft_putchar('=');
-				ft_putstr(env->value);
-			}
-			ft_putchar(10);
-		}
-		env = env->next;
+		ft_putstr_fd("debug: usage: debug [name ...]\n", 2);
+		return (1);
 	}
+	if (ft_strequ(arg[1], "ON"))
+		g_shell.debug_mode = 1;
+	else if (ft_strequ(arg[1], "OFF"))
+		g_shell.debug_mode = 0;
+	return (0);
 }

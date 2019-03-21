@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 14:17:21 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:02:11 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int		built_env(char **arg, t_envl *envl)
 	t_envl	*tmp;
 	
 	tmp = NULL;
-	last_cmd = built_env_find_last_cmd(arg);
 	tmp = dup_envl(envl);
+	last_cmd = built_env_find_last_cmd(arg);
 	return (start_built_env(tmp, arg, last_cmd, 0));
 }

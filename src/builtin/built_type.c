@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/19 11:39:34 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/21 16:54:59 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static void			print_type(char *name, int *all_found, t_envl *envl)
 	}
 }
 
-int					built_type(char **arg, t_envl **envl)
+int					built_type(char **arg, t_envl *envl)
 {
 	size_t			i;
 	int				all_found;
@@ -114,7 +114,7 @@ int					built_type(char **arg, t_envl **envl)
 	i = 0;
 	while (arg[i])
 	{
-		print_type(arg[i], &all_found, *envl);
+		print_type(arg[i], &all_found, envl);
 		i++;
 	}
 	return (all_found);

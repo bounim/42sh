@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 11:50:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:03:28 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char			*get_cd_path(t_envl *env, char *arg, int opts)
 			return (NULL);
 		}
 	}
-	else if (ft_strequ(arg, "..") && g_shell.canonic_path) //nequ
+	else if (ft_strequ(arg, "..") && g_shell.canonic_path) //strnequ ??
 	{
 		tmp = ft_strdup(g_shell.canonic_path);
 		tmp = ft_strfjoin(tmp, "/..", 0);
@@ -131,7 +131,7 @@ static int		init_pwd(t_envl **env)
 	return (0);
 }
 
-static int		cd_oldpwd(t_envl **env)
+static int		cd_oldpwd(t_envl *env)
 {
 	char	*pwd;
 	char	*oldpwd;
@@ -140,7 +140,7 @@ static int		cd_oldpwd(t_envl **env)
 	tmp = NULL;
 	pwd = NULL;
 	oldpwd = NULL;
-	if (!(tmp = get_env_val(*env, "OLDPWD")))
+	if (!(tmp = get_env_val(env, "OLDPWD")))
 	{
 		write(2, "cd: OLDPWD not set\n", 19);
 		return (1);
@@ -150,7 +150,7 @@ static int		cd_oldpwd(t_envl **env)
 		pwd = ft_strdup(g_shell.canonic_path);
 	else
 	{
-		if (!(tmp = ft_strdup(get_env_val(*env, "PWD"))))
+		if (!(tmp = ft_strdup(get_env_val(env, "PWD"))))
 		{
 			if (!(tmp = getcwd(NULL, 0)))
 			{
@@ -166,8 +166,8 @@ static int		cd_oldpwd(t_envl **env)
 		return (1);
 	}
 	g_shell.canonic_path = ft_strdup(oldpwd);
-	push_env(env, "OLDPWD", pwd, 1);
-	push_env(env, "PWD", oldpwd, 1);
+	push_env(&g_shell.envl, "OLDPWD", pwd, 1);
+	push_env(&g_shell.envl, "PWD", oldpwd, 1);
 	return (0);
 }
 
@@ -175,44 +175,59 @@ static int		cd_first_arg(char **arg, int *opts)
 {
 	int	i;
 	int	l;
+	int	j;
 
 	l = 0;
 	i = 1;
 	while (arg[i])
 	{
-		if (ft_strequ(arg[i], "-L"))
-			l = 1;
-		else if (ft_strequ(arg[i], "-P") && l == 0)
-			*opts = 1;
+		if (arg[i][0] == '-')
+		{
+			j = 0;
+			while (arg[i][j])
+			{
+				if (arg[i][j] == 'P')
+					*opts = 1;
+				else if (arg[i][j] != 'L')
+				{
+					ft_putstr_fd("sh: cd: -", 2);
+					write(2, arg[i] + j, 1);
+					ft_putstr_fd(": invalid option\ncd: usage: cd [-L|-P] [dir]\n", 2);
+					return (-1);
+				}
+				i++;
+			}
+		}
 		else if (ft_strequ(arg[i], "--"))
 			return (i + 1);
-		else if (arg[i][0] == '-' && arg[i][1] != 'P')
-			return (-1);
+		else
+			return (i);
 		i++;
 	}
 	return (i);
 }
 
-int				built_cd(char **arg, t_envl **envl)
+int				built_cd(char **arg, t_envl *envl)
 {
 	char	*path;
 	char	*oldpwd;
 	size_t	i;
 	int		opts;
 
-	i = cd_first_arg(arg, &opts);
-	if (init_pwd(envl))
+	if ((i = cd_first_arg(arg, &opts)) == -1)
+		return (1);
+	if (init_pwd(&envl))
 		return (1);
 	if (ft_strequ(arg[i], "-"))
 	{
 		cd_oldpwd(envl);
 		return (1);
 	}
-	if ((oldpwd = get_env_val(*envl, "PWD")))
+	if ((oldpwd = get_env_val(envl, "PWD")))
 		oldpwd = ft_strdup(oldpwd);
 	else
 		oldpwd = ft_strdup("");
-	if (!(path = get_cd_path(*envl, arg[i], opts)))
+	if (!(path = get_cd_path(envl, arg[i], opts)))
 		return (1);
 	g_shell.canonic_path = ft_strdup(path);
 	if (chdir(path) == -1)
@@ -220,7 +235,7 @@ int				built_cd(char **arg, t_envl **envl)
 		ft_putendl_fd("cd: CHDIR error", 2);
 		return (1);
 	}
-	push_env(envl, "OLDPWD", oldpwd, 1);
-	push_env(envl, "PWD", path, 1);
+	push_env(&g_shell.envl, "OLDPWD", oldpwd, 1);
+	push_env(&g_shell.envl, "PWD", path, 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 19:30:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/13 10:53:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/21 15:34:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void			push_env(t_envl **head, char *name, char *value, int exp)
 		{
 			if (ft_strcmp(tmp->name, name) == 0)
 			{
+				if (tmp->read_only == 1)
+				{
+					ft_putstr_fd("env: ", 2);
+					ft_putstr_fd(tmp->name, 2);
+					ft_putstr_fd(": is set as READ_ONLY\n", 2);
+					return ;
+				}
 				free(tmp->value);
 				tmp->value = ft_strdup(value);
 				tmp->exp = exp;
@@ -39,6 +46,7 @@ void			push_env(t_envl **head, char *name, char *value, int exp)
 	tmp->name = ft_strdup(name);
 	tmp->value = ft_strdup(value);
 	tmp->exp = exp;
+	tmp->read_only = 0;
 	tmp->next = NULL;
 	*head = addlast_envl(*head, tmp);
 }
