@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strequ.c                                        :+:      :+:    :+:   */
+/*   ft_nblen.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 15:08:46 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 19:49:11 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/22 18:45:29 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/22 19:49:05 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strequ(char const *s1, char const *s2)
+int		ft_nblen(int nb)
 {
-	int	i;
+	int			i;
 
 	i = 0;
-	if (!s1 || !s2)
-		return (0);
-	while (s1[i] && s2[i])
+	if (nb == 0)
+		return (1);
+	while (nb > 0)
 	{
-		if (s1[i] != s2[i])
-			return (0);
+		nb /= 10;
 		i++;
 	}
-	if (s1[i] != s2[i])
-		return (0);
-	return (1);
+	return (i);
 }

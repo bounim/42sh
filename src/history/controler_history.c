@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 13:33:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 14:29:49 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 19:05:03 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,30 @@ void		buff_to_charlist(uint8_t *buf)
 		clean_and_print();
 		i += r;
 	}
+}
+
+void	print_historyl(t_history *hist)
+{
+	int			i;
+	int			len;
+
+	i = 1;
+	while (hist->bfr)
+		hist = hist->bfr;
+	while (hist)
+	{
+		len = 5 - ft_nblen(i);
+		while (len--)
+			ft_putchar(' ');
+		ft_putnbr(i);
+		ft_putstr("  ");
+		ft_putu8str(hist->buf);
+		if (hist->next)
+			ft_putchar('\n');
+		i++;
+		hist = hist->next;
+	}
+	ft_putchar('\n');
 }
 
 void	print_history(void)

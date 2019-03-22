@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strequ.c                                        :+:      :+:    :+:   */
+/*   ft_strisdigit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 15:08:46 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 19:49:11 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/22 19:50:28 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/22 19:51:21 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strequ(char const *s1, char const *s2)
+int	ft_strisdigit(char *str)
 {
 	int	i;
-
+	
 	i = 0;
-	if (!s1 || !s2)
-		return (0);
-	while (s1[i] && s2[i])
+	while (str[i])
 	{
-		if (s1[i] != s2[i])
-			return (0);
+		if (!ft_isdigit(str[i]))
+			return (1);
 		i++;
 	}
-	if (s1[i] != s2[i])
-		return (0);
-	return (1);
+	return (0);
 }

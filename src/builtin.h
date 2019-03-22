@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 16:02:00 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 19:32:35 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 /*
 **	builtin functions header
 */
+
+struct					s_opt
+{
+	int			c;
+	int			d;
+	int			a;
+	int			n;
+	int			r;
+	int			w;
+	int			p;
+	int			s;
+	int			nb;
+};
 
 struct					s_opts
 {

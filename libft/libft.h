@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/22 12:21:24 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 19:50:39 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 void	ft_putnbr_fd(int n, int fd);
 void	ft_free_arr(char **arr);
+int		ft_nblen(int nb);
 int		ft_isdigit(int c);
 int		ft_strnequ(char const *s1, char const *s2, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -62,6 +63,7 @@ int		ft_isnotprint(int c);
 int		ft_first_char_unicode(int c);
 int		ft_u8_strequ(uint8_t const *s1, uint8_t const *s2);
 uint8_t	*ft_u8_strfjoin(uint8_t *s1, uint8_t *s2, int opt);
+int		ft_strisdigit(char *str);
 uint8_t	*ft_u8_strjoin(uint8_t const *s1, uint8_t const *s2);
 size_t	ft_u8_strlen(const uint8_t *s);
 uint8_t	*ft_u8_strnew(size_t n);
