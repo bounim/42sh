@@ -11,36 +11,6 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "lexer.h"
-
-void					parser_init(t_parser *parser)
-{
-	ft_memset(parser, 0, sizeof(*parser));
-	parser->head = NULL;
-}
-
-void					parser_create_args(t_lexer_token **head)
-{
-	t_lexer_token	*cur;
-	t_lexer_token	*prev;
-
-	cur = (*head)->next;
-	while (cur && cur->type == LEX_TP_WD)
-	{
-		if (!((*head)->args[(*head)->args_nb] = malloc(cur->size * sizeof(uint8_t))))
-			return ;
-		ft_memcpy((*head)->args[(*head)->args_nb], cur->buffer, cur->size);
-		(*head)->args_size[(*head)->args_nb] = cur->size;
-		(*head)->args_nb++;
-		prev = cur;
-		cur = cur->next;
-		//lexer_free_token(&prev);
-	}
-	if (cur && cur->type != LEX_TP_WD)
-		(*head)->next = cur;
-	else
-		(*head)->next = NULL;
-}
 
 /*	gets redirection type
 **	logique
@@ -68,42 +38,34 @@ enum e_redirect_type	get_redirect(uint8_t *buffer, size_t size)
 		if (!ft_memcmp("<", (const uint8_t*)buffer, size))
 			return (LESS);
 	}
+	// FIXME else internal error?
 	return (0);
 }
 
-void					tokenstr(char *str, t_lexer_token *tok)
+int						parser_create_tree(t_lexer *lex)
 {
-	ft_putendl(str);
-	print_token(tok->buffer, tok->size);
-}
+	t_lexer_token	*cur;
+	t_lexer_token	*n;
 
-int						parser_create_tree(t_parser *parser, t_lexer *lexer)
-{
-	t_lexer_token	*tmp;
-	t_parser_node	*n;
-
-	parser_init(parser);
-	tmp = lexer->head;
-	while (tmp)
+	cur = lex->head;
+	while (cur)
 	{
-		if (!(n = parser_new_elem(&tmp)))
+		n = cur;
+		if (parser_new_elem(&cur) < 0 || parser_add_tree(lex, n) < 0)
 			return (-1);
-		n->listNext = parser->nodeList;
-		parser->nodeList = n;
-		parser_add_tree(&parser->head, n);
 		ft_putendl("args");
-		print_word(n->arg_head);
+		print_arg(n);
 		ft_putendl("END.");
 		ft_putendl("redirs");
-		print_redir(n->redir_head);
+		print_redir(n);
 		ft_putendl("END.");
 		ft_putendl("assignement words");
-		print_word(n->assign_head);
+		print_assign(n);
 		ft_putendl("END.");
-		if (tmp)
-			tmp = tmp->next;
+		if (cur)
+			cur = cur->next;
 	}
-	do_expansions(parser->head);
-	structure(parser->head, 0);
+	structure(lex->root, 0);
+	//do_expansions(lex);
 	return (0);
 }

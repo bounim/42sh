@@ -18,17 +18,7 @@
 # include <unistd.h>
 # include "lexer/lexer_internal.h"
 
-enum							e_parser_type
-{
-	PARSER_COMMAND = -1,
-	PARSER_HEREDOC,
-	PARSER_REDIRECT,
-	PARSER_PIPE,
-	PARSER_AND_OR,
-	PARSER_SEMICOLON
-};
-
-typedef struct s_word			t_word;
+/*typedef struct s_word			t_word;
 
 struct							s_word
 {
@@ -66,25 +56,22 @@ struct							s_parser
 {
 	t_parser_node				*head;
 	t_parser_node				*nodeList;
-};
+};*/
 
-void							structure(t_parser_node *root, int level);
+// TODO:
+
+/*void							structure(t_parser_node *root, int level);
 void							parser_print(t_parser_node *tree);
 void							print_redir(t_redir *r);
-void							print_word(t_word *r);
+void							print_word(t_word *r);*/
 
-void							print_token(uint8_t *buffer, size_t size);
-void							print_word(t_word *r);
-void							print_redir(t_redir *r);
+void							print_arg(t_lexer_token *tok);
+void							print_redir(t_lexer_token *tok);
+void							print_assign(t_lexer_token *tok);
 
-void							do_expansions(t_parser_node *tree);
+/*void							do_expansions(t_parser_node *tree);
 
-void							parser_init(t_parser *parser);
-int								parser_create_tree(t_parser *parser,
-		t_lexer *lexer);
-t_parser_node					*parser_new_elem(t_lexer_token **tmp);
-void							parser_add_tree(t_parser_node **head,
-		t_parser_node *n);
+void							parser_init(t_parser *parser);*/
 
 uint8_t							is_or(uint8_t *buffer, size_t buffer_size);
 uint8_t							is_and(uint8_t *buffer, size_t buffer_size);
@@ -99,6 +86,13 @@ enum e_parser_type				get_node_type(t_lexer_token *token);
 
 enum e_redirect_type			get_redirect(uint8_t *buffer, size_t size);
 
-void							parser_destroy(t_parser *parser);
+
+// XXX DONE:
+
+int								parser_create_tree(t_lexer *lex);
+int								parser_new_elem(t_lexer_token **cur);
+int								parser_add_tree(t_lexer *lex, t_lexer_token *n);
+void							parser_destroy(t_lexer *lex);
+void							structure(t_lexer_token *root, int level);
 
 #endif

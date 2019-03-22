@@ -10,84 +10,95 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "parser.h"
-#include "lexer.h"
 #include "expansions.h"
 
-void	print_token(uint8_t *buffer, size_t size)
+void		print_arg(t_lexer_token *tok)
+{
+	t_lexer_token	*cur;
+
+	cur = tok->arg_head;
+	if (!cur)
+		printer_str(&g_shell.out, "NULL");
+	while (cur)
+	{
+		printer_bin(&g_shell.out, cur->buffer, cur->size);
+		printer_char(&g_shell.out, ' ');
+		cur = cur->arg_next;
+	}
+	printer_endl(&g_shell.out);
+	printer_flush(&g_shell.out);
+}
+
+void		print_redir(t_lexer_token *tok)
+{
+	t_lexer_token	*cur;
+
+	cur = tok->redir_head;
+	if (!cur)
+		printer_str(&g_shell.out, "NULL");
+	while (cur)
+	{
+		printer_bin(&g_shell.out, cur->buffer, cur->size);
+		printer_char(&g_shell.out, ' ');
+		cur = cur->redir_next;
+	}
+	printer_endl(&g_shell.out);
+	printer_flush(&g_shell.out);
+}
+
+void		print_assign(t_lexer_token *tok)
+{
+	t_lexer_token	*cur;
+
+	cur = tok->assign_head;
+	if (!cur)
+		printer_str(&g_shell.out, "NULL");
+	while (cur)
+	{
+		printer_bin(&g_shell.out, cur->buffer, cur->size);
+		printer_char(&g_shell.out, ' ');
+		cur = cur->assign_next;
+	}
+	printer_endl(&g_shell.out);
+	printer_flush(&g_shell.out);
+}
+
+static void	padding(size_t n)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < size)
-		ft_putchar(buffer[i++]);
-	ft_putchar('\n');
-}
-
-void		print_word(t_word *r)
-{
-	t_word *tmp;
-
-	tmp = r;
-	while (tmp)
+	while (i < n)
 	{
-		print_token(tmp->buffer->buf, tmp->buffer->size);
-		tmp = tmp->next;
+		printer_char(&g_shell.out, '\t');
+		i++;
 	}
 }
 
-void		print_redir(t_redir *r)
-{
-	t_redir *tmp;
-
-	tmp = r;
-	while (tmp)
-	{
-		print_token(tmp->buffer->buf, tmp->buffer->size);
-		tmp = tmp->next;
-	}
-}
-
-void	padding(char c, char n)
-{
-	int i;
-
-	for (i = 0; i < n; i++)
-		ft_putchar(c);
-}
-
-void	structure(t_parser_node *root, int level)
+// FIXME remove recursion
+void		structure(t_lexer_token *root, int level)
 {
 	if (!root)
 	{
-		padding('\t', level);
-		puts("~");
+		padding(level);
+		printer_char(&g_shell.out, '~');
+		printer_endl(&g_shell.out);
 	}
 	else
 	{
 		structure(root->right, level + 1);
-		padding('\t', level);
-		if (root->type != PARSER_COMMAND)
-			print_token(root->buffer, root->size);
+		padding(level);
+		if (root->ptype != PARSER_COMMAND)
+			printer_bin(&g_shell.out, root->buffer, root->size);
 		else if (root->arg_head)
-			print_token(root->arg_head->buffer->buf, root->arg_head->buffer->size);
+			printer_bin(&g_shell.out, root->arg_head->buffer,
+					root->arg_head->size);
+		else
+			printer_char(&g_shell.out, '?');
+		printer_endl(&g_shell.out);
 		structure(root->left, level + 1);
 	}
-}
-
-void	parser_print(t_parser_node *tree)
-{
-	if (!tree)
-		return ;
-	if (tree->right)
-	{
-		ft_putendl("printing left");
-		parser_print(tree->right);
-	}
-	print_token(tree->arg_head->buffer->buf, tree->arg_head->buffer->size);
-	if (tree->left)
-	{
-		ft_putendl("printing left");
-		parser_print(tree->left);
-	}
+	printer_flush(&g_shell.out);
 }

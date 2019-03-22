@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-
+/*
 static void				free_word(t_word *head)
 {
 	t_word	*cur;
@@ -60,4 +60,9 @@ void	parser_destroy(t_parser *parser)
 		current = current->listNext;
 		free_node(previous);
 	}
+}
+*/
+void	parser_destroy(t_lexer *lex)
+{
+	(void)lex;
 }

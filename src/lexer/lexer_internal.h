@@ -35,16 +35,26 @@ enum							e_redirect_type
 	DLESSDASH,
 };
 
-typedef struct					s_buffer
+enum							e_parser_type
+{
+	PARSER_COMMAND = 0,
+	PARSER_HEREDOC,
+	PARSER_REDIRECT,
+	PARSER_PIPE,
+	PARSER_AND_OR,
+	PARSER_SEMICOLON
+};
+
+/*typedef struct					s_buffer
 {
 	uint8_t						*buf;
 	size_t						size;
-}								t_buffer;
+}								t_buffer;*/
 
 /*
 ** cannot_append: delimited token
 */
-typedef struct s_redir			t_redir;
+/*typedef struct s_redir			t_redir;
 
 struct							s_redir
 {
@@ -56,7 +66,7 @@ struct							s_redir
 	uint8_t						heredoc;
 	uint8_t						tilded;
 	t_redir						*next;
-};
+};*/
 
 typedef struct s_lexer_token	t_lexer_token;
 
@@ -71,12 +81,32 @@ struct							s_lexer_token
 	size_t						size;
 	int							cannot_append;
 	int							is_number;
-	uint8_t						**args;
+/*	uint8_t						**args;
 	size_t						args_nb;
 	size_t						*args_size;
 	t_redir						*redirs; //voir si on a un nb de redir max
 	size_t						redirs_nb;
-	size_t						redir_err;
+	size_t						redir_err;*/
+	// for parser:
+	t_lexer_token				*parent;
+	t_lexer_token				*left;
+	t_lexer_token				*right;
+	t_lexer_token				*arg_head;
+	t_lexer_token				*arg_next;
+	t_lexer_token				*arg_foot;
+	size_t						arg_nb;
+	t_lexer_token				*redir_head;
+	t_lexer_token				*redir_next;
+	t_lexer_token				*redir_foot;
+	size_t						redir_nb;
+	t_lexer_token				*assign_head;
+	t_lexer_token				*assign_next;
+	t_lexer_token				*assign_foot;
+	size_t						assign_nb;
+	int							next_io;
+	enum e_parser_type			ptype;
+	enum e_redirect_type		rtype;
+	int							heredoc; // FIXME
 };
 
 typedef struct					s_heredoc
@@ -117,6 +147,8 @@ typedef struct					s_lexer
 	t_heredoc					*heredoc_queue;
 	int							heredoc;
 	t_heredoc					*heredoc_ptr;
+	// for parser:
+	t_lexer_token				*root;
 }								t_lexer;
 
 /*

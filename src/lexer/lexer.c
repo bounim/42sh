@@ -133,7 +133,6 @@ static void			lexer_debug(t_lexer *lex)
 int 				lexer(void)
 {
 	t_lexer		lex;
-	t_parser	parser;
 	int			r;
 	size_t		i;
 
@@ -159,7 +158,7 @@ int 				lexer(void)
 			continue ;
 		}
 		if (lex.head != NULL)
-			test_exec(&lex, &parser);
+			test_exec(&lex);
 		if (i + lex.i == g_shell.line_size)
 			break ;
 		i += lex.i;

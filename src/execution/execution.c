@@ -13,7 +13,7 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-static char	**arg_to_argv(t_word *head)
+/*static char	**arg_to_argv(t_word *head)
 {
 	size_t	ac;
 	t_word	*cur;
@@ -49,25 +49,26 @@ static char	**arg_to_argv(t_word *head)
 	}
 	av[i] = NULL;
 	return (av);
-}
+}*/
 
-void		test_exec(t_lexer *lex, t_parser *parser)
+void		test_exec(t_lexer *lex)
 {
 	char	**av;
 
-	if (parser_create_tree(parser, lex) < 0)
+	(void)av;//XXX
+	if (parser_create_tree(lex) < 0)
 		return ;
-	if (parser->head == NULL)
+	/*if (lex->root == NULL)
 		return ;
-	if (parser->head->type != PARSER_COMMAND || !parser->head->arg_head)
+	if (lex->root->type != PARSER_COMMAND || !lex->root->arg_head)
 	{
-		parser_destroy(parser);
+		parser_destroy(lex);
 		return ;
 	}
-	if ((av = arg_to_argv(parser->head->arg_head)))
+	if ((av = arg_to_argv(lex->root->arg_head)))
 	{
 		// TODO exec
 		start_builtin(av, NULL);
 	}
-	parser_destroy(parser);
+	parser_destroy(lex);*/
 }

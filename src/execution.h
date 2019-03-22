@@ -15,6 +15,6 @@
 
 # include "parser.h"
 
-void	test_exec(t_lexer *lex, t_parser *parser);
+void	test_exec(t_lexer *lex);
 
 #endif

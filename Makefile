@@ -76,9 +76,10 @@ SRC := \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \
-	expansions/tilde_expansion.c \
-	expansions/parameter_expansion.c \
-	utils/is.c
+	parser/is.c
+
+	#expansions/tilde_expansion.c \
+	#expansions/parameter_expansion.c \
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror
