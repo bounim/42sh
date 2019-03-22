@@ -95,6 +95,7 @@ void	init_edit(void)
 	g_shell.edit.edit_mode = MODE_EMACS;
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.mark = NULL;
+	g_shell.edit.last_command = NULL;
 	g_shell.edit.cur_base_x = 0;
 	g_shell.edit.cur_base_y = 0;
 	g_shell.edit.term_info.capa = g_shell.raw_tio;
