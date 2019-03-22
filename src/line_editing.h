@@ -201,6 +201,7 @@ typedef struct 					s_edit
 {
 	t_char 				*point_char;
 	t_char				*mark;
+	t_last_command		*last_command;
 	t_char_list			char_list;
 	t_term				term_info;
 	int					reading;
@@ -211,6 +212,12 @@ typedef struct 					s_edit
 	uint8_t				*cpy_buff;
 }								t_edit;
 
+struct			s_last_command
+{
+	uint8_t				*buf;
+	int 				last_command_mode;
+	t_last_command		*prev;
+};
 void					init_signals(void);
 void					signal_handler(int signo);
 void					modify_term(void);

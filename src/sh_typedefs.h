@@ -34,5 +34,5 @@ typedef struct s_opts			t_opts;
 typedef struct s_proc			t_proc;
 typedef struct s_job			t_job;
 typedef struct s_type			t_type;
-
+typedef struct s_last_command	t_last_command;
 #endif
