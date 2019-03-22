@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 15:52:20 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:33:17 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		unset_alias(char *arg, t_alias **alias)
 			lst->next = NULL;
 			free_alias(lst);
 			return (0);
-			//*alias = head; ???
 		}
 		tmp = lst;
 		lst = lst->next;

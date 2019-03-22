@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 16:08:18 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 12:00:17 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:29:12 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ t_envl	*dup_envl(t_envl *env)
 		if (!(new = (t_envl *)malloc(sizeof(*new))))
 			return (NULL);
 		new->name = ft_strdup(tmp->name);
-		new->value = ft_strdup(tmp->value);
+		if (tmp->value)
+			new->value = ft_strdup(tmp->value);
 		new->exp = tmp->exp;
 		new->read_only = tmp->read_only;
 		new->next = NULL;

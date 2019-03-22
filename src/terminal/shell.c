@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/22 15:07:24 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:36:15 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void					run_shell(void)
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
 		readline(BASIC_PROMPT);
+		printf("%zu\n", g_shell.debug_mode);
 		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
 			lexer();
 	}

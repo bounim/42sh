@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 11:47:45 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 16:36:19 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:04:13 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int		unset_env(char *arg, t_envl **envl)
 	t_envl	*tmp;
 
 	h_env = *envl;
-	if (ft_strequ(arg, h_env->name) && h_env->exp == 1)
+	if (ft_strequ(arg, h_env->name) && h_env->exp == 1 && h_env->read_only == 0)
 	{
 		*envl = h_env->next;
 		h_env->next = NULL;
@@ -29,7 +29,7 @@ static int		unset_env(char *arg, t_envl **envl)
 	h_env = h_env->next;
 	while (h_env)
 	{
-		if (ft_strequ(arg, h_env->name) && h_env->exp == 1)
+		if (ft_strequ(arg, h_env->name) && h_env->exp == 1 && h_env->read_only == 0)
 		{
 			tmp->next = h_env->next;
 			h_env->next = NULL;

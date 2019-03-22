@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 16:42:59 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 16:35:55 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:17:18 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ void	print_envl(t_envl *env, int exp)
 			if (exp == 1)
 				ft_putstr("export ");
 			ft_putstr(env->name);
+			ft_putchar('=');
 			if (env->value)
-			{
-				ft_putchar('=');
 				ft_putstr(env->value);
-			}
-			ft_putchar(10);
+			ft_putchar('\n');
 		}
 		env = env->next;
 	}
