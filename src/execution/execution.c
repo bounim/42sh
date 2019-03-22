@@ -47,6 +47,7 @@ static char	**arg_to_argv(t_word *head)
 		i++;
 		cur = cur->next;
 	}
+	av[i] = NULL;
 	return (av);
 }
 
