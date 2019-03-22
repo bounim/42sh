@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 15:18:44 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 15:36:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:02:44 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int		built_exit(char **arg)
 
 	//free_all
 	if (arg[1])
-		return (ft_atoi(arg[1]));
-	return (0);
+		exit(ft_atoi(arg[1]));
+	exit(0);
 }
