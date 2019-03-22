@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 19:23:26 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/26 18:31:31 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ enum 					e_prompt
 # define QUOTE_PRMPT "pquote> "
 # define BACKSLASH_PRMPT "> "
 # define HEREDOC_PRMPT "heredoc> "
-# define SEARCH_PRMPT "(reverse-i-search)`\'"
+# define SEARCH_PRMPT "(reverse-i-search)`"
 # define MATCH 1
 # define PARTIAL_MATCH 0
 # define NO_MATCH -1
@@ -90,13 +90,13 @@ enum 					e_freenum
 # define CTRL_D "\004"
 # define CTRL_E "\005"
 # define CTRL_F "\006"
-# define CTRL_U "\025"
 # define CTRL_K "\013"
 # define CTRL_N "\016"
 # define CTRL_P "\020"
+# define CTRL_R "\022"
+# define CTRL_U "\025"
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
-# define CTRL_R "\022"
 # define CTRL_T "\024"
 # define CTRL_X_CTRL_X "\030\030"
 # define TAB "\011"

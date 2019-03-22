@@ -12,46 +12,80 @@
 
 #include "twenty_one_sh.h"
 
-void	update_base_y_in_search(t_history *curr)
-{
-	int one_line;
-	int i;
-	int in_line;
-	int y_pos;
+// pour le update il faut reconstruire le buff en entier (prompt + search_buff + search_results) et appliquer la meme formule.
 
-	one_line = g_shell.edit.term_info.max.ws_col;
+uint8_t *build_full_buff(uint8_t *hist_buff)
+{
+	uint8_t *full_buff;
+	size_t	hist_len;
+	size_t	search_len;
+
+
+	hist_len = ft_u8_strlen(hist_buff);
+	search_len = g_shell.hist.search_len;
+	if (!(full_buff = (uint8_t*)malloc(sizeof(uint8_t) *
+		(hist_len + 23 + search_len + 1))))
+		fatal_exit(SH_ENOMEM);
+	ft_memset(full_buff, 0, hist_len + 23 + g_shell.hist.search_len + 1);
+	ft_memmove(full_buff, SEARCH_PRMPT, 19);
+	ft_memmove(full_buff + 19, g_shell.hist.search_buff, g_shell.hist.search_len);
+	ft_memmove(full_buff + 19 + search_len, "\': ", 3);
+	if (hist_buff)
+		ft_memmove(full_buff + 22 + search_len, hist_buff, hist_len);
+	else
+		full_buff[23 + search_len] = '\0';
+	return (full_buff);
+}
+
+//le full_buff est bien construit, reste a revoir l'algo
+//pb quand tu del, find in history est appelé qui a son tour appel print results, ca recalcule la pos et ca refait baisser le curr_y;
+//regarder avec lls, quand tu print et que tu arrives en fin de ligne il descend pas tout seul.
+void	update_base_y_in_search(uint8_t *hist_buff)
+{
+	uint8_t *full_buff;
+	int 	i;
+	int 	one_line;
+	int 	in_line;
+	int 	y_pos;
+
+	full_buff = build_full_buff(hist_buff);
 	i = 0;
-	in_line = ft_strlen(SEARCH_PRMPT) + g_shell.hist.search_len;
-	y_pos = g_shell.edit.cur_base_y;
-	if (curr && !curr->buf)
-		return ;
-	while (curr->buf[i])
+	one_line = g_shell.edit.term_info.max.ws_col;
+	in_line = 1;
+	y_pos = g_shell.edit.cur_base_y;// y_pos commence a 0
+	while (full_buff[i])
 	{
-		if (in_line % one_line == 0 || curr->buf[i] == '\n')
+		if (in_line % one_line == 0 || full_buff[i] == '\n')
 		{
 			y_pos++;
-			if (y_pos >= g_shell.edit.term_info.max.ws_row)
+			if (y_pos + 1 >= g_shell.edit.term_info.max.ws_row)
 				g_shell.edit.cur_base_y--;
-			if (curr->buf[i] == '\n')
+			if (full_buff[i] == '\n')
 				in_line = 0;
 		}
 		in_line++;
 		i++;
 	}
-}
-
-void	print_search_result(t_history *curr)
-{
-	update_base_y_in_search(curr);
-	ft_putstr((char*)curr->buf);
+	free(full_buff);
 }
 
 void	print_search_prompt(void)
 {
-	clean_screen();
-	ft_putstr("(reverse-i-search)`");
+	write(1, SEARCH_PRMPT, 19);
 	write(1, g_shell.hist.search_buff, g_shell.hist.search_len);
 	ft_putstr("\': ");
+}
+
+void	print_search_result(t_history *curr)
+{
+	clean_screen();
+	if (curr)
+		update_base_y_in_search(curr->buf);
+	else
+		update_base_y_in_search(NULL);
+	print_search_prompt();
+	if (curr)
+		ft_putstr((char*)curr->buf);
 }
 
 void	del_charac_in_search(void)
@@ -125,6 +159,7 @@ void	find_in_history(int save)
 	t_history	*curr;
 
 	curr = g_shell.hist.history;
+	clean_screen();
 	print_search_prompt();
 	if (!g_shell.hist.search_buff[0])
 		return ;
@@ -132,11 +167,11 @@ void	find_in_history(int save)
 	{
 		if (ft_strstr((char*)curr->buf, (char*)g_shell.hist.search_buff) != 0)
 		{
-			print_search_result(curr);
 			if (save == 1)
 				g_shell.hist.history = curr;
 			break ;
 		}
 		curr = curr->bfr;
 	}
+	print_search_result(curr);
 }
