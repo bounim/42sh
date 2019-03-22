@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 19:26:34 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/26 18:30:30 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	{
-		{CTRL_T, 1, drag_char},
-		{CTRL_R, 1, search_in_history},
 		{CTRL_A, 1, go_to_home},
 		{CTRL_B, 1, move_left},
-		{CTRL_D, 1, eot_fn},
 		{CTRL_C, 1, handle_ctrl_c},
+		{CTRL_D, 1, eot_fn},
 		{CTRL_E, 1, go_to_end},
 		{CTRL_F, 1, move_right},
-		{CTRL_U, 1, delete_backline},
 		{CTRL_K, 1, delete_endline},
-		{CTRL_Y, 1, paste_copy},
+		{CTRL_N, 1, get_next_history},
+		{CTRL_P, 1, get_prev_history},
+		{CTRL_R, 1, search_in_history},
+		{CTRL_T, 1, drag_char},
+		{CTRL_U, 1, delete_backline},
 		{CTRL_W, 1, delete_word_backward},
 		{CTRL_P, 1, get_prev_history},
 		{CTRL_N, 1, get_next_history},
+		{CTRL_Y, 1, paste_copy},
 		{CTRL_X_CTRL_X, 2, exchange_point_mark},
 		{ESC_B, 2, jump_word_backward},
 		{ESC_D, 2, delete_word_forward},
