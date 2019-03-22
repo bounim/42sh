@@ -92,6 +92,8 @@ enum 					e_freenum
 # define CTRL_F "\006"
 # define CTRL_U "\025"
 # define CTRL_K "\013"
+# define CTRL_N "\016"
+# define CTRL_P "\020"
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
 # define CTRL_R "\022"

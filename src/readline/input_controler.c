@@ -26,6 +26,8 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{CTRL_K, 1, delete_endline},
 		{CTRL_Y, 1, paste_copy},
 		{CTRL_W, 1, delete_word_backward},
+		{CTRL_P, 1, get_prev_history},
+		{CTRL_N, 1, get_next_history},
 		{CTRL_X_CTRL_X, 2, exchange_point_mark},
 		{ESC_B, 2, jump_word_backward},
 		{ESC_D, 2, delete_word_forward},

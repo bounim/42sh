@@ -27,9 +27,10 @@
 # define MODE_VI_INSERT		1
 # define MODE_VI_EDIT		2
 # define EDIT_MODE			3
-# define KEYMAP_SIZE		32
+# define KEYMAP_SIZE		34
 # define SEARCHMAP_SIZE		4
 # define TERM_SET			1
 # define DELETE_MODE		0
 # define INSERT_MODE		1
+
 #endif
