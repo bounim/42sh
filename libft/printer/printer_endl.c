@@ -14,5 +14,5 @@
 
 void	printer_endl(t_printer *handle)
 {
-	printer_bin(handle, (uint8_t *)("\n" + 1) - 1, 1);
+	printer_bin(handle, (uint8_t *)"\n", 1);
 }
