@@ -30,4 +30,6 @@
 # define KEYMAP_SIZE		32
 # define SEARCHMAP_SIZE		4
 # define TERM_SET			1
+# define DELETE_MODE		0
+# define INSERT_MODE		1
 #endif
