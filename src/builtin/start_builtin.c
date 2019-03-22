@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:24 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 15:11:54 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:03:17 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void	start_builtin_env(char **arg, t_envl *env)
+static int	start_builtin_env(char **arg, t_envl *env)
 {
 	if (ft_strequ(arg[0], "alias"))
 		built_alias(arg, &g_shell.alias);
@@ -40,9 +40,14 @@ static void	start_builtin_env(char **arg, t_envl *env)
 		built_unsetenv(arg, env);
 	else if (ft_strequ(arg[0], "type"))
 		built_type(arg, env);
+	else if (ft_strequ(arg[0], "exit"))
+		exit(built_exit(arg));
+	else
+		return (0);
+	return (1);
 }
 
-static void	start_builtin_null(char **arg)
+static int	start_builtin_null(char **arg)
 {
 	if (ft_strequ(arg[0], "alias"))
 		built_alias(arg, &g_shell.alias);
@@ -70,17 +75,26 @@ static void	start_builtin_null(char **arg)
 		built_unsetenv(arg, NULL);
 	else if (ft_strequ(arg[0], "type"))
 		built_type(arg, g_shell.envl);
+	else if (ft_strequ(arg[0], "exit"))
+		exit(built_exit(arg));
+	else
+		return (0);
+	return (1);
 }
 
-void		start_builtin(char **arg, t_envl *envl)
+int		start_builtin(char **arg, t_envl *envl)
 {
+	int		i;
+
+	i = 1;
 	if (!arg[0])
-			return ;
+			return (0);
 	if (envl)
 	{
-		start_builtin_env(arg, envl);
+		i = start_builtin_env(arg, envl);
 		free_envl(envl);
 	}
 	else if (g_shell.envl)
-		start_builtin_null(arg);
+		i = start_builtin_null(arg);
+	return (i);
 }
