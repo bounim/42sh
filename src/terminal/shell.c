@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/21 19:40:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:07:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void					run_shell(void)
 {
 	t_bool run;
 
+//	char *arg[15] = {"env", "-i", "atagaga", "PATH=/bin", "--", "ls", NULL, "les"};
+//	start_builtin(arg, NULL);
 	run = TRUE;
 	while (run == TRUE)
 	{

@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:20:43 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/18 19:22:04 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/03/22 12:21:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "printer.h"
 
 void	ft_putnbr_fd(int n, int fd);
+void	ft_free_arr(char **arr);
 int		ft_isdigit(int c);
 int		ft_strnequ(char const *s1, char const *s2, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

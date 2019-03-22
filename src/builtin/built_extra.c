@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 14:39:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 15:57:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 14:06:09 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,26 @@ int				built_setenv_check_error(char **arg)
 	return (0);
 }
 
+
+static int		check_env_opts(char *arg)
+{
+	int	i;
+
+	i = 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'i')
+		{
+			ft_putstr_fd("env: illegal option -- -", 2);
+			write(2, arg + i, 1);
+			ft_putstr_fd("\nusage: env [-i] [name=value ...] [utility [argumment ...]]\n", 2);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int				built_env_find_last_cmd(char **arg)
 {
 	int	stock;
@@ -62,8 +82,12 @@ int				built_env_find_last_cmd(char **arg)
 			stock = 1;
 			i++;
 		}
-		else if (ft_strnequ(arg[i], "-i", 2) && stock == 1)
+		else if (ft_strequ(arg[i], "--"))
+			i++;
+		else if (ft_strnequ(arg[i], "-", 1) && stock == 1)
 		{
+			if (check_env_opts(arg[i]))
+				return (-1);
 			stock = 1;
 			i++;
 		}

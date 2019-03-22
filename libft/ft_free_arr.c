@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dup_envl.c                                         :+:      :+:    :+:   */
+/*   ft_free_arr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/12 16:08:18 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 12:00:17 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/22 12:21:46 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/22 14:15:10 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-t_envl	*dup_envl(t_envl *env)
+void	ft_free_arr(char **arr)
 {
-	t_envl	*new;
-	t_envl	*head;
-	t_envl	*tmp;
+	int	i;
 
-	tmp = NULL;
-	head = NULL;
-	tmp = env;
-	while (tmp)
+	i = 0;
+	while (arr[i])
 	{
-		if (!(new = (t_envl *)malloc(sizeof(*new))))
-			return (NULL);
-		new->name = ft_strdup(tmp->name);
-		new->value = ft_strdup(tmp->value);
-		new->exp = tmp->exp;
-		new->read_only = tmp->read_only;
-		new->next = NULL;
-		head = addlast_envl(head, new);
-		tmp = tmp->next;
+		free(arr[i]);
+		i++;
 	}
-	return (head);
+	if (arr)
+		free(arr);
 }

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 17:03:28 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 11:42:57 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ static int		cd_oldpwd(t_envl *env)
 		{
 			if (!(tmp = getcwd(NULL, 0)))
 			{
-				write(2, "cd: GETCWD error\n", 17);
+				write(2, "cd: dir not found\n", 17);
 				return (1);
 			}
 		}
@@ -179,11 +179,15 @@ static int		cd_first_arg(char **arg, int *opts)
 
 	l = 0;
 	i = 1;
-	while (arg[i])
+	while (arg[i] != NULL)
 	{
-		if (arg[i][0] == '-')
+		if (ft_strequ(arg[i], "-"))
+				return (i);
+		if (ft_strequ(arg[i], "--"))
+			return (i + 1);
+		else if (ft_strnequ(arg[i], "-", 1))
 		{
-			j = 0;
+			j = 1;
 			while (arg[i][j])
 			{
 				if (arg[i][j] == 'P')
@@ -195,11 +199,9 @@ static int		cd_first_arg(char **arg, int *opts)
 					ft_putstr_fd(": invalid option\ncd: usage: cd [-L|-P] [dir]\n", 2);
 					return (-1);
 				}
-				i++;
+				j++;
 			}
 		}
-		else if (ft_strequ(arg[i], "--"))
-			return (i + 1);
 		else
 			return (i);
 		i++;
@@ -232,7 +234,7 @@ int				built_cd(char **arg, t_envl *envl)
 	g_shell.canonic_path = ft_strdup(path);
 	if (chdir(path) == -1)
 	{
-		ft_putendl_fd("cd: CHDIR error", 2);
+		ft_putendl_fd("cd: dir not found", 2);
 		return (1);
 	}
 	push_env(&g_shell.envl, "OLDPWD", oldpwd, 1);
