@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:55:18 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/19 13:56:03 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:34:33 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ void				execute_search_command(void);
 void				give_up_search(void);
 void 				back_to_readline(void);
 void				find_in_history(int save);
+void				file_from_history(char *path, t_history *hist);
 #endif

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:24 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 15:11:54 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:37:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	start_builtin_env(char **arg, t_envl *env)
 		built_unsetenv(arg, env);
 	else if (ft_strequ(arg[0], "type"))
 		built_type(arg, env);
+	else if (ft_strequ(arg[0], "exit"))
+		exit(built_exit(arg));
 }
 
 static void	start_builtin_null(char **arg)
@@ -70,6 +72,8 @@ static void	start_builtin_null(char **arg)
 		built_unsetenv(arg, NULL);
 	else if (ft_strequ(arg[0], "type"))
 		built_type(arg, g_shell.envl);
+	else if (ft_strequ(arg[0], "exit"))
+		exit(built_exit(arg));
 }
 
 void		start_builtin(char **arg, t_envl *envl)

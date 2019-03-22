@@ -15,12 +15,12 @@ SRC := \
 	execution/execution.c \
 	history/controler_history.c \
 	history/down_history.c \
-	history/history.c \
 	history/init_shell_history.c \
 	history/list_history.c \
 	history/up_history.c \
 	history/search_in_history.c\
 	history/search_in_history_actions.c\
+	history/file_from_history.c \
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \
@@ -49,6 +49,7 @@ SRC := \
 	builtin/replace_exclaim.c \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \
+	builtin/built_exit.c \
 	readline/readline.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \

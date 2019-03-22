@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 19:55:18 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:37:40 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int			put_error(char *sh, char *cmd, char *arg, char *error);
 int			check_opts(char **arg, t_opts *flag, char opts);
 void		start_builtin(char **arg, t_envl *envl);
 int			built_debug(char **arg);
+int			built_exit(char **arg);
 
 #endif
