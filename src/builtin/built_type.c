@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 16:54:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:12:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int					built_type(char **arg, t_envl *envl)
 	if (!arg)
 		return (1);
 	all_found = TRUE;
-	i = 0;
+	i = 1;
 	while (arg[i])
 	{
 		print_type(arg[i], &all_found, envl);
