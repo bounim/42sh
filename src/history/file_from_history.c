@@ -6,18 +6,23 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 15:28:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 15:39:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:56:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		file_from_history(char *path, t_history *hist)
+void		file_from_history(t_history *hist)
 {
 	int			fd;
 	char		*str;
+	char		*path;
 
-	path = ft_strfjoin(path, "/.21sh_history", 0);
+	fd = 0;
+	if (!(path = ft_strdup(get_env_val(g_shell.envl, "HISTFILE"))))
+		if (!(path = ft_strjoin(get_env_val(g_shell.envl, "HOME"),
+								"/.42sh_history")))
+			fatal_exit(SH_ENOMEM);
 	fd = open(path, O_WRONLY);
 	if (fd < 0)
 		fd = open(path, O_CREAT | O_WRONLY);

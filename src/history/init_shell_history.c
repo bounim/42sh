@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/21 15:09:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:49:11 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ static uint8_t		*get_histfile_content()
 	char			*histpath;
 	ssize_t			rd;
 
-	if (!(histpath = ft_strjoin(get_env_val(g_shell.envl, "HOME"),
+	if (!(histpath = ft_strdup(get_env_val(g_shell.envl, "HISTFILE"))))
+		if (!(histpath = ft_strjoin(get_env_val(g_shell.envl, "HOME"),
 								"/.21sh_history")))
-		fatal_exit(SH_ENOMEM);
+			fatal_exit(SH_ENOMEM);
 	if (((fd = open(histpath, O_RDONLY)) < 0) || read(fd, buf, 0) < 0)
 		return (NULL);
 	if (!(ret = ft_u8_strnew(0)))

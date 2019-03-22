@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 11:47:45 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 17:22:45 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:36:19 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int		unset_env(char *arg, t_envl **envl)
 			h_env->next = NULL;
 			free_envl(h_env);
 			return (0);
-			//*envl = head; ????
 		}
 		tmp = h_env;
 		h_env = h_env->next;

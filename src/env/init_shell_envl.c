@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/21 19:05:16 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:54:51 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,24 @@ static void		set_env_var(t_envl **envl, const char *name, char *value, size_t re
 		new->name = ft_strdup(name);
 		new->read_only = read;
 		new->value = value;
+		new->exp = 1;
+		new->next = NULL;
+		*envl = addlast_envl(*envl, new);
+	}
+}
+
+static void		set_env_var_unexp(t_envl **envl, const char *name, char *value, size_t read)
+{
+	t_envl		*new;
+
+	if (search_env_var(*envl, name) == NOTFOUND)
+	{
+		if (!(new = (t_envl *)malloc(sizeof(*new))))
+			fatal_exit(SH_ENOMEM);
+		new->name = ft_strdup(name);
+		new->read_only = read;
+		new->value = value;
+		new->exp = 0;
 		new->next = NULL;
 		*envl = addlast_envl(*envl, new);
 	}
@@ -53,9 +71,16 @@ static void		set_envl_default_value(t_envl **envl)
 		fatal_exit(SH_ENOMEM);
 	set_env_var(envl, "HOME", ft_strjoin("/Users/", pwuid->pw_name), 0);
 	set_env_var(envl, "LOGNAME", ft_strdup(pwuid->pw_name), 1);
-	set_env_var(envl, "SHLVL", ft_strdup("1"), 1);
+	set_env_var(envl, "SHLVL", ft_strdup("1"), 0);
 	set_env_var(envl, "PWD", ft_strdup(cwd), 0);
 	set_env_var(envl, "OLDPWD", ft_strdup(cwd), 0);
+//	set_env_var_unexp(envl, "42SH_ARGC", ft_itoa(g_shell.argc), 1);
+//	set_env_var_unexp(envl, "42SH_ARGV", ft_arrdup(g_shell.argv), 1);
+	set_env_var_unexp(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"), "/.42sh_history"), 0);
+	set_env_var_unexp(envl, "HISTSIZE", "500", 0);
+	set_env_var_unexp(envl, "$", NULL, 2);
+	set_env_var_unexp(envl, "?", NULL, 2);
+	set_env_var_unexp(envl, "0", NULL, 2);
 }
 
 static t_envl	*envarr_to_envl(char **env)

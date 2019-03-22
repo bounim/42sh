@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 15:18:44 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 16:02:44 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:54:37 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		built_exit(char **arg)
 {
-	file_from_history(get_env_val(g_shell.envl, "HOME"), g_shell.hist.history);
+	file_from_history(g_shell.hist.history);
 
 	//free_all
 	if (arg[1])

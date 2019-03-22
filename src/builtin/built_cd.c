@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 11:42:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:31:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,15 +190,17 @@ static int		cd_first_arg(char **arg, int *opts)
 			j = 1;
 			while (arg[i][j])
 			{
-				if (arg[i][j] == 'P')
+				if (arg[i][j] == 'P' && *opts != -1)
 					*opts = 1;
-				else if (arg[i][j] != 'L')
+				else if (arg[i][j] != 'L' && arg[i][j] != 'P')
 				{
 					ft_putstr_fd("sh: cd: -", 2);
 					write(2, arg[i] + j, 1);
 					ft_putstr_fd(": invalid option\ncd: usage: cd [-L|-P] [dir]\n", 2);
 					return (-1);
 				}
+				else
+					*opts = -1;
 				j++;
 			}
 		}
@@ -216,8 +218,11 @@ int				built_cd(char **arg, t_envl *envl)
 	size_t	i;
 	int		opts;
 
+	opts = 0;
 	if ((i = cd_first_arg(arg, &opts)) == -1)
 		return (1);
+	if (opts == -1)
+		opts = 0;
 	if (init_pwd(&envl))
 		return (1);
 	if (ft_strequ(arg[i], "-"))
