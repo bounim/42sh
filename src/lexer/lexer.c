@@ -85,14 +85,12 @@ static void			lexer_destroy(t_lexer *lex)
 	{
 		previous = current;
 		current = current->next;
-		if (previous->type == LEX_TP_WD || previous->type == LEX_TP_OP)
-			free(previous->buffer);
+		free(previous->buffer);
 		// TODO free heredoc
 		free(previous);
 	}
 	lex->head = NULL;
 	lex->foot = NULL;
-	// TODO destroy parser?
 }
 
 static void			lexer_debug(t_lexer *lex)
@@ -137,8 +135,13 @@ static void			test_exec(t_lexer *lex, t_parser *parser)
 
 	if (parser_create_tree(parser, lex) < 0)
 		return ;
-	if (parser->head == NULL || parser->head->type != PARSER_COMMAND)
+	if (parser->head == NULL)
 		return ;
+	if (parser->head->type != PARSER_COMMAND)
+	{
+		parser_destroy(parser);
+		return ;
+	}
 	printer_str(&g_shell.out, "test exec cmd: ");
 	cur = parser->head->arg_head;
 	while (cur)
@@ -147,6 +150,7 @@ static void			test_exec(t_lexer *lex, t_parser *parser)
 		printer_str(&g_shell.out, " ");
 		cur = cur->next;
 	}
+	parser_destroy(parser);
 	printer_endl(&g_shell.out);
 	printer_flush(&g_shell.out);
 }

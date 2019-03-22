@@ -38,7 +38,6 @@ static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
 		n->arg_head = new;
 	n->arg_foot = new;
 	n->arg_nb++;
-	printf("new node next == %p\n", n->right);
 	return (0);
 }
 
@@ -117,17 +116,17 @@ static int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
 	{
 		if (is_shift((*tmp)->buffer, (*tmp)->size))
 			r = add_redirection(n, tmp);
-	    else if ((*tmp)->type == LEX_TP_IO)
+		else if ((*tmp)->type == LEX_TP_IO)
 			n->next_io = ft_memtoi((*tmp)->buffer, (*tmp)->size);
 		else if (!n->arg_head && (uint8_t *)ft_memchr((*tmp)->buffer, '=', (*tmp)->size) > (*tmp)->buffer)
 			r = add_assignement_word(n, tmp);
 		else
 			r = add_argument(n, tmp);
 		if (r != 0)
-      return (r);
-    if ((*tmp)->next && is_sep_operator((*tmp)->next))
-      break;
-		(*tmp) = (*tmp)->next;		
+			return (r);
+		if ((*tmp)->next && is_sep_operator((*tmp)->next))
+			break;
+		(*tmp) = (*tmp)->next;
 	}
 	return (0);
 }
@@ -139,17 +138,18 @@ t_parser_node	  *parser_new_elem(t_lexer_token **tmp)
 	if (!(n = malloc(sizeof(*n))))
 		return (NULL);
 	ft_memset(n, 0, sizeof(*n));
-	if ((n->type = get_node_type(*tmp)) == PARSER_COMMAND || is_shift((*tmp)->buffer, (*tmp)->size))
+	if ((n->type = get_node_type(*tmp)) == PARSER_COMMAND
+			|| is_shift((*tmp)->buffer, (*tmp)->size))
 		parser_new_command(n, tmp);
-  else
-  {
-    if (!(n->buffer = malloc(sizeof(uint8_t) * (*tmp)->size)))
-    {
-      free(n);
-      return (NULL);
-    }
-    ft_memcpy(n->buffer, (*tmp)->buffer, (*tmp)->size);
-    n->size = (*tmp)->size;
-  }
+	else
+	{
+		if (!(n->buffer = malloc(sizeof(uint8_t) * (*tmp)->size)))
+		{
+			free(n);
+			return (NULL);
+		}
+		ft_memcpy(n->buffer, (*tmp)->buffer, (*tmp)->size);
+		n->size = (*tmp)->size;
+	}
 	return (n);
 }
