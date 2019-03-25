@@ -14,14 +14,8 @@
 
 uint8_t				is_shift(uint8_t *buffer, size_t buffer_size)
 {
-	if (buffer_size > 2 || (buffer[0] != '<' && buffer[0] != '>'))
-		return (0);
-	if (buffer_size == 1)
-		return (1);
-	if (buffer[1] && buffer[1] == '&')
-		return (1);
-	else
-		return (buffer[0] == buffer[1]);
+	(void)buffer_size;
+	return (buffer[0] == '<' || buffer[0] == '>');
 }
 
 uint8_t				is_semicolon(uint8_t *buffer, size_t buffer_size)
@@ -60,13 +54,63 @@ uint8_t          	is_quote(uint8_t c)
 
 enum e_parser_type	get_node_type(t_lexer_token *token)
 {
-	if (is_and(token->buffer, token->size) || is_or(token->buffer, token->size))
-		return (PARSER_AND_OR);
-	if (is_pipeline(token->buffer, token->size))
-		return (PARSER_PIPE);
-	if (is_shift(token->buffer, token->size))
-		return (PARSER_REDIRECT);
-	if (is_semicolon(token->buffer, token->size))
-		return (PARSER_SEMICOLON);
+	if (token->type == LEX_TP_OP)
+	{
+		if (token->size == 1)
+		{
+			if (token->buffer[0] == '&' || token->buffer[0] == ';')
+				return (PARSER_SEPARATOR);
+			if (token->buffer[0] == '|')
+				return (PARSER_PIPE);
+		}
+		else if (token->size == 2
+				&& (token->buffer[0] == '|' || token->buffer[0] == '&')
+				&& token->buffer[0] == token->buffer[1])
+			return (PARSER_AND_OR);
+	}
 	return (PARSER_COMMAND);
+}
+
+enum e_redirect_type	get_redirect(uint8_t *buffer, size_t size)
+{
+	if (size == 3)
+		return (DLESSDASH);
+	if (size == 2)
+	{
+		if (buffer[0] == '<')
+		{
+			if (buffer[1] == '>')
+				return (LESSGREAT);
+			if (buffer[1] == '&')
+				return (LESSAND);
+			return (DLESS);
+		}
+		if (buffer[1] == '&')
+			return (GREATAND);
+		return (DGREAT);
+	}
+	if (buffer[0] == '>')
+		return (GREAT);
+	return (LESS);
+}
+
+size_t					is_assignment(uint8_t *buffer, size_t size)
+{
+	size_t	i;
+
+	if (size == 0 || (buffer[0] >= '0' && buffer[0] <= '9'))
+		return (0);
+	i = 0;
+	while (i < size)
+	{
+		if (i > 0 && buffer[i] == '=')
+			return (i);
+		if (!(buffer[i] == '_'
+					|| (buffer[i] >= '0' && buffer[i] <= '9')
+					|| (buffer[i] >= 'A' && buffer[i] <= 'Z')
+					|| (buffer[i] >= 'a' && buffer[i] <= 'z')))
+			return (0);
+		i++;
+	}
+	return (0);
 }

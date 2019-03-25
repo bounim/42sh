@@ -59,7 +59,7 @@ int		unquoted_backslash_newline(t_lexer *lex)
 
 int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 {
-	if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
+	/*if (!lex->quoted && lex->heredoc) // TODO cmd <<EOF "quote
 	{
 		if (lex->i > 0)
 		{
@@ -87,7 +87,8 @@ int		heredoc(t_lexer *lex) // TODO do not forget about multiple heredoc support
 		else // FIXME new token or append line??
 		{
 		}
-	}
+	}*/
+	(void)lex;
 	return (1);
 }
 

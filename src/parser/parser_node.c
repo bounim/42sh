@@ -12,78 +12,93 @@
 
 #include "parser.h"
 
-// FIXME regression: >x y
-
-static int				add_argument(t_lexer_token *n, t_lexer_token **cur)
+static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 {
-	// FIXME what if !*cur
-	if (n->arg_foot)
-		n->arg_foot->next = *cur;
+	if (n->arg_nb == 0
+			&& ((*cur)->assign_position = is_assignment((*cur)->buffer,
+					(*cur)->size)) > 0)
+	{
+		if (n->assign_foot)
+			n->assign_foot->next = *cur;
+		else
+			n->assign_head = *cur;
+		n->assign_foot = *cur;
+		n->assign_nb++;
+	}
 	else
-		n->arg_head = *cur;
-	n->arg_foot = *cur;
-	n->arg_nb++;
+	{
+		if (n->arg_foot)
+			n->arg_foot->next = *cur;
+		else
+			n->arg_head = *cur;
+		n->arg_foot = *cur;
+		n->arg_nb++;
+	}
+	*cur = (*cur)->next;
 	return (0);
 }
 
-static int				add_assignement_word(t_lexer_token *n,
-		t_lexer_token **cur)
+static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 {
-	// FIXME what if !*cur
-	if (n->assign_foot)
-		n->assign_foot->next = *cur;
-	else
-		n->assign_head = *cur;
-	n->assign_foot = *cur;
-	n->assign_nb++;
-	return (0);
-}
-
-static int				add_redirection(t_lexer_token *n, t_lexer_token **cur)
-{
+	if ((*cur)->next == NULL)
+		return (-1);
 	(*cur)->rtype = get_redirect((*cur)->buffer, (*cur)->size);
 	if ((*cur)->rtype == DLESS || (*cur)->rtype == DLESSDASH)
-		(*cur)->heredoc = 1; // FIXME
-	*cur = (*cur)->next;
-	// FIXME if !*cur then error???
+	{
+		// TODO when delimiter is quoted, needs quote removal + act differently
+		(*cur)->next->heredoc_delimiter = 1;
+		if (lex->heredoc_foot)
+			lex->heredoc_foot->next = *cur;
+		else
+			lex->heredoc_head = *cur;
+		lex->heredoc_foot = *cur;
+		lex->heredoc_nb++;
+	}
+	(*cur)->redir_target = (*cur)->next;
 	if (n->redir_foot)
 		n->redir_foot->next = *cur;
 	else
 		n->redir_head = *cur;
 	n->redir_foot = *cur;
 	n->redir_nb++;
+	*cur = (*cur)->next->next;
 	return (0);
 }
 
-static int			parser_new_command(t_lexer_token *n, t_lexer_token **cur)
+static int		add_io(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 {
-	int		r;
+	if ((*cur)->next == NULL)
+		return (-1);
+	(*cur)->next->redir_input = ft_memtoi((*cur)->buffer, (*cur)->size);
+	*cur = (*cur)->next;
+	return (add_op(lex, n, cur));
+}
+
+static int		parser_new_command(t_lexer *lex, t_lexer_token *n,
+		t_lexer_token **cur)
+{
+	int	r;
 
 	r = 0;
-	while (*cur && !is_sep_operator(*cur))
+	while (r == 0 && *cur && !is_sep_operator(*cur))
 	{
-		if (is_shift((*cur)->buffer, (*cur)->size))
-			r = add_redirection(n, cur);
-		else if ((*cur)->type == LEX_TP_IO) // FIXME what if already set
-			n->next_io = ft_memtoi((*cur)->buffer, (*cur)->size);
-		else if (!(*cur)->arg_next && (uint8_t *)ft_memchr((*cur)->buffer,
-					'=', (*cur)->size) > (*cur)->buffer)
-			r = add_assignement_word(n, cur);
+		if ((*cur)->type == LEX_TP_WD)
+			r = add_wd(n, cur);
+		else if ((*cur)->type == LEX_TP_IO)
+			r = add_io(lex, n, cur);
 		else
-			r = add_argument(n, cur);
-		if (r != 0)
-			return (r);
-		if ((*cur)->next && is_sep_operator((*cur)->next))
-			break ;
-		(*cur) = (*cur)->next;
+			r = add_op(lex, n, cur);
 	}
-	return (0);
+	return (r);
 }
 
-int					parser_new_elem(t_lexer_token **cur)
+int				parser_new_elem(t_lexer *lex, t_lexer_token **cur)
 {
-	if (((*cur)->ptype = get_node_type(*cur)) == PARSER_COMMAND
-			|| is_shift((*cur)->buffer, (*cur)->size))
-		return (parser_new_command(*cur, cur));
+	(*cur)->ptype = get_node_type(*cur);
+	if ((*cur)->ptype == PARSER_COMMAND)
+		return (parser_new_command(lex, *cur, cur));
+	if (!lex->root)
+		return (-1);
+	*cur = (*cur)->next;
 	return (0);
 }

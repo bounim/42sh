@@ -21,8 +21,10 @@ int	ft_memtoi(const uint8_t *str, size_t size)
 	i = 0;
 	neg = 0;
 	nbr = 0;
-	while (ft_isspace(str[i]))
+	while (i < size && ft_isspace(str[i]))
 		i++;
+	if (i == size)
+		return (0);
 	if (str[i] == '-')
 		neg = 1;
 	if (str[i] == '-' || str[i] == '+')
@@ -30,10 +32,10 @@ int	ft_memtoi(const uint8_t *str, size_t size)
 	while (i < size && ft_isdigit(str[i]))
 	{
 		nbr *= 10;
-		nbr += ((int)str[i] - 48);
+		nbr += ((int)str[i] - '0');
 		i++;
 	}
-	if (neg == 1)
+	if (neg)
 		return (-nbr);
 	else
 		return (nbr);
