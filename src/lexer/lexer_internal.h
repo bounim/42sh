@@ -20,7 +20,6 @@ enum							e_lexer_type
 	LEX_TP_WD = 0,
 	LEX_TP_OP,
 	LEX_TP_IO,
-	LEX_TP_HD,
 };
 
 enum							e_redirect_type
@@ -35,28 +34,17 @@ enum							e_redirect_type
 	DLESSDASH,
 };
 
-typedef struct					s_buffer
+enum							e_parser_type
 {
-	uint8_t						*buf;
-	size_t						size;
-}								t_buffer;
+	PARSER_COMMAND = 0,
+	PARSER_PIPE,
+	PARSER_AND_OR,
+	PARSER_SEPARATOR,
+};
 
 /*
 ** cannot_append: delimited token
 */
-typedef struct s_redir			t_redir;
-
-struct							s_redir
-{
-	enum e_redirect_type		redir_type;
-	t_buffer					*buffer; //changer le nom
-	uint8_t						*redir_out;
-	size_t						redir_size;
-	int							io_number; //int ?????
-	uint8_t						heredoc;
-	uint8_t						tilded;
-	t_redir						*next;
-};
 
 typedef struct s_lexer_token	t_lexer_token;
 
@@ -71,29 +59,28 @@ struct							s_lexer_token
 	size_t						size;
 	int							cannot_append;
 	int							is_number;
-	uint8_t						**args;
-	size_t						args_nb;
-	size_t						*args_size;
-	t_redir						*redirs; //voir si on a un nb de redir max
-	size_t						redirs_nb;
-	size_t						redir_err;
+	t_lexer_token				*parent;
+	t_lexer_token				*left;
+	t_lexer_token				*right;
+	t_lexer_token				*assign_head;
+	t_lexer_token				*assign_next;
+	t_lexer_token				*assign_foot;
+	size_t						assign_nb;
+	size_t						assign_position;
+	t_lexer_token				*arg_head;
+	t_lexer_token				*arg_next;
+	t_lexer_token				*arg_foot;
+	size_t						arg_nb;
+	t_lexer_token				*redir_head;
+	t_lexer_token				*redir_next;
+	t_lexer_token				*redir_foot;
+	size_t						redir_nb;
+	int							redir_input;
+	t_lexer_token				*redir_target;
+	int							heredoc_delimiter;
+	enum e_parser_type			ptype;
+	enum e_redirect_type		rtype;
 };
-
-typedef struct					s_heredoc
-{
-	int							skip_tabs; // 0 => <<, 1 => <<-
-	uint8_t						*delimiter;
-	size_t						delimiter_size;
-	uint8_t						*buffer;
-	size_t						size;
-}								t_heredoc;
-
-/* FIXME
-** When lexer returns, these can be set (0 = default / unset)
-** impl_error: internal error, shouldn't happen
-** quoted: TODO
-** heredoc: TODO
-*/
 
 # define EXPANSION_STACK_MAX 128
 
@@ -114,9 +101,11 @@ typedef struct					s_lexer
 	uint8_t						expansion_stack[EXPANSION_STACK_MAX];
 	size_t						expansion_size;
 	int							next_expansion;
-	t_heredoc					*heredoc_queue;
-	int							heredoc;
-	t_heredoc					*heredoc_ptr;
+	t_lexer_token				*root;
+	t_lexer_token				*heredoc_head;
+	t_lexer_token				*heredoc_next;
+	t_lexer_token				*heredoc_foot;
+	size_t						heredoc_nb;
 }								t_lexer;
 
 /*

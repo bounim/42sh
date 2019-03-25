@@ -14,5 +14,5 @@
 
 void	printer_char(t_printer *handle, char ch)
 {
-	printer_bin(handle, &ch, 1);
+	printer_bin(handle, (uint8_t *)&ch, 1);
 }

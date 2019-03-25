@@ -11,145 +11,94 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "lexer.h"
 
-static int				add_argument(t_parser_node *n, t_lexer_token **tmp)
+static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 {
-	t_word	*new;
-
-	if (!(new = malloc(sizeof(*new))))
-		return (-1);
-	ft_memset(new, 0, sizeof(*new));
-	if (*tmp)
+	if (n->arg_nb == 0
+			&& ((*cur)->assign_position = is_assignment((*cur)->buffer,
+					(*cur)->size)) > 0)
 	{
-		if (!(new->buffer = malloc(sizeof(*new->buffer))))
-		{
-			free(new);
-			return (-1);
-		}
-		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
-			return (-1);
-		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
-		new->buffer->size = (*tmp)->size;
-	}
-	if (n->arg_head)
-		n->arg_foot->next = new;
-	else
-		n->arg_head = new;
-	n->arg_foot = new;
-	n->arg_nb++;
-	return (0);
-}
-
-static int				add_assignement_word(t_parser_node *n, t_lexer_token **tmp)
-{
-	t_word	*new;
-
-	if (!(new = malloc(sizeof(*new))))
-		return (-1);
-	ft_memset(new, 0, sizeof(*new));
-	if (*tmp)
-	{
-		if (!(new->buffer = malloc(sizeof(*new->buffer))))
-		{
-			free(new);
-			return (-1);
-		}
-		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
-		{
-			free(new->buffer);
-			free(new);
-			return (-1);
-		}
-		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
-		new->buffer->size = (*tmp)->size;
-	}
-	if (n->assign_head)
-		n->assign_foot->next = new;
-	else
-		n->assign_head = new;
-	n->assign_foot = new;
-	n->assign_nb++;
-	return (0);
-}
-
-static int				add_redirection(t_parser_node *n, t_lexer_token **tmp)
-{
-	t_redir		*new;
-
-	if (!(new = malloc(sizeof(*new))))
-		return (-1);
-	ft_memset(new, 0, sizeof(*new));
-	new->redir_type = get_redirect((*tmp)->buffer, (*tmp)->size);
-	*tmp = (*tmp)->next;
-	if (*tmp)
-	{
-		if (!(new->buffer = malloc(sizeof(*new->buffer))))
-		{
-			free(new);
-			return (-1);
-		}
-		if (!(new->buffer->buf = malloc(sizeof(uint8_t) * (*tmp)->size)))
-		{
-			free(new);
-			return (-1);
-		}
-		ft_memcpy(new->buffer->buf, (*tmp)->buffer, (*tmp)->size);
-		new->buffer->size = (*tmp)->size;
-	}
-	if (new->redir_type == DLESS || new->redir_type == DLESSDASH)
-		new->heredoc = 1;
-	if (n->redir_head)
-		n->redir_foot->next = new;
-	else
-		n->redir_head = new;
-	n->redir_foot = new;
-	n->redir_nb++;
-	return (0);
-}
-
-static int			parser_new_command(t_parser_node *n, t_lexer_token **tmp)
-{
-	int		r;
-
-	while (*tmp && !is_sep_operator(*tmp))
-	{
-		if (is_shift((*tmp)->buffer, (*tmp)->size))
-			r = add_redirection(n, tmp);
-		else if ((*tmp)->type == LEX_TP_IO)
-			n->next_io = ft_memtoi((*tmp)->buffer, (*tmp)->size);
-		else if (!n->arg_head && (uint8_t *)ft_memchr((*tmp)->buffer, '=', (*tmp)->size) > (*tmp)->buffer)
-			r = add_assignement_word(n, tmp);
+		if (n->assign_foot)
+			n->assign_foot->next = *cur;
 		else
-			r = add_argument(n, tmp);
-		if (r != 0)
-			return (r);
-		if ((*tmp)->next && is_sep_operator((*tmp)->next))
-			break;
-		(*tmp) = (*tmp)->next;
+			n->assign_head = *cur;
+		n->assign_foot = *cur;
+		n->assign_nb++;
 	}
+	else
+	{
+		if (n->arg_foot)
+			n->arg_foot->next = *cur;
+		else
+			n->arg_head = *cur;
+		n->arg_foot = *cur;
+		n->arg_nb++;
+	}
+	*cur = (*cur)->next;
 	return (0);
 }
 
-t_parser_node	  *parser_new_elem(t_lexer_token **tmp)
+static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 {
-	t_parser_node	*n;
-
-	if (!(n = malloc(sizeof(*n))))
-		return (NULL);
-	ft_memset(n, 0, sizeof(*n));
-	if ((n->type = get_node_type(*tmp)) == PARSER_COMMAND
-			|| is_shift((*tmp)->buffer, (*tmp)->size))
-		parser_new_command(n, tmp);
-	else
+	if ((*cur)->next == NULL)
+		return (-1);
+	(*cur)->rtype = get_redirect((*cur)->buffer, (*cur)->size);
+	if ((*cur)->rtype == DLESS || (*cur)->rtype == DLESSDASH)
 	{
-		if (!(n->buffer = malloc(sizeof(uint8_t) * (*tmp)->size)))
-		{
-			free(n);
-			return (NULL);
-		}
-		ft_memcpy(n->buffer, (*tmp)->buffer, (*tmp)->size);
-		n->size = (*tmp)->size;
+		// TODO when delimiter is quoted, needs quote removal + act differently
+		(*cur)->next->heredoc_delimiter = 1;
+		if (lex->heredoc_foot)
+			lex->heredoc_foot->next = *cur;
+		else
+			lex->heredoc_head = *cur;
+		lex->heredoc_foot = *cur;
+		lex->heredoc_nb++;
 	}
-	return (n);
+	(*cur)->redir_target = (*cur)->next;
+	if (n->redir_foot)
+		n->redir_foot->next = *cur;
+	else
+		n->redir_head = *cur;
+	n->redir_foot = *cur;
+	n->redir_nb++;
+	*cur = (*cur)->next->next;
+	return (0);
+}
+
+static int		add_io(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
+{
+	if ((*cur)->next == NULL)
+		return (-1);
+	(*cur)->next->redir_input = ft_memtoi((*cur)->buffer, (*cur)->size);
+	*cur = (*cur)->next;
+	return (add_op(lex, n, cur));
+}
+
+static int		parser_new_command(t_lexer *lex, t_lexer_token *n,
+		t_lexer_token **cur)
+{
+	int	r;
+
+	r = 0;
+	while (r == 0 && *cur && !is_sep_operator(*cur))
+	{
+		if ((*cur)->type == LEX_TP_WD)
+			r = add_wd(n, cur);
+		else if ((*cur)->type == LEX_TP_IO)
+			r = add_io(lex, n, cur);
+		else
+			r = add_op(lex, n, cur);
+	}
+	return (r);
+}
+
+int				parser_new_elem(t_lexer *lex, t_lexer_token **cur)
+{
+	(*cur)->ptype = get_node_type(*cur);
+	if ((*cur)->ptype == PARSER_COMMAND)
+		return (parser_new_command(lex, *cur, cur));
+	if (!lex->root)
+		return (-1);
+	*cur = (*cur)->next;
+	return (0);
 }

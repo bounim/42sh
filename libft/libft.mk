@@ -37,6 +37,7 @@ LIBFT_SRC := \
 	hashmap/hashmap_init.c \
 	hashmap/hashmap_set.c \
 	hashmap/hashmap_unset.c \
+	printer/printer_char.c \
 	printer/printer_bin.c \
 	printer/printer_endl.c \
 	printer/printer_flush.c \

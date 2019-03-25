@@ -11,61 +11,71 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "lexer.h"
 
-static t_parser_node	**parser_add_cmd(t_parser_node **head)
+// TODO all syntax error check
+
+static int	add_root(t_lexer *lex, t_lexer_token *new)
 {
-	if (!(*head)->left)
-		return (&(*head)->left);
+	new->left = lex->root;
+	lex->root->parent = new;
+	lex->root = new;
+	return (0);
+}
+
+static void	replace_node(t_lexer *lex, t_lexer_token *cur, t_lexer_token *new)
+{
+	new->left = cur;
+	if (!cur->parent) // TODO
+		add_root(lex, new);
 	else
-		return (&(*head)->right);
+	{
+		if (cur->parent->left == cur)
+			cur->parent->left = new;
+		else
+			cur->parent->right = new;
+		new->parent = cur->parent;
+		cur->parent = new;
+	}
 }
 
-static t_parser_node	**parser_add_operator(t_parser_node **head, t_parser_node *new)
+static int	root_operator(t_lexer *lex, t_lexer_token *new)
 {
-	if ((*head)->type == PARSER_COMMAND || new->type > (*head)->type)
+	t_lexer_token	*cur;
+
+	cur = lex->root;
+	while (1)
 	{
-		new->left = *head;
-		*head = new;
-	}
-	else if (new->type <= (*head)->type)
-	{
-		if ((*head)->right && (*head)->right->type != PARSER_COMMAND)
-			return (&(*head)->right);
-		else
+		if (new->ptype > cur->ptype)
 		{
-			new->left = (*head)->right;
-			(*head)->right = new;
+			replace_node(lex, cur, new);
+			break ;
 		}
+		if (!cur->right)
+		{
+			cur->right = new;
+			new->parent = cur;
+			break ;
+		}
+		cur = cur->right;
 	}
-	return (NULL);
+	return (0);
 }
 
-void			parser_add_tree(t_parser_node **head, t_parser_node *new)
+int			parser_add_tree(t_lexer *lex, t_lexer_token *new)
 {
-	while (head)
+	if (!lex->root)
 	{
-		if (!*head)
-		{
-			ft_putendl("adding x:");
-			if (new->type == PARSER_COMMAND && new->arg_head)
-				print_token(new->arg_head->buffer->buf, new->arg_head->buffer->size);
-			else
-				ft_putnbr(new->type);
-			*head = new;
-			return ;
-		}
-		else if (new->type == PARSER_COMMAND)
-		{
-			ft_putendl("adding cmd:");
-			// print_token(new->arg_head->buffer->buf, new->arg_head->buffer->size);
-			head = parser_add_cmd(head);
-		}
-		else
-		{
-			ft_putendl("adding ope:");
-			head = parser_add_operator(head, new);
-		}
+		if (new->ptype != PARSER_COMMAND)
+			return (-1); // XXX syntax error
+		lex->root = new;
+		return (0);
 	}
+	if (lex->root->ptype == PARSER_COMMAND)
+	{
+		if (new->ptype == PARSER_COMMAND)
+			return (-1); // FIXME shouldn't happen
+		return (add_root(lex, new));
+	}
+	return (root_operator(lex, new));
 }
 

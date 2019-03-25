@@ -46,5 +46,6 @@ void			printer_endl(t_printer *handle);
 void			printer_int(t_printer *handle, int n);
 void			printer_long(t_printer *handle, long l);
 void			printer_ulong(t_printer *handle, unsigned long l);
+void			printer_char(t_printer *handle, char ch);
 
 #endif
