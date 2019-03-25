@@ -13,12 +13,12 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-/*static char	**arg_to_argv(t_word *head)
+static char	**arg_to_argv(t_lexer_token *head)
 {
-	size_t	ac;
-	t_word	*cur;
-	size_t	i;
-	char	**av;
+	size_t			ac;
+	t_lexer_token	*cur;
+	size_t			i;
+	char			**av;
 
 	ac = 0;
 	cur = head;
@@ -33,7 +33,7 @@
 	i = 0;
 	while (cur)
 	{
-		if (NULL == (av[i] = malloc(cur->buffer->size + 1)))
+		if (NULL == (av[i] = malloc(cur->size + 1)))
 		{
 			while (i > 0)
 			{
@@ -42,33 +42,28 @@
 			}
 			return (NULL);
 		}
-		ft_memcpy(av[i], cur->buffer->buf, cur->buffer->size);
-		av[i][cur->buffer->size] = '\0';
+		ft_memcpy(av[i], cur->buffer, cur->size);
+		av[i][cur->size] = '\0';
 		i++;
 		cur = cur->next;
 	}
 	av[i] = NULL;
 	return (av);
-}*/
+}
 
 void		test_exec(t_lexer *lex)
 {
 	char	**av;
 
-	(void)av;//XXX
 	if (parser_create_tree(lex) < 0)
 		return ;
-	/*if (lex->root == NULL)
+	if (lex->root == NULL)
 		return ;
 	if (lex->root->type != PARSER_COMMAND || !lex->root->arg_head)
-	{
-		parser_destroy(lex);
 		return ;
-	}
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{
 		// TODO exec
 		start_builtin(av, NULL);
 	}
-	parser_destroy(lex);*/
 }

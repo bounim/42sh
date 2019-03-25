@@ -82,15 +82,6 @@ struct							s_lexer_token
 	enum e_redirect_type		rtype;
 };
 
-typedef struct					s_heredoc
-{
-	int							skip_tabs; // 0 => <<, 1 => <<-
-	uint8_t						*delimiter;
-	size_t						delimiter_size;
-	uint8_t						*buffer;
-	size_t						size;
-}								t_heredoc;
-
 # define EXPANSION_STACK_MAX 128
 
 typedef struct					s_lexer
