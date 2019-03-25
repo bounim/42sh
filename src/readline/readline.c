@@ -19,26 +19,6 @@ void	init_char_list(void)
 	g_shell.edit.char_list.char_nb = 0;
 }
 
-void	init_prompt(int prompt_id)
-{
-	size_t	i;
-
-	i = 0;
-	if (prompt_id == BASIC_PROMPT)
-		while (BASIC_PRMPT[i])
-			add_char_to_list((uint8_t *)&(BASIC_PRMPT[i++]), 1, 1);
-	else if (prompt_id == QUOTE_PROMPT)
-		while (QUOTE_PRMPT[i])
-			add_char_to_list((uint8_t *)&(QUOTE_PRMPT[i++]), 1, 1);
-	else if (prompt_id == BACKSLASH_PROMPT)
-		while (BACKSLASH_PRMPT[i])
-			add_char_to_list((uint8_t *)&(BACKSLASH_PRMPT[i++]), 1, 1);
-	else if (prompt_id == HEREDOC_PROMPT)
-		while (HEREDOC_PRMPT[i])
-			add_char_to_list((uint8_t *)&(HEREDOC_PRMPT[i++]), 1, 1);
-	g_shell.edit.mark = g_shell.edit.point_char;
-}
-
 int		get_term_pos(size_t *line, size_t *col)
 {
 	char	buff[32];
@@ -98,6 +78,7 @@ void	init_edit(void)
 	g_shell.edit.last_command = NULL;
 	g_shell.edit.cur_base_x = 0;
 	g_shell.edit.cur_base_y = 0;
+	g_shell.edit.prev_base_y = 0;
 	g_shell.edit.term_info.capa = g_shell.raw_tio;
 	g_shell.edit.term_info.origin = g_shell.cooked_tio;
 	ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max);
@@ -112,11 +93,15 @@ void	init_edit(void)
 
 void	readline(int prompt_id)
 {
+	uint8_t *prompt;
+
 	raw_terminal();
 	init_edit();
 	init_char_list();
 	init_prompt(prompt_id);
-	print_prompt();
+	prompt = prompt_to_buff(&g_shell.edit.char_list);
+	print_prompt(prompt, ft_ustrlen(prompt));
+	free(prompt);
 	input_controller();
 	cooked_terminal();
 }

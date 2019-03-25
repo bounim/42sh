@@ -211,6 +211,7 @@ typedef struct 					s_edit
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
+	int 				prev_base_y;
 	uint8_t				*cpy_buff;
 }								t_edit;
 
@@ -229,14 +230,16 @@ void					readline_errors_controler(int errnum);
 void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
-size_t					get_x_pos(t_char *prev_char);
-size_t					get_y_pos(t_char *prev_char);
+size_t					get_x_pos(t_char *prev_char, uint32_t col_limit);
+size_t					get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit);
 void					update_all_pos(void);
 void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
-void					print_prompt(void);
-void					clean_screen(void);
+void					init_prompt(int prompt_id);
+uint8_t 				*prompt_to_buff(t_char_list *list);
+void					print_prompt(uint8_t *prompt, size_t prompt_len);
+void					clean_screen_from(int x, int y);
 void					clean_and_print(void);
 void					input_controller(void);
 void					move_up(void);

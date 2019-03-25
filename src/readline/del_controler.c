@@ -44,7 +44,7 @@ void	del_charac(void)
 	if (t == 1 && g_shell.edit.char_list.head->y_pos < 0)
 	{
 		write(1, "\n", 1);
-		shift_pos_down();
+		shift_pos_down(); //si on est tout en bas a gauche, que des t_char ne sont pas visibles parce que trop hauts et qu'on fait del, les y_pos vont prendre +1
 	}
 }
 

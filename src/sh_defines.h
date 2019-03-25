@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 12:34:48 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 19:23:26 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/26 18:57:23 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define MODE_VI_INSERT		1
 # define MODE_VI_EDIT		2
 # define EDIT_MODE			3
-# define KEYMAP_SIZE		34
+# define KEYMAP_SIZE		36
 # define SEARCHMAP_SIZE		4
 # define TERM_SET			1
 # define DELETE_MODE		0
