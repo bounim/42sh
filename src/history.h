@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:55:18 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/26 13:13:12 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 18:54:17 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,6 @@ void				file_from_history(t_history *hist);
 void				print_historyl(t_history *hist);
 void				resize_history(t_history *hist);
 void				free_history(t_history *hist);
+void				print_search_prompt(void);
+void				print_search_result(t_history *curr);
 #endif

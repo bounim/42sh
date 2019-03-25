@@ -66,8 +66,9 @@ void	add_char_to_list(uint8_t *charac, size_t len, int is_prompt)
 	ft_memset(new_char, 0, sizeof(*new_char));
 	ft_memmove(new_char->charac, charac, len);
 	new_char->len = len;
-	new_char->x_pos = get_x_pos(prev_char);
-	new_char->y_pos = get_y_pos(prev_char);
+	new_char->x_pos = get_x_pos(prev_char, g_shell.edit.term_info.max.ws_col);
+	new_char->y_pos = get_y_pos(prev_char, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	new_char->is_prompt = is_prompt;
 	make_char_point(new_char, prev_char);
 	update_all_pos();

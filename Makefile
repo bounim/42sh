@@ -23,6 +23,7 @@ SRC := \
 	history/file_from_history.c \
 	history/resize_history.c \
 	history/free_history.c \
+	history/print_search.c \
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \
@@ -53,6 +54,7 @@ SRC := \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
 	readline/readline.c \
+	readline/prompt_controler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \
 	readline/calculate_pos.c \

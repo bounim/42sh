@@ -30,8 +30,9 @@ void	move_up(void)
 			break ;
 		curr = curr->prev;
 	}
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	if (y < 0)
 		return ;
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
@@ -58,8 +59,9 @@ void	move_down(void)
 	}
 	if (!curr)
 		curr = g_shell.edit.char_list.tail;
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	g_shell.edit.point_char = curr;
 }
@@ -73,8 +75,9 @@ void	move_right(void)
 	curr = g_shell.edit.point_char->next;
 	if (!curr)
 		return ;
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	g_shell.edit.point_char = curr;
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 }

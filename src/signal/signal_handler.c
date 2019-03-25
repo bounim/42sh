@@ -28,7 +28,7 @@ static void	window_modif(void)
 
 	g_shell.edit.cur_base_y = 0;
 	g_shell.edit.cur_base_x = 0;
-	clean_screen();
+	clean_screen_from(0, 0);
 	//window_modif_test();
 	if ((ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max)) == -1)
 		readline_errors_controler(NO_TERM_INFO);
