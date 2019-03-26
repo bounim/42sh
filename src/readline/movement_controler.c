@@ -106,5 +106,6 @@ void	exchange_point_mark(void)
 	tmp = g_shell.edit.mark;
 	g_shell.edit.mark = g_shell.edit.point_char;
 	g_shell.edit.point_char = tmp;
-	place_cursor_after_print();
+	place_cursor_after_print(g_shell.edit.point_char, g_shell.edit.term_info.max.ws_col,\
+	g_shell.edit.term_info.max.ws_row);
 }

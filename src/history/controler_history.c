@@ -12,26 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-static t_char	*skip_prompt(t_char *head)
-{
-	while (head && head->is_prompt == 1)
-		head = head->next;
-	return (head);
-}
-
-static int		get_buf_size(t_char *head)
-{
-	int	buff_size;
-
-	buff_size = 0;
-	while (head)
-	{
-		buff_size += head->len;
-		head = head->next;
-	}
-	return (buff_size);
-}
-
 uint8_t			*list_to_buf(void)
 {
 	uint8_t		*ret;

@@ -1,0 +1,30 @@
+
+Voir le terminal comme un echiquier.
+On fonctionne avec des t_char qui ont des positions x et y. On ne veut print que le strict minimum (que les t_chars dont les positions sont affichables).
+Quand tu rajoutes des chars, ca fait bouger les positions des précédents.
+
+MANDATORY
+1.print_prompt(uint8_t *prompt);
+2.clean_screen_from(size_t x, size_t y); --> Le clean_screen() precedant faisait scroll le contenu vers le haut quand il le fallait, celui la ne le fait plus.
+3.calculate_pos();		--> Il faut que cette fonction ET toutes celles qui en découlent soient parfaitement comprises et fonctionnelles.
+														Cas vicieux:	a. La position du t_char précédent correspond a la derniere position de l'echiquier.
+																			Il faut alors "créer" une nouvelle ligne en soustrayant 1 a tous les y des t_char precedants y compris le base_curr_y (auquel cas il faut garder sa valeur precedente en memoire avec pour se faire un int PREV_Y_POS dans la globale), 
+																			puis output un \n (dans le clean_and_print surement, si \n est output pour cette raison, il faut changer PREV_Y_POS pour qu'il soit egal a ACTUAL_Y_POS)
+																				a.1. Il faut update le PREV_Y_POS a chaque fois qu'on update le Y_POS, donc dans calculate pos et search history.
+																		b. Un t_char est ajouté en milieu de liste, il faut recalculer la position de tous les t_chars de la liste en faisant attention au (a) pour le dernier t_char.
+																			LES CAS A ET B DE CETTE SECTION NE CONCERNENT QUE L'AJOUT DE T_CHAR.
+																		c. Sur les cas particuliers des fonctions comme del_charac() qui demandent un calcul de pos, si le t_char que l'on delete n'est pas affiché a l'ecran, comportement indeterminé.
+
+4.clean_and_print();	--> Cette fonction fait 5 choses distinctes: 	a. elle vérifie que la taille verticale de ce qui va etre print n'a pas augmenté en regardant si curr_base_y n'a pas changé, et si ca a changé elle output un \n. (Fait scroll le content up?)
+																		b. elle clean l'ecran de ce qui a precedemment ete imprimé a l'aide de clean_screen_from().
+																	  	c. elle vérifie ce qui est affichable dans le prompt et le reste de la ligne, grace a la position du curseur, et surtout grace a la position des t_chars eux memes. !!! METTRE L'ACCENT SUR CE POINT !!!
+																	  		{Est ce fait en amont lors du calcul de la position des t_char?}
+																	  	e. elle transforme les t_char adéquats en buffer.
+																	  	f. elle print le buffer. (Les t_char prints ne sont que ceux qui sont affichables, du coup normalement pas besoin de check_all_pos a la fin de print)
+																	  	g. elle replace le curseur à l'endroit voulu.
+						Elle vérifie aussi l'intégrité de ce qui est affiché a l'ecran: a. Lorsque le dernier caractere est dans la derniere case de l'échiquier (position x & y max),
+																							elle va afficher un bon vieux \n par soucis de propreté. (lire (a) de calculate_pos() + (a) de cette section).
+
+OPTIONAL
+raw_terminal, cooked_terminal.
+Input_controller, put readig state in options.
