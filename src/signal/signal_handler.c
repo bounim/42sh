@@ -12,23 +12,13 @@
 
 #include "twenty_one_sh.h"
 
-/*static void	window_modif_test(void)
-{
-	sigset_t	set;
-	
-	sigemptyset(&set);
-	sigaddset(&set, SIGWINCH);		
-	printf("\n\n\n%d",sigismember(&set, SIGWINCH));
-	readline_errors_controler(EXIT);
-}*/
-
 static void	window_modif(void)
 {
 	int 			base_y;
 
 	g_shell.edit.cur_base_y = 0;
 	g_shell.edit.cur_base_x = 0;
-	clean_screen();
+	clean_screen_from(0, 0);
 	//window_modif_test();
 	if ((ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max)) == -1)
 		readline_errors_controler(NO_TERM_INFO);
@@ -77,14 +67,6 @@ void		signal_handler(int signo)
 		stop_received();
 	else if (signo == SIGCONT)
 		cont_received();
-	else if (signo == SIGINT)
-	{
-		ft_putstr(tgetstr("cr", NULL));
-		//printf("\n\n\nx_pos: %u, y_pos: %d", g_shell.edit.char_list.tail->prev->x_pos, g_shell.edit.char_list.tail->prev->y_pos);
-		printf("\n\n\nx_pos: %u, y_pos: %d", g_shell.edit.char_list.tail->prev->x_pos, g_shell.edit.char_list.tail->prev->y_pos);
-		cooked_terminal();
-		exit(0);
-	}
 	else if (signo > 0 && signo < 33)
 	{
 		free_controler(FREE_ALL_AND_EXIT);

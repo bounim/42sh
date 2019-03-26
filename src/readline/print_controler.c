@@ -12,64 +12,42 @@
 
 #include "twenty_one_sh.h"
 
-void	print_prompt(void)
+void	print_prompt(uint8_t *prompt, size_t prompt_len)
 {
-	t_char	*curr;
-	int		t;
-
-	curr = g_shell.edit.char_list.head;
-	t = 0;
-	while (curr && curr->y_pos < 0)
-	{
-		curr = curr->next;
-		t = 1;
-	}
-	while (curr && curr->is_prompt)
-	{
-		write(1, curr->charac, curr->len);
-		curr = curr->next;
-	}
+	write(1, prompt, prompt_len);
 }
 
-void	clean_screen(void)
+void	clean_screen_from(int x, int y)
 {
-	size_t			i;
+	int 			i;
 	struct winsize	max;
-	int				x;
-	int				y;
 
+	i = 0;
 	ioctl(STDERR_FILENO, TIOCGWINSZ, &max);
-	i = -1;
-	x = g_shell.edit.cur_base_x;
-	y = g_shell.edit.cur_base_y;
 	if (y < 0)
 	{
-		while (y++ < 0)
-			ft_putstr(tgetstr("sr", NULL));
 		x = 0;
 		y = 0;
 	}
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	while (++i < max.ws_row)
-		ft_putstr(tgetstr("dl", NULL));	
+		ft_putstr(tgetstr("dl", NULL));
 }
 
-void	place_cursor_after_print(void)
+void	place_cursor_after_print(t_char *curr, int max_x, int max_y)
 {
-	t_char	*prev;
 	int		x;
 	int		y;
 
-	prev = g_shell.edit.point_char;
-	/*if ((prev->x_pos + 1 == g_shell.edit.term_info.max.ws_col
-				|| prev->charac[0] == '\n')
-			&& prev->y_pos + 2 == g_shell.edit.term_info.max.ws_row)
+	y = curr->y_pos;
+	if ((x = curr->x_pos + 1) == max_x)
 	{
-		ft_putstr("\n");
-		return ;
-	}*/
-	x = get_x_pos(prev);
-	y = get_y_pos(prev);
+		x = 0;
+		if ((y += 1) == max_y)
+		{
+			ft_putstr(tgetstr("sr", NULL));
+		}
+	}
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 }
 
@@ -79,19 +57,27 @@ int		find_print_from()
 	t_char	*curr;
 
 	ret = 0;
-	curr = find_first_non_prompt(g_shell.edit.char_list.head);
+	curr = g_shell.edit.char_list.head;
 	if (!curr)
 		return (-1);
 	if (curr->y_pos >= 0)
 		return (0);
-	while (curr->x_pos != 0 && curr->y_pos != 0)
+	while (curr->y_pos < 0)
 	{
 		curr = curr->next;
-		ret++;
+		ret += curr->len;
 	}
 	return (ret);
 }
 
+void	align_with_y(int base_y, int *prev_base_y)
+{
+	if (*prev_base_y > base_y)
+	{
+		write(1, "\n", 1);
+		*prev_base_y = base_y;
+	}
+}
 void	clean_and_print(void)
 {
 	t_char		*curr;
@@ -99,15 +85,14 @@ void	clean_and_print(void)
 	int			print_from;
 	size_t		len;
 
-	curr = g_shell.edit.char_list.head;
-	clean_screen();
-	print_prompt();
-	if (!(buff = list_to_buf()))
-	 	return ;
-	if ((print_from = find_print_from()) == -1)
+	align_with_y(g_shell.edit.cur_base_y, &g_shell.edit.prev_base_y); //a.
+	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);//b.
+	if (!(curr = g_shell.edit.char_list.head))
+		return ;
+	if (!(buff = list_to_buf_print(curr)) || (print_from = find_print_from()) == -1)//d. c.
 		return ;
 	len = ft_ustrlen(buff + print_from);
-	write(1, buff + print_from, len);
-	check_all_pos();
-	place_cursor_after_print();
+	write(1, buff + print_from, len);//e.
+	place_cursor_after_print(g_shell.edit.point_char, g_shell.edit.term_info.max.ws_col,\
+	g_shell.edit.term_info.max.ws_row);//g.
 }

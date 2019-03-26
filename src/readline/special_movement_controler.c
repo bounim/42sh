@@ -23,8 +23,9 @@ void	go_to_end(void)
 		return ;
 	while (curr && curr->next)
 		curr = curr->next;
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	g_shell.edit.point_char = curr;
 }
@@ -43,8 +44,9 @@ void	go_to_home(void)
 	if (!curr)
 		return ;
 	curr = curr->prev;
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	if (y < 0)
 	{
 		x = 0;
@@ -75,8 +77,9 @@ void	jump_word_backward(void)
 			break ;
 		curr = curr->prev;
 	}
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	if (y < 0)
 		return ;
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
@@ -102,8 +105,9 @@ void	jump_word_forward(void)
 				|| curr->next->charac[0] == '\n'
 				|| ft_memcmp(NBSP, curr->next->charac, 2) == 0))
 		curr = curr->next;
-	x = get_x_pos(curr);
-	y = get_y_pos(curr);
+	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+		g_shell.edit.term_info.max.ws_row);
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 	g_shell.edit.point_char = curr;
 }
