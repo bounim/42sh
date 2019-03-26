@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 12:29:37 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 17:06:26 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 11:52:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	error_export(char *arg)
 	while (arg[i])
 	{
 		if (arg[i] == '=')
-			return (1);
+			return (0);
 		if (!ft_isalnum(arg[i]))
 		{
 			ft_putstr_fd("export: '", 2);

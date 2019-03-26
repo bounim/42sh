@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/21 15:52:57 by emartine         ###   ########.fr       */
+/*   Updated: 2019/03/26 15:23:04 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void		test_exec(t_lexer *lex)
 		return ;
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{
-		// TODO exec
-		start_builtin(av, NULL);
+		if (!start_builtin(av, NULL))
+			; // TODO exec
+		resize_history(g_shell.hist.history);
 	}
 }

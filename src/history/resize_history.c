@@ -1,0 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resize_history.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/26 12:12:34 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/26 15:47:44 by khsadira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "twenty_one_sh.h"
+
+void		resize_history(t_history *hist)
+{
+	t_history	*tmp;
+	int			stock;
+	int			max;
+
+	tmp = hist;
+	stock = g_shell.hist.history_size;
+	if ((max = ft_atoi(get_env_val(g_shell.envl, "HISTSIZE"))) <= 0 || max > 50000)
+		max = 50000;
+	if (stock > max)
+	{
+		stock = max;
+		while (max-- && tmp->bfr)
+			tmp = tmp->bfr;
+		if (tmp->next)
+			(tmp->next)->bfr = NULL;
+		tmp->next = NULL;
+		free_history(tmp);
+		g_shell.hist.history_size = stock;
+	}
+}

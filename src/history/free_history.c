@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   free_history.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 13:42:00 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 13:39:07 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/26 12:09:09 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/26 15:46:26 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "twenty_one_sh.h"
 
-void	ft_memdel(void **ap)
+void	free_history(t_history *hist)
 {
-	if (ap && *ap)
+	t_history *tmp;
+
+	while (hist)
 	{
-		free(*ap);
-		*ap = NULL;
+		tmp = hist;
+		if (hist->buf)
+			free(hist->buf);
+		hist = hist->bfr;
+		free(tmp);
 	}
 }

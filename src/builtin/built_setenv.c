@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 18:38:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 11:53:50 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	setenv_nullarg(char *arg, t_envl **head)
 	{
 		if (ft_strequ(tmp->name, arg))
 		{
-			if (tmp->exp == 1 || tmp->read_only == 0)
-				return (0);
+			if (tmp->exp == 0 || tmp->read_only == 1)
+				return (1);
 			ft_strdel(&(tmp->value));
 			tmp->value = ft_strdup("");
 			tmp->exp = 1;
@@ -53,7 +53,7 @@ static int	start_setenv(char **arg, t_envl **envl)
 	{
 		if (ft_strequ(tmp->name, arg[1]))
 		{
-			if (tmp->exp == 1 || tmp->read_only == 0)
+			if (tmp->exp == 0 || tmp->read_only == 1)
 				return (1);
 			ft_strdel(&(tmp->value));
 			tmp->value = ft_strdup(arg[2]);

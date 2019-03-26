@@ -6,12 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:52 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 19:58:17 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 11:45:34 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
+/*
 static	t_opt	*init_opt(t_opt *flag)
 {
 	flag->c = 0;
@@ -85,21 +86,20 @@ static int	check_opt(t_opt *flag, char **arg)
 	}
 	return (i);
 }
-
+*/
 int			built_history(char **arg, t_history **hist)
 {
-	int		i;
-	t_opt	flag;
+//	int		i;
+//	t_opt	flag;
 	int		len;
 
-	if ((len = ft_arrlen(arg)) == 1)
+	if ((len = ft_arrlen(arg)) >= 1)
 	{
 			print_historyl(*hist);
 			return (0);
-	}
+	}/*
 	if ((i = check_opt(&flag, arg) == -1))
 		return (1);
-	printf("%d\n", flag.nb);
 	if (flag.nb == 0)
 	{
 		if (ft_strisdigit(arg[1]))
@@ -115,6 +115,6 @@ int			built_history(char **arg, t_history **hist)
 			return (1);
 		}
 		print_historyl(*hist);
-	}
-	return (0);
+	}*/
+	return (1);
 }

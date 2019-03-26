@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 14:51:58 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 14:52:06 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 15:12:34 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	return_fn(void)
 	{
 		g_shell.hist.history = rl_add_hist(g_shell.hist.history, rl_new_hist(buff));
 		g_shell.hist.history_size++;
+		resize_history(g_shell.hist.history);
 		g_shell.hist.history_save = -1;
 		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
 		buff_size = ft_u8_strlen(buff);

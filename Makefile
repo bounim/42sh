@@ -21,6 +21,8 @@ SRC := \
 	history/search_in_history.c\
 	history/search_in_history_actions.c\
 	history/file_from_history.c \
+	history/resize_history.c \
+	history/free_history.c \
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \
