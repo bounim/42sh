@@ -19,7 +19,7 @@ static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 					(*cur)->size)) > 0)
 	{
 		if (n->assign_foot)
-			n->assign_foot->next = *cur;
+			n->assign_foot->assign_next = *cur;
 		else
 			n->assign_head = *cur;
 		n->assign_foot = *cur;
@@ -28,7 +28,7 @@ static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 	else
 	{
 		if (n->arg_foot)
-			n->arg_foot->next = *cur;
+			n->arg_foot->arg_next = *cur;
 		else
 			n->arg_head = *cur;
 		n->arg_foot = *cur;
@@ -48,15 +48,15 @@ static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 		// TODO when delimiter is quoted, needs quote removal + act differently
 		(*cur)->next->heredoc_delimiter = 1;
 		if (lex->heredoc_foot)
-			lex->heredoc_foot->next = *cur;
+			lex->heredoc_foot->heredoc_next = *cur;
 		else
 			lex->heredoc_head = *cur;
 		lex->heredoc_foot = *cur;
 		lex->heredoc_nb++;
 	}
-	(*cur)->redir_target = (*cur)->next;
+	(*cur)->redir_target = (*cur)->redir_next;
 	if (n->redir_foot)
-		n->redir_foot->next = *cur;
+		n->redir_foot->redir_next = *cur;
 	else
 		n->redir_head = *cur;
 	n->redir_foot = *cur;
