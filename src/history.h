@@ -52,6 +52,7 @@ t_history			*rl_new_hist(uint8_t *buf);
 t_history			*rl_add_hist(t_history *list, t_history *new_hist);
 int					listlen(t_history *list);
 uint8_t				*list_to_buf(void);
+int					get_buf_size(t_char *head);
 void				buff_to_charlist(uint8_t *buf);
 void				search_in_history(void);
 void				del_charac_in_search(void);
