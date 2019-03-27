@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_job.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/27 11:44:14 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/27 16:46:44 by khsadira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "twenty_one_sh.h"
 
 t_job	*find_job(pid_t pgid)
@@ -83,7 +95,6 @@ void	free_proc(t_proc *proc)
 		while (proc->env[i])
 			ft_strdel(&(proc->env[i++]));
 		free(proc->env);
-		ft_strdel(&(proc->path));
 		tmp = proc;
 		free(proc);
 		proc = proc->next;

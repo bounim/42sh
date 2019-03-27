@@ -47,6 +47,9 @@ SRC := \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
+	builtin/built_jobs.c \
+	builtin/built_fg.c \
+	builtin/built_bg.c \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \

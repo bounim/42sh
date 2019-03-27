@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   launch_job.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/27 17:12:22 by khsadira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "twenty_one_sh.h"
 
-void	launch_proc(t_proc *proc, pid_t pgid, int infile, int outfile, int errfile, int foreground)
+void	launch_proc(t_proc *proc, pid_t pgid, int foreground)
 {
+	char	*path;
 	pid_t	pid;
 
+	path = NULL;
 	if (g_shell.is_interactive)
 	{
 		pid = getpid();
@@ -19,23 +33,7 @@ void	launch_proc(t_proc *proc, pid_t pgid, int infile, int outfile, int errfile,
 		signal(SIGTTOU, SIG_DFL);
 		signal(SIGCHLD, SIG_DFL);
 	}
-	if (infile != STDIN_FILENO)
-	{
-		dup2(infile, STDIN_FILENO);
-		close(infile);
-	}
-	if (outfile != STDOUT_FILENO)
-	{
-		dup2(outfile, STDOUT_FILENO);
-		close(outfile);
-	}
-	if (errfile != STDOUT_FILENO)
-	{
-		dup2(errfile, STDERR_FILENO);
-		close(errfile);
-	}
-	(void)proc;
-	execve(proc->path, proc->arg, proc->env);
+	execve(path, proc->arg, proc->env);
 	ft_putstr_fd("execve\n", 2);
 	exit(1);
 }
@@ -44,11 +42,8 @@ void	launch_job(t_job *job, int foreground)
 {
 	t_proc	*proc;
 	pid_t	pid;
-	int	my_pipe[2];
-	int	outfile;
-	int	infile;
+	int		my_pipe[2];
 
-	infile = job->std_in;
 	proc = job->head_proc;
 	while (proc)
 	{
@@ -59,13 +54,10 @@ void	launch_job(t_job *job, int foreground)
 				ft_putstr_fd("pipe failed\n", 2);
 				exit(1);
 			}
-			outfile = my_pipe[1];
 		}
-		else
-			outfile = job->std_out;
 		pid = fork();
 		if (pid == 0)
-			launch_proc(proc, job->pgid, infile, outfile, job->std_err, foreground);
+			launch_proc(proc, job->pgid, foreground);
 		else if (pid < 0)
 		{
 			ft_putstr_fd("fork failed\n", 2);
@@ -81,11 +73,6 @@ void	launch_job(t_job *job, int foreground)
 				setpgid(pid, job->pgid);
 			}
 		}
-		if (infile != job->std_in)
-			close(infile);
-		if (outfile != job->std_out)
-			close(outfile);
-		infile = my_pipe[0];
 		proc = proc->next;
 	}
 	format_job_info(job, "launched");

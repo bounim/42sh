@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 19:32:35 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/27 16:40:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,6 @@
 /*
 **	builtin functions header
 */
-
-struct					s_opt
-{
-	int			c;
-	int			d;
-	int			a;
-	int			n;
-	int			r;
-	int			w;
-	int			p;
-	int			s;
-	int			nb;
-};
 
 struct					s_opts
 {
@@ -65,6 +52,9 @@ int			built_export(char **arg, t_envl *envl);
 int			built_alias(char **arg, t_alias **alias);
 int			built_unalias(char **arg, t_alias **alias);
 int			built_history(char **arg, t_history **hist);
+int			built_fg(char **arg, t_job *job);
+int			built_bg(char **arg, t_job *job);
+int			built_jobs(char **arg, t_job *job);
 t_alias		*new_alias(char *name, char *value);
 void		push_alias(t_alias **alias, char *name, char *value);
 t_alias		*addlast_alias(t_alias *head, t_alias *new);
