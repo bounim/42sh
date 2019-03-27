@@ -16,5 +16,7 @@
 # include "parser.h"
 
 void	test_exec(t_lexer *lex);
+int		command_redir(t_lexer_token *cmd);
+void	command_redir_restore(t_lexer_token *cmd);
 
 #endif

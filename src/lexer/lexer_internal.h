@@ -76,6 +76,9 @@ struct							s_lexer_token
 	t_lexer_token				*redir_foot;
 	size_t						redir_nb;
 	int							redir_input;
+	int							fd_saved;
+	int							fd_new;
+	int							fd_dup;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;
