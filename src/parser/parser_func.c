@@ -12,8 +12,6 @@
 
 #include "parser.h"
 
-// TODO all syntax error check
-
 static int	add_root(t_lexer *lex, t_lexer_token *new)
 {
 	new->left = lex->root;
@@ -25,7 +23,7 @@ static int	add_root(t_lexer *lex, t_lexer_token *new)
 static void	replace_node(t_lexer *lex, t_lexer_token *cur, t_lexer_token *new)
 {
 	new->left = cur;
-	if (!cur->parent) // TODO
+	if (!cur->parent)
 		add_root(lex, new);
 	else
 	{
@@ -52,6 +50,8 @@ static int	root_operator(t_lexer *lex, t_lexer_token *new)
 		}
 		if (!cur->right)
 		{
+			if (new->ptype != PARSER_COMMAND)
+				return (-1);
 			cur->right = new;
 			new->parent = cur;
 			break ;
@@ -66,14 +66,14 @@ int			parser_add_tree(t_lexer *lex, t_lexer_token *new)
 	if (!lex->root)
 	{
 		if (new->ptype != PARSER_COMMAND)
-			return (-1); // XXX syntax error
+			return (-1);
 		lex->root = new;
 		return (0);
 	}
 	if (lex->root->ptype == PARSER_COMMAND)
 	{
 		if (new->ptype == PARSER_COMMAND)
-			return (-1); // FIXME shouldn't happen
+			return (-1);
 		return (add_root(lex, new));
 	}
 	return (root_operator(lex, new));
