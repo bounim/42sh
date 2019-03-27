@@ -54,7 +54,7 @@ static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 		lex->heredoc_foot = *cur;
 		lex->heredoc_nb++;
 	}
-	(*cur)->redir_target = (*cur)->redir_next;
+	(*cur)->redir_target = (*cur)->next;
 	if (n->redir_foot)
 		n->redir_foot->redir_next = *cur;
 	else

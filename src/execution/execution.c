@@ -63,8 +63,16 @@ void		test_exec(t_lexer *lex)
 		return ;
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{
+		if (command_redir(lex->root) < 0)
+		{
+			ft_putstr("<redir fail>\n");
+			return ;
+		}
 		if (!start_builtin(av, NULL))
-			; // TODO exec
+		{
+			// TODO exec
+		}
+		command_redir_restore(lex->root);
 		resize_history(g_shell.hist.history);
 	}
 }

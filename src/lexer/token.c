@@ -44,6 +44,7 @@ int					token(t_lexer *lex, enum e_lexer_type type)
 	else
 		lex->head = t;
 	lex->foot = t;
+	t->redir_input = -1;
 	return (0);
 }
 
