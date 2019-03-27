@@ -20,11 +20,19 @@ static int	save_dup(t_lexer_token *cur)
 {
 	if ((cur->fd_dup = dup(cur->fd_saved)) < 0)
 		return (-1);
+	if (cur->fd_new == cur->fd_dup)
+	{
+		close(cur->fd_dup);
+		return (-1);
+	}
 	printf("<%d=dup(%d)>\n", cur->fd_dup, cur->fd_saved);
 	if (cur->fd_new < 0)
 		close(cur->fd_saved);
 	else if (dup2(cur->fd_new, cur->fd_saved) < 0)
+	{
+		close(cur->fd_dup);
 		return (-1);
+	}
 	printf("<dup2(%d,%d)>\n", cur->fd_new, cur->fd_saved);
 	return (0);
 }
