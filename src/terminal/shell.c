@@ -77,7 +77,6 @@ void					run_shell(void)
 		if (signal(SIGABRT, ft_signal) < 0)
 			fatal_exit(SH_EINVAL);
 		readline(BASIC_PROMPT);
-		printf("debug mode : %zu\n", g_shell.debug_mode);
 		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
 			lexer();
 	}

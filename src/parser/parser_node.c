@@ -40,7 +40,7 @@ static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 
 static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 {
-	if ((*cur)->next == NULL)
+	if ((*cur)->next == NULL || (*cur)->next->type != LEX_TP_WD)
 		return (-1);
 	(*cur)->rtype = get_redirect((*cur)->buffer, (*cur)->size);
 	if ((*cur)->rtype == DLESS || (*cur)->rtype == DLESSDASH)

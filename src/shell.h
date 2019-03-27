@@ -35,7 +35,7 @@ struct						s_shell
 	t_job					*head_job;
 	pid_t					pgid;
 	int 					state;
-	size_t					debug_mode;
+	int						debug_mode;
 };
 
 /*
