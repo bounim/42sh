@@ -12,26 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-static t_char	*skip_prompt(t_char *head)
-{
-	while (head && head->is_prompt == 1)
-		head = head->next;
-	return (head);
-}
-
-static int		get_buf_size(t_char *head)
-{
-	int	buff_size;
-
-	buff_size = 0;
-	while (head)
-	{
-		buff_size += head->len;
-		head = head->next;
-	}
-	return (buff_size);
-}
-
 uint8_t			*list_to_buf(void)
 {
 	uint8_t		*ret;
@@ -141,13 +121,16 @@ void	print_historyl(t_history *hist)
 
 void	print_history(void)
 {
+	uint8_t *prompt;
+
 	//free_all()
-	//update_base_y_in_search();
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
 	init_prompt(BASIC_PROMPT);
-	print_prompt();
+	prompt = prompt_to_buff(&g_shell.edit.char_list);
+	print_prompt(prompt, ft_ustrlen(prompt));
+	free(prompt);
 	buff_to_charlist(g_shell.hist.history->buf);
 	clean_and_print(); //YEN A 2 UN DANS BUFF TO CHARLIST LAUTRE LA
 }

@@ -23,6 +23,7 @@ SRC := \
 	history/file_from_history.c \
 	history/resize_history.c \
 	history/free_history.c \
+	history/print_search.c \
 	lexer/func.c \
 	lexer/lexer.c \
 	lexer/token.c \
@@ -53,6 +54,7 @@ SRC := \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
 	readline/readline.c \
+	readline/prompt_controler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \
 	readline/calculate_pos.c \
@@ -68,6 +70,7 @@ SRC := \
 	readline/special_del_controler.c \
 	readline/handle_ctrl_c.c \
 	readline/drag_char.c \
+	readline/list_buff_transform.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \

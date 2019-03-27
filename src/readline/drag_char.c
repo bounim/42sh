@@ -12,8 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-//ca prend le point char et ca le fait avancer d'une position. Si point_char->is_prompt alors ca prend le next. si t'es a la fin ca prend celui d'avant.
-
 void	switch_nodes(t_char *curr)
 {
 	t_char tmp;

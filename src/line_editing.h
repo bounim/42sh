@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 19:23:26 by schakor          ###   ########.fr       */
+/*   Updated: 2019/03/26 18:31:31 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ enum 					e_prompt
 # define QUOTE_PRMPT "pquote> "
 # define BACKSLASH_PRMPT "> "
 # define HEREDOC_PRMPT "heredoc> "
-# define SEARCH_PRMPT "(reverse-i-search)`\'"
+# define SEARCH_PRMPT "(reverse-i-search)`"
 # define MATCH 1
 # define PARTIAL_MATCH 0
 # define NO_MATCH -1
@@ -90,13 +90,13 @@ enum 					e_freenum
 # define CTRL_D "\004"
 # define CTRL_E "\005"
 # define CTRL_F "\006"
-# define CTRL_U "\025"
 # define CTRL_K "\013"
 # define CTRL_N "\016"
 # define CTRL_P "\020"
+# define CTRL_R "\022"
+# define CTRL_U "\025"
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
-# define CTRL_R "\022"
 # define CTRL_T "\024"
 # define CTRL_X_CTRL_X "\030\030"
 # define TAB "\011"
@@ -211,6 +211,7 @@ typedef struct 					s_edit
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
+	int 				prev_base_y;
 	uint8_t				*cpy_buff;
 }								t_edit;
 
@@ -229,14 +230,19 @@ void					readline_errors_controler(int errnum);
 void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
-size_t					get_x_pos(t_char *prev_char);
-size_t					get_y_pos(t_char *prev_char);
+size_t					get_x_pos(t_char *prev_char, uint32_t col_limit);
+size_t					get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit);
 void					update_all_pos(void);
 void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
-void					print_prompt(void);
-void					clean_screen(void);
+t_char					*skip_prompt(t_char *head);
+int						get_buf_size(t_char *head);
+uint8_t					*list_to_buf_print(t_char *curr);
+void					init_prompt(int prompt_id);
+uint8_t 				*prompt_to_buff(t_char_list *list);
+void					print_prompt(uint8_t *prompt, size_t prompt_len);
+void					clean_screen_from(int x, int y);
 void					clean_and_print(void);
 void					input_controller(void);
 void					move_up(void);
@@ -269,7 +275,7 @@ void					free_all(void);
 void					init_prompt(int prompt_id);
 void					init_char_list(void);
 void					init_edit(void);
-void					place_cursor_after_print(void);
+void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
 void					handle_ctrl_c(void);
 
 #endif

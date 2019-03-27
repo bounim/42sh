@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:55:18 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/26 13:13:12 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/26 18:54:17 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ typedef struct 			s_searchmap
 
 
 t_history			*init_shell_history(void);
-void				update_base_y_in_search(t_history *curr);
+void				update_base_y_in_search(uint8_t *buff);
 void				print_history(void);
 void				switch_history(void);
 t_history			*rl_new_hist(uint8_t *buf);
 t_history			*rl_add_hist(t_history *list, t_history *new_hist);
 int					listlen(t_history *list);
 uint8_t				*list_to_buf(void);
+int					get_buf_size(t_char *head);
 void				buff_to_charlist(uint8_t *buf);
 void				search_in_history(void);
 void				del_charac_in_search(void);
@@ -63,4 +64,6 @@ void				file_from_history(t_history *hist);
 void				print_historyl(t_history *hist);
 void				resize_history(t_history *hist);
 void				free_history(t_history *hist);
+void				print_search_prompt(void);
+void				print_search_result(t_history *curr);
 #endif
