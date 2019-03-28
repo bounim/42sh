@@ -98,6 +98,7 @@ enum 					e_freenum
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
 # define CTRL_T "\024"
+# define ALT_T "\033t"
 # define CTRL_X_CTRL_X "\030\030"
 # define TAB "\011"
 # define ESC "\033"
@@ -211,7 +212,7 @@ typedef struct 					s_edit
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
-	int 				prev_base_y;
+	int 				lines_to_shift;
 	uint8_t				*cpy_buff;
 }								t_edit;
 
@@ -237,8 +238,8 @@ void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
 t_char					*skip_prompt(t_char *head);
-int						get_buf_size(t_char *head);
-uint8_t					*list_to_buf_print(t_char *curr);
+int						get_buf_size(t_char *head, t_char *end);
+uint8_t					*list_to_buff_print(t_char *curr, t_char *end);
 void					init_prompt(int prompt_id);
 uint8_t 				*prompt_to_buff(t_char_list *list);
 void					print_prompt(uint8_t *prompt, size_t prompt_len);
@@ -261,6 +262,10 @@ void					delete_endline(void);
 void					delete_word_forward(void);
 void					delete_word_backward(void);
 void					drag_char(void);
+int						transpose_word_conditions(t_char *curr);
+t_char					*get_to_right_position(t_char *curr);
+int						get_word_len(t_char *curr);
+void					transpose_word(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
 void					copy_current_word(void);
 void					copy_all_line(void);

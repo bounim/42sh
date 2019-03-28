@@ -68,6 +68,7 @@ LIBFT_SRC := \
 	ft_u8_strlen.c \
 	ft_u8_strnew.c \
 	ft_u8_strsplit.c \
+	ft_u8_is_alnum.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_memchr.c \

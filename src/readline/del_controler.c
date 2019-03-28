@@ -57,6 +57,7 @@ void	del_charac(void)
 	clean_and_print();
 }
 
+//segfault si on ecrit plus que l'ecran et quon del tout.
 void	delete_backline(void)
 {
 	t_char 	*curr;

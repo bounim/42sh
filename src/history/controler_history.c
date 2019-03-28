@@ -21,7 +21,7 @@ uint8_t			*list_to_buf(void)
 
 	if ((tmp = skip_prompt(g_shell.edit.char_list.head)) == NULL)
 		return (NULL);
-	buff_size = get_buf_size(tmp);
+	buff_size = get_buf_size(tmp, NULL);
 	if (!(ret = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 1))))
 	{
 		fatal_exit(SH_ENOMEM);

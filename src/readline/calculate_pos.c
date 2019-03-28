@@ -17,7 +17,7 @@ void	shift_pos_up(void)
 	t_char	*curr;
 
 	curr = g_shell.edit.char_list.head;
-	g_shell.edit.prev_base_y = g_shell.edit.cur_base_y;
+	g_shell.edit.lines_to_shift++;
 	g_shell.edit.cur_base_y--;
 	while (curr)
 	{

@@ -25,6 +25,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{CTRL_P, 1, get_prev_history},
 		{CTRL_R, 1, search_in_history},
 		{CTRL_T, 1, drag_char},
+		{ALT_T, 2, transpose_word},
 		{CTRL_U, 1, delete_backline},
 		{CTRL_W, 1, delete_word_backward},
 		{CTRL_P, 1, get_prev_history},

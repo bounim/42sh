@@ -18,25 +18,25 @@ t_char		*skip_prompt(t_char *head)
 	return (head);
 }
 
-int			get_buf_size(t_char *head)
+int			get_buf_size(t_char *head, t_char *end)
 {
 	int	buff_size;
 
 	buff_size = 0;
-	while (head)
+	while (head != end)
 	{
 		buff_size += head->len;
 		head = head->next;
 	}
 	return (buff_size);
 }
-uint8_t		*list_to_buf_print(t_char *curr)
+uint8_t		*list_to_buff_print(t_char *curr, t_char *end)
 {
 	uint8_t		*ret;
 	int			buff_size;
 	int			i;
 
-	buff_size = get_buf_size(curr);
+	buff_size = get_buf_size(curr, end);
 	if (!(ret = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 1))))
 	{
 		fatal_exit(SH_ENOMEM);
@@ -44,7 +44,7 @@ uint8_t		*list_to_buf_print(t_char *curr)
 	}
 	ret[buff_size] = '\0';
 	i = 0;
-	while (curr)
+	while (curr != end)
 	{
 		ft_memmove(ret + i, curr->charac, curr->len);
 		i += curr->len;

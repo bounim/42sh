@@ -25,7 +25,7 @@ static char	**arg_to_argv(t_lexer_token *head)
 	while (cur)
 	{
 		ac++;
-		cur = cur->arg_next;
+		cur = cur->next;
 	}
 	if (NULL == (av = malloc(((size_t)ac + 1) * sizeof(*av))))
 		return (NULL);
@@ -45,7 +45,7 @@ static char	**arg_to_argv(t_lexer_token *head)
 		ft_memcpy(av[i], cur->buffer, cur->size);
 		av[i][cur->size] = '\0';
 		i++;
-		cur = cur->arg_next;
+		cur = cur->next;
 	}
 	av[i] = NULL;
 	return (av);

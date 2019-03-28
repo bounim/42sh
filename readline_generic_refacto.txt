@@ -24,6 +24,17 @@ MANDATORY
 																	  	g. elle replace le curseur à l'endroit voulu.
 						Elle vérifie aussi l'intégrité de ce qui est affiché a l'ecran: a. Lorsque le dernier caractere est dans la derniere case de l'échiquier (position x & y max),
 																							elle va afficher un bon vieux \n par soucis de propreté. (lire (a) de calculate_pos() + (a) de cette section).
+5.cpy_fn();				--> Faut que ce soit nickel:					a. Lorsque on ajoute le buff a char_list, il faut annoncer a print plus de \n, parce que la il en fait un seul le fdp.
+																		b. copy word a refacto.
+6.transpose_word();		--> Faut que ce soit nickel:					a. On peut reconstruire un buff avec les deux mots a swap, puis on part du buff pour modifier la liste chainée.!!!--------(0)>
+																		b. On garde les listes chainees. Dans ce cas la, on pourrait trouver un point de symmetrie pour inverser les deux mots.
+																			b.1. Mieux: on garde la lettre de celui qu'on va remplacer dans un tmp, ensuite on remplace par le precedant, puis on remplace le precedant par tmp.
+
+
+
+																			saefff         esef   fdf
+7.delete_word();																												
+8.del_fns();															a. PB avec delete_backline(). Si on essaie de delete alors que le prompt n'est pas visible ca pete.
 
 OPTIONAL
 raw_terminal, cooked_terminal.
