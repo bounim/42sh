@@ -12,7 +12,7 @@
 
 #include "expansions.h"
 
-size_t  tilde_prefix_len(t_buffer *buffer, size_t start, uint8_t assign)
+/*size_t  tilde_prefix_len(t_buffer *buffer, size_t start, uint8_t assign)
 {
 	size_t  len;
 
@@ -55,8 +55,7 @@ char	*tilde_home(void)
 
 
 	result = NULL;
-	ft_putendl("in tilde home");
-	if (!(result = get_env("HOME")))
+	if (!(result = get_env_val(g_shell.envl, "HOME")))
 		return (NULL);
 	return (result);
 }
@@ -236,53 +235,163 @@ int		do_tilde_assign(t_word *assign_head)
 	}
 	return (0);
 }
+*/
 
-int     tilde_expansion(t_parser_node **head)
+char	*tilde_home(void)
 {
-	t_word   *tmp;
-	t_redir	*redir;
+	return (get_env_val(g_shell.envl, "HOME"));
+}
 
-	ft_putendl("DOING EXPANSIONS");
-	do_tilde_arg((*head)->arg_head);
-	do_tilde_assign((*head)->assign_head);
-	do_tilde_redir((*head)->redir_head);
-	ft_putendl("IN TILDE EXPANSIONS\n");
-	tmp = (*head)->arg_head;
-	ft_putendl("\nPRINTING EXP ARGS");
-	while (tmp)
+char	*tilde_login(t_lexer_token *tok, size_t start, size_t len)
+{
+	char			*login;
+	char			*result;
+	struct passwd	*passwd;
+	size_t			pw_dir_size;
+
+	login = NULL;
+	result = NULL;
+	passwd = NULL;
+	if (!(login = malloc(len)))
+		return (NULL);						//set une erreur de memoire qq part
+	ft_memcpy(login, tok->buffer + start + 1, len - 1);
+	login[len - 1] = '\0';
+	if (!(passwd = getpwnam(login)))
+		return (NULL);
+	free(login);
+	pw_dir_size = ft_strlen(passwd->pw_dir);
+	result = malloc(pw_dir_size + 1);
+	ft_memcpy(result, passwd->pw_dir, pw_dir_size + 1);
+	return (result);
+}
+
+char	*tilde_prestamp_buffer(t_lexer_token *tok, size_t start)
+{
+	char	*stamp;
+
+	stamp = NULL;
+	if (start != 0)
 	{
-		print_token(tmp->buffer->buf, tmp->buffer->size);
-		tmp = tmp->next;
+		if (!(stamp = malloc(start + 1)))
+			return (NULL);
+		ft_memcpy(stamp, tok->buffer, start);
+		stamp[start] = '\0';
 	}
-	tmp = (*head)->assign_head;
-	ft_putendl("\nPRINTING EXP ASSIGNS");
-	while (tmp)
+	return (stamp);
+}
+
+char	*tilde_stamp_buffer(t_lexer_token *tok, size_t start, size_t len)
+{
+	size_t	size;
+	char	*stamp;
+
+	stamp = NULL;
+	if (tok->size != len)
 	{
-		print_token(tmp->buffer->buf, tmp->buffer->size);
-		tmp = tmp->next;
+		size = tok->size - len - start;
+		if (!(stamp = malloc(size + 1)))
+			return (NULL);
+		ft_memcpy(stamp, tok->buffer + start + len, size);
+		stamp[size] = '\0';
 	}
-	redir = (*head)->redir_head;
-	ft_putendl("\nPRINTING EXP REDIRS");
-	while (redir)
-	{
-		print_token(redir->buffer->buf, redir->buffer->size);
-		redir = redir->next;
-	}
-	// do_tilde_assign((*head)->assign_head);
-	// do_tilde_redir((*head)->redir_head);
+	return (stamp);
+}
+
+int		tilde_append(t_lexer_token *tok, char *pre, char *post, char *result)
+{
+	size_t	pre_size;
+	size_t	post_size;
+	size_t	result_size;
+
+	post_size = 0;
+	pre_size = 0;
+	result_size = 0;
+	if (pre)
+		pre_size = ft_strlen(pre);
+	if (post)
+		post_size = ft_strlen(post);
+	if (result)
+		result_size = ft_strlen(result);
+	free(tok->buffer);
+	tok->buffer = malloc(sizeof(uint8_t) * (result_size + pre_size + post_size));
+	if (!tok->buffer)
+		return (-1);
+	ft_memset(tok->buffer, 0, tok->size);
+	ft_memcpy(tok->buffer, pre, pre_size);
+	ft_memcpy(tok->buffer + pre_size, result, result_size);
+	ft_memcpy(tok->buffer + pre_size + result_size, post, post_size);
+	tok->size = pre_size + result_size + post_size;
 	return (0);
 }
 
-void	do_expansions(t_parser_node *tree)
+int     tilde_result(t_lexer_token *tok, size_t start, size_t len)
 {
-	if (!tree)
+	char		*result;
+	char		*pre_stamp;
+	char		*post_stamp;
+
+	result = NULL;
+	pre_stamp = NULL;
+	post_stamp = NULL;
+	if (start != 0)
+		pre_stamp = tilde_prestamp_buffer(tok, start);
+	post_stamp = tilde_stamp_buffer(tok, start, len);
+	if (!ft_memchr(tok->buffer, '\"', len)
+			&& !ft_memchr(tok->buffer, '\'', len)
+			&& !ft_memchr(tok->buffer, '\\', len))
+	{
+		if (len == 1)
+			result = tilde_home();
+		else
+			result = tilde_login(tok, start, len);
+		if (!result)
+			return (1);
+	}
+	return (tilde_append(tok, pre_stamp, post_stamp, result));
+}
+
+size_t	get_tilde_prefix(t_lexer_token *token, size_t start)
+{
+	size_t	i;
+	char	quoted;
+
+	quoted = 0;
+	i = start;
+	while (i < token->size && token->buffer[i] != '/')
+	{
+		i++;
+	}
+	return (i - start);
+}
+
+int     tilde_expansion(t_lexer_token **root)
+{
+	t_lexer_token	*tmp;
+	size_t			len;
+
+	ft_putendl("tilde arg....");
+	tmp = (*root)->arg_head;
+	while (tmp)
+	{
+		if (tmp->size >= 1 && tmp->buffer[0] == '~')
+		{
+			len = get_tilde_prefix(tmp, 0);
+			tilde_result(tmp, 0, len);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	do_expansions(t_lexer_token *root)
+{
+	if (!root)
 		return ;
 	else
 	{
-		do_expansions(tree->right);
-		if (tree->type == PARSER_COMMAND)
-			// print_token(tree->arg_head->buf, tree->arg_head->size);
-			tilde_expansion(&tree);
-		do_expansions(tree->left);
+		do_expansions(root->right);
+		if (root->type == PARSER_COMMAND)
+			tilde_expansion(&root);
+		do_expansions(root->left);
 	}
 }

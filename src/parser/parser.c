@@ -35,7 +35,7 @@ int		parser_create_tree(t_lexer *lex)
 		ft_putendl("END.");
 	}
 	structure(lex->root, 0);
-	//do_expansions(lex);
+	do_expansions(lex->root);
 	return (0);
 }
 

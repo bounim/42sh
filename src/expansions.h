@@ -6,11 +6,9 @@
 # include "parser.h"
 
 
-void	do_expansions(t_lexer *lex);
 /*
 ** Tilde expansion
 */
-int     tilde_expansion(t_lexer_token *command);
 /*
 ** Parameter expansion
 */
