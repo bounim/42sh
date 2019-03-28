@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:41:35 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:22:25 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:26:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,10 @@ static int	jobs_exec(char **ret)
 	return (0);
 }
 
-int			built_jobs(char **arg, t_job *jobs)
+static int	print_jobs(t_job *jobs, t_opt_jobs opts)
 {
-	t_opt_jobs	opts;
-	int			i;
-	char		**ret;
+	int	i;
 
-	ret = NULL;
-	if ((i = check_opts_jobs(arg, &opts)) == -1)
-		return (1);
-	if (opts.x)
-		return (jobs_exec(arg + i));
 	i = 1;
 	while (jobs)
 	{
@@ -53,4 +46,19 @@ int			built_jobs(char **arg, t_job *jobs)
 		jobs = jobs->next;
 	}
 	return (0);
+}
+
+int			built_jobs(char **arg, t_job *jobs)
+{
+	t_opt_jobs	opts;
+	int			i;
+	char		**ret;
+
+	ret = NULL;
+	if ((i = check_opts_jobs(arg, &opts)) == -1)
+		return (1);
+	if (opts.x)
+		return (jobs_exec(arg + i));
+	else
+		return (print_jobs(jobs, opts));
 }
