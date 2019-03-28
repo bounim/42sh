@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:01:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 14:42:53 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 17:01:02 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static t_opt_jobs		*init_opt_jobs(t_opt_jobs *opts)
+static t_opt_jobs	*init_opt_jobs(t_opt_jobs *opts)
 {
 	if (!(opts = (t_opt_jobs *)malloc(sizeof(t_opt_jobs))))
 		return (NULL);
@@ -25,7 +25,7 @@ static t_opt_jobs		*init_opt_jobs(t_opt_jobs *opts)
 	return (opts);
 }
 
-static void		*print_error_jobs(char *arg)
+static void			*print_error_jobs(char *arg)
 {
 	ft_putstr_fd("sh: alias: -", 2);
 	write(2, arg, 1);
@@ -60,7 +60,7 @@ static t_opt_jobs	*empty_opts(char *arg, t_opt_jobs *opts)
 	return (opts);
 }
 
-int		check_opts_jobs(char **arg, t_opt_jobs *jobs)
+int					check_opts_jobs(char **arg, t_opt_jobs *jobs)
 {
 	int	i;
 

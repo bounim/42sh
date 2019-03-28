@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 16:15:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:28:08 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int		alias_var(char *arg, t_alias **alias)
 	return (1);
 }
 
-int		built_alias(char **arg, t_alias **alias)
+int				built_alias(char **arg, t_alias **alias)
 {
 	int	i;
 	int	opts;

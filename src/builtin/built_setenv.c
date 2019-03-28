@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 11:53:50 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 17:09:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	setenv_nullarg(char *arg, t_envl **head)
 			ft_strdel(&(tmp->value));
 			tmp->value = ft_strdup("");
 			tmp->exp = 1;
+			tmp->read_only = 0;
 			return (1);
 		}
 		tmp = tmp->next;
@@ -33,7 +34,18 @@ static int	setenv_nullarg(char *arg, t_envl **head)
 	push_env(head, arg, "", 1);
 	return (0);
 }
-
+/*
+static int	replace_setenv(char **arg, t_envl **envl)
+{
+	if ((*envl)->exp == 0 || (*envl)->read_only == 1)
+		return (1);
+	ft_strdel(&((*envl)->value));
+	(*envl)->value = ft_strdup(arg[2]);
+	(*envl)->read_only = 0;
+	(*envl)->exp = 1;
+	return (0);
+}
+*/
 static int	start_setenv(char **arg, t_envl **envl)
 {
 	t_envl	*tmp;
@@ -53,6 +65,7 @@ static int	start_setenv(char **arg, t_envl **envl)
 	{
 		if (ft_strequ(tmp->name, arg[1]))
 		{
+		//	return (replace_setenv(arg, envl));
 			if (tmp->exp == 0 || tmp->read_only == 1)
 				return (1);
 			ft_strdel(&(tmp->value));

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 12:29:37 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 11:52:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:52:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int			built_export(char **arg, t_envl *envl)
 	int	opts;
 
 	len = ft_arrlen(arg);
-	if ((i = start_arg_export(arg, &opts)) == -1)
+	if ((i = start_arg_export(arg, &opts) - 1) == -1)
 		return (1);
 	if (len == 1 || opts == 1 || arg[i] == NULL)
 		print_envl(g_shell.envl, 1);
@@ -118,7 +118,7 @@ int			built_export(char **arg, t_envl *envl)
 		free_envl(g_shell.envl);
 		g_shell.envl = dup_envl(envl);
 	}
-	while (arg[i])
+	while (arg[++i])
 	{
 		if (!error_export(arg[i]))
 		{
@@ -127,7 +127,6 @@ int			built_export(char **arg, t_envl *envl)
 			else
 				export_var(arg[i], &g_shell.envl);
 		}
-		i++;
 	}
 	return (0);
 }

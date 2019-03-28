@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 18:13:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:57:14 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static char	**from_arg_to_cmd(char **arg, int curr_arg)
+static char		**from_arg_to_cmd(char **arg, int curr_arg)
 {
 	int		nb_arg;
 	char	**ret;
@@ -57,11 +57,22 @@ static void		exec_env(char **arg, int curr_arg, t_envl *head)
 	}
 }
 
-static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg)
+static void		concat_env(t_envl **head, char *arg, int c)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = ft_strsub(arg, 0, c);
+	tmp2 = ft_strsub(arg, c + 1, ft_strlen(arg) - c);
+	push_env(&*head, tmp, tmp2, 1);
+	ft_strdel(&tmp);
+	ft_strdel(&tmp2);
+}
+
+static int		start_built_env(t_envl *head, char **arg,
+								int last_cmd, int curr_arg)
 {
 	int		c;
-	char	*tmp;
-	char	 *tmp2;
 
 	while (arg[curr_arg] && curr_arg != last_cmd)
 	{
@@ -76,11 +87,7 @@ static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg
 		}
 		else if ((c = ft_strichr(arg[curr_arg], '=')))
 		{
-			tmp = ft_strsub(arg[curr_arg], 0, c);
-			tmp2 = ft_strsub(arg[curr_arg], c + 1, ft_strlen(arg[curr_arg]) - c);
-			push_env(&head, tmp, tmp2, 1);
-			ft_strdel(&tmp);
-			ft_strdel(&tmp2);
+			concat_env(&head, arg[curr_arg], c);
 			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
 		}
 		curr_arg++;
@@ -89,14 +96,14 @@ static int		start_built_env(t_envl *head, char **arg, int last_cmd, int curr_arg
 	return (0);
 }
 
-int		built_env(char **arg, t_envl *envl)
+int				built_env(char **arg, t_envl *envl)
 {
 	int		last_cmd;
 	t_envl	*tmp;
 	int		ret;
-	
+
 	tmp = dup_envl(envl);
-	if ((last_cmd = built_env_find_last_cmd(arg)) == -1)
+	if ((last_cmd = built_env_find_last_cmd(arg, 0, 0)) == -1)
 		return (1);
 	ret = start_built_env(tmp, arg, last_cmd, 0);
 	return (ret);

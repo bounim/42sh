@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 14:39:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 14:06:09 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:59:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,16 @@ int				built_setenv_check_error(char **arg)
 	{
 		i = 0;
 		if (!ft_isalpha(arg[1][0]))
-				return (put_setenv_error(1));
+			return (put_setenv_error(1));
 		while (arg[1][i])
 		{
 			if (!ft_isalnum(arg[1][i]))
-					return (put_setenv_error(3));
+				return (put_setenv_error(3));
 			i++;
 		}
 	}
 	return (0);
 }
-
 
 static int		check_env_opts(char *arg)
 {
@@ -60,7 +59,8 @@ static int		check_env_opts(char *arg)
 		{
 			ft_putstr_fd("env: illegal option -- -", 2);
 			write(2, arg + i, 1);
-			ft_putstr_fd("\nusage: env [-i] [name=value ...] [utility [argumment ...]]\n", 2);
+			ft_putstr_fd("\nusage: env [-i] [name=value ...\
+							] [utility [argumment ...]]\n", 2);
 			return (1);
 		}
 		i++;
@@ -68,13 +68,8 @@ static int		check_env_opts(char *arg)
 	return (0);
 }
 
-int				built_env_find_last_cmd(char **arg)
+int				built_env_find_last_cmd(char **arg, int stock, int i)
 {
-	int	stock;
-	int	i;
-
-	i = 0;
-	stock = 0;
 	while (arg[i])
 	{
 		if (ft_strequ(arg[i], "env"))
@@ -91,7 +86,7 @@ int				built_env_find_last_cmd(char **arg)
 			stock = 1;
 			i++;
 		}
-		else if (ft_memchr(arg[i], '=', ft_strlen(arg[i])) && (stock == 1 || stock == 2))
+		else if (ft_strchr(arg[i], '=') && (stock == 1 || stock == 2))
 		{
 			stock = 2;
 			i++;

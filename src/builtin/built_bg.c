@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 13:31:55 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/27 16:45:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:35:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,39 @@ static int	print_error_bg(int nb)
 	return (1);
 }
 
-int			built_bg(char **arg, t_job *job)
+static int	run_bg(char **arg, t_job *job, int i)
 {
-	int		i;
 	int		j;
 	int		k;
 	int		ret;
 	t_job	*tmp;
 
 	ret = 0;
-	if ((i = check_opts_bg(arg)) == -1)
-		return (1);
 	while (arg[i])
 	{
-		j = ft_atoi(arg[i]);	
+		j = ft_atoi(arg[i]);
 		k = 0;
 		tmp = job;
 		if (j == 0)
 			ret = print_error_bg(0);
 		else
 		{
-			while (k < j && tmp)
-			{
+			while (k++ < j && tmp)
 				job = job->next;
-				k++;
-			}
 			if (tmp)
 				continue_job(job, 0);
 			else
 				ret = 1;
 		}
-
 	}
 	return (ret);
+}
+
+int			built_bg(char **arg, t_job *job)
+{
+	int	i;
+
+	if ((i = check_opts_bg(arg)) == -1)
+		return (1);
+	return (run_bg(arg, job, i));
 }

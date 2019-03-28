@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 19:54:10 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:46:26 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int			built_echo(char **arg)
 	int		i;
 
 	i = 1;
-	write(1, "\n", 1);
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '\\'))

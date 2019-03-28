@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:35:23 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/15 10:30:42 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:28:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	free_alias(t_alias *alias)
+void		free_alias(t_alias *alias)
 {
 	t_alias	*tmp;
 
