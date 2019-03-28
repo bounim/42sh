@@ -13,6 +13,7 @@ SRC := \
 	env/print_envl.c \
 	env/envl_to_envarr.c \
 	execution/execution.c \
+	execution/redir.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/init_shell_history.c \

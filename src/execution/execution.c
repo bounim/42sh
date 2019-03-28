@@ -25,7 +25,7 @@ static char	**arg_to_argv(t_lexer_token *head)
 	while (cur)
 	{
 		ac++;
-		cur = cur->next;
+		cur = cur->arg_next;
 	}
 	if (NULL == (av = malloc(((size_t)ac + 1) * sizeof(*av))))
 		return (NULL);
@@ -45,7 +45,7 @@ static char	**arg_to_argv(t_lexer_token *head)
 		ft_memcpy(av[i], cur->buffer, cur->size);
 		av[i][cur->size] = '\0';
 		i++;
-		cur = cur->next;
+		cur = cur->arg_next;
 	}
 	av[i] = NULL;
 	return (av);
@@ -63,8 +63,16 @@ void		test_exec(t_lexer *lex)
 		return ;
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{
+		if (command_redir(lex->root) < 0)
+		{
+			ft_putstr("<redir fail>\n");
+			return ;
+		}
 		if (!start_builtin(av, NULL))
-			; // TODO exec
+		{
+			// TODO exec
+		}
+		command_redir_restore(lex->root);
 		resize_history(g_shell.hist.history);
 	}
 }

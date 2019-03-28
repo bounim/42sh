@@ -76,8 +76,12 @@ struct							s_lexer_token
 	t_lexer_token				*redir_foot;
 	size_t						redir_nb;
 	int							redir_input;
+	int							fd_saved;
+	int							fd_new;
+	int							fd_dup;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
+	t_lexer_token				*heredoc_next;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
 };
@@ -103,7 +107,6 @@ typedef struct					s_lexer
 	int							next_expansion;
 	t_lexer_token				*root;
 	t_lexer_token				*heredoc_head;
-	t_lexer_token				*heredoc_next;
 	t_lexer_token				*heredoc_foot;
 	size_t						heredoc_nb;
 }								t_lexer;
