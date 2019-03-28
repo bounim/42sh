@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/27 16:40:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:21:34 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ struct					s_opts
 	int		i;
 };
 
+struct					s_opt_jobs
+{
+	int		l;
+	int		n;
+	int		p;
+	int		r;
+	int		s;
+	int		x;
+};
 
 struct					s_alias
 {
@@ -55,6 +64,7 @@ int			built_history(char **arg, t_history **hist);
 int			built_fg(char **arg, t_job *job);
 int			built_bg(char **arg, t_job *job);
 int			built_jobs(char **arg, t_job *job);
+int			check_opts_jobs(char **arg, t_opt_jobs *jobs);
 t_alias		*new_alias(char *name, char *value);
 void		push_alias(t_alias **alias, char *name, char *value);
 t_alias		*addlast_alias(t_alias *head, t_alias *new);

@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:27:19 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/22 18:59:24 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/28 14:16:01 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_keymap			t_keymap;
 typedef struct s_term			t_term;
 typedef struct s_hist			t_hist;
 typedef struct s_opts			t_opts;
-typedef struct s_opt			t_opt;
+typedef struct s_opt_jobs		t_opt_jobs;
 typedef struct s_proc			t_proc;
 typedef struct s_job			t_job;
 typedef struct s_last_command	t_last_command;
