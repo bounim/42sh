@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 17:09:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:24:56 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	setenv_nullarg(char *arg, t_envl **head)
 	push_env(head, arg, "", 1);
 	return (0);
 }
-/*
+
 static int	replace_setenv(char **arg, t_envl **envl)
 {
 	if ((*envl)->exp == 0 || (*envl)->read_only == 1)
@@ -45,7 +45,7 @@ static int	replace_setenv(char **arg, t_envl **envl)
 	(*envl)->exp = 1;
 	return (0);
 }
-*/
+
 static int	start_setenv(char **arg, t_envl **envl)
 {
 	t_envl	*tmp;
@@ -64,22 +64,14 @@ static int	start_setenv(char **arg, t_envl **envl)
 	while (tmp)
 	{
 		if (ft_strequ(tmp->name, arg[1]))
-		{
-		//	return (replace_setenv(arg, envl));
-			if (tmp->exp == 0 || tmp->read_only == 1)
-				return (1);
-			ft_strdel(&(tmp->value));
-			tmp->value = ft_strdup(arg[2]);
-			tmp->exp = 1;
-			return (0);
-		}
+			return (replace_setenv(arg, &tmp));
 		tmp = tmp->next;
 	}
 	push_env(envl, arg[1], arg[2], 1);
 	return (0);
 }
 
-int		built_setenv(char **arg, t_envl *envl)
+int			built_setenv(char **arg, t_envl *envl)
 {
 	if (envl)
 	{

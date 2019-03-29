@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:18:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/18 13:35:55 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 17:47:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void		print_flag_error(char *str, int i, char *cmd)
+static void		*print_flag_error(char *str, int i, char *cmd)
 {
 	char	*buf;
 	char	*buf2;
@@ -21,6 +21,7 @@ static void		print_flag_error(char *str, int i, char *cmd)
 	buf2 = ft_strsub(str, i, 1);
 	buf = ft_strfjoin(buf, buf2, 2);
 	put_error("sh: ", cmd, buf, "invalid option\n");
+	return (NULL);
 }
 
 static t_opts	*empty_flag(char *arg, t_opts *flag, char *cmd, char opts)
@@ -31,10 +32,7 @@ static t_opts	*empty_flag(char *arg, t_opts *flag, char *cmd, char opts)
 	while (arg[i])
 	{
 		if (!ft_isalnum(arg[i]) || (opts != 0 && arg[i] != opts))
-		{
-			print_flag_error(arg, i, cmd);
-			return (NULL);
-		}
+			return (print_flag_error(arg, i, cmd));
 		else if (arg[i] == 'a')
 			flag->a = 1;
 		else if (arg[i] == 'p')
@@ -66,10 +64,10 @@ static t_opts	*init_flag(t_opts *flag)
 	return (flag);
 }
 
-int		check_opts(char **arg, t_opts *flag, char opts)
+int				check_opts(char **arg, t_opts *flag, char opts)
 {
 	int		i;
-	
+
 	i = 1;
 	flag = init_flag(flag);
 	while (arg[i])

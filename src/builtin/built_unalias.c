@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 18:33:17 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 17:09:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,31 @@ static int	start_arg_unalias(char **arg, int *opts)
 	return (-1);
 }
 
-int		unset_alias(char *arg, t_alias **alias)
+static int	swap_ptr_alias(t_alias **alias, t_alias **lst, t_alias **tmp, int i)
+{
+	if (i)
+		*alias = (*lst)->next;
+	else
+		(*tmp)->next = (*lst)->next;
+	(*lst)->next = NULL;
+	free_alias(*lst);
+	return (0);
+}
+
+int			unset_alias(char *arg, t_alias **alias)
 {
 	t_alias	*tmp;
 	t_alias	*lst;
-	
+
 	lst = *alias;
 	if (ft_strequ(arg, lst->name))
-	{
-		*alias = lst->next;
-		lst->next = NULL;
-		free_alias(lst);
-		return (0);
-	}
+		return (swap_ptr_alias(alias, &lst, &tmp, 1));
 	tmp = lst;
 	lst = lst->next;
 	while (lst)
 	{
 		if (ft_strequ(lst->name, arg))
-		{
-			tmp->next = lst->next;
-			lst->next = NULL;
-			free_alias(lst);
-			return (0);
-		}
+			return (swap_ptr_alias(alias, &lst, &tmp, 0));
 		tmp = lst;
 		lst = lst->next;
 	}
@@ -61,22 +62,30 @@ int		unset_alias(char *arg, t_alias **alias)
 	return (1);
 }
 
-int		built_unalias(char **arg, t_alias **alias)
+int			built_unalias(char **arg, t_alias **alias)
 {
 	int	opts;
 	int	i;
+	int	ret;
 
+	ret = 0;
+	if (!alias || *alias == NULL)
+		return (1);
 	if ((i = start_arg_unalias(arg, &opts)) == -1)
-		return (0);
+		return (1);
 	if (opts == 1)
 		free_alias(*alias);
 	else
 	{
 		while (arg[i])
 		{
-			unset_alias(arg[i], alias);
+			if (!alias || !*alias)
+				break ;
+			ret += unset_alias(arg[i], alias);
 			i++;
 		}
 	}
+	if (ret > 0)
+		return (1);
 	return (0);
 }

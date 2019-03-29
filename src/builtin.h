@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:57:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:25:44 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ struct					s_alias
 /*void		built_history(t_rl rl);*/
 
 char		*replace_exclaim(char *line, t_history *hist, char *bfr, char *next);
+char		*find_exclaim(char *word, t_history *hist);
 int			built_cd(char **arg, t_envl *envl);
+int			built_cd2(char **arg, t_envl *envl);
 int			built_echo(char **arg);
 int			built_env(char **arg, t_envl *envl);
 int			built_env_find_last_cmd(char **arg, int stock, int i);
@@ -68,8 +70,8 @@ int			check_opts_jobs(char **arg, t_opt_jobs *jobs);
 t_alias		*new_alias(char *name, char *value);
 void		push_alias(t_alias **alias, char *name, char *value);
 t_alias		*addlast_alias(t_alias *head, t_alias *new);
-void		print_alias(t_alias *alias);
-void		free_alias(t_alias *alias);
+int			print_alias(t_alias *alias);
+int			free_alias(t_alias *alias);
 int			built_type(char **arg, t_envl *envl);
 int			put_error(char *sh, char *cmd, char *arg, char *error);
 int			check_opts(char **arg, t_opts *flag, char opts);

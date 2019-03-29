@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:28:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 17:11:48 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,33 @@ static int		check_opts_alias(char **arg, int *opts)
 	return (-1);
 }
 
-static int		alias_var_egual(char *arg, t_alias **alias)
+static int		alias_var_egual(char *arg, t_alias **alias, int i)
 {
 	t_alias	*tmp;
 	char	*name;
 	char	*value;
-	int		i;
 
-	if (!(i = ft_strichr(arg, '=')))
-		return (0);
+	if (i == -1)
+		return (1);
+	name = ft_strsub(arg, 0, i);
 	value = ft_strsub(arg, i + 1, ft_strlen(arg) - i);
 	tmp = *alias;
 	while (tmp)
 	{
-		if (ft_strequ(tmp->name, arg))
+		if (ft_strequ(tmp->name, name))
 		{
+			ft_strdel(&name);
 			ft_strdel(&(tmp->value));
 			tmp->value = value;
-			return (1);
+			return (0);
 		}
 		tmp = tmp->next;
 	}
-	name = ft_strsub(arg, 0, i);
 	tmp = new_alias(name, value);
 	*alias = addlast_alias(*alias, tmp);
 	ft_strdel(&name);
 	ft_strdel(&value);
-	return (1);
+	return (0);
 }
 
 static int		alias_var(char *arg, t_alias **alias)
@@ -69,7 +69,7 @@ static int		alias_var(char *arg, t_alias **alias)
 			ft_putstr("alias ");
 			ft_putstr(tmp->name);
 			ft_putchar('=');
-			ft_putstr(tmp->value);
+			ft_putendl(tmp->value);
 			return (0);
 		}
 		tmp = tmp->next;
@@ -84,18 +84,24 @@ int				built_alias(char **arg, t_alias **alias)
 {
 	int	i;
 	int	opts;
+	int	ret;
 
+	ret = 0;
 	if ((i = check_opts_alias(arg, &opts)) == -1)
 		return (1);
 	if (opts == 1)
-		print_alias(*alias);
+		ret += print_alias(*alias);
+	else if (!arg[i])
+		ret += print_alias(*alias);
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '='))
-			alias_var_egual(arg[i], alias);
+			ret += alias_var_egual(arg[i], alias, ft_strichr(arg[i], '='));
 		else
-			alias_var(arg[i], alias);
+			ret += alias_var(arg[i], alias);
 		i++;
 	}
+	if (ret > 0)
+		return (1);
 	return (0);
 }

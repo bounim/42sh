@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/22 15:12:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:25:51 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static int			name_is_alias(char *name)
 static int			name_is_builtin(char *name)
 {
 	static void		*builtin[12] = {"cd", "echo", "env", "setenv",
-							   "unsetenv", "set", "unset", "export",
-							   "alias", "unalias", "type", NULL};
+							"unsetenv", "set", "unset", "export",
+							"alias", "unalias", "type", NULL};
 	size_t			i;
 
 	i = 0;
@@ -76,7 +76,7 @@ static int			name_is_file(char *name, t_envl *envl, int is_file)
 			ft_putstr_fd(" is ", STDOUT_FILENO);
 			ft_putendl_fd(fullpath, STDOUT_FILENO);
 			is_file = TRUE;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -106,7 +106,6 @@ int					built_type(char **arg, t_envl *envl)
 {
 	size_t			i;
 	int				all_found;
-
 
 	if (!arg)
 		return (1);

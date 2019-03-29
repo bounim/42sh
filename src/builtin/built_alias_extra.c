@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:35:23 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:28:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:51:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		free_alias(t_alias *alias)
+int			free_alias(t_alias *alias)
 {
 	t_alias	*tmp;
 
@@ -25,9 +25,10 @@ void		free_alias(t_alias *alias)
 		alias = alias->next;
 		free(tmp);
 	}
+	return (0);
 }
 
-void		print_alias(t_alias *alias)
+int			print_alias(t_alias *alias)
 {
 	while (alias)
 	{
@@ -38,6 +39,7 @@ void		print_alias(t_alias *alias)
 		ft_putchar(10);
 		alias = alias->next;
 	}
+	return (0);
 }
 
 t_alias		*new_alias(char *name, char *value)
