@@ -12,6 +12,17 @@
 
 #include "twenty_one_sh.h"
 
+size_t	go_back_one_car(uint8_t *buff, size_t index)
+{
+	index--;
+	if (index > 0)
+	{
+		while (buff[index] && buff[index] >= 128 && buff[index] <= 191)
+			index--;
+	}
+	return (index);
+}
+
 int		is_there_word_after(t_char *curr)
 {
 	int t;

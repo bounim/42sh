@@ -57,7 +57,6 @@ void	del_charac(void)
 	clean_and_print();
 }
 
-//segfault si on ecrit plus que l'ecran et quon del tout.
 void	delete_backline(void)
 {
 	t_char 	*curr;
@@ -80,6 +79,12 @@ void	delete_backline(void)
 		delete_char_from_list(g_shell.edit.point_char);
 		c--;
 	}
+	if (g_shell.edit.cur_base_y < 0)
+	{
+		g_shell.edit.cur_base_y = 0;
+		g_shell.edit.cur_base_x = 0;
+	}
+	update_all_pos();
 	clean_and_print();
 }
 

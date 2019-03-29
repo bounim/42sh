@@ -30,6 +30,7 @@ int			get_buf_size(t_char *head, t_char *end)
 	}
 	return (buff_size);
 }
+
 uint8_t		*list_to_buff_print(t_char *curr, t_char *end)
 {
 	uint8_t		*ret;

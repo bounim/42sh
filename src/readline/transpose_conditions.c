@@ -68,8 +68,14 @@ int				transpose_word_conditions(t_char *curr)
 	if (curr->is_prompt == 1 && !curr->next)
 		return (0);
 	if ((nb = count_words(curr)) == 0 || nb == 1)
+	{
+		printf("%d\n", nb);
 		return (0);
+	}
 	if (is_first_word(curr) == 1)
+	{
+		printf("FIRST\n");
 		return (0);
+	}
 	return (1);
 }

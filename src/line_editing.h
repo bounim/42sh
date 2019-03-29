@@ -262,6 +262,7 @@ void					delete_endline(void);
 void					delete_word_forward(void);
 void					delete_word_backward(void);
 void					drag_char(void);
+size_t					go_back_one_car(uint8_t *buff, size_t index);
 int						transpose_word_conditions(t_char *curr);
 t_char					*get_to_right_position(t_char *curr);
 int						get_word_len(t_char *curr);

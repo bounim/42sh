@@ -54,19 +54,19 @@ void	swap_end_of_buff(t_char *curr, uint8_t *buff, size_t len, size_t c_len)
 		g_shell.edit.point_char = curr->prev;
 	else
 		g_shell.edit.point_char = g_shell.edit.char_list.tail;
-
 }
 
+//pour le poisitonnement de base du i dans le buff, il faut sauter tous les caracs unicode. Go back one char?
 void	swap_words_in_list(t_char *curr, uint8_t *buff)
 {
 	size_t	len;
 	size_t	c_len;
 
 	len = ft_u8_strlen(buff) - 1;
-	while (!ft_u8_is_alnum(buff[len]))
+	while (!(ft_u8_is_alnum(buff[len])))
 		len--;
 	while (ft_u8_is_alnum(buff[len]))
-		len--;
+		len = go_back_one_car(buff, len);
 	len += ft_wchar_len(buff + len);
 	while (buff[len])
 	{
@@ -92,5 +92,6 @@ void	transpose_word(void)
 	curr = get_to_right_position(curr);
 	buff = create_buff_for_swap(curr);
 	swap_words_in_list(curr, buff);
+	free(buff);
 	clean_and_print();
 }
