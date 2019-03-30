@@ -5,7 +5,9 @@
 # include <pwd.h>
 # include "parser.h"
 
+enum    state {ST_GEN, ST_BS, ST_QU, ST_DQU};
 
+char    quoted(uint8_t *buf, size_t index);
 /*
 ** Tilde expansion
 */
