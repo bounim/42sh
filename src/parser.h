@@ -13,7 +13,6 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include <stdio.h> //a enleverrrr
 # include <stdlib.h>
 # include <unistd.h>
 # include "lexer/lexer_internal.h"
