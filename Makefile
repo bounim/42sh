@@ -37,6 +37,7 @@ SRC := \
 	builtin/start_builtin.c \
 	builtin/built_history.c \
 	builtin/built_cd.c \
+	builtin/built_cd_opts.c \
 	builtin/built_echo.c \
 	builtin/built_env.c \
 	builtin/built_extra.c \

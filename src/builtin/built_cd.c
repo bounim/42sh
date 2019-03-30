@@ -1,217 +1,254 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_cd.c                                         :+:      :+:    :+:   */
+/*   built_cd2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 15:24:31 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 12:07:01 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/29 19:25:02 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/30 18:17:45 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+/*
+   static char	*cd_work_path(char **arg_t, char **cwd_t)
+   {
+   int		i;
+   int		j;
+   int		stock;
+   char	*ret;
 
-char	*rework_canonic_path(char *canonic_path)
+   i = 0;
+   if (!arg_t)
+   return (NULL);
+   while (ft_strequ(arg_t[i], ".."))
+   i++;
+   j = 0;
+   ret = ft_strdup("");
+   stock = ft_arrlen(cwd_t) - i;
+   while (j < stock && cwd_t[j])
+   {
+   ret = ft_strfjoin(ret, "/", 0);
+   ret = ft_strfjoin(ret, cwd_t[j], 0);
+   j++;
+   }
+   while (arg_t[i])
+   {
+   ret = ft_strfjoin(ret, "/", 0);
+   ret = ft_strfjoin(ret, arg_t[i], 0);
+   i++;
+   }
+   if (!ret || !ft_strlen(ret))
+   ret = ft_strdup("/");
+   ft_arrdel(arg_t);
+   ft_arrdel(cwd_t);
+   return (ret);
+   }*/
+/*
+   static char	*rework_path(char *arg, t_envl *envl)
+   {
+   char	*cwd;
+
+   if (g_shell.canonic_path)
+   cwd = ft_strdup(g_shell.canonic_path);
+   else if (!(cwd = ft_strdup(get_env_val(envl, "PWD"))))
+   {
+   if (!(cwd = getcwd(NULL, 0)))
+   {
+   ft_putendl_fd("cd: cwd not found\n", 2);
+   return (NULL);
+   }
+   }
+   if (!cwd)
+   return (NULL);
+   return (cd_work_path(ft_strsplit(arg, '/'), ft_strsplit(cwd, '/')));
+   }*/
+
+static char	*cd_oldpwd(t_envl *envl)
 {
-	int		nb_bfr;
+	char	*tmp;
+
+	if (!(tmp = ft_strdup(get_env_val(envl, "OLDPWD"))))
+	{
+		ft_putendl_fd("cd: OLDPWD not set", 2);
+		return (NULL);
+	}
+	return (tmp);
+}
+/*
+   static char	*get_lnk_path(char *arg)
+   {
+   struct stat	buf;
+   char		link[255];
+   int			rl;
+   char		*tmp;
+
+   rl = 0;
+   if (lstat(arg, &buf) == -1)
+   return (NULL);
+   else if (!S_ISLNK(buf.st_mode))
+   return (arg);
+   else if ((rl = readlink(arg, link, 255)) == -1)
+   return (NULL);
+   link[rl] = '\0';
+   tmp = ft_strdup(link);
+   return (tmp);
+   }*/
+/*
+   static char	*rework_arg(char *arg, t_envl *envl)
+   {
+   char	*bfr;
+   char	*ret;
+
+   if (ft_strnequ(arg, "/", 1))
+   return (arg);
+   bfr = NULL;
+   if (g_shell.canonic_path)
+   bfr = ft_strdup(g_shell.canonic_path);
+   else if (!(bfr = ft_strdup(get_env_val(envl, "PWD"))))
+   bfr = getcwd(NULL, 0);
+   if (bfr[ft_strlen(bfr) - 1] != '/')
+   bfr = ft_strfjoin(bfr, "/", 0);
+   ret = ft_strfjoin(bfr, arg, 0);
+   return (ret);
+   }*/
+/*
+   static char	*work_path(char *arg, int opts, t_envl *envl)
+   {
+   char	*lnk;
+   char	*ret;
+
+   arg = rework_arg(arg, envl);
+   lnk = NULL;
+   if (opts == 1)
+   lnk = get_lnk_path(arg);
+   if (lnk)
+   {
+   ret = ft_strdup("/");
+   return (ret = ft_strfjoin(ret, lnk, 2));
+   }
+   return (ft_strdup(arg));
+   }*/
+/*
+   static char	*cd_current_path(t_envl *envl)
+   {
+   char	*ret;
+
+   if (g_shell.canonic_path)
+   return (ft_strdup(g_shell.canonic_path));
+   else if ((ret = ft_strdup(get_env_val(envl, "PWD"))))
+   return (ret);
+   else
+   return (getcwd(NULL, 0));
+
+   }*/
+/*
+   static char	*search_path(char *arg, t_envl *envl, int opts)
+   {
+   char	*ret;
+
+   printf("arg = %s\n", arg);
+   ret = NULL;
+   if (!arg) // working
+   {
+   if (!(ret = ft_strdup(get_env_val(envl, "HOME"))))
+   {
+   ft_putendl_fd("cd: HOME not set", 2);
+   return (NULL);
+   }
+   return (ret);
+   }
+   else if (ft_strequ(arg, "."))
+   return (cd_current_path(envl));
+   else if (ft_strequ(arg, "-")) //working
+   return (cd_oldpwd(envl));
+   else if (ft_strnequ(arg, "../", 3) || ft_strequ(arg, "..")) // working
+   return (rework_path(arg, envl));
+   else
+   return (work_path(arg, opts, envl));
+   }*/
+
+static char	*rework_canonic_path(char *cwd)
+{
+	char	**cwd_t;
+	char	**ret_t;
 	int		i;
 	int		j;
-	char	*tmp;
-	char	**canonic_tab;
 
+	printf("cwd = %s\n", cwd);
+	if (!(cwd_t = ft_strsplit(cwd, '/')))
+	{
+		ft_strdel(&cwd);
+		return (NULL);
+	}
+	i = ft_arrlen(cwd_t);
+	if (!(ret_t = (char **)malloc(sizeof(char *) * i + 1)))
+		return (NULL);
 	j = 0;
-	if (!canonic_path)
-		return (canonic_path);
-	tmp = canonic_path;
-	if (tmp && tmp[0] == '/')
-		j = 1;
-	canonic_tab = ft_strsplit(tmp, '/');
+	while (j < i)
+		ret_t[j++] = NULL;
 	i = 0;
-	nb_bfr = 0;
-	while (canonic_tab[i])
+	while (cwd_t[i])
 	{
-		if (ft_strequ(canonic_tab[i], ".."))
-			nb_bfr++;
+		if (ft_strequ(cwd_t[i], ".."))
+		{
+			if (j > 0)
+				j--;
+			i++;
+		}
+		else if (!ft_strequ(cwd_t[i], "."))
+			ret_t[j++] = ft_strdup(cwd_t[i++]);
+	}
+	i = 0;
+	printf("ret = %s\n", ret_t[j]);
+	cwd = ft_strdup("");
+	while (i < j)
+	{
+		printf("%s\n", ret_t[i]);
+		cwd = ft_strjoin(cwd, "/");
+		cwd = ft_strjoin(cwd, ret_t[i]);
 		i++;
 	}
-	if (nb_bfr == 0)
-		return (canonic_path);
-	i -= nb_bfr;
-	if (j)
-		tmp = ft_strdup("/");
-	j = 0;
-	while (j < i && nb_bfr--)
-	{
-		tmp = ft_strfjoin(tmp, canonic_tab[j], 0);
-		j++;
-		i++;
-		if (j < i)
-			tmp = ft_strfjoin(tmp, "/", 0);
-		free(canonic_tab[j]);
-	}
-	free(canonic_tab);
-	g_shell.canonic_path = tmp;
-	return (tmp);
+	printf("end = %s\n", cwd);
+	ft_arrdel(cwd_t);
+	printf("end = tru\n");
+	ft_arrdel(ret_t);
+	printf("end =aover\n");
+	return (cwd);
 }
 
-static char			*get_opts_path(char *arg)
+static char	*search_path(char *arg, t_envl *envl)
 {
-	struct stat	buf;
-	char		link[255];
-	int			rl;
-	char		*tmp;
+	char	*cwd;
 
-	rl = 0;
-	if (lstat(arg, &buf) == -1)
-		return (NULL);
-	else if (!S_ISLNK(buf.st_mode))
-		return (arg);
-	else if ((rl = readlink(arg, link, 255)) == -1)
-		return (NULL);
-	link[rl] = '\0';
-	tmp = ft_strdup("/");
-	tmp = ft_strfjoin(tmp, link, 0);
-	return (tmp);
-}
-
-static char			*get_cd_path(t_envl *env, char *arg, int opts)
-{
-	char	*tmp;
-
-	tmp = NULL;
-	if (arg == NULL)
+	if (!arg) // working
 	{
-		if ((tmp = get_env_val(env, "HOME")))
-			return (tmp);
-		else
+		if (!(cwd = ft_strdup(get_env_val(envl, "HOME"))))
 		{
 			ft_putendl_fd("cd: HOME not set", 2);
 			return (NULL);
 		}
+		return (cwd);
 	}
-	else if (ft_strequ(arg, "..") && g_shell.canonic_path) //strnequ ??
+	if (!ft_strnequ(arg, "/", 1))
 	{
-		tmp = ft_strdup(g_shell.canonic_path);
-		tmp = ft_strfjoin(tmp, "/..", 0);
-		tmp = rework_canonic_path(tmp);
-		return (tmp);
+		if (ft_strequ(arg, "-")) //working
+			return (cd_oldpwd(envl));
+		if (g_shell.canonic_path)
+			cwd = ft_strdup(g_shell.canonic_path);
+		else if (!(cwd = ft_strdup(get_env_val(envl, "PWD"))))
+			cwd = getcwd(NULL, 0);
+		cwd = ft_strfjoin(cwd, "/", 0);
+		cwd = ft_strfjoin(cwd, arg, 0);
 	}
-	else if (opts == 1)
-	{
-		tmp = get_opts_path(arg);
-		return (tmp);
-	}
-	return (arg);
-}
-
-static int		init_pwd(t_envl **env)
-{
-	char	*cwd;
-	char	*tmp;
-	int		stock;
-
-	stock = 0;
-	tmp = get_env_val(*env, "PWD");
-	if (tmp)
-		return (0);
-	if (g_shell.canonic_path)
-	{
-		stock = 1;
-		cwd = ft_strdup(g_shell.canonic_path);
-	}
-	else if (!(cwd = getcwd(NULL, 0)))
-	{
-		write(2, "cd: GETCWD error\n", 17);
-		return (1);
-	}
-	if (stock)
-		g_shell.canonic_path = cwd;
-	push_env(env, "PWD", cwd, 1);
-	return (0);
-}
-
-static int		cd_oldpwd(t_envl *env)
-{
-	char	*pwd;
-	char	*oldpwd;
-	char	*tmp;
-
-	tmp = NULL;
-	pwd = NULL;
-	oldpwd = NULL;
-	if (!(tmp = get_env_val(env, "OLDPWD")))
-	{
-		write(2, "cd: OLDPWD not set\n", 19);
-		return (1);
-	}
-	oldpwd = ft_strdup(tmp);
-	if (g_shell.canonic_path)
-		pwd = ft_strdup(g_shell.canonic_path);
 	else
-	{
-		if (!(tmp = ft_strdup(get_env_val(env, "PWD"))))
-		{
-			if (!(tmp = getcwd(NULL, 0)))
-			{
-				write(2, "cd: dir not found\n", 17);
-				return (1);
-			}
-		}
-		pwd = ft_strdup(tmp);
-	}
-	if (chdir(oldpwd) == -1)
-	{
-		ft_putendl_fd("cd: CHDIR error", 2);
-		return (1);
-	}
-	g_shell.canonic_path = ft_strdup(oldpwd);
-	push_env(&g_shell.envl, "OLDPWD", pwd, 1);
-	push_env(&g_shell.envl, "PWD", oldpwd, 1);
-	return (0);
+		cwd = ft_strdup(arg);
+	cwd = rework_canonic_path(cwd);
+	return (cwd);
 }
 
-static int		cd_first_arg(char **arg, int *opts)
-{
-	int	i;
-	int	l;
-	int	j;
-
-	l = 0;
-	i = 1;
-	while (arg[i] != NULL)
-	{
-		if (ft_strequ(arg[i], "-"))
-				return (i);
-		if (ft_strequ(arg[i], "--"))
-			return (i + 1);
-		else if (ft_strnequ(arg[i], "-", 1))
-		{
-			j = 1;
-			while (arg[i][j])
-			{
-				if (arg[i][j] == 'P' && *opts != -1)
-					*opts = 1;
-				else if (arg[i][j] != 'L' && arg[i][j] != 'P')
-				{
-					ft_putstr_fd("sh: cd: -", 2);
-					write(2, arg[i] + j, 1);
-					ft_putstr_fd(": invalid option\ncd: usage: cd [-L|-P] [dir]\n", 2);
-					return (-1);
-				}
-				else
-					*opts = -1;
-				j++;
-			}
-		}
-		else
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-int				built_cd(char **arg, t_envl *envl)
+int			built_cd(char **arg, t_envl *envl)
 {
 	char	*path;
 	char	*oldpwd;
@@ -219,30 +256,32 @@ int				built_cd(char **arg, t_envl *envl)
 	int		opts;
 
 	opts = 0;
-	if ((i = cd_first_arg(arg, &opts)) == -1)
+	if (!(i = cd_first_arg(arg, &opts)))
 		return (1);
-	if (opts == -1)
-		opts = 0;
-	if (init_pwd(&envl))
+	if (!(path = search_path(*(arg + i), envl)))
 		return (1);
-	if (ft_strequ(arg[i], "-"))
+	if (!(oldpwd = ft_strdup(get_env_val(envl, "PWD"))))
 	{
-		cd_oldpwd(envl);
+		ft_strdel(&path);
 		return (1);
 	}
-	if ((oldpwd = get_env_val(envl, "PWD")))
-		oldpwd = ft_strdup(oldpwd);
-	else
-		oldpwd = ft_strdup("");
-	if (!(path = get_cd_path(envl, arg[i], opts)))
+	if (chdir(path))
+	{
+		ft_strdel(&path);
+		ft_strdel(&oldpwd);
 		return (1);
+	}
+	if (g_shell.canonic_path)
+		ft_strdel(&g_shell.canonic_path);
 	g_shell.canonic_path = ft_strdup(path);
-	if (chdir(path) == -1)
-	{
-		ft_putendl_fd("cd: dir not found", 2);
-		return (1);
-	}
+	printf("path = %s\n", path);
+	printf("oldpath = %s\n", oldpwd);
 	push_env(&g_shell.envl, "OLDPWD", oldpwd, 1);
 	push_env(&g_shell.envl, "PWD", path, 1);
+	printf("pathdel\n");
+	ft_strdel(&path);
+	printf("olddel\n");
+	ft_strdel(&oldpwd);
+	printf("end\n");
 	return (0);
 }

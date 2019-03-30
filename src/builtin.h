@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 19:25:44 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:33:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char		*replace_exclaim(char *line, t_history *hist, char *bfr, char *next);
 char		*find_exclaim(char *word, t_history *hist);
 int			built_cd(char **arg, t_envl *envl);
 int			built_cd2(char **arg, t_envl *envl);
+int			cd_first_arg(char **arg, int *opts);
 int			built_echo(char **arg);
 int			built_env(char **arg, t_envl *envl);
 int			built_env_find_last_cmd(char **arg, int stock, int i);

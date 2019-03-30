@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_cd2.c                                        :+:      :+:    :+:   */
+/*   built_cd_extra.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/29 19:25:02 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 19:39:08 by khsadira         ###   ########.fr       */
+/*   Created: 2019/03/30 14:31:39 by khsadira          #+#    #+#             */
+/*   Updated: 2019/03/30 15:27:48 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,20 @@ static int	cd_check_opts(char *arg, int *opts)
 	return (i);
 }
 
-static int	cd_first_arg(char **arg, int *opts)
+int			cd_first_arg(char **arg, int *opts)
 {
 	int	i;
-	int	j;
-	int	l;
 
-	l = 0;
 	i = 1;
 	while (arg[i])
 	{
 		if (ft_strequ(arg[i], "-"))
 			return (i);
-		if (ft-strequ(arg[i], "--"))
+		if (ft_strequ(arg[i], "--"))
 			return (i + 1);
 		else if (ft_strnequ(arg[i], "-", 1))
 		{
-			if (cd_check_opts(arg[i], opts))
+			if (cd_check_opts(arg[i], opts) == 0)
 				return (0);
 		}
 		else
@@ -61,16 +58,4 @@ static int	cd_first_arg(char **arg, int *opts)
 		i++;
 	}
 	return (i);
-}
-
-int	built_cd2(char **arg, t_envl *envl)
-{
-	char	*path;
-	char	*oldpwd;
-	size_t	i;
-	int		opts;
-
-	opts = 0;
-	if (!(i = cd_first_arg(arg, &opts)))
-		return (1);
 }
