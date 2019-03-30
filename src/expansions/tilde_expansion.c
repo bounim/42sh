@@ -46,6 +46,7 @@ char	quoted(uint8_t *buf, size_t index)
 		}
 		i++;
 	}
+	printf("buf[%zu] = %c quoted ? %d\n", i, buf[i], quoted);
 	return (quoted);
 }
 
@@ -178,10 +179,9 @@ size_t	get_tilde_prefix(t_lexer_token *token, size_t start, char assign)
 	size_t	i;
 
 	i = start;
-	while (i < token->size && ((token->buffer[i] != '/' && (assign == 0 || token->buffer[i] != ':'))
-	|| quoted(token->buffer, i)))
+	while (i < token->size && (quoted(token->buffer, i) || (token->buffer[i] != '/' && (assign == 0 || token->buffer[i] != ':'))))
 		i++;
-	// printf("LEN = %zu\n", i - start);
+	printf("LEN = %zu\n", i - start);
 	return (i - start);
 }
 
@@ -191,20 +191,32 @@ int		tilde_word(t_lexer_token *tmp)
 
 	while (tmp)
 	{
-		ft_putendl("currently on : ");
-		printer_bin(&g_shell.out, tmp->buffer, tmp->size);
-		printer_bin(&g_shell.out, tmp->redir_target, tmp->size);
-		printer_endl(&g_shell.out);
+		if (tmp->size >= 1 && tmp->buffer[0] == '~' && !quoted(tmp->buffer, 0))
+		{
+			ft_putendl("in tilde word");
+			len = get_tilde_prefix(tmp, 0, 0);
+			tilde_result(tmp, 0, len);
+		}
+		tmp = tmp->arg_next;
+	}
+	return (0);
+}
+
+int		tilde_redir(t_lexer_token *tmp)
+{
+	size_t			len;
+
+	while (tmp)
+	{
 		if (tmp->size >= 1 && tmp->buffer[0] == '~' && !quoted(tmp->buffer, 0))
 		{
 			len = get_tilde_prefix(tmp, 0, 0);
 			tilde_result(tmp, 0, len);
 		}
-		tmp = tmp->next;
+		tmp = tmp->redir_next;
 	}
 	return (0);
 }
-
 int		tilde_assignement(t_lexer_token *tmp)
 {
 	size_t			len;
@@ -227,7 +239,7 @@ int		tilde_assignement(t_lexer_token *tmp)
 				i++;
 			}
 		}
-		tmp = tmp->next;
+		tmp = tmp->assign_next;
 	}
 	return (0);
 }
@@ -237,13 +249,19 @@ int     tilde_expansion(t_lexer_token **root)
 	t_lexer_token	*tmp;
 
 	tmp = NULL;
+	ft_putendl("IN TILDE");
 	tilde_word((*root)->arg_head); // pourquoi les redirections sont stockees ds arg_head....
-	// tilde_word((*root)->redir_head->redir_target);
-	// ft_putendl("doing redirs");
-	// tilde_word((*root)->redir_head);
+	ft_putendl("args");
+	print_arg(*root);
+	ft_putendl("END.");
 	tilde_assignement((*root)->assign_head);
-	// ft_putendl("PRINTING REDIRS");
-	// print_redir((*root));
+	ft_putendl("assignement words");
+	print_assign(*root);
+	ft_putendl("END.");
+	tilde_redir((*root)->redir_head->redir_target);
+	ft_putendl("redirs");
+	print_redir(*root);
+	ft_putendl("END.");
 	return (0);
 }
 
