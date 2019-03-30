@@ -12,6 +12,21 @@
 
 #include "lexer_internal.h"
 
+static inline void	token_init(t_lexer *lex, enum e_lexer_type type,
+		t_lexer_token *t)
+{
+	t->line_x = lex->i;
+	t->type = type;
+	t->previous = lex->foot;
+	t->next = NULL;
+	if (lex->head)
+		lex->foot->next = t;
+	else
+		lex->head = t;
+	lex->foot = t;
+	t->redir_input = -1;
+}
+
 int					token(t_lexer *lex, enum e_lexer_type type)
 {
 	t_lexer_token	*t;
@@ -29,22 +44,7 @@ int					token(t_lexer *lex, enum e_lexer_type type)
 		t->buffer[0] = lex->line[lex->i];
 		t->size = 1;
 	}
-	/*else if (type == LEX_TP_HD) // FIXME called only when heredoc buffer == NULL?
-	{
-		//if (t->heredoc_queue[0].buffer == NULL)
-		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].size + heredoc_queue[0].i - lex->i)))
-		//if (NULL == (t->heredoc_queue[0].buffer = malloc(heredoc_queue[0].i - lex->i)))
-	}*/
-	t->line_x = lex->i;
-	t->type = type;
-	t->previous = lex->foot;
-	t->next = NULL;
-	if (lex->head)
-		lex->foot->next = t;
-	else
-		lex->head = t;
-	lex->foot = t;
-	t->redir_input = -1;
+	token_init(lex, type, t);
 	return (0);
 }
 

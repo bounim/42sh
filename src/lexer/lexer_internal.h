@@ -137,7 +137,9 @@ int								word_new(t_lexer *lex);
 ** append: add current byte to existing token (or at least consume it)
 */
 
-int								token(t_lexer *lex, enum e_lexer_type);
+int								token(t_lexer *lex, enum e_lexer_type type);
 int								append(t_lexer *lex);
+
+void							lexer_debug(t_lexer *lex);
 
 #endif
