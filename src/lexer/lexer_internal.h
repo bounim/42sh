@@ -79,6 +79,7 @@ struct							s_lexer_token
 	int							fd_saved;
 	int							fd_new;
 	int							fd_dup;
+	int							fd_error;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;
@@ -136,7 +137,9 @@ int								word_new(t_lexer *lex);
 ** append: add current byte to existing token (or at least consume it)
 */
 
-int								token(t_lexer *lex, enum e_lexer_type);
+int								token(t_lexer *lex, enum e_lexer_type type);
 int								append(t_lexer *lex);
+
+void							lexer_debug(t_lexer *lex);
 
 #endif

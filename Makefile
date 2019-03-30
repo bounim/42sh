@@ -26,8 +26,11 @@ SRC := \
 	history/free_history.c \
 	history/print_search.c \
 	lexer/func.c \
+	lexer/func2.c \
+	lexer/func3.c \
 	lexer/lexer.c \
 	lexer/token.c \
+	lexer/debug.c \
 	main.c \
 	signal/ft_signal.c \
 	signal/signal_handler.c \
