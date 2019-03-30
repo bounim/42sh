@@ -13,19 +13,34 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <sys/stat.h>
 #include <stdio.h>//XXX
 #include "execution.h"
 
 static int	save_dup(t_lexer_token *cur)
 {
-	if ((cur->fd_dup = dup(cur->fd_saved)) < 0)
+	struct stat	sb;
+
+	if (fstat(cur->fd_saved, &sb) < 0)
+	{
+		cur->fd_dup = -1;
+		if (cur->fd_new == -1)
+			return (0);
+	}
+	else if ((cur->fd_dup = dup(cur->fd_saved)) < 0)
 		return (-1);
-	printf("<%d=dup(%d)>\n", cur->fd_dup, cur->fd_saved);
+	if (cur->fd_new == cur->fd_dup)
+	{
+		close(cur->fd_dup);
+		return (-1);
+	}
 	if (cur->fd_new < 0)
 		close(cur->fd_saved);
 	else if (dup2(cur->fd_new, cur->fd_saved) < 0)
+	{
+		close(cur->fd_dup);
 		return (-1);
-	printf("<dup2(%d,%d)>\n", cur->fd_new, cur->fd_saved);
+	}
 	return (0);
 }
 
@@ -40,7 +55,7 @@ static int	copy_path(t_lexer_token *cur, char *path)
 
 static int	error_restore(t_lexer_token *cmd, t_lexer_token *cur)
 {
-	cur->fd_saved = -1;
+	cur->fd_error = 1;
 	command_redir_restore(cmd);
 	return (-1);
 }
@@ -49,7 +64,6 @@ int			command_redir(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
 	char			path[PATH_MAX + 1];
-	int				oflag;
 
 	cur = cmd->redir_head;
 	while (cur)
@@ -63,10 +77,13 @@ int			command_redir(t_lexer_token *cmd)
 		{
 			if (copy_path(cur, path) < 0)
 				return (error_restore(cmd, cur));
-			oflag = (cur->rtype == LESS) ? O_RDONLY : O_WRONLY | O_CREAT;
-			if (cur->rtype == DGREAT)
-				oflag |= O_APPEND;
-			if ((cur->fd_new = open(path, oflag)) < 0)
+			if (cur->rtype == LESS)
+			{
+				if ((cur->fd_new = open(path, O_RDONLY)) < 0)
+					return (error_restore(cmd, cur));
+			}
+			else if ((cur->fd_new = open(path, O_WRONLY | O_CREAT | (cur->rtype
+								== GREAT ? O_TRUNC : O_APPEND), 0666)) < 0)
 				return (error_restore(cmd, cur));
 		}
 		else if (cur->rtype == LESSAND || cur->rtype == GREATAND)
@@ -99,10 +116,15 @@ void		command_redir_restore(t_lexer_token *cmd)
 	t_lexer_token	*cur;
 
 	cur = cmd->redir_head;
-	while (cur && cur->fd_saved >= 0)
+	while (cur && cur->fd_error >= 0)
 	{
-		dup2(cur->fd_dup, cur->fd_saved);
-		printf("<*dup2(%d,%d)>\n", cur->fd_dup, cur->fd_saved);
+		if (cur->fd_saved >= 0)
+		{
+			if (cur->fd_dup < 0)
+				close(cur->fd_saved);
+			else
+				dup2(cur->fd_dup, cur->fd_saved);
+		}
 		close(cur->fd_dup);
 		cur = cur->redir_next;
 	}
