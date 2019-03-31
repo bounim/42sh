@@ -21,6 +21,7 @@ char	quoted(uint8_t *buf, size_t index)
 
 	i = 0;
 	quoted = 0;
+	state = ST_GEN;
 	while (i < index)
 	{
 		if (state == ST_GEN && is_quote(buf[i]))
@@ -30,23 +31,18 @@ char	quoted(uint8_t *buf, size_t index)
 			else
 				state = ST_QU;
 			quotechar = buf[i];
-		}
-		else if (state == ST_QU && buf[i] == quotechar)
-		{
-			state = ST_GEN;
-			quoted = 0;
+			quoted = 1;
 		}
 		else if (state == ST_BS || state == ST_QU)
 		{
 			quoted = 1;
-			if (state == ST_BS)
+			if (state == ST_BS || (state == ST_QU && buf[i] == quotechar))
 				state = ST_GEN;
-			else
-				state = ST_QU;
+			if (state == ST_QU && buf[i] == quotechar)
+				quoted = 0;
 		}
 		i++;
 	}
-	printf("buf[%zu] = %c quoted ? %d\n", i, buf[i], quoted);
 	return (quoted);
 }
 
