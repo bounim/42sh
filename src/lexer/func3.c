@@ -68,6 +68,7 @@ int		comment(t_lexer *lex)
 	{
 		while (lex->i < lex->line_size && lex->line[lex->i] != '\n')
 			lex->i++;
+		lex->i--;
 		return (0);
 	}
 	return (1);
