@@ -53,10 +53,11 @@ static int	copy_path(t_lexer_token *cur, char *path)
 	return (0);
 }
 
-static int	error_restore(t_lexer_token *cmd, t_lexer_token *cur)
+static int	error_restore(t_lexer_token *cmd, char *msg)
 {
-	cur->fd_error = 1;
 	command_redir_restore(cmd);
+	printer_str(&g_shell.err, msg);
+	printer_flush(&g_shell.err);
 	return (-1);
 }
 
@@ -76,15 +77,15 @@ int			command_redir(t_lexer_token *cmd)
 		if (cur->rtype == LESS || cur->rtype == GREAT || cur->rtype == DGREAT)
 		{
 			if (copy_path(cur, path) < 0)
-				return (error_restore(cmd, cur));
+				return (error_restore(cmd, "Error: path too long\n"));
 			if (cur->rtype == LESS)
 			{
 				if ((cur->fd_new = open(path, O_RDONLY)) < 0)
-					return (error_restore(cmd, cur));
+					return (error_restore(cmd, "Error: couldn't open\n"));
 			}
 			else if ((cur->fd_new = open(path, O_WRONLY | O_CREAT | (cur->rtype
 								== GREAT ? O_TRUNC : O_APPEND), 0666)) < 0)
-				return (error_restore(cmd, cur));
+				return (error_restore(cmd, "Error: couldn't open\n"));
 		}
 		else if (cur->rtype == LESSAND || cur->rtype == GREATAND)
 		{
@@ -97,15 +98,16 @@ int			command_redir(t_lexer_token *cmd)
 		else
 		{
 			// TODO heredoc
-			return (error_restore(cmd, cur));
+			return (error_restore(cmd, "TODO heredoc\n"));
 		}
 		if (save_dup(cur) < 0)
 		{
 			if (cur->rtype == LESS || cur->rtype == GREAT
 					|| cur->rtype == DGREAT)
 				close(cur->fd_new);
-			return (error_restore(cmd, cur));
+			return (error_restore(cmd, "Error: bad file descriptor\n"));
 		}
+		cmd->redir_last = cur;
 		cur = cur->redir_next;
 	}
 	return (0);
@@ -115,8 +117,8 @@ void		command_redir_restore(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
 
-	cur = cmd->redir_head;
-	while (cur && cur->fd_error >= 0)
+	cur = cmd->redir_last;
+	while (cur)
 	{
 		if (cur->fd_saved >= 0)
 		{
@@ -126,6 +128,6 @@ void		command_redir_restore(t_lexer_token *cmd)
 				dup2(cur->fd_dup, cur->fd_saved);
 		}
 		close(cur->fd_dup);
-		cur = cur->redir_next;
+		cur = cur->redir_previous;
 	}
 }
