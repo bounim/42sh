@@ -80,6 +80,11 @@ void					run_shell(void)
 			fatal_exit(SH_EINVAL);
 		readline(BASIC_PROMPT);
 		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
-			lexer();
+		{
+			if (lexer() < 0)
+			{
+				// TODO $?
+			}
+		}
 	}
 }

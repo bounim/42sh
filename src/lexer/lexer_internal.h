@@ -73,13 +73,14 @@ struct							s_lexer_token
 	size_t						arg_nb;
 	t_lexer_token				*redir_head;
 	t_lexer_token				*redir_next;
+	t_lexer_token				*redir_previous;
 	t_lexer_token				*redir_foot;
+	t_lexer_token				*redir_last;
 	size_t						redir_nb;
 	int							redir_input;
 	int							fd_saved;
 	int							fd_new;
 	int							fd_dup;
-	int							fd_error;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;

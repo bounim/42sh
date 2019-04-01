@@ -131,7 +131,10 @@ int					lexer(void)
 	{
 		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
 		if ((r = lexer_read(&lex)) < 0)
+		{
+			lexer_destroy(&lex);
 			break ;
+		}
 		lexer_debug(&lex);
 		if ((r = lexer_work(&lex, &i)))
 		{
@@ -140,6 +143,5 @@ int					lexer(void)
 			break ;
 		}
 	}
-	lexer_destroy(&lex);
 	return (r);
 }
