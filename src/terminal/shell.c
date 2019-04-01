@@ -18,6 +18,8 @@ void					init_shell(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	printer_init(&g_shell.out, 1);
+	printer_init(&g_shell.err, 2);
 	g_shell.el_mode = MODE_EMACS;
 	g_shell.line = NULL;
 	g_shell.envl = init_shell_envl(env);
