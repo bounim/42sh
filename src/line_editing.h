@@ -200,6 +200,13 @@ typedef struct 				 s_term
 	struct winsize		max;
 }						t_term;
 
+struct			s_last_command
+{
+	uint8_t				*buf;
+	int 				last_command_mode;
+	t_last_command		*prev;
+};
+
 typedef struct 					s_edit
 {
 	t_char 				*point_char;
@@ -216,12 +223,6 @@ typedef struct 					s_edit
 	uint8_t				*cpy_buff;
 }								t_edit;
 
-struct			s_last_command
-{
-	uint8_t				*buf;
-	int 				last_command_mode;
-	t_last_command		*prev;
-};
 void					init_signals(void);
 void					signal_handler(int signo);
 void					modify_term(void);

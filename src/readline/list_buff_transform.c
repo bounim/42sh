@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+
+t_char		*find_first_non_prompt(t_char *head)
+{
+	while (head && head->is_prompt == 1)
+		head = head->next;
+	return (head);
+}
+
 t_char		*skip_prompt(t_char *head)
 {
 	while (head && head->is_prompt == 1)

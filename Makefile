@@ -74,8 +74,7 @@ SRC := \
 	readline/special_movement_controler.c \
 	readline/del_controler.c \
 	readline/copy_controler.c \
-	readline/utils.c \
-	readline/undo_last_editing_command.c\
+	readline/return_fn.c \
 	readline/free_controler.c \
 	readline/special_del_controler.c \
 	readline/handle_ctrl_c.c \

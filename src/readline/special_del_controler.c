@@ -12,6 +12,16 @@
 
 #include "twenty_one_sh.h"
 
+void				eot_fn(void)
+{
+	if (g_shell.edit.char_list.tail->is_prompt == 1)
+	{
+		cooked_terminal();
+		free_controler(FREE_ALL_AND_EXIT);
+	}
+	supr_charac();
+}
+
 void	delete_backline(void)
 {
 	t_char 	*curr;
