@@ -86,14 +86,15 @@ void	clean_and_print(void)
 	int			print_from;
 	size_t		len;
 
-	align_with_y(&g_shell.edit.lines_to_shift);//a.
-	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);//b.
+	align_with_y(&g_shell.edit.lines_to_shift);
+	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);
 	if (!(curr = g_shell.edit.char_list.head))
 		return ;
-	if (!(buff = list_to_buff_print(curr, NULL)) || (print_from = find_print_from()) == -1)//d. c.
+	if (!(buff = list_to_buff_print(curr, NULL)) || (print_from = find_print_from()) == -1)
 		return ;
 	len = ft_ustrlen(buff + print_from);
-	write(1, buff + print_from, len);//e.
+	write(1, buff + print_from, len);
 	place_cursor_after_print(g_shell.edit.point_char, g_shell.edit.term_info.max.ws_col,\
-	g_shell.edit.term_info.max.ws_row);//g.
+	g_shell.edit.term_info.max.ws_row);
+	free(buff);
 }

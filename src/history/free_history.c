@@ -15,7 +15,7 @@
 void	free_history(t_history *hist)
 {
 	t_history *tmp;
-
+	
 	while (hist)
 	{
 		tmp = hist;

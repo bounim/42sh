@@ -12,8 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-// pour le update il faut reconstruire le buff en entier (prompt + search_buff + search_results) et appliquer la meme formule.
-
 uint8_t *build_full_buff(uint8_t *hist_buff)
 {
 	uint8_t *full_buff;
@@ -37,11 +35,6 @@ uint8_t *build_full_buff(uint8_t *hist_buff)
 	return (full_buff);
 }
 
-//le full_buff est bien construit, reste a revoir l'algo
-//pb quand tu del, find in history est appelé qui a son tour appel print results, ca recalcule la pos et ca refait baisser le curr_y;
-//regarder avec lls, quand tu print et que tu arrives en fin de ligne il descend pas tout seul.
-//PB: Quand tu print lls puis tu rajoutes un l apres, ca fait qquchose qui n'est pas dans l'histo, ca fait curr_y--;
-//Le pb c'est que je ne garde pas le nbre de lignes donc il rajoute des y tout le temps
 void	update_base_y_in_search(uint8_t *hist_buff)
 {
 	uint8_t *full_buff;
@@ -54,7 +47,7 @@ void	update_base_y_in_search(uint8_t *hist_buff)
 	i = 0;
 	one_line = g_shell.edit.term_info.max.ws_col;
 	in_line = 1;
-	y_pos = g_shell.edit.cur_base_y;// y_pos commence a 0
+	y_pos = g_shell.edit.cur_base_y;
 	while (full_buff[i])
 	{
 		if ((in_line % one_line == 0 || full_buff[i] == '\n'))
