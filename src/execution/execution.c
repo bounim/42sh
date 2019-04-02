@@ -51,12 +51,10 @@ static char	**arg_to_argv(t_lexer_token *head)
 	return (av);
 }
 
-void		test_exec(t_lexer *lex)
+void		execution(t_lexer *lex)
 {
 	char	**av;
 
-	if (parser_create_tree(lex) < 0)
-		return ;
 	if (lex->root == NULL)
 		return ;
 	if (lex->root->type != PARSER_COMMAND || !lex->root->arg_head)

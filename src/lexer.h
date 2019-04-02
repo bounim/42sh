@@ -13,13 +13,10 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-/*
-** Runs lexer and parser on a "line" input (multiline support), then
-** expansions, execution, etc...
-** Returns -1 on malloc error, 0 on success.
-** TODO free on signal?
-*/
+typedef struct s_lexer	t_lexer;
 
-int		lexer(void);
+void					lexer(t_lexer *lex, uint8_t *buffer,
+		size_t buffer_size);
+void					lexer_destroy(t_lexer *lex);
 
 #endif

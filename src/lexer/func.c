@@ -31,12 +31,6 @@ int		unquoted_backslash_newline(t_lexer *lex)
 	return (1);
 }
 
-int		heredoc(t_lexer *lex)
-{
-	(void)lex;
-	return (1);
-}
-
 int		next_quoted(t_lexer *lex)
 {
 	lex->quoted = lex->next_quoted;

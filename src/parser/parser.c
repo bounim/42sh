@@ -12,17 +12,18 @@
 
 #include "parser.h"
 
-int						parser_create_tree(t_lexer *lex)
+int		parser_create_tree(t_lexer *lex)
 {
 	t_lexer_token	*cur;
 	t_lexer_token	*n;
 
-	cur = lex->head;
+	cur = lex->last_parsed ? lex->last_parsed->next : lex->head;
 	while (cur)
 	{
 		n = cur;
 		if (parser_new_elem(lex, &cur) < 0 || parser_add_tree(lex, n) < 0)
 			return (-1);
+		lex->last_parsed = n;
 		ft_putendl("args");
 		print_arg(n);
 		ft_putendl("END.");
@@ -36,4 +37,10 @@ int						parser_create_tree(t_lexer *lex)
 	structure(lex->root, 0);
 	//do_expansions(lex);
 	return (0);
+}
+
+int		parser_input_end(t_lexer *lex)
+{
+	return (lex->last_parsed && (lex->last_parsed->ptype == PARSER_COMMAND
+				|| lex->last_parsed->ptype == PARSER_SEPARATOR));
 }

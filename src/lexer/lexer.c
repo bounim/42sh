@@ -11,14 +11,11 @@
 /* ************************************************************************** */
 
 #include "lexer_internal.h"
-#include "parser.h"
-#include "execution.h"
 
 static int			(*g_lexer_func[])(t_lexer *) = {
 	next_quoted,
 	line_end,
 	unquoted_backslash_newline,
-	heredoc,
 	operator_append,
 	operator_end,
 	quoting,
@@ -38,14 +35,24 @@ static int			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 	if (lex->init)
 	{
 		lex->line_y++;
-		lex->i = 0;
 		lex->backslash_newline = 0;
-		lex->input_end = 0;
+		//lex->input_end = 0; // XXX not gonna happen anymore
 	}
 	else
 		lex->init = 1;
 	return (0);
 }
+
+/*static int			lexer_read_end(t_lexer *lex)
+{
+	if (lex->line[lex->line_size - 1] != '\n')
+	{
+		lex->line[lex->line_size - 1] = '\n';
+		lex->i = lex->line_size - 1;
+		return (line_end(lex));
+	}
+	return (0);
+}*/
 
 static int			lexer_read(t_lexer *lex)
 {
@@ -70,6 +77,7 @@ static int			lexer_read(t_lexer *lex)
 		}
 		lex->i++;
 	}
+	//return (lexer_read_end(lex));
 	return (0);
 }
 
@@ -77,7 +85,7 @@ static int			lexer_read(t_lexer *lex)
 ** TODO free heredoc
 */
 
-static void			lexer_destroy(t_lexer *lex)
+void				lexer_destroy(t_lexer *lex)
 {
 	t_lexer_token	*current;
 	t_lexer_token	*previous;
@@ -90,10 +98,46 @@ static void			lexer_destroy(t_lexer *lex)
 		free(previous->buffer);
 		free(previous);
 	}
-	lex->head = NULL;
-	lex->foot = NULL;
+	ft_memset(lex, 0, sizeof(*lex));
 }
 
+void					lexer(t_lexer *lex, uint8_t *buffer, size_t buffer_size)
+{
+	lexer_init(lex, buffer, buffer_size);
+	if (lexer_read(lex) < 0)
+	{
+		printer_str(&g_shell.err, "Error: lexer: out of memory\n");
+		printer_flush(&g_shell.err);
+		lexer_destroy(lex);
+		fatal_exit(SH_ENOMEM);
+		return ;
+	}
+	lexer_debug(lex);
+}
+
+/*int					lexer(t_lexer *lex) // new input (or after a consumed command)
+{
+	lex->gi = 0;
+	while (1)
+	{
+		lexer_init(&lex, g_shell.line + lex->gi, g_shell.line_size - lex->gi);
+		if ((r = lexer_read(lex)) < 0)
+		{
+			printer_str(&g_shell.err, "Error: lexer: out of memory\n");
+			printer_flush(&g_shell.err);
+			lexer_destroy(lex);
+			return (-1);
+		}
+		lexer_debug(lex);
+	}
+	return (-1);
+}
+
+int					lexer_continue(t_lexer *lex) // input completely read
+{
+}*/
+
+/*
 static int			lexer_work(t_lexer *lex, size_t *i)
 {
 	if (!lex->input_end)
@@ -117,19 +161,13 @@ static int			lexer_work(t_lexer *lex, size_t *i)
 	return (0);
 }
 
-int					lexer(void)
+int					lexer(t_lexer *lex)
 {
-	t_lexer		lex;
-	int			r;
-	size_t		i;
+	int		r;
 
-	if (g_shell.line == NULL || g_shell.line_size <= 1)
-		return (0);
-	i = 0;
-	ft_memset(&lex, 0, sizeof(lex));
 	while (1)
 	{
-		lexer_init(&lex, g_shell.line + i, g_shell.line_size - i);
+		lexer_init(&lex, g_shell.line + lex->gi, g_shell.line_size - lex->gi);
 		if ((r = lexer_read(&lex)) < 0)
 		{
 			lexer_destroy(&lex);
@@ -145,3 +183,4 @@ int					lexer(void)
 	}
 	return (r);
 }
+*/

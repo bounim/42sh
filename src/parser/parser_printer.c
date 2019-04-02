@@ -77,9 +77,10 @@ static void	padding(size_t n)
 	}
 }
 
-// FIXME remove recursion
 void		structure(t_lexer_token *root, int level)
 {
+	if (level > 10)
+		return ;
 	if (!root)
 	{
 		padding(level);

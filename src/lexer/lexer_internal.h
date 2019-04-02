@@ -14,6 +14,7 @@
 # define LEXER_INTERNAL_H
 
 # include "twenty_one_sh.h"
+# include "lexer.h"
 
 enum							e_lexer_type
 {
@@ -83,15 +84,17 @@ struct							s_lexer_token
 	int							fd_dup;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
+	t_lexer_token				*heredoc_next;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
 };
 
 # define EXPANSION_STACK_MAX 128
 
-typedef struct					s_lexer
+struct							s_lexer
 {
 	int							init;
+	int							gi;
 	t_lexer_token				*head;
 	t_lexer_token				*foot;
 	uint8_t						*line;
@@ -107,11 +110,11 @@ typedef struct					s_lexer
 	size_t						expansion_size;
 	int							next_expansion;
 	t_lexer_token				*root;
+	t_lexer_token				*last_parsed;
 	t_lexer_token				*heredoc_head;
-	t_lexer_token				*heredoc_next;
 	t_lexer_token				*heredoc_foot;
 	size_t						heredoc_nb;
-}								t_lexer;
+};
 
 /*
 ** Token functions
@@ -122,7 +125,6 @@ typedef struct					s_lexer
 int								next_quoted(t_lexer *lex);
 int								line_end(t_lexer *lex);
 int								unquoted_backslash_newline(t_lexer *lex);
-int								heredoc(t_lexer *lex);
 int								operator_append(t_lexer *lex);
 int								operator_end(t_lexer *lex);
 int								quoting(t_lexer *lex);

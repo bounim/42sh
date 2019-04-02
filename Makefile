@@ -35,6 +35,7 @@ SRC := \
 	signal/ft_signal.c \
 	signal/signal_handler.c \
 	terminal/shell.c \
+	terminal/run_shell.c \
 	terminal/terminal.c \
 	ft.c \
 	builtin/start_builtin.c \
@@ -101,7 +102,7 @@ SRC := \
 	#expansions/parameter_expansion.c \
 
 CFLAGS ?=
-CPPFLAGS ?= -Wall -Wextra -Werror
+CPPFLAGS ?= -Wall -Wextra -Werror -g3
 LDLIBS ?=
 CPPFLAGS += -MMD -MP -Isrc
 #LDLIBS += -ltermcap

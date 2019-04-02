@@ -12,9 +12,9 @@
 
 #include "twenty_one_sh.h"
 
-void					init_shell(int ac, char **av, char **env)
+void			init_shell(int ac, char **av, char **env)
 {
-	char				*term;
+	char	*term;
 
 	(void)ac;
 	(void)av;
@@ -65,27 +65,4 @@ void					init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_cc[VMIN] = 1;
 	g_shell.raw_tio.c_cc[VTIME] = 0;
 	g_shell.debug_mode = 0;
-}
-
-void					run_shell(void)
-{
-	t_bool run;
-
-	run = TRUE;
-	while (run == TRUE)
-	{
-
-		if (signal(SIGINT, ft_signal) < 0)
-			fatal_exit(SH_EINVAL);
-		if (signal(SIGABRT, ft_signal) < 0)
-			fatal_exit(SH_EINVAL);
-		readline(BASIC_PROMPT);
-		if (g_shell.line && g_shell.edit.ret_ctrl_c == FALSE)
-		{
-			if (lexer() < 0)
-			{
-				// TODO $?
-			}
-		}
-	}
 }
