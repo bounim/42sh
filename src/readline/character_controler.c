@@ -49,8 +49,6 @@ void	make_char_point(t_char *new_char, t_char *prev_char)
 	new_char->next = tmp;
 	if (tmp)
 		tmp->prev = new_char;
-	if (prev_char == g_shell.edit.char_list.head)
-		g_shell.edit.char_list.head = prev_char;//Pas sur que ce soit utile
 	if (prev_char == g_shell.edit.char_list.tail)
 		g_shell.edit.char_list.tail = new_char;
 }

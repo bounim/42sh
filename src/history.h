@@ -58,7 +58,7 @@ void				del_charac_in_search(void);
 void				execute_search_command(void);
 void				give_up_search(void);
 void 				back_to_readline(void);
-void				find_in_history(int save);
+int 				find_in_history(int save);
 void				file_from_history(t_history *hist);
 void				print_historyl(t_history *hist);
 void				resize_history(t_history *hist);

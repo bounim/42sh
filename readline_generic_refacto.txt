@@ -35,7 +35,15 @@ MANDATORY
 																			saefff         esef   fdf
 7.delete_word();																												
 8.del_fns();															a. PB avec delete_backline(). Si on essaie de delete alors que le prompt n'est pas visible ca pete.
-																			a.1. Le del_charac_from_list ne fait change pas les y_pos, donc quand print veut reafficher, il trouve pas par ou commencer.
+																			a.1. Le del_charac_from_list ne fait change pas les y_pos, donc quand print veut reafficher, il trouve pas par ou commencer. ()
+9. Movement_fn(); 														a. Move left a la limite de l'ecran
+																		b. Move backward/forward word
+																		c. Move up/down
+																		d. Home/end
+10.undo_last_command();
+11.free_all_edit();
+12.ctrl_r();															if you wright shit it should return nommat
+12.Norme.
 
 OPTIONAL
 raw_terminal, cooked_terminal.

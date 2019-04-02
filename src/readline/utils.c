@@ -32,6 +32,16 @@ static size_t		get_buff_size(t_char *head)
 	return (buff_size);
 }
 
+void	return_empty(void)
+{
+	uint8_t *prompt;
+
+	write(1, "\n", 1);
+	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);
+	prompt = prompt_to_buff(&g_shell.edit.char_list);
+ 	print_prompt(prompt, ft_ustrlen(prompt));
+}
+
 void	return_fn(void)
 {
 	uint8_t		*buff;
@@ -40,7 +50,10 @@ void	return_fn(void)
 	int			i;
 
 	if ((head = find_first_non_prompt(g_shell.edit.char_list.head)) == NULL)
+	{
+		return_empty();
 		return ;
+	}
 	buff_size = get_buff_size(head);
 	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 2))))
 		readline_errors_controler(MALLOC_ERROR);
