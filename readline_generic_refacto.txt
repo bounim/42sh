@@ -41,7 +41,7 @@ MANDATORY
 																		c. Move up/down
 																		d. Home/end
 10.undo_last_command();
-11.free_all_edit();
+11.free_all_edit();														a. Definition des define: FREE_ALL_EDIT: free les nodes de la list et free le buf copy
 12.ctrl_r();															if you wright shit it should return nommat
 12.Norme.
 
