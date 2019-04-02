@@ -17,7 +17,7 @@ void	shift_pos_up(void)
 	t_char	*curr;
 
 	curr = g_shell.edit.char_list.head;
-	g_shell.edit.prev_base_y = g_shell.edit.cur_base_y;
+	g_shell.edit.lines_to_shift++;
 	g_shell.edit.cur_base_y--;
 	while (curr)
 	{
@@ -63,8 +63,6 @@ size_t	get_x_pos(t_char *prev_char, uint32_t col_limit)
 	return (prev_char->x_pos + 1);
 }
 
-
-// !bonne: rajoute un y de trop en fin de ligne. Update, fixed that.
 size_t	get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit)
 {
 	if (prev_char == NULL)
@@ -72,10 +70,7 @@ size_t	get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit)
 	if (prev_char->x_pos + 2 == col_limit || prev_char->charac[0] == '\n')
 	{
 		if (prev_char->y_pos + 1 >= 0 && (uint32_t)(prev_char->y_pos + 1) == row_limit)
-		{
-			//on est sur la derniere position visible de l'echiquier. Dans ce cas la on veut simplement output le \n et shift pos up. Pas return +1
-			shift_pos_up();//En faisant ca, la diff entre prev_base_y et base_y va prevenir print quil faut output le \n
-		}
+			shift_pos_up();
 	}
 	if (prev_char->x_pos + 1 == col_limit || prev_char->charac[0] == '\n')
 		return (prev_char->y_pos + 1);

@@ -70,14 +70,15 @@ int		find_print_from()
 	return (ret);
 }
 
-void	align_with_y(int base_y, int *prev_base_y)
+void	align_with_y(int *lines_to_shift)
 {
-	if (*prev_base_y > base_y)
+	while (*lines_to_shift > 0)
 	{
 		write(1, "\n", 1);
-		*prev_base_y = base_y;
+		(*lines_to_shift)--;
 	}
 }
+
 void	clean_and_print(void)
 {
 	t_char		*curr;
@@ -85,11 +86,11 @@ void	clean_and_print(void)
 	int			print_from;
 	size_t		len;
 
-	align_with_y(g_shell.edit.cur_base_y, &g_shell.edit.prev_base_y); //a.
+	align_with_y(&g_shell.edit.lines_to_shift);//a.
 	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);//b.
 	if (!(curr = g_shell.edit.char_list.head))
 		return ;
-	if (!(buff = list_to_buf_print(curr)) || (print_from = find_print_from()) == -1)//d. c.
+	if (!(buff = list_to_buff_print(curr, NULL)) || (print_from = find_print_from()) == -1)//d. c.
 		return ;
 	len = ft_ustrlen(buff + print_from);
 	write(1, buff + print_from, len);//e.

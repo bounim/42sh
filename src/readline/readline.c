@@ -78,7 +78,7 @@ void	init_edit(void)
 	g_shell.edit.last_command = NULL;
 	g_shell.edit.cur_base_x = 0;
 	g_shell.edit.cur_base_y = 0;
-	g_shell.edit.prev_base_y = 0;
+	g_shell.edit.lines_to_shift = 0;
 	g_shell.edit.term_info.capa = g_shell.raw_tio;
 	g_shell.edit.term_info.origin = g_shell.cooked_tio;
 	ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max);

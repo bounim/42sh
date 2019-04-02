@@ -39,7 +39,7 @@ static uint8_t		*get_histfile_content()
 
 	if (!(histpath = ft_strdup(get_env_val(g_shell.envl, "HISTFILE"))))
 		if (!(histpath = ft_strjoin(get_env_val(g_shell.envl, "HOME"),
-								"/.21sh_history")))
+								"/.42sh_history")))
 			fatal_exit(SH_ENOMEM);
 	if (((fd = open(histpath, O_RDONLY)) < 0) || read(fd, buf, 0) < 0)
 		return (NULL);

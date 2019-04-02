@@ -54,7 +54,8 @@ void	execute_search_command(void)
 		give_up_search();
 		return ;
 	}
-	return_fn();
+	if (g_shell.edit.reading != 42)
+		return_fn();
 	g_shell.edit.reading = 42;
 }
 
@@ -62,8 +63,14 @@ void 	back_to_readline(void)
 {
 	t_history 	*curr;
 	t_history	*tail;
+	int 		ret;
 
-	find_in_history(1);
+	ret = 1;
+	if (find_in_history(1) == 0)
+	{
+		ret = 0;
+		g_shell.edit.reading = 42;
+	}
 	tail = g_shell.hist.history;
 	while (tail && tail->next)
 		tail = tail->next;
@@ -71,31 +78,38 @@ void 	back_to_readline(void)
 	g_shell.edit.reading = FALSE;
 	if (ft_carac_nb(curr->buf, ft_u8_strlen(curr->buf)) == -1)
 		g_shell.hist.unicode_err = 1;
-	print_history();
+	if (ret == 1)
+		print_history();
 	g_shell.hist.history = tail;
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));	
 	g_shell.hist.search_len = 0;
 	clean_and_print();
 }
 
-void	find_in_history(int save)
+int		find_in_history(int save)
 {
 	t_history	*curr;
+	int 		ret;
 
+	ret = 0;
 	curr = g_shell.hist.history;
 	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);
 	print_search_prompt();
 	if (!g_shell.hist.search_buff[0])
-		return ;
+		return (0);
 	while (curr)
 	{
 		if (ft_strstr((char*)curr->buf, (char*)g_shell.hist.search_buff) != 0)
 		{
 			if (save == 1)
+			{
 				g_shell.hist.history = curr;
+				ret = 1;
+			}
 			break ;
 		}
 		curr = curr->bfr;
 	}
 	print_search_result(curr);
+	return (ret);
 }

@@ -65,7 +65,6 @@ void	paste_copy(void)
 	{
 		len = ft_wchar_len(buff + i);
 		add_char_to_list(buff + i, len, 0);
-		check_all_pos();
 		update_all_pos();
 		i += len;
 	}
@@ -74,15 +73,24 @@ void	paste_copy(void)
 
 void	copy_all_line(void)
 {
-	t_char	*curr;
 	t_char	*cpy_begin;
 	t_char 	*cpy_end;
+	uint8_t	*one_buff;
 
-	curr = find_first_non_prompt(g_shell.edit.char_list.head);
-	if ((cpy_begin = curr) == NULL)
+	one_buff = NULL;
+	if (!(cpy_begin = find_first_non_prompt(g_shell.edit.char_list.head)))
+			return ;
+	if (!(cpy_end = g_shell.edit.char_list.tail))
 		return ;
-	if ((cpy_end = g_shell.edit.char_list.tail) == NULL)
+	if (cpy_begin == cpy_end)
+	{
+		if (!(one_buff = (uint8_t*)malloc(sizeof(uint8_t) * (cpy_end->len + 1))))
+			fatal_exit(SH_ENOMEM);
+		one_buff[cpy_end->len] = '\0';
+		ft_memmove(one_buff, cpy_end->charac, cpy_end->len);
+		g_shell.edit.cpy_buff = one_buff;
 		return ;
+	}
 	if (g_shell.edit.cpy_buff)
 	{
 		free(g_shell.edit.cpy_buff);

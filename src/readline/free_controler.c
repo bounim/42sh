@@ -46,10 +46,6 @@ void	free_all(void)
 		curr = NULL;
 		curr = tmp;
 	}
-	/*
-	if (g_shell.edit.cpy_buff) {
-		free(g_shell.edit.cpy_buff);
-	}*/
 }
 
 void	free_controler(int code)
