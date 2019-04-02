@@ -6,30 +6,22 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:51:35 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 15:51:37 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:36:03 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void				return_empty(void)
-{
-	uint8_t *prompt;
-
-	write(1, "\n", 1);
-	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);
-	prompt = prompt_to_buff(&g_shell.edit.char_list);
- 	print_prompt(prompt, ft_ustrlen(prompt));
-}
-
-void				return_end(uint8_t *buff, size_t buff_size)
+static void	return_end(uint8_t *buff, size_t buff_size)
 {
 	free_controler(FREE_ALL_EDIT);
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
-	if ((buff = (uint8_t *)replace_exclaim((char *)buff, g_shell.hist.history, NULL, NULL)))
+	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
+					g_shell.hist.history, NULL, NULL)))
 	{
-		g_shell.hist.history = rl_add_hist(g_shell.hist.history, rl_new_hist(buff));
+		g_shell.hist.history = rl_add_hist(g_shell.hist.history,\
+				rl_new_hist(buff));
 		g_shell.hist.history_size++;
 		resize_history(g_shell.hist.history);
 		g_shell.hist.history_save = -1;
@@ -40,7 +32,7 @@ void				return_end(uint8_t *buff, size_t buff_size)
 	g_shell.line_size = buff_size;
 }
 
-void				return_fn(void)
+void		return_fn(void)
 {
 	uint8_t		*buff;
 	t_char		*head;
@@ -48,16 +40,14 @@ void				return_fn(void)
 	int			i;
 
 	if ((head = find_first_non_prompt(g_shell.edit.char_list.head)) == NULL)
-	{
-		return_empty();
-		return ;
-	}
-	buff_size = get_buf_size(head, g_shell.edit.char_list.tail);
+		buff_size = 0;
+	else
+		buff_size = get_buf_size(head, g_shell.edit.char_list.tail);
 	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 2))))
 		readline_errors_controler(MALLOC_ERROR);
 	buff[buff_size] = '\n';
 	buff[buff_size + 1] = '\0';
-	buff_size++;	
+	buff_size++;
 	i = 0;
 	while (head)
 	{

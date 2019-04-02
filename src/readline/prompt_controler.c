@@ -6,11 +6,16 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 16:58:34 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/25 16:58:36 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:48:14 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+
+void	print_prompt(uint8_t *prompt, size_t prompt_len)
+{
+	write(1, prompt, prompt_len);
+}
 
 void	init_prompt(int prompt_id)
 {
@@ -32,12 +37,12 @@ void	init_prompt(int prompt_id)
 	g_shell.edit.mark = g_shell.edit.point_char;
 }
 
-uint8_t *prompt_to_buff(t_char_list *list)
+uint8_t	*prompt_to_buff(t_char_list *list)
 {
-	uint8_t *prompt;
+	uint8_t	*prompt;
 	size_t	len;
 	int		i;
-	t_char 	*curr;
+	t_char	*curr;
 
 	len = 0;
 	i = 0;

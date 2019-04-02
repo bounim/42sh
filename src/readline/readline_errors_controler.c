@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 15:57:49 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 15:57:53 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:37:00 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ void		readline_errors_controler(int errnum)
 		ft_putstr("Malloc error\n");
 	else if (errnum == EXIT)
 		ft_putstr("Exit(0)\n");
-	//free_shit();
+	free_controler(FREE_ALL_AND_EXIT);
 	exit(1);
 }

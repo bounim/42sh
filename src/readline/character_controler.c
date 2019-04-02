@@ -6,16 +6,16 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:15:08 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/06 18:40:06 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/02 19:07:10 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	delete_char_from_list(t_char *curr)
+void		delete_char_from_list(t_char *curr)
 {
-	t_char 	*next;
-	t_char 	*prev;
+	t_char	*next;
+	t_char	*prev;
 
 	next = curr->next;
 	prev = curr->prev;
@@ -30,7 +30,7 @@ void	delete_char_from_list(t_char *curr)
 	g_shell.edit.char_list.char_nb--;
 }
 
-void	make_char_point(t_char *new_char, t_char *prev_char)
+static void	make_char_point(t_char *new_char, t_char *prev_char)
 {
 	t_char *tmp;
 
@@ -53,10 +53,10 @@ void	make_char_point(t_char *new_char, t_char *prev_char)
 		g_shell.edit.char_list.tail = new_char;
 }
 
-void	add_char_to_list(uint8_t *charac, size_t len, int is_prompt)
+void		add_char_to_list(uint8_t *charac, size_t len, int is_prompt)
 {
-	t_char		*new_char;
-	t_char 		*prev_char;
+	t_char	*new_char;
+	t_char	*prev_char;
 
 	prev_char = g_shell.edit.point_char;
 	if (!(new_char = malloc(sizeof(*new_char))))
