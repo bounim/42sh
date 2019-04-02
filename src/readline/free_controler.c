@@ -30,15 +30,14 @@ void	free_all_and_exit(void)
 	exit(0);
 }
 
-void	free_all(void)
+void	free_all_edit(void)
 {
 	t_char *curr;
 	t_char *tmp;
 
-	curr = g_shell.edit.char_list.head;
-	tmp = NULL;
-	if (!curr)
+	if (!(curr = g_shell.edit.char_list.head))
 		return ;
+	tmp = NULL;
 	while (curr)
 	{
 		tmp = curr->next;
@@ -52,6 +51,6 @@ void	free_controler(int code)
 {
 	if (code == FREE_ALL_AND_EXIT)
 		free_all_and_exit();
-	if (code == FREE_ALL)
-		free_all();
+	if (code == FREE_ALL_EDIT)
+		free_all_edit();
 }

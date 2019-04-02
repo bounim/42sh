@@ -49,7 +49,6 @@ enum 					e_prompt
 # define NO_MATCH -1
 # define NBSP "\302\240"
 
-
 /*
 *** DEFINE ERROR CODES
 */
@@ -71,7 +70,7 @@ enum					e_errnum
 enum 					e_freenum
 {
 	FREE_ALL_AND_EXIT = 0,
-	FREE_ALL
+	FREE_ALL_EDIT
 };
 
 /*

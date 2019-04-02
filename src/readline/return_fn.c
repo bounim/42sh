@@ -24,6 +24,8 @@ void				return_empty(void)
 
 void				return_end(uint8_t *buff, size_t buff_size)
 {
+	free_controler(FREE_ALL_EDIT);
+	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff, g_shell.hist.history, NULL, NULL)))
 	{
@@ -55,6 +57,7 @@ void				return_fn(void)
 		readline_errors_controler(MALLOC_ERROR);
 	buff[buff_size] = '\n';
 	buff[buff_size + 1] = '\0';
+	buff_size++;	
 	i = 0;
 	while (head)
 	{
@@ -62,7 +65,5 @@ void				return_fn(void)
 		i += head->len;
 		head = head->next;
 	}
-	//free_controler(FREE_ALL);
-	write(1, "\n", 1);
 	return_end(buff, buff_size);
 }
