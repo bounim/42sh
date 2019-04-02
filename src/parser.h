@@ -38,6 +38,7 @@ enum e_redirect_type			get_redirect(uint8_t *buffer, size_t size);
 size_t							is_assignment(uint8_t *buffer, size_t size);
 
 int								parser_create_tree(t_lexer *lex);
+int								parser_input_end(t_lexer *lex);
 int								parser_new_elem(t_lexer *lex,
 		t_lexer_token **cur);
 int								parser_add_tree(t_lexer *lex, t_lexer_token *n);
