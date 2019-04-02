@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/30 14:31:39 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/30 15:27:48 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/02 10:33:35 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	cd_check_opts(char *arg, int *opts)
 			*opts = 1;
 		else if (arg[i] == 'L')
 			*opts = 2;
-		else
+		else if (arg[i] != 'P')
 		{
 			ft_putstr_fd("sh: cd: -", 2);
 			write(2, arg + i, 1);
