@@ -59,6 +59,7 @@ static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 		n->redir_foot->redir_next = *cur;
 	else
 		n->redir_head = *cur;
+	(*cur)->redir_previous = n->redir_foot;
 	n->redir_foot = *cur;
 	n->redir_nb++;
 	*cur = (*cur)->next->next;

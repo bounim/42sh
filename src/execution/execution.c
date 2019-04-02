@@ -65,7 +65,7 @@ void		test_exec(t_lexer *lex)
 	{
 		if (command_redir(lex->root) < 0)
 		{
-			ft_putstr("<redir fail>\n");
+			// TODO $?
 			return ;
 		}
 		if (!start_builtin(av, NULL))
