@@ -269,7 +269,10 @@ void	do_expansions(t_lexer_token *root)
 	{
 		do_expansions(root->right);
 		if (root->type == PARSER_COMMAND)
+		{
 			tilde_expansion(&root);
+			parameter_expansion(&root);
+		}
 		do_expansions(root->left);
 	}
 }
