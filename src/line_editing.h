@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/26 18:31:31 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:20:20 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,7 @@ void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
 size_t					get_x_pos(t_char *prev_char, uint32_t col_limit);
 size_t					get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit);
+void					place_base_at_start(void);
 void					update_all_pos(void);
 void					check_all_pos(void);
 void					shift_pos_up(void);
@@ -265,9 +266,11 @@ void					drag_char(void);
 size_t					go_back_one_car(uint8_t *buff, size_t index);
 int						transpose_word_conditions(t_char *curr);
 t_char					*get_to_right_position(t_char *curr);
-int						get_word_len(t_char *curr);
 void					transpose_word(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
+int						copy_current_word_start_conditions(t_char *curr);
+int						copy_current_word_begin_conditions(t_char *curr);
+int						copy_current_word_end_conditions(t_char *curr);
 void					copy_current_word(void);
 void					copy_all_line(void);
 void					paste_copy(void);

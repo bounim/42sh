@@ -6,13 +6,13 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 16:57:30 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 18:51:22 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/02 18:33:53 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void				eot_fn(void)
+void	eot_fn(void)
 {
 	if (g_shell.edit.char_list.tail->is_prompt == 1)
 	{
@@ -24,8 +24,8 @@ void				eot_fn(void)
 
 void	delete_backline(void)
 {
-	t_char 	*curr;
-	t_char 	*end;
+	t_char	*curr;
+	t_char	*end;
 	int		c;
 
 	curr = g_shell.edit.point_char;
@@ -45,10 +45,7 @@ void	delete_backline(void)
 		c--;
 	}
 	if (g_shell.edit.cur_base_y < 0)
-	{
-		g_shell.edit.cur_base_y = 0;
-		g_shell.edit.cur_base_x = 0;
-	}
+		place_base_at_start();
 	update_all_pos();
 	clean_and_print();
 }
@@ -69,17 +66,14 @@ void	delete_endline(void)
 	clean_and_print();
 }
 
-//tu deletes tous les separateurs + les characs alfanums jusquau prochain separateur.
-void		delete_word_forward(void)
+void	delete_word_forward(void)
 {
-	t_char 	*curr;
-	t_char 	*tmp;
+	t_char	*curr;
+	t_char	*tmp;
 
-	if (!(curr = g_shell.edit.point_char->next))
+	if (!(curr = g_shell.edit.point_char->next) || curr->prev->y_pos < 0)
 		return ;
 	tmp = curr;
-	if (tmp->prev->y_pos < 0)
-		return ;
 	while (tmp && (!ft_u8_is_alnum(tmp->charac[0])
 		|| !ft_memcmp(tmp->charac, NBSP, 2)))
 		tmp = tmp->next;
@@ -101,7 +95,7 @@ void		delete_word_forward(void)
 	clean_and_print();
 }
 
-void		delete_word_backward(void)
+void	delete_word_backward(void)
 {
 	t_char *curr;
 	t_char *tmp;

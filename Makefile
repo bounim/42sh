@@ -74,6 +74,7 @@ SRC := \
 	readline/special_movement_controler.c \
 	readline/del_controler.c \
 	readline/copy_controler.c \
+	readline/copy_conditions.c \
 	readline/return_fn.c \
 	readline/free_controler.c \
 	readline/special_del_controler.c \
@@ -83,6 +84,7 @@ SRC := \
 	readline/transpose_conditions.c \
 	readline/transpose_word.c \
 	readline/list_buff_transform.c \
+	readline/utils.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \

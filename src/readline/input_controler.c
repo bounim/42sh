@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/26 18:30:30 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:50:04 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	}
 };
 
-int		compare_key(uint8_t *key, size_t keylen, size_t ki)
+static int	compare_key(uint8_t *key, size_t keylen, size_t ki)
 {
 	if (ft_memcmp(key, g_keymap[g_shell.edit.edit_mode][ki].seq, keylen) == 0)
 	{
@@ -65,13 +65,14 @@ int		compare_key(uint8_t *key, size_t keylen, size_t ki)
 	return (NO_MATCH);
 }
 
-int		check_key(uint8_t *key, size_t *keylen)
+static int	check_key(uint8_t *key, size_t *keylen)
 {
 	size_t	ki;
-	int 	check;
+	int		check;
 
 	ki = 0;
-	while (ki < sizeof(g_keymap[g_shell.edit.edit_mode]) / sizeof(g_keymap[g_shell.edit.edit_mode][0]))
+	while (ki < sizeof(g_keymap[g_shell.edit.edit_mode])
+			/ sizeof(g_keymap[g_shell.edit.edit_mode][0]))
 	{
 		if ((check = compare_key(key, *keylen, ki)) == MATCH)
 		{
@@ -87,7 +88,7 @@ int		check_key(uint8_t *key, size_t *keylen)
 	return (NO_MATCH);
 }
 
-void	check_printable(uint8_t *key, size_t *keylen)
+static void	check_printable(uint8_t *key, size_t *keylen)
 {
 	if (ft_carac_nb(key, *keylen) != -1)
 	{
@@ -100,13 +101,13 @@ void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
-void	build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
+void		build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
 {
 	*(key + *keylen) = *input;
 	(*keylen)++;
 }
 
-void	input_controller(void)
+void		input_controller(void)
 {
 	uint8_t	input[1];
 	uint8_t	key[6];

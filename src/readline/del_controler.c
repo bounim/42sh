@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:15:55 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/11 14:32:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/02 19:10:13 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	supr_charac(void)
 {
-	t_char 			*curr;
+	t_char	*curr;
 
 	curr = g_shell.edit.point_char;
 	if (!curr || curr == g_shell.edit.char_list.tail)
@@ -24,7 +24,7 @@ void	supr_charac(void)
 	{
 		g_shell.edit.point_char = curr;
 		del_charac();
-		return;
+		return ;
 	}
 	delete_char_from_list(curr);
 	update_all_pos();
@@ -33,10 +33,11 @@ void	supr_charac(void)
 
 void	del_charac(void)
 {
-	t_char 			*curr;
+	t_char			*curr;
 	struct winsize	max;
-	int				t = 0;
+	int				t;
 
+	t = 0;
 	curr = g_shell.edit.point_char;
 	max = g_shell.edit.term_info.max;
 	if (!curr || curr->is_prompt == 1)

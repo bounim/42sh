@@ -6,20 +6,15 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:17:40 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/09 14:25:53 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/02 18:48:02 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	print_prompt(uint8_t *prompt, size_t prompt_len)
+void		clean_screen_from(int x, int y)
 {
-	write(1, prompt, prompt_len);
-}
-
-void	clean_screen_from(int x, int y)
-{
-	int 			i;
+	int				i;
 	struct winsize	max;
 
 	i = 0;
@@ -34,7 +29,7 @@ void	clean_screen_from(int x, int y)
 		ft_putstr(tgetstr("dl", NULL));
 }
 
-void	place_cursor_after_print(t_char *curr, int max_x, int max_y)
+void		place_cursor_after_print(t_char *curr, int max_x, int max_y)
 {
 	int		x;
 	int		y;
@@ -44,14 +39,12 @@ void	place_cursor_after_print(t_char *curr, int max_x, int max_y)
 	{
 		x = 0;
 		if ((y += 1) == max_y)
-		{
 			ft_putstr(tgetstr("sr", NULL));
-		}
 	}
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
 }
 
-int		find_print_from()
+static int	find_print_from(void)
 {
 	int		ret;
 	t_char	*curr;
@@ -70,7 +63,7 @@ int		find_print_from()
 	return (ret);
 }
 
-void	align_with_y(int *lines_to_shift)
+static void	align_with_y(int *lines_to_shift)
 {
 	while (*lines_to_shift > 0)
 	{
@@ -79,7 +72,7 @@ void	align_with_y(int *lines_to_shift)
 	}
 }
 
-void	clean_and_print(void)
+void		clean_and_print(void)
 {
 	t_char		*curr;
 	uint8_t		*buff;
@@ -90,11 +83,13 @@ void	clean_and_print(void)
 	clean_screen_from(g_shell.edit.cur_base_x, g_shell.edit.cur_base_y);
 	if (!(curr = g_shell.edit.char_list.head))
 		return ;
-	if (!(buff = list_to_buff_print(curr, NULL)) || (print_from = find_print_from()) == -1)
+	if (!(buff = list_to_buff_print(curr, NULL)))
+		return ;
+	if ((print_from = find_print_from()) == -1)
 		return ;
 	len = ft_ustrlen(buff + print_from);
 	write(1, buff + print_from, len);
-	place_cursor_after_print(g_shell.edit.point_char, g_shell.edit.term_info.max.ws_col,\
-	g_shell.edit.term_info.max.ws_row);
+	place_cursor_after_print(g_shell.edit.point_char,\
+	g_shell.edit.term_info.max.ws_col, g_shell.edit.term_info.max.ws_row);
 	free(buff);
 }

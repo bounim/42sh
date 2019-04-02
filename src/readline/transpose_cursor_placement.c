@@ -6,13 +6,13 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 18:55:36 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/28 18:55:39 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:23:50 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-size_t	go_back_one_car(uint8_t *buff, size_t index)
+size_t			go_back_one_car(uint8_t *buff, size_t index)
 {
 	index--;
 	if (index > 0)
@@ -23,7 +23,7 @@ size_t	go_back_one_car(uint8_t *buff, size_t index)
 	return (index);
 }
 
-int		is_there_word_after(t_char *curr)
+static int		is_there_word_after(t_char *curr)
 {
 	int t;
 
@@ -44,24 +44,22 @@ int		is_there_word_after(t_char *curr)
 	if (curr)
 		return (1);
 	return (0);
-
 }
 
-t_char	*go_back_two_words(t_char *curr)
+static t_char	*go_back_two_words(t_char *curr)
 {
 	while (!ft_u8_is_alnum(curr->charac[0]) && !curr->prev->is_prompt)
 		curr = curr->prev;
 	while (ft_u8_is_alnum(curr->charac[0]) && !curr->prev->is_prompt)
 		curr = curr->prev;
-	while (!ft_u8_is_alnum(curr->charac[0]
-	) && !curr->prev->is_prompt)
+	while (!ft_u8_is_alnum(curr->charac[0]) && !curr->prev->is_prompt)
 		curr = curr->prev;
 	while (ft_u8_is_alnum(curr->prev->charac[0]) && !curr->prev->is_prompt)
 		curr = curr->prev;
 	return (curr);
 }
 
-t_char	*go_back_one_word(t_char *curr)
+static t_char	*go_back_one_word(t_char *curr)
 {
 	while (!ft_u8_is_alnum(curr->charac[0]) && !curr->prev->is_prompt)
 		curr = curr->prev;
@@ -70,7 +68,7 @@ t_char	*go_back_one_word(t_char *curr)
 	return (curr);
 }
 
-t_char	*get_to_right_position(t_char *curr)
+t_char			*get_to_right_position(t_char *curr)
 {
 	int i;
 

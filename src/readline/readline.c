@@ -6,20 +6,20 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 15:57:28 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/12 19:17:00 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/02 18:39:53 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	init_char_list(void)
+void		init_char_list(void)
 {
 	g_shell.edit.char_list.head = NULL;
 	g_shell.edit.char_list.tail = NULL;
 	g_shell.edit.char_list.char_nb = 0;
 }
 
-int		get_term_pos(size_t *line, size_t *col)
+static int	get_term_pos(size_t *line, size_t *col)
 {
 	char	buff[32];
 	size_t	n;
@@ -65,9 +65,9 @@ int		get_term_pos(size_t *line, size_t *col)
 	return (0);
 }
 
-void	init_edit(void)
+void		init_edit(void)
 {
-	size_t 	line;
+	size_t	line;
 	size_t	col;
 
 	g_shell.edit.reading = TRUE;
@@ -91,7 +91,7 @@ void	init_edit(void)
 	g_shell.edit.cpy_buff = NULL;
 }
 
-void	readline(int prompt_id)
+void		readline(int prompt_id)
 {
 	uint8_t *prompt;
 
