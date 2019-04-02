@@ -27,6 +27,9 @@ void	free_all_and_exit(void)
 		free(curr);
 		curr = tmp;
 	}
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
+	free_history(g_shell.hist.history);
 	exit(0);
 }
 
@@ -45,6 +48,8 @@ void	free_all_edit(void)
 		curr = NULL;
 		curr = tmp;
 	}
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
 }
 
 void	free_controler(int code)
