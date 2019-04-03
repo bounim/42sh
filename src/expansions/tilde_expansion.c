@@ -222,12 +222,13 @@ int		tilde_assignement(t_lexer_token *tmp)
 	{
 		if (tmp->size >= 1)
 		{
-			i = 0;
+			i = tmp->assign_position + 1;
+			printf("start is = %c\n", tmp->buffer[i]);
 			while (i < tmp->size)
 			{
 				if (tmp->buffer[i] == '~' && !quoted(tmp->buffer, i)
-				&& tmp->buffer[i - 1] && !quoted(tmp->buffer, i - 1)
-				&& (tmp->buffer[i - 1] == '=' || tmp->buffer[i - 1] == ':'))
+				&& ((tmp->buffer[i - 1] && !quoted(tmp->buffer, i - 1)
+				&& tmp->buffer[i - 1] == ':') || i == tmp->assign_position + 1))
 				{
 					len = get_tilde_prefix(tmp, i, 1);
 					tilde_result(tmp, i, len);
@@ -246,7 +247,7 @@ int     tilde_expansion(t_lexer_token **root)
 
 	tmp = NULL;
 	ft_putendl("IN TILDE");
-	tilde_word((*root)->arg_head); // pourquoi les redirections sont stockees ds arg_head....
+	tilde_word((*root)->arg_head);
 	ft_putendl("args");
 	print_arg(*root);
 	ft_putendl("END.");
@@ -254,25 +255,11 @@ int     tilde_expansion(t_lexer_token **root)
 	ft_putendl("assignement words");
 	print_assign(*root);
 	ft_putendl("END.");
-	tilde_redir((*root)->redir_head->redir_target);
+	if ((*root)->redir_head)
+		tilde_redir((*root)->redir_head->redir_target);
 	ft_putendl("redirs");
 	print_redir(*root);
 	ft_putendl("END.");
 	return (0);
 }
 
-void	do_expansions(t_lexer_token *root)
-{
-	if (!root)
-		return ;
-	else
-	{
-		do_expansions(root->right);
-		if (root->type == PARSER_COMMAND)
-		{
-			tilde_expansion(&root);
-			parameter_expansion(&root);
-		}
-		do_expansions(root->left);
-	}
-}

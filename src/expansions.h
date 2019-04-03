@@ -8,32 +8,7 @@
 enum    state {ST_GEN, ST_BS, ST_QU, ST_DQU};
 
 char    quoted(uint8_t *buf, size_t index);
-/*
-** Tilde expansion
-*/
-/*
-** Parameter expansion
-*/
-
-/*
-** Command substitution
-*/
-
-/*
-** Arithmetic expansion
-*/
-
-/*
-** Field splitting
-*/
-
-/*
-** Pathname expansion
-*/
-
-/*
-** Quote removal
-*/
-
+int     tilde_expansion(t_lexer_token **root);
+int		parameter_expansion(t_lexer_token **root);
 
 #endif
