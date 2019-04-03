@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 16:51:54 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:19:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	launch_proc(t_proc *proc, pid_t pgid, int foreground)
+void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int in_file, int out_file)
 {
 	pid_t	pid;
 
@@ -31,8 +31,18 @@ void	launch_proc(t_proc *proc, pid_t pgid, int foreground)
 		signal(SIGTTOU, SIG_DFL);
 		signal(SIGCHLD, SIG_DFL);
 	}
-	if (execve(proc->path, proc->arg, proc->env) == -1)
-		fatal_exit(7);
+	if (in_file != STDIN_FILENO)
+	{
+		dup2(in_file, STDIN_FILENO);
+		close(in_file);
+	}
+	if (out_file != STDOUT_FILENO)
+	{
+		dup2(out_file, STDOUT_FILENO);
+		close(out_file);
+	}
+	execve(proc->path, proc->arg, proc->env);
+	fatal_exit(7);
 }
 
 void	launch_job(t_job *job, int foreground)
@@ -40,7 +50,10 @@ void	launch_job(t_job *job, int foreground)
 	t_proc	*proc;
 	pid_t	pid;
 	int		my_pipe[2];
+	int		in_file;
+	int		out_file;
 
+	in_file = job->std_in;
 	proc = job->head_proc;
 	while (proc)
 	{
@@ -51,10 +64,13 @@ void	launch_job(t_job *job, int foreground)
 				ft_putstr_fd("pipe failed\n", 2);
 				return ;
 			}
+			out_file = my_pipe[1];
 		}
+		else
+			out_file = job->std_out;
 		pid = fork();
 		if (pid == 0)
-			launch_proc(proc, job->pgid, foreground);
+			launch_proc(proc, job->pgid, foreground, in_file, out_file);
 		else if (pid < 0)
 		{
 			ft_putstr_fd("fork failed\n", 2);
@@ -70,6 +86,11 @@ void	launch_job(t_job *job, int foreground)
 				setpgid(pid, job->pgid);
 			}
 		}
+		if (in_file != job->std_in)
+			close(in_file);
+		if (out_file != job->std_out)
+			close(out_file);
+		in_file = my_pipe[0];
 		proc = proc->next;
 	}
 	format_job_info(job, "launched");
