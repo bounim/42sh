@@ -85,6 +85,8 @@ SRC := \
 	readline/transpose_conditions.c \
 	readline/transpose_word.c \
 	readline/list_buff_transform.c \
+	readline/add_to_undo_list.c \
+	readline/undo_last_editing_command.c \
 	readline/utils.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \

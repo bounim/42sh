@@ -73,6 +73,7 @@ void		init_edit(void)
 	g_shell.edit.reading = TRUE;
 	g_shell.edit.ret_ctrl_c = FALSE;
 	g_shell.edit.edit_mode = MODE_EMACS;
+	g_shell.edit.prompt_id = 0;
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.mark = NULL;
 	g_shell.edit.last_command = NULL;
