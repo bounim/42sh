@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:20:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/27 15:27:44 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 09:48:27 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ t_job	*init_job(t_job *job)
 	job->head_proc = NULL;
 	job->pgid = 0;
 	job->notified = 0;
-	job->tmodes = NULL;
+	//job->tmodes = ?;
 	job->next = NULL;
+	return (job);
 }
 
 t_proc	*init_proc(t_proc *proc)
@@ -30,6 +31,7 @@ t_proc	*init_proc(t_proc *proc)
 	if (!(proc = (t_proc *)malloc(sizeof(t_proc))))
 		return (NULL);
 	proc->status = 0;
+	proc->path = NULL;
 	proc->arg = NULL;
 	proc->env = NULL;
 	proc->pid = 0;
@@ -37,4 +39,5 @@ t_proc	*init_proc(t_proc *proc)
 	proc->stop = 0;
 	proc->status = 0;
 	proc->next = NULL;
+	return (proc);
 }

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 13:31:55 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:11:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:10:25 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,13 @@ int			built_bg(char **arg, t_job *job)
 {
 	int	i;
 
+	if (!job)
+		return (1);
 	if ((i = check_opts_bg(arg)) == -1)
 		return (1);
+	if (!arg[i])
+	{
+		continue_job(job, 0);
+	}
 	return (run_bg(arg, job, i));
 }

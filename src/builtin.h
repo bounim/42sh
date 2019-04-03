@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/30 14:33:30 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:03:13 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ struct					s_opts
 struct					s_opt_jobs
 {
 	int		l;
-	int		n;
 	int		p;
-	int		r;
-	int		s;
-	int		x;
 };
 
 struct					s_alias

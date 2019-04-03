@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:24 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 15:22:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:11:05 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,31 @@
 static int	start_builtin_env(char **arg, t_envl *env)
 {
 	if (ft_strequ(arg[0], "alias"))
-		built_alias(arg, &g_shell.alias);
+		push_env(&g_shell.envl, "?", ft_itoa(built_alias(arg, &g_shell.alias)), 0);
 	else if (ft_strequ(arg[0], "unalias"))
-		built_unalias(arg, &g_shell.alias);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unalias(arg, &g_shell.alias)), 0);
 	else if (ft_strequ(arg[0], "export"))
-		built_export(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_export(arg, env)), 0);
 	else if (ft_strequ(arg[0], "cd"))
-		built_cd(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_cd(arg, env)), 0);
 	else if (ft_strequ(arg[0], "debug"))
-		built_debug(arg);
+		push_env(&g_shell.envl, "?", ft_itoa(built_debug(arg)), 0);
 	else if (ft_strequ(arg[0], "echo"))
-		built_echo(arg);
+		push_env(&g_shell.envl, "?", ft_itoa(built_echo(arg)), 0);
 	else if (ft_strequ(arg[0], "env"))
-		built_env(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_env(arg, env)), 0);
 	else if (ft_strequ(arg[0], "history"))
-		built_history(arg, &g_shell.hist.history);
+		push_env(&g_shell.envl, "?", ft_itoa(built_history(arg, &g_shell.hist.history)), 0);
 	else if (ft_strequ(arg[0], "set"))
-		built_set(env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_set(env)), 0);
 	else if (ft_strequ(arg[0], "setenv"))
-		built_setenv(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_setenv(arg, env)), 0);
 	else if (ft_strequ(arg[0], "unset"))
-		built_unset(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unset(arg, env)), 0);
 	else if (ft_strequ(arg[0], "unsetenv"))
-		built_unsetenv(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unsetenv(arg, env)), 0);
 	else if (ft_strequ(arg[0], "type"))
-		built_type(arg, env);
+		push_env(&g_shell.envl, "?", ft_itoa(built_type(arg, env)), 0);
 	else if (ft_strequ(arg[0], "exit"))
 		exit(built_exit(arg));
 	else
@@ -50,31 +50,37 @@ static int	start_builtin_env(char **arg, t_envl *env)
 static int	start_builtin_null(char **arg)
 {
 	if (ft_strequ(arg[0], "alias"))
-		built_alias(arg, &g_shell.alias);
+		push_env(&g_shell.envl, "?", ft_itoa(built_alias(arg, &g_shell.alias)), 0);
 	else if (ft_strequ(arg[0], "unalias"))
-		built_unalias(arg, &g_shell.alias);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unalias(arg, &g_shell.alias)), 0);
 	else if (ft_strequ(arg[0], "export"))
-		built_export(arg, NULL);
+		push_env(&g_shell.envl, "?", ft_itoa(built_export(arg, NULL)), 0);
 	else if (ft_strequ(arg[0], "cd"))
-		built_cd(arg, g_shell.envl);
+		push_env(&g_shell.envl, "?", ft_itoa(built_cd(arg, g_shell.envl)), 0);
 	else if (ft_strequ(arg[0], "debug"))
-		built_debug(arg);
+		push_env(&g_shell.envl, "?", ft_itoa(built_debug(arg)), 0);
 	else if (ft_strequ(arg[0], "echo"))
-		built_echo(arg);
+		push_env(&g_shell.envl, "?", ft_itoa(built_echo(arg)), 0);
 	else if (ft_strequ(arg[0], "env"))
-		built_env(arg, g_shell.envl);
+		push_env(&g_shell.envl, "?", ft_itoa(built_env(arg, g_shell.envl)), 0);
 	else if (ft_strequ(arg[0], "history"))
-		built_history(arg, &g_shell.hist.history);
+		push_env(&g_shell.envl, "?", ft_itoa(built_history(arg, &g_shell.hist.history)), 0);
 	else if (ft_strequ(arg[0], "set"))
-		built_set(g_shell.envl);
+		push_env(&g_shell.envl, "?", ft_itoa(built_set(g_shell.envl)), 0);
 	else if (ft_strequ(arg[0], "setenv"))
-		built_setenv(arg, NULL);
+		push_env(&g_shell.envl, "?", ft_itoa(built_setenv(arg, NULL)), 0);
 	else if (ft_strequ(arg[0], "unset"))
-		built_unset(arg, NULL);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unset(arg, NULL)), 0);
 	else if (ft_strequ(arg[0], "unsetenv"))
-		built_unsetenv(arg, NULL);
+		push_env(&g_shell.envl, "?", ft_itoa(built_unsetenv(arg, NULL)), 0);
 	else if (ft_strequ(arg[0], "type"))
-		built_type(arg, g_shell.envl);
+		push_env(&g_shell.envl, "?", ft_itoa(built_type(arg, g_shell.envl)), 0);
+	else if (ft_strequ(arg[0], "fg"))
+		push_env(&g_shell.envl, "?", ft_itoa(built_fg(arg, g_shell.head_job)), 0);
+	else if (ft_strequ(arg[0], "jobs"))
+		push_env(&g_shell.envl, "?", ft_itoa(built_jobs(arg, g_shell.head_job)), 0);
+	else if (ft_strequ(arg[0], "bg"))
+		push_env(&g_shell.envl, "?", ft_itoa(built_bg(arg, g_shell.head_job)), 0);
 	else if (ft_strequ(arg[0], "exit"))
 		exit(built_exit(arg));
 	else

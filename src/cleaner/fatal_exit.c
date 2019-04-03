@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:48:23 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/03 14:21:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ void		fatal_exit(int code)
 		ft_putendl_fd("Inappropriate ioctl device.", STDERR_FILENO);
 	else if (code == 6)
 		ft_putendl_fd("exit", STDERR_FILENO);
+	else if (code == 7)
+		ft_putendl_fd("Exec format error", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }

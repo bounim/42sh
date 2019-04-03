@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:01:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 17:01:02 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 11:57:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,17 @@
 
 static t_opt_jobs	*init_opt_jobs(t_opt_jobs *opts)
 {
-	if (!(opts = (t_opt_jobs *)malloc(sizeof(t_opt_jobs))))
-		return (NULL);
 	opts->l = 0;
-	opts->n = 0;
 	opts->p = 0;
-	opts->r = 0;
-	opts->s = 0;
-	opts->x = 0;
 	return (opts);
 }
 
 static void			*print_error_jobs(char *arg)
 {
-	ft_putstr_fd("sh: alias: -", 2);
+	ft_putstr_fd("sh: jobs: -", 2);
 	write(2, arg, 1);
-	ft_putstr_fd(": invalid option\nalias: usage: \
-		alias[-lnprs] [jobspec] or jobs -x command [args]\n", 2);
+	ft_putstr_fd(": invalid option\njobs: usage: jobs [-lp]", 2);
+	ft_putstr_fd("[jobspec]\n", 2);
 	return (NULL);
 }
 
@@ -41,18 +35,10 @@ static t_opt_jobs	*empty_opts(char *arg, t_opt_jobs *opts)
 	i = 1;
 	while (arg[i])
 	{
-		if (arg[i] == 'x')
-			opts->x = 1;
-		else if (arg[i] == 'l')
+		if (arg[i] == 'l')
 			opts->l = 1;
-		else if (arg[i] == 'n')
-			opts->n = 1;
 		else if (arg[i] == 'p')
 			opts->p = 1;
-		else if (arg[i] == 'r')
-			opts->n = 1;
-		else if (arg[i] == 's')
-			opts->s = 1;
 		else
 			return (print_error_jobs(arg + i));
 		i++;

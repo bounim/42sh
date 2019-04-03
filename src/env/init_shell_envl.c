@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/26 13:31:19 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/02 11:26:45 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ static void		set_envl_default_value(t_envl **envl)
 	set_env_var_unexp(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"), "/.42sh_history"), 0);
 	set_env_var_unexp(envl, "HISTSIZE", ft_strdup("50000"), 0);
 	set_env_var_unexp(envl, "TESTUNTRUC", NULL, 0);
-	set_env_var_unexp(envl, "$", NULL, 1);
-	set_env_var_unexp(envl, "?", NULL, 1);
-	set_env_var_unexp(envl, "0", NULL, 1);
+	set_env_var_unexp(envl, "$", NULL, 2);
+	set_env_var_unexp(envl, "?", NULL, 2);
+	set_env_var_unexp(envl, "0", NULL, 2);
 }
 
 static t_envl	*envarr_to_envl(char **env)

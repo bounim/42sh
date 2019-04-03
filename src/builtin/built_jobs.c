@@ -6,18 +6,11 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:41:35 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 16:14:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:03:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
-static int	jobs_exec(char **ret)
-{
-	//call de la fonction d'execution;
-	ret++;
-	return (0);
-}
 
 static int	print_jobs(t_job *jobs, t_opt_jobs opts)
 {
@@ -26,7 +19,12 @@ static int	print_jobs(t_job *jobs, t_opt_jobs opts)
 	i = 1;
 	while (jobs)
 	{
-		if (opts.p == 0 || (opts.n == 1 && opts.l == 1))
+		if (opts.p)
+		{
+			ft_putnbr(jobs->pgid);
+			ft_putstr("\n");
+		}
+		else
 		{
 			write(1, "[", 1);
 			ft_putnbr(i);
@@ -37,12 +35,17 @@ static int	print_jobs(t_job *jobs, t_opt_jobs opts)
 				ft_putstr(" + ");
 			else
 				ft_putstr("   ");
+			if (opts.l == 1)
+			{
+				ft_putnbr(jobs->pgid);
+				ft_putstr(" ");
+			}
+			if (opts.l == 1)
+				ft_putstr("Suspended: 18\t");
+			else
+				ft_putstr("Stopped(SIGTSTP)\t");
+			ft_putendl(jobs->cmd);
 		}
-		if (opts.l == 1)
-			ft_putstr("Suspended: 18\t\t");
-		else if (opts.p == 0)
-			ft_putstr("Stopped(SIGTSTP)\t\t");
-		ft_putstr(jobs->cmd);
 		jobs = jobs->next;
 	}
 	return (0);
@@ -57,8 +60,5 @@ int			built_jobs(char **arg, t_job *jobs)
 	ret = NULL;
 	if ((i = check_opts_jobs(arg, &opts)) == -1)
 		return (1);
-	if (opts.x)
-		return (jobs_exec(arg + i));
-	else
-		return (print_jobs(jobs, opts));
+	return (print_jobs(jobs, opts));
 }

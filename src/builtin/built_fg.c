@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:53:53 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:35:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:10:38 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ int			built_fg(char **arg, t_job *job)
 	int		i;
 	int		j;
 
+	if (!job)
+		return (1);
 	if ((i = check_opts_fg(arg)) == -1)
 		return (1);
-	i = ft_atoi(arg[i]);
-	if (i == 0)
-		return (print_error_fg(0));
 	j = 0;
+	if (!arg[i])
+		i = 1;
+	else if ((i = ft_atoi(arg[i])))
+		return (print_error_fg(0));
+	j = 1;
 	while (j < i && job)
 	{
 		job = job->next;

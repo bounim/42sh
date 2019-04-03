@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/27 17:12:22 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 16:51:54 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	launch_proc(t_proc *proc, pid_t pgid, int foreground)
 {
-	char	*path;
 	pid_t	pid;
 
-	path = NULL;
 	if (g_shell.is_interactive)
 	{
 		pid = getpid();
@@ -33,9 +31,8 @@ void	launch_proc(t_proc *proc, pid_t pgid, int foreground)
 		signal(SIGTTOU, SIG_DFL);
 		signal(SIGCHLD, SIG_DFL);
 	}
-	execve(path, proc->arg, proc->env);
-	ft_putstr_fd("execve\n", 2);
-	exit(1);
+	if (execve(proc->path, proc->arg, proc->env) == -1)
+		fatal_exit(7);
 }
 
 void	launch_job(t_job *job, int foreground)
@@ -52,7 +49,7 @@ void	launch_job(t_job *job, int foreground)
 			if (pipe(my_pipe) < 0)	
 			{
 				ft_putstr_fd("pipe failed\n", 2);
-				exit(1);
+				return ;
 			}
 		}
 		pid = fork();
@@ -61,7 +58,7 @@ void	launch_job(t_job *job, int foreground)
 		else if (pid < 0)
 		{
 			ft_putstr_fd("fork failed\n", 2);
-			exit(1);
+			return ;
 		}
 		else
 		{

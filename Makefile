@@ -91,6 +91,7 @@ SRC := \
 	job_control/launch_job.c \
 	job_control/stop_job.c \
 	job_control/continue_job.c \
+	job_control/init_job.c \
 	parser/parser.c \
 	parser/parser_destroy.c \
 	parser/parser_func.c \

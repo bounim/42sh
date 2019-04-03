@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:47:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:15:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/03 14:13:48 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,15 @@ struct			s_proc
 {
 	char			**arg;
 	char			**env;
+	char			*path;
 	pid_t			pid;
 	char			finish;
 	char			stop;
 	int				status;
+	int				std_in;
+	int				std_out;
+	int				my_pipe[2];
+	int				is_fork;
 	struct s_proc	*next;
 };
 
