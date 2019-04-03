@@ -45,6 +45,50 @@ MANDATORY
 12.ctrl_r();															if you wright shit it should return nommat
 12.Norme.
 
+13.Undo_last_editing_command();											a. il faut que lorsqu'on check key, on fasse passer le resultat si sa match par un certain endroit, ensuite on peut comparrer les deux chained list (avant/apres) pour savoir que faire des modifs.
+																		b. A l'instantiation du shell, si l'afichage du prompt reussit, il faut creer la liste chainee du undo juste avec le prompt.
+																		c. A chaque fois qu'une commande qui modifie ce qui est affiché ou que quelque chose est ecrit, on ajoute un node dans la liste avec le buff actuel (avant que la commande soit exec) et la
+																			position du curseur par rapport a la liste chainee.
+																		
+
 OPTIONAL
 raw_terminal, cooked_terminal.
 Input_controller, put readig state in options.
+
+	{CTRL_A, 1, go_to_home},
+		{CTRL_B, 1, move_left},
+		{CTRL_C, 1, handle_ctrl_c},
+		{CTRL_D, 1, eot_fn},
+		{CTRL_E, 1, go_to_end},
+		{CTRL_F, 1, move_right},
+		{CTRL_K, 1, delete_endline},
+		{CTRL_N, 1, get_next_history},
+		{CTRL_P, 1, get_prev_history},
+		{CTRL_R, 1, search_in_history},
+		{CTRL_T, 1, drag_char},
+		{ALT_T, 2, transpose_word},
+		{CTRL_U, 1, delete_backline},
+		{CTRL_W, 1, delete_word_backward},
+		{CTRL_P, 1, get_prev_history},
+		{CTRL_N, 1, get_next_history},
+		{CTRL_Y, 1, paste_copy},
+		{CTRL_X_CTRL_X, 2, exchange_point_mark},
+		{ESC_B, 2, jump_word_backward},
+		{ESC_D, 2, delete_word_forward},
+		{ESC_F, 2, jump_word_forward},
+		{RIGHT_ARROW, 3, move_right},
+		{LEFT_ARROW, 3, move_left},
+		{UP_ARROW, 3, get_prev_history},
+		{DOWN_ARROW, 3, get_next_history},
+		{UP_LINE, 2, move_up},
+		{DOWN_LINE, 2, move_down},
+		{HOME, 3, go_to_home},
+		{END, 3, go_to_end},
+		{FORWARD_WORD, 2, jump_word_forward},
+		{BACKWARD_WORD, 2, jump_word_backward},
+		{DEL, 1, del_charac},
+		{SUPR, 4, supr_charac},
+		{CPY_CURR_WORD, 2, copy_current_word},
+		{CPY_ALL_LINE, 2, copy_all_line},
+		{PASTE, 2, paste_copy},
+		{RET, 1, return_fn}

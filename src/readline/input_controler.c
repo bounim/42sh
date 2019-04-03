@@ -31,6 +31,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{CTRL_P, 1, get_prev_history},
 		{CTRL_N, 1, get_next_history},
 		{CTRL_Y, 1, paste_copy},
+		{CTRL__, 1, undo_last_edit_command},
 		{CTRL_X_CTRL_X, 2, exchange_point_mark},
 		{ESC_B, 2, jump_word_backward},
 		{ESC_D, 2, delete_word_forward},
@@ -65,6 +66,7 @@ static int	compare_key(uint8_t *key, size_t keylen, size_t ki)
 	return (NO_MATCH);
 }
 
+
 static int	check_key(uint8_t *key, size_t *keylen)
 {
 	size_t	ki;
@@ -76,6 +78,7 @@ static int	check_key(uint8_t *key, size_t *keylen)
 	{
 		if ((check = compare_key(key, *keylen, ki)) == MATCH)
 		{
+			add_to_undo_list(key, *keylen);
 			g_keymap[g_shell.edit.edit_mode][ki].funckey();
 			ft_memset(key, 0, *keylen);
 			*keylen = 0;
@@ -93,7 +96,10 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	if (ft_carac_nb(key, *keylen) != -1)
 	{
 		if ((!(key[0] >= 0 && key[0] < 32)) || key[0] == '\n')
+		{
+			add_to_undo_list(NULL, 0);
 			add_char_to_list(key, *keylen, 0);
+		}
 		ft_memset(key, 0, *keylen);
 		*keylen = 0;
 		clean_and_print();

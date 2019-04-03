@@ -12,6 +12,19 @@
 
 #include "twenty_one_sh.h"
 
+int 	get_prompt_len(int prompt_id)
+{
+	if (prompt_id == BASIC_PROMPT)
+		return (7);
+	if (prompt_id == QUOTE_PROMPT)
+		return (8);
+	if (prompt_id == BACKSLASH_PROMPT)
+		return (2);
+	if (prompt_id == HEREDOC_PROMPT)
+		return (9);
+	return (0);
+}
+
 void	print_prompt(uint8_t *prompt, size_t prompt_len)
 {
 	write(1, prompt, prompt_len);
@@ -22,6 +35,7 @@ void	init_prompt(int prompt_id)
 	size_t	i;
 
 	i = 0;
+	g_shell.edit.prompt_id = prompt_id;
 	if (prompt_id == BASIC_PROMPT)
 		while (BASIC_PRMPT[i])
 			add_char_to_list((uint8_t *)&(BASIC_PRMPT[i++]), 1, 1);

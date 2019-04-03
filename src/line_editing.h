@@ -70,7 +70,8 @@ enum					e_errnum
 enum 					e_freenum
 {
 	FREE_ALL_AND_EXIT = 0,
-	FREE_ALL_EDIT
+	FREE_ALL_EDIT,
+	FREE_ONLY_EDIT_CHAR_LIST
 };
 
 /*
@@ -97,6 +98,7 @@ enum 					e_freenum
 # define CTRL_Y "\031"
 # define CTRL_W "\027"
 # define CTRL_T "\024"
+# define CTRL__ "\037"
 # define ALT_T "\033t"
 # define CTRL_X_CTRL_X "\030\030"
 # define TAB "\011"
@@ -201,8 +203,8 @@ typedef struct 				 s_term
 
 struct			s_last_command
 {
-	uint8_t				*buf;
-	int 				last_command_mode;
+	uint8_t				*buff;
+	int 				cursor_pos;// par rapport a la liste chainee.
 	t_last_command		*prev;
 };
 
@@ -213,6 +215,7 @@ typedef struct 					s_edit
 	t_last_command		*last_command;
 	t_char_list			char_list;
 	t_term				term_info;
+	int 				prompt_id;
 	int					reading;
 	int					ret_ctrl_c;
 	int					edit_mode;
@@ -244,6 +247,7 @@ uint8_t					*list_to_buff_print(t_char *curr, t_char *end);
 void					init_prompt(int prompt_id);
 uint8_t 				*prompt_to_buff(t_char_list *list);
 void					print_prompt(uint8_t *prompt, size_t prompt_len);
+int 					get_prompt_len(int prompt_id);
 void					clean_screen_from(int x, int y);
 void					clean_and_print(void);
 void					input_controller(void);
@@ -286,5 +290,6 @@ void					init_char_list(void);
 void					init_edit(void);
 void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
 void					handle_ctrl_c(void);
-
+void					add_to_undo_list(uint8_t *key, size_t keylen);
+void					undo_last_edit_command(void);
 #endif
