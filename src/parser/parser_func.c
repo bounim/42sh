@@ -45,6 +45,9 @@ static int	root_operator(t_lexer *lex, t_lexer_token *new)
 	{
 		if (new->ptype > cur->ptype)
 		{
+			if (!cur->right && (cur->ptype == PARSER_PIPE
+						|| cur->ptype == PARSER_AND_OR))
+				return (-1);
 			replace_node(lex, cur, new);
 			break ;
 		}

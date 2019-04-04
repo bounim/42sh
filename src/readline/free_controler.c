@@ -33,6 +33,28 @@ void	free_all_and_exit(void)
 	exit(0);
 }
 
+void	free_only_edit_char_list(void)
+{
+	t_char *curr;
+	t_char *tmp;
+
+	if (!(curr = g_shell.edit.char_list.head))
+		return ;
+	tmp = NULL;
+	while (curr)
+	{
+		/*printf("\n");
+		write(1, curr->charac, curr->len);*/
+		tmp = curr->next;
+		if (curr)
+			free(curr);
+		curr = NULL;
+		curr = tmp;
+	}
+	init_char_list();
+	g_shell.edit.point_char = NULL;
+}
+
 void	free_all_edit(void)
 {
 	t_char *curr;
@@ -54,8 +76,11 @@ void	free_all_edit(void)
 
 void	free_controler(int code)
 {
+	//printf("%d %d %d %d\n", code, FREE_ALL_EDIT, FREE_ALL_AND_EXIT, FREE_ONLY_EDIT_CHAR_LIST);
 	if (code == FREE_ALL_AND_EXIT)
 		free_all_and_exit();
 	if (code == FREE_ALL_EDIT)
 		free_all_edit();
+	if (code == FREE_ONLY_EDIT_CHAR_LIST)
+		free_only_edit_char_list();
 }

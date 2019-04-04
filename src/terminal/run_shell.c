@@ -74,6 +74,8 @@ static void		read_heredoc(t_lexer *lex, size_t *i)
 	return (-1);*/
 	(void)lex;
 	(void)i;
+	if (!lex->heredoc_head)
+		return ;
 }
 
 void			run_shell(void)
@@ -94,69 +96,16 @@ void			run_shell(void)
 			lex_a_line(&lex, determine_prompt(&lex), &i);
 		if (parser_create_tree(&lex) < 0)
 		{
-			ft_putstr("PARSER FAIL\n");
 			lexer_destroy(&lex);
 			continue ;
 		}
 		if (!parser_input_end(&lex))
 		{
-			ft_putstr("PARSER NOT END\n");
 			lex.input_end = 0;
 			continue ;
 		}
 		read_heredoc(&lex, &i);
 		execution(&lex);
 		lexer_destroy(&lex);
-		ft_putstr("CLEAN AFTER EXEC\n");
 	}
 }
-
-/*void		run_shell(void)
-{
-	t_lexer		lex;
-	e_prompt	prompt;
-	size_t		i;
-
-	prompt = BASIC_PROMPT;
-	ft_memset(&lex, 0, sizeof(lex));
-	while (1)
-	{
-		readline(prompt);
-		i = 0;
-		if (!g_shell.line || g_shell.edit.ret_ctrl_c)
-		{
-			lexer_destroy(&lex);
-			prompt = BASIC_PROMPT;
-			continue ;
-		}
-		while (1)
-		{
-			if (lexer(lex, g_shell.line + i, g_shell.line_size - i) < 0)
-			{
-				lexer_destroy(&lex);
-				fatal_exit(SH_ENOMEM);
-			}
-			if (!lex.input_end)
-			{
-				if (lex->line + lex->i == g_shell.line + g_shell.line_size)
-				{
-					prompt = BACKSLASH_PROMPT; // TODO determine best prompt
-					break ;
-				}
-				i += lex->i;
-			}
-			// TODO parser
-		}
-	}
-}*/
-
-/*void					run_shell(void)
-{
-	t_bool run;
-
-	run = TRUE;
-	while (run == TRUE)
-	{
-		// TODO
-	}
-}*/
