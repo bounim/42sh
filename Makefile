@@ -42,11 +42,13 @@ SRC := \
 	builtin/built_history.c \
 	builtin/built_cd.c \
 	builtin/built_cd_opts.c \
+	builtin/built_cd_extra.c \
 	builtin/built_echo.c \
 	builtin/built_env.c \
 	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
+	builtin/check_builtin.c \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
@@ -95,6 +97,8 @@ SRC := \
 	job_control/continue_job.c \
 	job_control/init_job.c \
 	job_control/creat_job.c \
+	job_control/job_info.c \
+	job_control/utils.c \
 	parser/parser.c \
 	parser/parser_destroy.c \
 	parser/parser_func.c \

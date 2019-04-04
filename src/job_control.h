@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:47:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 14:45:56 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 17:16:27 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct			s_proc
 	int				std_out;
 	int				my_pipe[2];
 	int				is_fork;
+	int				is_builtin;
 	struct s_proc	*next;
 };
 
@@ -47,7 +48,7 @@ int				my_tcsetpgrp(int fd, pid_t pgrp_id);
 pid_t			my_tcgetpgrp(int fd);
 void			put_in_foreground(t_job *job, int cont);
 void			put_in_background(t_job *job, int cont);
-void			launch_proc(t_proc *proc, pid_t pgid, int foreground, int in_file, int out_file);
+void			launch_proc(t_proc *proc, pid_t pgid, int foreground, int std_file[2]);
 void			launch_job(t_job *job, int foreground);
 int				mark_proc_status(pid_t pid, int status);
 void			wait_for_job(t_job *job);

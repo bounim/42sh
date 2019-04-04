@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:18:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 11:17:28 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:20:12 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int				check_opts(char **arg, t_opts *flag, char opts)
 
 	i = 1;
 	if (!(flag = init_flag(flag)))
-			return (-1);
+		return (-1);
 	while (arg[i])
 	{
 		if (arg[i][0] == '-')

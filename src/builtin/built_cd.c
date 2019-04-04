@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 19:25:02 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/02 17:06:54 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:19:05 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,63 +22,6 @@ static char	*cd_oldpwd(t_envl *envl)
 		return (NULL);
 	}
 	return (tmp);
-}
-
-static char	**canonic_path_rework_tab(char **cwd_t, int *k)
-{
-	char	**ret;
-	int		i;
-	int		j;
-
-	j = 0;
-	i = ft_arrlen(cwd_t);
-	if (!(ret = (char **)malloc(sizeof(char *) * i + 1)))
-		return (NULL);
-	ret[i + 1] = NULL;
-	i = 0;
-	j = 0;
-	while (cwd_t[i])
-	{
-		if (ft_strequ(cwd_t[i], ".."))
-		{
-			if (j > 0)
-				j--;
-		}
-		else if (!ft_strequ(cwd_t[i], "."))
-			ret[j++] = ft_strdup(cwd_t[i]);
-		i++;
-	}
-	*k = j;
-	return (ret);
-}
-
-static char	*rework_canonic_path(char *cwd)
-{
-	char	**cwd_t;
-	char	**ret_t;
-	int		i;
-	int		j;
-
-	if (!(cwd_t = ft_strsplit(cwd, '/')))
-	{
-		ft_strdel(&cwd);
-		return (NULL);
-	}
-	i = 0;
-	if (!(ret_t = canonic_path_rework_tab(cwd_t, &j)))
-		return (NULL);
-	ft_strdel(&cwd);
-	cwd = ft_strdup("");
-	if (j == 0)
-		cwd = ft_strdup("/");
-	while (i < j)
-	{
-		cwd = ft_strjoin(cwd, "/");
-		cwd = ft_strfjoin(cwd, ret_t[i++], 0);
-	}
-	ft_arrdel(cwd_t);
-	ft_arrdel(ret_t);
-	return (cwd);
 }
 
 static char	*search_path(char *arg, t_envl *envl, char *cwd)
@@ -157,6 +100,5 @@ int			built_cd(char **arg, t_envl *envl)
 		ft_strdel(&path);
 		path = getcwd(NULL, 0);
 	}
-	printf("path = %s\noldpwd = %s\n", path, oldpwd);
 	return (cd_push_env)(path, oldpwd);
 }

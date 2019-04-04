@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 18:20:17 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/04 14:58:12 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 18:35:58 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,13 @@ static void		read_heredoc(t_lexer *lex, size_t *i)
 		return ;
 }
 
-/*static void test_job(void)
+/*
+static void test_job(void)
 {
 	t_job	*new_job;
 	t_proc	*new_proc;
 
+	printf("je suis la \n");
 	new_job = NULL;
 	new_proc = NULL;
 	new_job = creat_job("ls -l | wc | pwd");
@@ -91,24 +93,26 @@ static void		read_heredoc(t_lexer *lex, size_t *i)
 	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
 	char *arg1[2] = {"wc", NULL};
 	new_proc = creat_proc(arg1, g_shell.envl, "/usr/bin/wc");
+	printf("is_builtin = %d\n", new_proc->is_builtin);
 	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-	char *arg2[2] = {"pwd", NULL};
-	new_proc = creat_proc(arg2, g_shell.envl, "/bin/pwd");
+	char *arg2[4] = {"set", "..", "/", NULL};
+	new_proc = creat_proc(arg2, g_shell.envl, "set");
 	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
 	g_shell.head_job = add_job(g_shell.head_job, new_job);
 	// NEW JOB HERE 
 	new_job = NULL;
 	new_proc = NULL;
 	new_job = creat_job("ls -a | echo salut les gens");
-	char *brg[3] = {"ls", "-a", NULL};
-	new_proc = creat_proc(brg, g_shell.envl, "/bin/ls");
+	char *brg[3] = {"set", "-R", NULL};
+	new_proc = creat_proc(brg, g_shell.envl, "set");
 	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
 //	char *brg1[2] = {"wc", NULL};
 //	new_proc = creat_proc(brg1, g_shell.envl, "/usr/bin/wc");
 //	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-	char *brg2[3] = {"echo", "salut les gens", NULL};
-	new_proc = creat_proc(brg2, g_shell.envl, "/bin/echo");
-	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
+//	char *brg2[3] = {"echo", "salut les gens", NULL};
+//	new_proc = creat_proc(brg2, g_shell.envl, "/bin/echo");
+//	printf("is_builtin = %d\n", new_proc->is_builtin);
+//	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
 	
 	printf("1icika\n");
 //	g_shell.head_job = add_job(g_shell.head_job, new_job);
@@ -116,8 +120,6 @@ static void		read_heredoc(t_lexer *lex, size_t *i)
 	printf("1ici\n");
 	printf("ici\n");
 	launch_job(g_shell.head_job, 1);
-	printf("la\n");
-	launch_job(new_job, 1);
 	printf("fin\n");
 }*/
 
@@ -149,7 +151,6 @@ void			run_shell(void)
 		}
 		read_heredoc(&lex, &i);
 	//	execution(&lex);
-	//	test_job();
 		lexer_destroy(&lex);
 	}
 }

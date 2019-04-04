@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:14 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 13:43:27 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 16:34:15 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_job	*find_job(pid_t pgid)
 	return (NULL);
 }
 
-int	job_is_stop(t_job *job)
+int		job_is_stop(t_job *job)
 {
 	t_proc	*proc;
 
@@ -40,7 +40,7 @@ int	job_is_stop(t_job *job)
 	return (1);
 }
 
-int	job_is_finish(t_job *job)
+int		job_is_finish(t_job *job)
 {
 	t_proc	*proc;
 
@@ -52,21 +52,6 @@ int	job_is_finish(t_job *job)
 		proc = proc->next;
 	}
 	return (1);
-}
-
-int	my_tcsetpgrp(int fd, pid_t pgrp_id)
-{
-	return (ioctl(fd, TIOCSPGRP, &pgrp_id));
-}
-
-pid_t	my_tcgetpgrp (int fd)
-{
-	int pgrp;
-	
-	pgrp = 0;
-	if (ioctl(fd, TIOCGPGRP, &pgrp) < 0)
-		return ((pid_t)-1);
-	return ((pid_t)pgrp);
 }
 
 void	free_job(t_job *job)
@@ -82,7 +67,7 @@ void	free_job(t_job *job)
 void	free_proc(t_proc *proc)
 {
 	t_proc	*tmp;
-	int	i;
+	int		i;
 
 	tmp = proc;
 	while (proc)

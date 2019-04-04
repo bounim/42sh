@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:38:54 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 14:40:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 17:24:56 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_proc	*creat_proc(char **arg, t_envl *envl, char *path)
 	if (!(new = init_proc(new)))
 		return (NULL);
 	new->arg = ft_arrdup(arg);
+	new->is_builtin = check_builtin(arg[0]);
 	new->env = envl_to_envarr(envl);
 	new->path = ft_strdup(path);
 	return (new);

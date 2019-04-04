@@ -6,13 +6,23 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 14:45:29 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 18:34:42 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int in_file, int out_file)
+static void	set_signal_dfl(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);
+}
+
+void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int std_file[2])
 {
 	pid_t	pid;
 
@@ -24,25 +34,24 @@ void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int in_file, int out_
 		setpgid(pid, pgid);
 		if (foreground)
 			my_tcsetpgrp(g_shell.term, pgid);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGTSTP, SIG_DFL);
-		signal(SIGTTIN, SIG_DFL);
-		signal(SIGTTOU, SIG_DFL);
-		signal(SIGCHLD, SIG_DFL);
+		set_signal_dfl();
 	}
-	if (in_file != STDIN_FILENO)
+	if (std_file[0] != STDIN_FILENO)
 	{
-		dup2(in_file, STDIN_FILENO);
-		close(in_file);
+		dup2(std_file[0], STDIN_FILENO);
+		close(std_file[0]);
 	}
-	if (out_file != STDOUT_FILENO)
+	if (std_file[1] != STDOUT_FILENO)
 	{
-		dup2(out_file, STDOUT_FILENO);
-		close(out_file);
+		dup2(std_file[1], STDOUT_FILENO);
+		close(std_file[1]);
 	}
-	execve(proc->path, proc->arg, proc->env);
-	fatal_exit(7);
+	if (!proc->is_builtin)
+	{
+		execve(proc->path, proc->arg, proc->env);
+		fatal_exit(7);
+	}
+	start_builtin(proc->arg, g_shell.envl);
 }
 
 void	launch_job(t_job *job, int foreground)
@@ -50,10 +59,9 @@ void	launch_job(t_job *job, int foreground)
 	t_proc	*proc;
 	pid_t	pid;
 	int		my_pipe[2];
-	int		in_file;
-	int		out_file;
+	int		std_file[2];
 
-	in_file = STDIN_FILENO;
+	std_file[0] = STDIN_FILENO;
 	proc = job->head_proc;
 	while (proc)
 	{
@@ -64,13 +72,19 @@ void	launch_job(t_job *job, int foreground)
 				ft_putstr_fd("pipe failed\n", 2);
 				return ;
 			}
-			out_file = my_pipe[1];
+			std_file[1] = my_pipe[1];
 		}
 		else
-			out_file = STDOUT_FILENO;
-		pid = fork();
+			std_file[1] = STDOUT_FILENO;
+		if (proc->next || !proc->is_builtin)
+		{
+			printf("fork created\n");
+			pid = fork();
+		}
 		if (pid == 0)
-			launch_proc(proc, job->pgid, foreground, in_file, out_file);
+			launch_proc(proc, job->pgid, foreground, std_file);
+		else if (proc->is_builtin && !proc->next)
+			start_builtin(proc->arg, g_shell.envl);
 		else if (pid < 0)
 		{
 			ft_putstr_fd("fork failed\n", 2);
@@ -86,11 +100,11 @@ void	launch_job(t_job *job, int foreground)
 				setpgid(pid, job->pgid);
 			}
 		}
-		if (in_file != STDIN_FILENO)
-			close(in_file);
-		if (out_file != STDOUT_FILENO)
-			close(out_file);
-		in_file = my_pipe[0];
+		if (std_file[0] != STDIN_FILENO)
+			close(std_file[0]);
+		if (std_file[1] != STDOUT_FILENO)
+			close(std_file[1]);
+		std_file[0] = my_pipe[0];
 		proc = proc->next;
 	}
 	format_job_info(job, "launched");
