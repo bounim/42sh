@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:47:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 13:53:44 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:45:56 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ struct			s_job
 	t_proc			*head_proc;
 	pid_t			pgid;
 	char			notified;
-	int				std_in;
-	int				std_out;
 	t_termios		tmodes;
 	struct s_job	*next;
 };
@@ -62,5 +60,9 @@ void			free_job(t_job *job);
 void			free_proc(t_proc *proc);
 t_job			*init_job(t_job *job);
 t_proc			*init_proc(t_proc *proc);
+t_job			*creat_job(char *cmd);
+t_proc			*creat_proc(char **arg, t_envl *envl, char *path);
+t_job			*add_job(t_job *head, t_job *new_job);
+t_proc			*add_proc(t_proc *head, t_proc *new_proc);
 
 #endif

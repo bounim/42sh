@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:20:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 13:53:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:46:18 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ t_job	*init_job(t_job *job)
 	job->head_proc = NULL;
 	job->pgid = 0;
 	job->notified = 0;
-	job->std_in = 0;
-	job->std_out = 0;
 	//job->tmodes = ?;
 	job->next = NULL;
 	return (job);
