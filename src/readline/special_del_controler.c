@@ -110,7 +110,7 @@ void	delete_word_backward(void)
 	while (tmp && !tmp->prev->is_prompt && (ft_u8_is_alnum(tmp->prev->charac[0])
 		&& ft_memcmp(tmp->prev->charac, NBSP, 2) != 0))
 		tmp = tmp->prev;
-	if (tmp->y_pos < 0)
+	if (tmp->y_pos < 0 || tmp->prev->y_pos < 0)
 		return ;
 	if (g_shell.edit.cpy_buff)
 		free(g_shell.edit.cpy_buff);

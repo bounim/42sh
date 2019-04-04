@@ -37,7 +37,7 @@ void			get_next_history(void)
 	switch_history();
 	if (g_shell.hist.history_save == 0)
 	{
-		//free_controller()
+		free_controler(FREE_ONLY_EDIT_CHAR_LIST);
 		g_shell.edit.point_char = NULL;
 		g_shell.edit.cur_base_x = 0;
 		init_char_list();
