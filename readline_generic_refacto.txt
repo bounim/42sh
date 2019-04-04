@@ -51,6 +51,9 @@ MANDATORY
 																			position du curseur par rapport a la liste chainee.
 																		
 
+
+14. SEGFAULT (04/04/2019): Lorsque on ecrit plus que la taille du terminal et qu'on delete avec ctrl + w quand on peut et del autrement, au dernier delete avant de voir le prompt reaparaitre ca pete
+
 OPTIONAL
 raw_terminal, cooked_terminal.
 Input_controller, put readig state in options.

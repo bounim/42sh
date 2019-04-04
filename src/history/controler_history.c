@@ -121,16 +121,13 @@ void	print_historyl(t_history *hist)
 
 void	print_history(void)
 {
-	uint8_t *prompt;
-
-	//free_all()
+	if (g_shell.edit.cur_base_y < 0)
+		g_shell.edit.cur_base_y = 0;
+	free_controler(FREE_ONLY_EDIT_CHAR_LIST);
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
 	init_prompt(BASIC_PROMPT);
-	prompt = prompt_to_buff(&g_shell.edit.char_list);
-	print_prompt(prompt, ft_ustrlen(prompt));
-	free(prompt);
 	buff_to_charlist(g_shell.hist.history->buf);
-	clean_and_print(); //YEN A 2 UN DANS BUFF TO CHARLIST LAUTRE LA
+	clean_and_print();
 }
