@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 17:19:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:45:29 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	launch_job(t_job *job, int foreground)
 	int		in_file;
 	int		out_file;
 
-	in_file = job->std_in;
+	in_file = STDIN_FILENO;
 	proc = job->head_proc;
 	while (proc)
 	{
@@ -67,7 +67,7 @@ void	launch_job(t_job *job, int foreground)
 			out_file = my_pipe[1];
 		}
 		else
-			out_file = job->std_out;
+			out_file = STDOUT_FILENO;
 		pid = fork();
 		if (pid == 0)
 			launch_proc(proc, job->pgid, foreground, in_file, out_file);
@@ -86,9 +86,9 @@ void	launch_job(t_job *job, int foreground)
 				setpgid(pid, job->pgid);
 			}
 		}
-		if (in_file != job->std_in)
+		if (in_file != STDIN_FILENO)
 			close(in_file);
-		if (out_file != job->std_out)
+		if (out_file != STDOUT_FILENO)
 			close(out_file);
 		in_file = my_pipe[0];
 		proc = proc->next;
