@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:47:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 17:20:35 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 13:53:44 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ struct			s_job
 	char			notified;
 	int				std_in;
 	int				std_out;
-	int				std_err;
 	t_termios		tmodes;
 	struct s_job	*next;
 };
