@@ -6,13 +6,13 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 16:58:34 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 18:48:14 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:57:11 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-int 	get_prompt_len(int prompt_id)
+int		get_prompt_len(int prompt_id)
 {
 	if (prompt_id == BASIC_PROMPT)
 		return (7);

@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 18:50:04 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:55:51 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int	compare_key(uint8_t *key, size_t keylen, size_t ki)
 	}
 	return (NO_MATCH);
 }
-
 
 static int	check_key(uint8_t *key, size_t *keylen)
 {

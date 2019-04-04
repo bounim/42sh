@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:47:15 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 19:47:17 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:56:26 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	replace_char_list(t_last_command *last_command)
 {
 	uint8_t *buff;
-	int 	i;
+	int		i;
 	size_t	len;
 
 	buff = last_command->buff;
@@ -37,7 +37,7 @@ void	delete_last_command(t_last_command *last)
 	last = NULL;
 }
 
-int 	check_if_undo_doable(t_last_command *last)
+int		check_if_undo_doable(t_last_command *last)
 {
 	if (!last)
 		return (-1);

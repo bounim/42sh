@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:17 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/11 14:43:22 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/04 14:54:36 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	free_only_edit_char_list(void)
 	tmp = NULL;
 	while (curr)
 	{
-		/*printf("\n");
-		write(1, curr->charac, curr->len);*/
 		tmp = curr->next;
 		if (curr)
 			free(curr);
@@ -76,7 +74,6 @@ void	free_all_edit(void)
 
 void	free_controler(int code)
 {
-	//printf("%d %d %d %d\n", code, FREE_ALL_EDIT, FREE_ALL_AND_EXIT, FREE_ONLY_EDIT_CHAR_LIST);
 	if (code == FREE_ALL_AND_EXIT)
 		free_all_and_exit();
 	if (code == FREE_ALL_EDIT)

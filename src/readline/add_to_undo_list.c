@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 12:06:45 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/03 12:06:46 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:53:43 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_last_command(void)
 {
-	t_last_command 	*head;
+	t_last_command	*head;
 	t_char			*begin;
 	t_char			*end;
 
@@ -42,12 +42,12 @@ void	add_buff_to_undo(void)
 	g_shell.edit.last_command = tail;
 }
 
-int 	compare_both_buff(t_char *begin, t_char *end, uint8_t *last_buff)
+int		compare_both_buff(t_char *begin, t_char *end, uint8_t *last_buff)
 {
 	uint8_t	*actual_buff;
 	size_t	a_len;
 	size_t	l_len;
-	int 	ret;
+	int		ret;
 
 	actual_buff = list_to_buff_print(begin, end);
 	a_len = ft_u8_strlen(actual_buff);
@@ -59,7 +59,7 @@ int 	compare_both_buff(t_char *begin, t_char *end, uint8_t *last_buff)
 	return (ret);
 }
 
-int 	check_for_add_to_undo_list(uint8_t *key, size_t keylen)
+int		check_for_add_to_undo_list(uint8_t *key, size_t keylen)
 {
 	if (!key)
 		return (1);
@@ -76,5 +76,5 @@ void	add_to_undo_list(uint8_t *key, size_t keylen)
 		init_last_command();
 	else if (compare_both_buff(g_shell.edit.char_list.head,\
 		NULL, g_shell.edit.last_command->buff) != 0)
-	add_buff_to_undo();
+		add_buff_to_undo();
 }
