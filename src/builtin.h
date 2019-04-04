@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 17:23:39 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 18:54:47 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	builtin functions header
 */
 
-struct					s_opts
+struct		s_opts
 {
 	int		a;
 	int		p;
@@ -28,22 +28,21 @@ struct					s_opts
 	int		i;
 };
 
-struct					s_opt_jobs
+struct		s_opt_jobs
 {
 	int		l;
 	int		p;
 };
 
-struct					s_alias
+struct		s_alias
 {
-	char				*name;
-	char				*value;
-	struct s_alias		*next;
+	char			*name;
+	char			*value;
+	struct s_alias	*next;
 };
 
-/*void		built_history(t_rl rl);*/
-
-char		*replace_exclaim(char *line, t_history *hist, char *bfr, char *next);
+char		*replace_exclaim(char *line, t_history *hist,
+									char *bfr, char *next);
 char		*find_exclaim(char *word, t_history *hist);
 int			built_cd(char **arg, t_envl *envl);
 char		*rework_canonic_path(char *cwd);
