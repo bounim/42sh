@@ -47,6 +47,14 @@ enum							e_parser_type
 ** cannot_append: delimited token
 */
 
+typedef struct s_argv	t_argv;
+
+struct					s_argv
+{
+	char	*buffer;
+	t_argv	*next;
+};
+
 typedef struct s_lexer_token	t_lexer_token;
 
 struct							s_lexer_token
@@ -58,6 +66,10 @@ struct							s_lexer_token
 	size_t						line_x;
 	uint8_t						*buffer;
 	size_t						size;
+	char						**argv;
+	t_argv						*argv_head;
+	t_argv						*argv_foot;
+	size_t						argc;
 	int							cannot_append;
 	int							is_number;
 	t_lexer_token				*parent;

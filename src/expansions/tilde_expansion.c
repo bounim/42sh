@@ -175,9 +175,9 @@ size_t	get_tilde_prefix(t_lexer_token *token, size_t start, char assign)
 	size_t	i;
 
 	i = start;
-	while (i < token->size && (quoted(token->buffer, i) || (token->buffer[i] != '/' && (assign == 0 || token->buffer[i] != ':'))))
+	while (i < token->size && (quoted(token->buffer, i) || (token->buffer[i] != '/'
+					&& (assign == 0 || token->buffer[i] != ':'))))
 		i++;
-	printf("LEN = %zu\n", i - start);
 	return (i - start);
 }
 
