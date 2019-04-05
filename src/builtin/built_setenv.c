@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:30:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 16:24:56 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:18:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static int	start_setenv(char **arg, t_envl **envl)
 
 int			built_setenv(char **arg, t_envl *envl)
 {
-	if (envl)
-	{
-		free_envl(g_shell.envl);
-		g_shell.envl = dup_envl(envl);
-	}
+	t_envl	*tmp;
+
+	tmp = dup_envl(envl);
+	free_envl(g_shell.envl);
+	g_shell.envl = tmp;
 	return (start_setenv(arg, &g_shell.envl));
 }

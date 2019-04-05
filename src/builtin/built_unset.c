@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 12:00:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:29:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:17:15 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,13 @@ int				built_unset(char **arg, t_envl *envl)
 {
 	int	i;
 	int	len;
+	t_envl	*tmp;
 
+	tmp = dup_envl(envl);
+	free_envl(g_shell.envl);
+	g_shell.envl = tmp;
 	len = 0;
 	i = 1;
-	if (envl)
-	{
-		free_envl(g_shell.envl);
-		g_shell.envl = dup_envl(envl);
-	}
 	while (arg[len])
 		len++;
 	if (len < 2)
