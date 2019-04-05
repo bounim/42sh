@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/02 10:13:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:34:38 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void			init_shell(int ac, char **av, char **env)
 		return ;
 	g_shell.term_set = 1;
 	/* job control start */
-	while (my_tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
+	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
 		kill(-g_shell.pgid, SIGTTIN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -55,7 +55,7 @@ void			init_shell(int ac, char **av, char **env)
 		ft_putstr_fd("Couldn't put the shell in its own process group\n", 2);
 		exit (1);
 	}
-	my_tcsetpgrp(g_shell.term, g_shell.pgid);
+	tcsetpgrp(g_shell.term, g_shell.pgid);
 	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) ||\
 			tcgetattr(g_shell.term, &(g_shell.raw_tio)))
 		fatal_exit(SH_EINVAL);

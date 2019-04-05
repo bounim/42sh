@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 18:20:17 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/04 18:35:58 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:41:36 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void			run_shell(void)
 			continue ;
 		}
 		read_heredoc(&lex, &i);
-	//	execution(&lex);
+		execution(&lex);
 		lexer_destroy(&lex);
 	}
 }

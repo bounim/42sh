@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:08 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/27 13:39:56 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:34:56 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	put_in_foreground(t_job *job, int cont)
 {
-	my_tcsetpgrp(g_shell.term, job->pgid);
+	tcsetpgrp(g_shell.term, job->pgid);
 	if (cont)
 	{
 		tcsetattr(g_shell.term, TCSADRAIN, &job->tmodes);
@@ -22,7 +22,7 @@ void	put_in_foreground(t_job *job, int cont)
 			ft_putstr_fd("kill (SIGCONT)\n", 2);
 	}
 	wait_for_job(job);
-	my_tcsetpgrp(g_shell.term, g_shell.pgid);
+	tcsetpgrp(g_shell.term, g_shell.pgid);
 	tcgetattr(g_shell.term, &job->tmodes);
 	tcsetattr(g_shell.term, TCSADRAIN, &g_shell.cooked_tio);
 }

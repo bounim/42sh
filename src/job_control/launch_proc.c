@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:58:21 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 19:00:40 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:35:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int std_file[2])
 			pgid = pid;
 		setpgid(pid, pgid);
 		if (foreground)
-			my_tcsetpgrp(g_shell.term, pgid);
+			tcsetpgrp(g_shell.term, pgid);
 		set_signal_dfl();
 	}
 	dup_close_file(std_file);
