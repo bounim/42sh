@@ -45,7 +45,7 @@ typedef struct 			s_searchmap
 
 
 t_history			*init_shell_history(void);
-void				update_base_y_in_search(uint8_t *buff);
+void				update_base_y_in_search(uint8_t *buff, int i);
 void				print_history(void);
 void				switch_history(void);
 t_history			*rl_new_hist(uint8_t *buf);
@@ -65,4 +65,5 @@ void				resize_history(t_history *hist);
 void				free_history(t_history *hist);
 void				print_search_prompt(void);
 void				print_search_result(t_history *curr);
+void				build_search_buff(uint8_t *key, size_t *keylen);
 #endif

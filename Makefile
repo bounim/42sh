@@ -25,6 +25,7 @@ SRC := \
 	history/resize_history.c \
 	history/free_history.c \
 	history/print_search.c \
+	history/history_utils.c \
 	lexer/func.c \
 	lexer/func2.c \
 	lexer/func3.c \

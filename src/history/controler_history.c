@@ -6,43 +6,17 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 13:33:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 12:53:55 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 17:04:14 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-uint8_t			*list_to_buf(void)
-{
-	uint8_t		*ret;
-	t_char		*tmp;
-	int			buff_size;
-	int			i;
-
-	if ((tmp = skip_prompt(g_shell.edit.char_list.head)) == NULL)
-		return (NULL);
-	buff_size = get_buf_size(tmp, NULL);
-	if (!(ret = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 1))))
-	{
-		fatal_exit(SH_ENOMEM);
-		return (NULL);
-	}
-	ret[buff_size] = '\0';
-	i = 0;
-	while (tmp)
-	{
-		ft_memmove(ret + i, tmp->charac, tmp->len);
-		i += tmp->len;
-		tmp = tmp->next;
-	}
-	return (ret);
-}
-
 void	switch_history(void)
 {
 	t_history	*head;
 	int			i;
-	uint8_t 	*buf;
+	uint8_t		*buf;
 
 	i = 0;
 	buf = list_to_buf();
@@ -77,7 +51,7 @@ int		listlen(t_history *list)
 	return (i);
 }
 
-void		buff_to_charlist(uint8_t *buf)
+void	buff_to_charlist(uint8_t *buf)
 {
 	size_t		i;
 	ssize_t		r;

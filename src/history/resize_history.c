@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 12:12:34 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 15:47:44 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:08:09 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void		resize_history(t_history *hist)
 
 	tmp = hist;
 	stock = g_shell.hist.history_size;
-	if ((max = ft_atoi(get_env_val(g_shell.envl, "HISTSIZE"))) <= 0 || max > 50000)
+	if ((max = ft_atoi(get_env_val(g_shell.envl, "HISTSIZE")))
+			<= 0 || max > 50000)
 		max = 50000;
 	if (stock > max)
 	{

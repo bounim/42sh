@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:09:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/18 15:09:54 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:04:42 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ static t_searchmap	g_searchmap[SEARCHMAP_SIZE] = {
 	{ESC, 1, give_up_search},
 	{TAB, 1, back_to_readline}
 };
-
-void	build_search_buff(uint8_t *key, size_t *keylen)
-{
-	ft_memmove(g_shell.hist.search_buff + g_shell.hist.search_len, key, *keylen);
-	g_shell.hist.search_len += *keylen;
-}
 
 void	check_printable_for_search(uint8_t *key, size_t *keylen)
 {
@@ -51,7 +45,7 @@ int		search_compare_key(uint8_t *key, size_t keylen, size_t ki)
 int		check_key_for_search(uint8_t *key, size_t *keylen)
 {
 	size_t	ki;
-	int 	check;
+	int		check;
 
 	ki = 0;
 	while (ki < sizeof(g_searchmap) / sizeof(g_searchmap[0]))

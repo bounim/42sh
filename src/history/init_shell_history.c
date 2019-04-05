@@ -6,12 +6,11 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/26 12:13:07 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 12:00:53 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
 
 static void			check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd)
 {
@@ -21,15 +20,12 @@ static void			check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd)
 	while (i < rd)
 	{
 		if (buf[i] == '\0')
-		{
 			fatal_exit(SH_ENOMEM);
-			//To do : corrupt file '\0'; => in fatal_exit
-		}
 		i++;
 	}
 }
 
-static uint8_t		*get_histfile_content()
+static uint8_t		*get_histfile_content(void)
 {
 	uint8_t			*ret;
 	uint8_t			buf[BUFF_SIZE + 1];
@@ -56,7 +52,8 @@ static uint8_t		*get_histfile_content()
 	return (ret);
 }
 
-static void			build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i, size_t j)
+static void			build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i,\
+		size_t j)
 {
 	size_t			ind;
 
@@ -69,7 +66,8 @@ static void			build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i, size_t j)
 	}
 }
 
-static size_t		skip_backslash(const uint8_t *str, size_t *i, size_t j, int bs)
+static size_t		skip_backslash(const uint8_t *str, size_t *i, size_t j,\
+		int bs)
 {
 	size_t			len;
 
@@ -116,7 +114,7 @@ static t_history	*parse_histfile_content(uint8_t *cont)
 		if (cont[i] == '\n')
 		{
 			len = skip_backslash(cont, &i, j, 0);
-			if (!(tmp = (uint8_t*)malloc(sizeof(uint8_t) * (len + 1)))) // on rajoute pas +1 parce que le i est a un \n quon veut pas
+			if (!(tmp = (uint8_t*)malloc(sizeof(uint8_t) * (len + 1))))
 				fatal_exit(SH_ENOMEM);
 			tmp[len] = '\0';
 			build_tmp(tmp, cont, i, j);
@@ -135,8 +133,8 @@ static t_history	*parse_histfile_content(uint8_t *cont)
 
 t_history			*init_shell_history(void)
 {
-	t_history		*ret;
-	uint8_t 		*cont;
+	t_history	*ret;
+	uint8_t		*cont;
 
 	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
 	g_shell.hist.search_len = 0;

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 12:09:09 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/02 17:13:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/04 17:06:49 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_history(t_history *hist)
 {
 	t_history *tmp;
-	
+
 	while (hist)
 	{
 		tmp = hist;

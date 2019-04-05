@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 17:16:59 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/18 17:17:02 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:03:10 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	del_charac_in_search(void)
 {
-	int 	i;
-	int 	c;
+	int	i;
+	int	c;
 
 	if (g_shell.hist.search_len == 0)
 		return ;
 	i = g_shell.hist.search_len - 1;
 	c = 1;
-	while (i >= 0 && g_shell.hist.search_buff[i] >= 128 && g_shell.hist.search_buff[i] <= 191)
+	while (i >= 0 && g_shell.hist.search_buff[i] >= 128
+			&& g_shell.hist.search_buff[i] <= 191)
 	{
 		i--;
 		c++;
@@ -59,11 +60,11 @@ void	execute_search_command(void)
 	g_shell.edit.reading = 42;
 }
 
-void 	back_to_readline(void)
+void	back_to_readline(void)
 {
-	t_history 	*curr;
+	t_history	*curr;
 	t_history	*tail;
-	int 		ret;
+	int			ret;
 
 	ret = 1;
 	if (find_in_history(1) == 0)
@@ -81,7 +82,7 @@ void 	back_to_readline(void)
 	if (ret == 1)
 		print_history();
 	g_shell.hist.history = tail;
-	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));	
+	ft_memset(g_shell.hist.search_buff, 0, sizeof(*g_shell.hist.search_buff));
 	g_shell.hist.search_len = 0;
 	clean_and_print();
 }
@@ -89,7 +90,7 @@ void 	back_to_readline(void)
 int		find_in_history(int save)
 {
 	t_history	*curr;
-	int 		ret;
+	int			ret;
 
 	ret = 0;
 	curr = g_shell.hist.history;
