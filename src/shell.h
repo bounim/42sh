@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/22 18:59:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:15:57 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ extern t_shell				g_shell;
 struct						s_shell
 {
 	t_edit					edit;
-	int					term;
+	int						term;
 	size_t 					term_set;
 	uint8_t 				el_mode;
 	uint8_t					*line;
 	size_t					line_size;
-	int					is_interactive;
+	int						is_interactive;
 	t_alias					*alias;
 	t_envl					*envl;
 	t_hist					hist;

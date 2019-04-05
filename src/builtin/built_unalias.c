@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:09:41 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:19:40 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,27 @@ int			unset_alias(char *arg, t_alias **alias)
 	return (1);
 }
 
-int			built_unalias(char **arg, t_alias **alias)
+int			built_unalias(char **arg, t_envl *envl)
 {
 	int	opts;
 	int	i;
 	int	ret;
 
+	(void)envl;
 	ret = 0;
-	if (!alias || *alias == NULL)
+	if (!g_shell.alias)
 		return (1);
 	if ((i = start_arg_unalias(arg, &opts)) == -1)
 		return (1);
 	if (opts == 1)
-		free_alias(*alias);
+		free_alias(g_shell.alias);
 	else
 	{
 		while (arg[i])
 		{
-			if (!alias || !*alias)
+			if (!g_shell.alias)
 				break ;
-			ret += unset_alias(arg[i], alias);
+			ret += unset_alias(arg[i], &g_shell.alias);
 			i++;
 		}
 	}

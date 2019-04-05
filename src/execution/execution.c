@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/26 15:23:04 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:24:59 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		execution(t_lexer *lex)
 			// TODO $?
 			return ;
 		}
-		if (!start_builtin(av, NULL))
+		if (!start_builtin(av, g_shell.envl))
 		{
 			// TODO exec
 		}

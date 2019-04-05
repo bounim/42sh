@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:53:53 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 12:10:38 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:20:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ static int	print_error_fg(int nb)
 	return (1);
 }
 
-int			built_fg(char **arg, t_job *job)
+int			built_fg(char **arg, t_envl *envl)
 {
 	int		i;
 	int		j;
+	t_job	*job;
 
-	if (!job)
+	(void)envl;
+	if (!(job = g_shell.head_job))
 		return (1);
 	if ((i = check_opts_fg(arg)) == -1)
 		return (1);
