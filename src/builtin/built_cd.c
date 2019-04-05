@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 19:25:02 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 13:54:20 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:15:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,14 @@ static char	*cd_oldpwd(t_envl *envl)
 	return (tmp);
 }
 
-static char	*search_path(char *arg, t_envl *envl, char *cwd)
+static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 {
+	if (opts)
+		return (ft_strdup(arg));
 	if (!arg)
 	{
 		if (!(cwd = ft_strdup(get_env_val(envl, "HOME"))))
-		{
 			ft_putendl_fd("cd: HOME not set", 2);
-			return (NULL);
-		}
 		return (cwd);
 	}
 	if (!ft_strnequ(arg, "/", 1))
@@ -84,9 +83,7 @@ int			built_cd(char **arg, t_envl *envl)
 	opts = 0;
 	if (!(i = cd_first_arg(arg, &opts)))
 		return (1);
-	if (opts)
-		path = ft_strdup(*(arg + i));
-	else if (!(path = search_path(*(arg + i), envl, NULL)))
+	else if (!(path = search_path(*(arg + i), envl, NULL, opts)))
 		return (1);
 	if (!(oldpwd = ft_strdup(get_env_val(envl, "PWD"))))
 	{
@@ -95,10 +92,12 @@ int			built_cd(char **arg, t_envl *envl)
 	}
 	if (chdir(path))
 		return (cd_path_failed_perror(*(arg + i), path, oldpwd));
+	if (ft_strequ(arg[i], "-"))
+		ft_putendl(path);
 	if (opts)
 	{
 		ft_strdel(&path);
 		path = getcwd(NULL, 0);
 	}
-	return (cd_push_env)(path, oldpwd);
+	return (cd_push_env(path, oldpwd));
 }
