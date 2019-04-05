@@ -6,11 +6,27 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:38:54 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 19:11:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:55:21 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+
+t_job	*creat_job_list(char **arg)
+{
+	t_job	*new_job;
+	t_proc	*new_proc;
+	char	*path;
+
+	new_job = NULL;
+	new_proc = NULL;
+	if (!(path = find_path(arg[0], g_shell.envl)))
+		return (NULL);
+	new_job = creat_job(arg[0]);
+	new_proc = creat_proc(arg, g_shell.envl, path);
+	new_job->head_proc = new_proc;
+	return (new_job);
+}
 
 t_job	*creat_job(char *cmd)
 {

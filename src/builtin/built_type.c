@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 16:25:51 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:48:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static int			name_is_file(char *name, t_envl *envl, int is_file)
 			is_file = TRUE;
 			break ;
 		}
+		ft_strdel(&fullpath);
 		i++;
 	}
 	ft_arrdel(paths);

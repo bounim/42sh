@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/05 15:57:28 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:43:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static char	**arg_to_argv(t_lexer_token *head)
 void		execution(t_lexer *lex)
 {
 	char	**av;
+	t_job	*tmp;
 
 	if (lex->root == NULL)
 		return ;
@@ -66,10 +67,17 @@ void		execution(t_lexer *lex)
 			// TODO $?
 			return ;
 		}
-		if (!start_builtin(av, g_shell.envl))
+		g_shell.head_job = creat_job_list(av);
+		tmp = g_shell.head_job;
+		while (tmp)
+		{
+			launch_job(tmp, 1);
+			tmp = tmp->next;
+		}
+		/*if (!start_builtin(av, g_shell.envl))
 		{
 			// TODO exec
-		}
+		}*/
 		command_redir_restore(lex->root);
 		resize_history(g_shell.hist.history);
 	}

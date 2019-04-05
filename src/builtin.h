@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 14:45:01 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:51:23 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ int			check_opts(char **arg, t_opts *flag, char opts);
 int			start_builtin(char **arg, t_envl *envl);
 int			built_debug(char **arg, t_envl *envl);
 int			built_exit(char **arg, t_envl *envl);
+char		*find_path(char *cmd, t_envl *envl);
 
 #endif
