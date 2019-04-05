@@ -57,7 +57,7 @@ void		execution(t_lexer *lex)
 
 	if (lex->root == NULL)
 		return ;
-	if (lex->root->type != PARSER_COMMAND || !lex->root->arg_head)
+	if (lex->root->ptype != PARSER_COMMAND || !lex->root->arg_head)
 		return ;
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{

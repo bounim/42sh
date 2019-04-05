@@ -45,6 +45,6 @@ int								parser_add_tree(t_lexer *lex, t_lexer_token *n);
 void							parser_destroy(t_lexer *lex);
 void							structure(t_lexer_token *root, int level);
 
-//void							do_expansions(t_lexer *lex);
+void							do_expansions(t_lexer_token *root);
 
 #endif
