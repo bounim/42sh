@@ -1,106 +1,83 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_builtin.c                                    :+:      :+:    :+:   */
+/*   start_builtin2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/21 15:52:24 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 17:31:50 by khsadira         ###   ########.fr       */
+/*   Created: 2019/04/05 14:03:50 by khsadira          #+#    #+#             */
+/*   Updated: 2019/04/05 15:21:15 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static int	start_builtin_env(char **arg, t_envl *env)
+static int	init_ptr_func(int (*func[18])(char **arg, t_envl *envl))
 {
-	if (ft_strequ(arg[0], "alias"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_alias(arg, &g_shell.alias)), 0);
-	else if (ft_strequ(arg[0], "unalias"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unalias(arg, &g_shell.alias)), 0);
-	else if (ft_strequ(arg[0], "export"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_export(arg, env)), 0);
-	else if (ft_strequ(arg[0], "cd"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_cd(arg, env)), 0);
-	else if (ft_strequ(arg[0], "debug"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_debug(arg)), 0);
-	else if (ft_strequ(arg[0], "echo"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_echo(arg)), 0);
-	else if (ft_strequ(arg[0], "env"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_env(arg, env)), 0);
-	else if (ft_strequ(arg[0], "history"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_history(arg, &g_shell.hist.history)), 0);
-	else if (ft_strequ(arg[0], "set"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_set(env)), 0);
-	else if (ft_strequ(arg[0], "setenv"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_setenv(arg, env)), 0);
-	else if (ft_strequ(arg[0], "unset"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unset(arg, env)), 0);
-	else if (ft_strequ(arg[0], "unsetenv"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unsetenv(arg, env)), 0);
-	else if (ft_strequ(arg[0], "type"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_type(arg, env)), 0);
-	else if (ft_strequ(arg[0], "exit"))
-		exit(built_exit(arg));
-	else
-		return (0);
-	return (1);
+	func[0] = built_cd;
+	func[1] = built_echo;
+	func[2] = built_env;
+	func[3] = built_setenv;
+	func[4] = built_unsetenv;
+	func[5] = built_set;
+	func[6] = built_unset;
+	func[7] = built_export;
+	func[8] = built_alias;
+	func[9] = built_unalias;
+	func[10] = built_history;
+	func[11] = built_fg;
+	func[12] = built_bg;
+	func[13] = built_jobs;
+	func[14] = built_type;
+	func[15] = built_debug;
+	func[16] = built_exit;
+	func[17] = NULL;
+	return (0);
 }
 
-static int	start_builtin_null(char **arg)
+static int	init_ptr_cmd(char *cmd[18])
 {
-	if (ft_strequ(arg[0], "alias"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_alias(arg, &g_shell.alias)), 0);
-	else if (ft_strequ(arg[0], "unalias"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unalias(arg, &g_shell.alias)), 0);
-	else if (ft_strequ(arg[0], "export"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_export(arg, NULL)), 0);
-	else if (ft_strequ(arg[0], "cd"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_cd(arg, g_shell.envl)), 0);
-	else if (ft_strequ(arg[0], "debug"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_debug(arg)), 0);
-	else if (ft_strequ(arg[0], "echo"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_echo(arg)), 0);
-	else if (ft_strequ(arg[0], "env"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_env(arg, g_shell.envl)), 0);
-	else if (ft_strequ(arg[0], "history"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_history(arg, &g_shell.hist.history)), 0);
-	else if (ft_strequ(arg[0], "set"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_set(g_shell.envl)), 0);
-	else if (ft_strequ(arg[0], "setenv"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_setenv(arg, NULL)), 0);
-	else if (ft_strequ(arg[0], "unset"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unset(arg, NULL)), 0);
-	else if (ft_strequ(arg[0], "unsetenv"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_unsetenv(arg, NULL)), 0);
-	else if (ft_strequ(arg[0], "type"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_type(arg, g_shell.envl)), 0);
-	else if (ft_strequ(arg[0], "fg"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_fg(arg, g_shell.head_job)), 0);
-	else if (ft_strequ(arg[0], "jobs"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_jobs(arg, g_shell.head_job)), 0);
-	else if (ft_strequ(arg[0], "bg"))
-		push_env(&g_shell.envl, "?", ft_itoa(built_bg(arg, g_shell.head_job)), 0);
-	else if (ft_strequ(arg[0], "exit"))
-		exit(built_exit(arg));
-	else
-		return (0);
-	return (1);
+	cmd[0] = "cd";
+	cmd[1] = "echo";
+	cmd[2] = "env";
+	cmd[3] = "setenv";
+	cmd[4] = "unsetenv";
+	cmd[5] = "set";
+	cmd[6] = "unset";
+	cmd[7] = "export";
+	cmd[8] = "alias";
+	cmd[9] = "unalias";
+	cmd[10] = "history";
+	cmd[11] = "fg";
+	cmd[12] = "bg";
+	cmd[13] = "jobs";
+	cmd[14] = "type";
+	cmd[15] = "debug";
+	cmd[16] = "exit";
+	cmd[17] = NULL;
+	return (0);
 }
 
-int		start_builtin(char **arg, t_envl *envl)
+int			start_builtin(char **arg, t_envl *envl)
 {
+	char	*cmd[18];
+	int		(*func[18])(char **arg, t_envl *envl);
 	int		i;
+	int		ret;
 
-	i = 1;
-	if (!arg[0])
-			return (0);
-	if (envl)
+	if (!arg || !arg[0])
+		return (-1);
+	init_ptr_cmd(cmd);
+	init_ptr_func(func);
+	i = 0;
+	while (cmd[i])
 	{
-		i = start_builtin_env(arg, envl);
-		free_envl(envl);
+		if (ft_strequ(cmd[i], arg[0]))
+		{
+			ret = func[i](arg, envl);
+			return (ret);
+		}
+		i++;
 	}
-	else if (g_shell.envl)
-		i = start_builtin_null(arg);
-	return (i);
+	return (-1);
 }

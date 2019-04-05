@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:11:48 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 14:36:21 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,27 @@ static int		alias_var(char *arg, t_alias **alias)
 	return (1);
 }
 
-int				built_alias(char **arg, t_alias **alias)
+int				built_alias(char **arg, t_envl *envl)
 {
 	int	i;
 	int	opts;
 	int	ret;
 
+	(void)envl;
 	ret = 0;
 	if ((i = check_opts_alias(arg, &opts)) == -1)
 		return (1);
 	if (opts == 1)
-		ret += print_alias(*alias);
+		ret += print_alias(g_shell.alias);
 	else if (!arg[i])
-		ret += print_alias(*alias);
+		ret += print_alias(g_shell.alias);
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '='))
-			ret += alias_var_egual(arg[i], alias, ft_strichr(arg[i], '='));
+			ret += alias_var_egual(arg[i], &g_shell.alias,
+									ft_strichr(arg[i], '='));
 		else
-			ret += alias_var(arg[i], alias);
+			ret += alias_var(arg[i], &g_shell.alias);
 		i++;
 	}
 	if (ret > 0)

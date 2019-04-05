@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:46:26 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 14:33:03 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ static int	find_operands(char *arg)
 	return (0);
 }
 
-int			built_echo(char **arg)
+int			built_echo(char **arg, t_envl *envl)
 {
 	int		i;
 
+	(void)envl;
 	i = 1;
 	while (arg[i])
 	{
