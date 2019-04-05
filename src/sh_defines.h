@@ -16,7 +16,7 @@
 # define SH_ENOMEM			1
 # define SH_EINVAL			2
 # define SH_ENOTTY			3
-# define BUF_TMP			32
+# define BUFF_SIZE			1000000
 
 # define FOUND				1
 # define NOTFOUND			0

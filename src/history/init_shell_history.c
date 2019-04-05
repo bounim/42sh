@@ -6,24 +6,11 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 12:00:53 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:14:44 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
-static void			check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd)
-{
-	ssize_t			i;
-
-	i = 0;
-	while (i < rd)
-	{
-		if (buf[i] == '\0')
-			fatal_exit(SH_ENOMEM);
-		i++;
-	}
-}
 
 static uint8_t		*get_histfile_content(void)
 {
@@ -52,37 +39,7 @@ static uint8_t		*get_histfile_content(void)
 	return (ret);
 }
 
-static void			build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i,\
-		size_t j)
-{
-	size_t			ind;
-
-	ind = 0;
-	while (j < i)
-	{
-		if (cont[j] == '\\' && cont[j + 1] && cont[j + 1] == '\n')
-			j++;
-		tmp[ind++] = cont[j++];
-	}
-}
-
-static size_t		skip_backslash(const uint8_t *str, size_t *i, size_t j,\
-		int bs)
-{
-	size_t			len;
-
-	len = *i - j - bs;
-	if (*i > 0 && str[*i - 1] && str[*i - 1] != '\\')
-		return (len);
-	(*i)++;
-	while (str[*i] && str[*i] != '\n')
-		(*i)++;
-	if (str[*i] && str[*i] == '\n' && str[*i - 1] == '\\')
-		skip_backslash(str, i, j, bs++);
-	return (len);
-}
-
-static uint8_t			*replace_by_space(uint8_t *buff)
+static uint8_t		*replace_by_space(uint8_t *buff)
 {
 	int	i;
 
@@ -96,19 +53,13 @@ static uint8_t			*replace_by_space(uint8_t *buff)
 	return (buff);
 }
 
-static t_history	*parse_histfile_content(uint8_t *cont)
+static t_history	*parse_end(size_t i, size_t j, uint8_t *cont, uint8_t *tmp)
 {
 	t_history	*ret;
 	t_history	*new;
-	uint8_t		*tmp;
-	size_t 		i;
-	size_t 		j;
 	size_t		len;
 
-	tmp = NULL;
 	ret = NULL;
-	i = 0;
-	j = 0;
 	while (cont[i])
 	{
 		if (cont[i] == '\n')
@@ -129,6 +80,18 @@ static t_history	*parse_histfile_content(uint8_t *cont)
 			i++;
 	}
 	return (ret);
+}
+
+static t_history	*parse_histfile_content(uint8_t *cont)
+{
+	uint8_t		*tmp;
+	size_t		i;
+	size_t		j;
+
+	tmp = NULL;
+	i = 0;
+	j = 0;
+	return (parse_end(i, j, cont, tmp));
 }
 
 t_history			*init_shell_history(void)

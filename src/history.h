@@ -13,7 +13,6 @@
 #ifndef HISTORY_H
 # define HISTORY_H
 
-
 struct					s_history
 {
 	uint8_t					*buf;
@@ -66,4 +65,8 @@ void				free_history(t_history *hist);
 void				print_search_prompt(void);
 void				print_search_result(t_history *curr);
 void				build_search_buff(uint8_t *key, size_t *keylen);
+void				check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd);
+size_t				skip_backslash(const uint8_t *str, size_t *i, size_t j, int bs);
+void				check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd);
+void				build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i, size_t j);
 #endif

@@ -43,8 +43,6 @@
 void						ft_sig_handler(int signo);
 void						ft_signal(int signo);
 
-# define BUFF_SIZE 100000
-
 void						ft_putendl_fd(char const *s, int fd);
 void						ft_putstr(char const *s);
 void						ft_putchar(char ch);

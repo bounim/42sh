@@ -6,11 +6,54 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:05:24 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/04 17:07:29 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/05 15:14:16 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+
+void	build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i,\
+		size_t j)
+{
+	size_t			ind;
+
+	ind = 0;
+	while (j < i)
+	{
+		if (cont[j] == '\\' && cont[j + 1] && cont[j + 1] == '\n')
+			j++;
+		tmp[ind++] = cont[j++];
+	}
+}
+
+size_t	skip_backslash(const uint8_t *str, size_t *i, size_t j,\
+		int bs)
+{
+	size_t			len;
+
+	len = *i - j - bs;
+	if (*i > 0 && str[*i - 1] && str[*i - 1] != '\\')
+		return (len);
+	(*i)++;
+	while (str[*i] && str[*i] != '\n')
+		(*i)++;
+	if (str[*i] && str[*i] == '\n' && str[*i - 1] == '\\')
+		skip_backslash(str, i, j, bs++);
+	return (len);
+}
+
+void	check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd)
+{
+	ssize_t			i;
+
+	i = 0;
+	while (i < rd)
+	{
+		if (buf[i] == '\0')
+			fatal_exit(SH_ENOMEM);
+		i++;
+	}
+}
 
 void	build_search_buff(uint8_t *key, size_t *keylen)
 {
