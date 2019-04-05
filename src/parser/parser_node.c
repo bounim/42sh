@@ -48,7 +48,7 @@ static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 		// TODO when delimiter is quoted, needs quote removal + act differently
 		(*cur)->next->heredoc_delimiter = 1;
 		if (lex->heredoc_foot)
-			lex->heredoc_foot->next = *cur;
+			lex->heredoc_foot->heredoc_next = *cur;
 		else
 			lex->heredoc_head = *cur;
 		lex->heredoc_foot = *cur;
