@@ -37,7 +37,8 @@ enum							e_redirect_type
 
 enum							e_parser_type
 {
-	PARSER_COMMAND = 0,
+	PARSER_NONE = 0,
+	PARSER_COMMAND,
 	PARSER_PIPE,
 	PARSER_AND_OR,
 	PARSER_SEPARATOR,
@@ -97,6 +98,8 @@ struct							s_lexer_token
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;
+	uint8_t						*heredoc_buffer;
+	size_t						*heredoc_size;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
 };
@@ -123,6 +126,7 @@ struct							s_lexer
 	int							next_expansion;
 	t_lexer_token				*root;
 	t_lexer_token				*last_parsed;
+	t_lexer_token				*expansion_i;
 	t_lexer_token				*heredoc_head;
 	t_lexer_token				*heredoc_foot;
 	size_t						heredoc_nb;
