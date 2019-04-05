@@ -6,13 +6,34 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 18:59:50 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 19:01:04 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void	launch_job(t_job *job, int foreground)
+static t_job	*switch_ground(t_job *job, int foreground)
+{
+	format_job_info(job, "launched");
+	if (!g_shell.is_interactive)
+		wait_for_job(job);
+	else if (foreground)
+		put_in_foreground(job, 0);
+	else
+		put_in_background(job, 0);
+	return (job);
+}
+
+static int		close_file_job(int std_file[2], int ret)
+{
+	if (std_file[0] != STDIN_FILENO)
+		close(std_file[0]);
+	if (std_file[1] != STDOUT_FILENO)
+		close(std_file[1]);
+	return (ret);
+}
+
+void			launch_job(t_job *job, int foreground)
 {
 	t_proc	*proc;
 	pid_t	pid;
@@ -25,29 +46,20 @@ void	launch_job(t_job *job, int foreground)
 	{
 		if (proc->next)
 		{
-			if (pipe(my_pipe) < 0)	
-			{
-				ft_putstr_fd("pipe failed\n", 2);
-				return ;
-			}
+			if (pipe(my_pipe) < 0)
+				return (ft_putstr_fd("pipe failed\n", 2));
 			std_file[1] = my_pipe[1];
 		}
 		else
 			std_file[1] = STDOUT_FILENO;
 		if (proc->next || !proc->is_builtin)
-		{
-			printf("fork created\n");
 			pid = fork();
-		}
 		if (pid == 0)
 			launch_proc(proc, job->pgid, foreground, std_file);
 		else if (proc->is_builtin && !proc->next)
 			start_builtin(proc->arg, g_shell.envl);
 		else if (pid < 0)
-		{
-			ft_putstr_fd("fork failed\n", 2);
-			return ;
-		}
+			return (ft_putstr_fd("fork failed\n", 2));
 		else
 		{
 			proc->pid = pid;
@@ -58,18 +70,8 @@ void	launch_job(t_job *job, int foreground)
 				setpgid(pid, job->pgid);
 			}
 		}
-		if (std_file[0] != STDIN_FILENO)
-			close(std_file[0]);
-		if (std_file[1] != STDOUT_FILENO)
-			close(std_file[1]);
-		std_file[0] = my_pipe[0];
+		std_file[0] = close_file_job(std_file, my_pipe[0]);
 		proc = proc->next;
 	}
-	format_job_info(job, "launched");
-	if (!g_shell.is_interactive)
-		wait_for_job(job);
-	else if (foreground)
-		put_in_foreground(job, 0);
-	else
-		put_in_background(job, 0);
+	job = switch_ground(job, foreground);
 }

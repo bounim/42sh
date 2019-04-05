@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:58:21 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 15:35:06 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:46:59 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	dup_close_file(int std_file[2])
 	}
 }
 
-void	launch_proc(t_proc *proc, pid_t pgid, int foreground, int std_file[2])
+void		launch_proc(t_proc *proc, pid_t pgid,
+						int foreground, int std_file[2])
 {
 	pid_t	pid;
 
