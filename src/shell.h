@@ -13,6 +13,12 @@
 #ifndef SHELL_H
 # define SHELL_H
 
+enum e_readline_type
+{
+	TERMCAPS_READLINE,
+	SIMPLE_READLINE
+};
+
 extern t_shell				g_shell;
 
 struct						s_shell
@@ -21,6 +27,7 @@ struct						s_shell
 	int						term;
 	size_t 					term_set;
 	uint8_t 				el_mode;
+	int 					edit_complexity;
 	uint8_t					*line;
 	size_t					line_size;
 	int						is_interactive;
@@ -42,7 +49,7 @@ struct						s_shell
 **	terminal / shell functions
 */
 
-void						init_shell(int ac, char **av, char **env);
+void 						init_shell(int ac, char **av, char **env);
 void						run_shell(void);
 void						raw_terminal(void);
 void						cooked_terminal(void);

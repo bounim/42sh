@@ -91,6 +91,8 @@ SRC := \
 	readline/list_buff_transform.c \
 	readline/add_to_undo_list.c \
 	readline/undo_last_editing_command.c \
+	readline/simple_readline.c \
+	readline/simple_readline_return.c \
 	readline/utils.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
