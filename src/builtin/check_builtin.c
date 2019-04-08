@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:18:52 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 17:25:02 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:44:43 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		check_builtin(char *cmd)
 {
+	printf("cmd = %s\n", cmd);
 	if (!cmd)
 		return (0);
 	if (ft_strequ(cmd, "alias") || ft_strequ(cmd, "bg") ||
