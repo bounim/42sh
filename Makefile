@@ -95,6 +95,7 @@ SRC := \
 	readline/simple_readline_return.c \
 	readline/utils.c \
 	readline/utils_input_controler.c \
+	readline/vi_command_mode.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \

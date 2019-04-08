@@ -18,13 +18,13 @@ void		build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
 	(*keylen)++;
 }
 
-void		build_count(uint8_t *key, size_t *keylen)
+void		build_count(uint8_t *key, size_t *keylen, int mode)
 {
 	size_t		i;
 	ssize_t		rd;
 
 	g_shell.edit.count = 1;
-	if (*keylen == 1 && key[0] >= '1' && key[0] <= '9' && g_shell.edit.edit_mode == MODE_VI_COMMAND)
+	if (*keylen == 1 && key[0] >= '1' && key[0] <= '9' && mode == MODE_VI_COMMAND)
 	{
 		g_shell.edit.count = key[0] - '0';
 		//print_count();

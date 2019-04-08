@@ -52,6 +52,53 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{CPY_ALL_LINE, 2, copy_all_line},
 		{PASTE, 2, paste_copy},
 		{RET, 1, return_fn}
+	},
+	{
+		{RET, 1, return_fn},
+		{DEL, 1, del_charac},
+		{CTRL_C, 1, handle_ctrl_c},
+		{CTRL_U, 1, delete_backline},
+		{ESC, 1, vi_command_mode},
+		{RIGHT_ARROW, 3, move_right},
+		{LEFT_ARROW, 3, move_left},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL},
+		{NULL, 0, NULL}
 	}
 };
 
@@ -72,8 +119,7 @@ static int	check_key(uint8_t *key, size_t *keylen)
 	int		check;
 
 	ki = 0;
-	while (ki < sizeof(g_keymap[g_shell.edit.edit_mode])
-			/ sizeof(g_keymap[g_shell.edit.edit_mode][0]))
+	while (g_keymap[g_shell.edit.edit_mode][ki].seq)
 	{
 		if ((check = compare_key(key, *keylen, ki)) == MATCH)
 		{
@@ -106,6 +152,35 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
+void	input_controller(void)
+{
+	//uint8_t	input[1];
+	uint8_t	key[6];
+	size_t	keylen;
+	ssize_t	rd;
+
+	keylen = 0;
+	while (g_shell.edit.reading == TRUE)
+	{
+		if (g_shell.edit.edit_mode == MODE_EMACS)
+		{
+			if (read(0, &key[keylen++], 1) < 0)
+				fatal_exit(SH_EINVAL);
+			if (check_key(key, &keylen) == NO_MATCH)
+				check_printable(key, &keylen);
+		}
+		else
+		{
+			if ((rd = read(0, key, 6)) < 0)
+				fatal_exit(SH_EINVAL);
+			keylen = (size_t)rd;
+			build_count(key, &keylen, g_shell.edit.edit_mode);
+			if (check_key(key, &keylen) == NO_MATCH && g_shell.edit.edit_mode != MODE_VI_COMMAND)
+				check_printable(key, &keylen);
+		}
+	}
+}
+/*
 void		input_controller(void)
 {
 	uint8_t	input[1];
@@ -122,3 +197,4 @@ void		input_controller(void)
 			check_printable(key, &keylen);
 	}
 }
+*/

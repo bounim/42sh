@@ -298,6 +298,7 @@ void					undo_last_edit_command(void);
 void					simple_readline(int prompt_id);
 void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
 void					simple_readline_return(uint8_t	*buff, int len);
-void					build_count(uint8_t *key, size_t *keylen);
+void					build_count(uint8_t *key, size_t *keylen, int mode);
+void					vi_command_mode(void);
 
 #endif

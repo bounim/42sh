@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_defines.h                                       :+:      :+:    :+:   */
+/*   vi_command_mode.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 12:34:48 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/26 18:57:23 by aguillot         ###   ########.fr       */
+/*   Created: 2019/04/02 18:20:17 by schakor           #+#    #+#             */
+/*   Updated: 2019/04/05 19:53:58 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SH_DEFINES_H
-# define SH_DEFINES_H
+#include "twenty_one_sh.h"
 
-# define SH_ENOMEM			1
-# define SH_EINVAL			2
-# define SH_ENOTTY			3
-# define BUFF_SIZE			1000000
-
-# define FOUND				1
-# define NOTFOUND			0
-
-# define TRUE				1
-# define FALSE				0
-# define MODE_EMACS			0
-# define MODE_VI_INSERT		1
-# define MODE_VI_COMMAND	2
-# define EDIT_MODE			3
-# define KEYMAP_SIZE		47
-# define SEARCHMAP_SIZE		4
-# define TERM_SET			1
-
-#endif
+void		vi_command_mode(void)
+{
+	g_shell.edit.edit_mode = MODE_VI_COMMAND;
+}
