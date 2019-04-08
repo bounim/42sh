@@ -14,6 +14,8 @@
 
 void		handle_ctrl_c(void)
 {
+	write(1, "\n", 1);
+	ft_putstr(tgetstr("cr", NULL));
 	g_shell.edit.reading = FALSE;
 	g_shell.edit.ret_ctrl_c = TRUE;
 }
