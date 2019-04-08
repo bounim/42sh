@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-void			init_shell(int ac, char **av, char **env)
+void		init_shell(int ac, char **av, char **env)
 {
 	char	*term;
 
@@ -34,10 +34,15 @@ void			init_shell(int ac, char **av, char **env)
 	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);
-	if (!(term = get_env_val(g_shell.envl, "TERM")))
+	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
+			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
+		fatal_exit(SH_EINVAL);
+	if (!(term = get_env_val(g_shell.envl, "TERM")) || tgetent(NULL, term) == -1)
+	{
+		g_shell.edit_complexity = SIMPLE_READLINE;
 		return ;
-	if (!tgetent(NULL, term))
-		return ;
+	}
+	g_shell.edit_complexity = TERMCAPS_READLINE;
 	g_shell.term_set = 1;
 	/* job control start */
 	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
@@ -56,9 +61,9 @@ void			init_shell(int ac, char **av, char **env)
 		exit (1);
 	}
 	tcsetpgrp(g_shell.term, g_shell.pgid);
-	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) ||\
-			tcgetattr(g_shell.term, &(g_shell.raw_tio)))
-		fatal_exit(SH_EINVAL);
+	/*if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
+			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
+		fatal_exit(SH_EINVAL);*/
 	/* job control end */
 	g_shell.raw_tio.c_lflag &= ~(ECHO | ICANON | ISIG);
 	g_shell.raw_tio.c_oflag &= ~(OPOST);
