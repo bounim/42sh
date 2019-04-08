@@ -5,8 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/08 13:53:16 by khsadira          #+#    #+#             */
+/*   Updated: 2019/04/08 13:58:01 by khsadira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   creat_job.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:38:54 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 19:55:21 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:53:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +30,11 @@ t_job	*creat_job_list(char **arg)
 	t_proc	*new_proc;
 	char	*path;
 
+	path = NULL;
 	new_job = NULL;
 	new_proc = NULL;
 	if (!(path = find_path(arg[0], g_shell.envl)))
-		return (NULL);
+		path = ft_strdup(arg[0]);
 	new_job = creat_job(arg[0]);
 	new_proc = creat_proc(arg, g_shell.envl, path);
 	new_job->head_proc = new_proc;
@@ -49,7 +62,7 @@ t_proc	*creat_proc(char **arg, t_envl *envl, char *path)
 	new->arg = ft_arrdup(arg);
 	new->is_builtin = check_builtin(arg[0]);
 	new->env = envl_to_envarr(envl);
-	new->path = ft_strdup(path);
+	new->path = path;
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/05 19:43:00 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/08 13:41:01 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void		execution(t_lexer *lex)
 			// TODO $?
 			return ;
 		}
+		printf("avant creat_job\n");
 		g_shell.head_job = creat_job_list(av);
 		tmp = g_shell.head_job;
 		while (tmp)
