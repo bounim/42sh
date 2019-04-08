@@ -14,17 +14,30 @@
 
 int		built_set(char **arg, t_envl *envl)
 {
-	(void)arg;
-	while (envl)
+	if (ft_arrlen(arg) == 3 && ft_strequ(arg[1], "-o"))
 	{
-		if (envl->read_only < 2)
+		if (ft_strequ(arg[2], "vi"))
+			g_shell.el_mode = MODE_VI_INSERT;
+		else if (ft_strequ(arg[2], "emacs"))
+			g_shell.el_mode = MODE_EMACS;
+	}
+	else if (ft_arrlen(arg) == 2 && ft_strequ(arg[1], "-o"))
+	{
+		if (g_shell.el_mode == MODE_EMACS)
+			ft_putstr("emacs           on\nvi              off\n");
+		else
+			ft_putstr("emacs           off\nvi              on\n");
+	}
+	else
+	{
+		while (envl)
 		{
 			ft_putstr(envl->name);
 			ft_putchar('=');
 			ft_putstr(envl->value);
 			ft_putchar(10);
+			envl = envl->next;
 		}
-		envl = envl->next;
 	}
 	return (0);
 }
