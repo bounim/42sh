@@ -218,6 +218,7 @@ typedef struct 					s_edit
 	int 				prompt_id;
 	int					reading;
 	int					ret_ctrl_c;
+	int					count;
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
@@ -297,4 +298,6 @@ void					undo_last_edit_command(void);
 void					simple_readline(int prompt_id);
 void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
 void					simple_readline_return(uint8_t	*buff, int len);
+void					build_count(uint8_t *key, size_t *keylen);
+
 #endif

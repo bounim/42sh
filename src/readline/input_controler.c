@@ -106,12 +106,6 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
-void		build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
-{
-	*(key + *keylen) = *input;
-	(*keylen)++;
-}
-
 void		input_controller(void)
 {
 	uint8_t	input[1];
