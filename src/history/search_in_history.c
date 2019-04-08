@@ -75,7 +75,7 @@ void	search_read(void)
 	{
 		if (read(0, input, 1) < 0)
 			fatal_exit(SH_EINVAL);
-		build_key(key, &keylen, input);
+		 build_key(key, &keylen, input);
 		if (check_key_for_search(key, &keylen) == NO_MATCH)
 		{
 			check_printable_for_search(key, &keylen);
