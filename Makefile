@@ -94,6 +94,11 @@ SRC := \
 	readline/utils.c \
 	readline/utils_input_controler.c \
 	readline/vi_command_mode.c \
+	readline/vi_movement_controler.c \
+	readline/vi_special_movement_controler.c \
+	readline/vi_search_char.c \
+	readline/vi_insert.c \
+	readline/vi_delete_controler.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \
