@@ -116,7 +116,7 @@ SRC := \
 	parser/parser_node.c \
 	parser/parser_printer.c \
 	parser/is.c \
-	expansions/expansion.c
+	expansions/expansions.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror -g3
