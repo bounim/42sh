@@ -12,42 +12,25 @@
 
 #include "twenty_one_sh.h"
 #include "execution.h"
+#include "expansions.h"
 
-static char	**arg_to_argv(t_lexer_token *head)
+static char	**arg_to_argv(t_lexer_token *cmd)
 {
-	size_t			ac;
-	t_lexer_token	*cur;
-	size_t			i;
-	char			**av;
+	size_t	i;
+	t_argv	*cur;
+	char	**av;
 
-	ac = 0;
-	cur = head;
-	while (cur)
-	{
-		ac++;
-		cur = cur->next;
-	}
-	if (NULL == (av = malloc(((size_t)ac + 1) * sizeof(*av))))
+	if (NULL == (av = malloc((cmd->argc + 1) * sizeof(*av))))
 		return (NULL);
-	cur = head;
 	i = 0;
-	while (cur)
+	cur = cmd->argv_head;
+	while (i < cmd->argc)
 	{
-		if (NULL == (av[i] = malloc(cur->size + 1)))
-		{
-			while (i > 0)
-			{
-				free(av[i - 1]);
-				i--;
-			}
-			return (NULL);
-		}
-		ft_memcpy(av[i], cur->buffer, cur->size);
-		av[i][cur->size] = '\0';
+		av[i] = cur->buffer;
 		i++;
 		cur = cur->next;
 	}
-	av[i] = NULL;
+	av[cmd->argc] = NULL;
 	return (av);
 }
 
@@ -59,6 +42,8 @@ void		execution(t_lexer *lex)
 	if (lex->root == NULL)
 		return ;
 	if (lex->root->ptype != PARSER_COMMAND || !lex->root->arg_head)
+		return ;
+	if (do_expansions(lex) < 0)
 		return ;
 	if ((av = arg_to_argv(lex->root->arg_head)))
 	{

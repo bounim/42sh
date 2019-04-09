@@ -45,15 +45,16 @@ enum							e_parser_type
 };
 
 /*
-** cannot_append: delimited token
+** argv buffer is null-terminated
 */
 
-typedef struct s_argv	t_argv;
+typedef struct s_argv			t_argv;
 
-struct					s_argv
+struct							s_argv
 {
-	char	*buffer;
-	t_argv	*next;
+	char						*buffer;
+	size_t						len;
+	t_argv						*next;
 };
 
 typedef struct s_lexer_token	t_lexer_token;
