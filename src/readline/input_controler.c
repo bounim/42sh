@@ -99,6 +99,55 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL}
+	},
+{
+		{RIGHT_ARROW, 3, vi_move_next_char},
+		{LEFT_ARROW, 3, vi_move_prev_char},
+		{RET, 1, return_fn},
+		{"#", 1, treat_as_comment},
+		{" ", 1, vi_move_next_char},
+		{"v", 1, invoke_vi}, /* to do */
+		{"j", 1, vi_get_next_history},
+		{"k", 1, vi_get_prev_history},
+		{"l", 1, vi_move_next_char},
+		{"h", 1, vi_move_prev_char},
+		{"w", 1, vi_forward_word}, /*to do*/
+		{"W", 1, vi_forward_bigword}, /* to do */
+		{"e", 1, vi_end_word}, /*to do*/
+		{"E", 1, vi_end_bigword}, /*to do*/
+		{"b", 1, vi_backward_word}, /*to do*/
+		{"B", 1, vi_backward_bigword}, /*to do*/
+		{"^", 1, vi_move_first_nonblank}, /*to do*/
+		{"$", 1, go_to_end},
+		{"0", 1, go_to_home},
+		{"|", 1, vi_move_counth_char},
+		{"f", 1, vi_search_char_after}, /* to do */
+		{"F", 1, vi_search_char_before}, /* to do */
+		{"t", 1, vi_search_char_after_before}, /* to do */
+		{"T", 1, vi_search_char_before_after}, /* to do */
+		{";", 1, repeat_last_search_char}, /* to do */
+		{",", 1, repeat_last_search_char_reverse}, /* to do */
+		{"a", 1, vi_append_mode}, /* to do */
+		{"A", 1, vi_append_eol}, /* to do*/
+		{"i", 1, vi_insert_mode},
+		{"I", 1, vi_insert_bol}, /* to do */
+		{"r", 1, vi_replace_char}, /* to do */
+		{"R", 1, vi_insert_replace}, /* to do */
+		{"c", 1, vi_delete_c}, /* to do */
+		{"C", 1, vi_delete_endline_insert_eol}, /* to do */
+		{"S", 1, vi_clear_line_insert}, /* to do */
+		{"x", 1, vi_delete_x}, /* to do */
+		{"X", 1, vi_delete_bigx}, /* to do */
+		{"d", 1, NULL}, /* to do */
+		{"D", 1, NULL}, /* to do */
+		{"y", 1, NULL}, /* to do */
+		{"Y", 1, NULL}, /* to do */
+		{"p", 1, NULL}, /* to do */
+		{"P", 1, NULL}, /* to do */
+		{"u", 1, NULL}, /* to do */
+		{"U", 1, NULL}, /* to do */
+		{"+", 1, vi_get_next_history},
+		{"-", 1, vi_get_prev_history}
 	}
 };
 
@@ -154,7 +203,6 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 
 void	input_controller(void)
 {
-	//uint8_t	input[1];
 	uint8_t	key[6];
 	size_t	keylen;
 	ssize_t	rd;
@@ -180,21 +228,3 @@ void	input_controller(void)
 		}
 	}
 }
-/*
-void		input_controller(void)
-{
-	uint8_t	input[1];
-	uint8_t	key[6];
-	size_t	keylen;
-
-	keylen = 0;
-	while (g_shell.edit.reading == TRUE)
-	{
-		if (read(0, input, 1) < 0)
-			fatal_exit(SH_EINVAL);
-		build_key(key, &keylen, input);
-		if (check_key(key, &keylen) == NO_MATCH)
-			check_printable(key, &keylen);
-	}
-}
-*/
