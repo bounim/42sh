@@ -54,3 +54,13 @@ void			get_next_history(void)
 		down_history_here();
 	}
 }
+
+void 			vi_get_next_history(void)
+{
+	int			count;
+
+	count = g_shell.edit.count;
+	while (count--)
+		get_next_history();
+}
+

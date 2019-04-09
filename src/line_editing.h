@@ -300,5 +300,36 @@ void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len)
 void					simple_readline_return(uint8_t	*buff, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
 void					vi_command_mode(void);
+void					vi_move_next_char(void);
+void					vi_move_prev_char(void);
+void					treat_as_comment(void);
+void					invoke_vi(void);
+void					vi_get_next_history(void);
+void					vi_get_prev_history(void);
+void					vi_forward_word(void);
+void					vi_forward_bigword(void);
+void					vi_end_word(void);
+void					vi_end_bigword(void);
+void					vi_backward_word(void);
+void					vi_backward_bigword(void);
+void					vi_move_first_nonblank(void);
+void					vi_move_counth_char(void);
+void					vi_search_char_after(void);
+void					vi_search_char_before(void);
+void					vi_search_char_after_before(void);
+void					vi_search_char_before_after(void);
+void					repeat_last_search_char(void);
+void					repeat_last_search_char_reverse(void);
+void					vi_append_mode(void);
+void					vi_append_eol(void);
+void					vi_insert_mode(void);
+void					vi_insert_bol(void);
+void					vi_replace_char(void);
+void					vi_insert_replace(void);
+void					vi_delete_c(void);
+void					vi_delete_endline_insert_eol(void);
+void					vi_clear_line_insert(void);
+void					vi_delete_x(void);
+void					vi_delete_bigx(void);
 
 #endif
