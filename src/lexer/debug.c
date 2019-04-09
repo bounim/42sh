@@ -41,7 +41,7 @@ static inline void	lexer_debug_tokens(t_lexer *lex)
 
 void				lexer_debug(t_lexer *lex)
 {
-	if (g_shell.debug_mode)
+	if (!g_shell.debug_mode)
 		return ;
 	printer_str(&g_shell.out, "lexer_debug:\nbs=");
 	printer_int(&g_shell.out, lex->backslash_newline);
