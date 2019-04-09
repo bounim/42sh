@@ -87,16 +87,8 @@ void		init_edit(void)
 	{
 		// TODO
 	}
-	if (g_shell.edit_complexity == TERMCAPS_READLINE)
-	{
-		g_shell.edit.cur_base_x = col;
-		g_shell.edit.cur_base_y = (int)line;
-	}
-	else
-	{
-		g_shell.edit.cur_base_x = 0;
-		g_shell.edit.cur_base_y = 0;
-	}
+	g_shell.edit.cur_base_x = col;
+	g_shell.edit.cur_base_y = (int)line;
 	g_shell.edit.cpy_buff = NULL;
 }
 
@@ -105,17 +97,12 @@ void		readline(int prompt_id)
 	uint8_t *prompt;
 
 	raw_terminal();
-	if (g_shell.edit_complexity == TERMCAPS_READLINE)
-	{
-		init_edit();
-		init_char_list();
-		init_prompt(prompt_id);
-		prompt = prompt_to_buff(&g_shell.edit.char_list);
-		print_prompt(prompt, ft_ustrlen(prompt));
-		free(prompt);
-		input_controller();
-	}
-	else
-		simple_readline(prompt_id);
+	init_edit();
+	init_char_list();
+	init_prompt(prompt_id);
+	prompt = prompt_to_buff(&g_shell.edit.char_list);
+	print_prompt(prompt, ft_ustrlen(prompt));
+	free(prompt);
+	input_controller();
 	cooked_terminal();
 }

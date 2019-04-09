@@ -39,7 +39,6 @@ void		init_shell(int ac, char **av, char **env)
 		fatal_exit(SH_EINVAL);
 	term = ft_strdup("xterm-256color");
 	tgetent(NULL, term);
-	g_shell.edit_complexity = TERMCAPS_READLINE;
 	g_shell.term_set = 1;
 	/* job control start */
 	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))

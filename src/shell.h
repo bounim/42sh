@@ -27,7 +27,6 @@ struct						s_shell
 	int						term;
 	size_t 					term_set;
 	uint8_t 				el_mode;
-	int 					edit_complexity;
 	uint8_t					*line;
 	size_t					line_size;
 	int						is_interactive;

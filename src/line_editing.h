@@ -194,14 +194,6 @@ typedef struct  		s_keymap
 	t_key_func			funckey;
 }						t_keymap;
 
-typedef void 			(*t_base_rl_func)(uint8_t*, int);
-
-typedef struct 			s_base_rl
-{
-	char 				*seq;
-	t_base_rl_func		base_rl_func;
-}						t_base_rl;
-
 typedef struct 				 s_term
 {
 	struct termios		origin;
@@ -232,8 +224,6 @@ typedef struct 					s_edit
 	int					cur_base_y;
 	int 				lines_to_shift;
 	uint8_t				*cpy_buff;
-	uint8_t				*simple_buff;
-	int 				simple_buff_len;
 }								t_edit;
 
 void					init_signals(void);
@@ -303,11 +293,7 @@ void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
 void					handle_ctrl_c(void);
 void					add_to_undo_list(uint8_t *key, size_t keylen);
 void					undo_last_edit_command(void);
-void					simple_readline(int prompt_id);
-void					simple_input_check(uint8_t *input);
-void					simple_rl_eot_fn(uint8_t *buff, int len);
 void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
-void					simple_readline_return(uint8_t	*buff, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
 void					vi_command_mode(void);
 #endif
