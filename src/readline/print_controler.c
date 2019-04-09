@@ -88,7 +88,9 @@ void		clean_and_print(void)
 	if ((print_from = find_print_from()) == -1)
 		return ;
 	len = ft_ustrlen(buff + print_from);
+	cooked_terminal();
 	write(1, buff + print_from, len);
+	raw_terminal();
 	place_cursor_after_print(g_shell.edit.point_char,\
 	g_shell.edit.term_info.max.ws_col, g_shell.edit.term_info.max.ws_row);
 	free(buff);

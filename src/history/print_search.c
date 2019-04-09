@@ -79,6 +79,7 @@ void	print_search_result(t_history *curr)
 	else
 		update_base_y_in_search(NULL, 0);
 	print_search_prompt();
-	if (curr)
-		ft_putstr((char*)curr->buf);
+	cooked_terminal();
+	ft_putstr((char*)curr->buf);
+	raw_terminal();
 }

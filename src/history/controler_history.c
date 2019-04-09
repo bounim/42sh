@@ -64,7 +64,6 @@ void	buff_to_charlist(uint8_t *buf)
 		if ((r = ft_carac_size(buf + i, ulen - i)) == -1)
 			return ;
 		add_char_to_list(buf + i, r, FALSE);
-		clean_and_print();
 		i += r;
 	}
 }

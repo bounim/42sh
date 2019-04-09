@@ -53,7 +53,7 @@ size_t	get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit)
 		return (g_shell.edit.cur_base_y);
 	if (prev_char->x_pos + 2 == col_limit || prev_char->charac[0] == '\n')
 	{
-		if (prev_char->y_pos + 1 >= 0 && (uint32_t)(prev_char->y_pos + 1)
+		if ((prev_char->charac[0] == '\n' || prev_char->y_pos + 1 >= 0) && (uint32_t)(prev_char->y_pos + 1)
 				== row_limit)
 			shift_pos_up();
 	}
