@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:04 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 16:30:01 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:49:55 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int				mark_proc_status(pid_t pid, int status)
 		return (-1);
 	else
 	{
-		ft_putstr_fd("wait pid\n", 2);
+		ft_putstr_fd("end job\n", 2);
 		return (-1);
 	}
 }

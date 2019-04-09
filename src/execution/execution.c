@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/08 13:41:01 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:42:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,26 @@ static char	**arg_to_argv(t_lexer_token *head)
 	return (av);
 }
 
+static void	manage_job(void)
+{
+	t_job	*tmp;
+
+	launch_job(g_shell.head_job, 1);
+	tmp = g_shell.head_job;
+	while (tmp)
+	{
+		if (job_is_stop(tmp) == 0)
+		{
+			free_job(g_shell.head_job);
+			g_shell.head_job = NULL;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void		execution(t_lexer *lex)
 {
 	char	**av;
-	t_job	*tmp;
 
 	if (lex->root == NULL)
 		return ;
@@ -67,18 +83,8 @@ void		execution(t_lexer *lex)
 			// TODO $?
 			return ;
 		}
-		printf("avant creat_job\n");
-		g_shell.head_job = creat_job_list(av);
-		tmp = g_shell.head_job;
-		while (tmp)
-		{
-			launch_job(tmp, 1);
-			tmp = tmp->next;
-		}
-		/*if (!start_builtin(av, g_shell.envl))
-		{
-			// TODO exec
-		}*/
+		g_shell.head_job = add_job(g_shell.head_job, creat_job_list(av));
+		manage_job();
 		command_redir_restore(lex->root);
 		resize_history(g_shell.hist.history);
 	}

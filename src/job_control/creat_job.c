@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 13:53:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/08 13:58:01 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/08 14:41:50 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_job	*add_job(t_job *head, t_job *new_job)
 	else if (!new_job)
 		return (head);
 	tmp = head;
-	while (tmp)
+	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new_job;
 	return (head);

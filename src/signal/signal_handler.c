@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:48:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/03/21 19:43:15 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 10:24:22 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	stop_received(void)
 {
 	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
 	signal(SIGTSTP, SIG_DFL);
+	g_shell.ctrl_z = 1;
 	cooked_terminal();
 }
 
