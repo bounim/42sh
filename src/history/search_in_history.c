@@ -66,16 +66,14 @@ int		check_key_for_search(uint8_t *key, size_t *keylen)
 
 void	search_read(void)
 {
-	uint8_t	input[1];
 	uint8_t	key[6];
 	size_t	keylen;
 
 	keylen = 0;
 	while (g_shell.edit.reading == TRUE)
 	{
-		if (read(0, input, 1) < 0)
+		if (read(0,  &key[keylen++], 1) < 0)
 			fatal_exit(SH_EINVAL);
-		 build_key(key, &keylen, input);
 		if (check_key_for_search(key, &keylen) == NO_MATCH)
 		{
 			check_printable_for_search(key, &keylen);
