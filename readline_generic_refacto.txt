@@ -53,6 +53,7 @@ MANDATORY
 
 
 14. SEGFAULT (04/04/2019): Lorsque on ecrit plus que la taille du terminal et qu'on delete avec ctrl + w quand on peut et del autrement, au dernier delete avant de voir le prompt reaparaitre ca pete
+15. SEGFAULT (09/04/2019): Lorsque on cherche dans l'historique avec ctrl + R et qu'on ecrit la derniere lettre d'un mot pus une apres ca pete.
 
 OPTIONAL
 raw_terminal, cooked_terminal.

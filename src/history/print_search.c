@@ -78,8 +78,9 @@ void	print_search_result(t_history *curr)
 		update_base_y_in_search(curr->buf, 0);
 	else
 		update_base_y_in_search(NULL, 0);
-	print_search_prompt();
 	cooked_terminal();
-	ft_putstr((char*)curr->buf);
+	print_search_prompt();
+	if (curr && curr->buf)
+		write(1, (char*)curr->buf, ft_u8_strlen(curr->buf));
 	raw_terminal();
 }

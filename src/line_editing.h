@@ -226,16 +226,42 @@ typedef struct 					s_edit
 	uint8_t				*cpy_buff;
 }								t_edit;
 
+/*
+*** Signals handling functions for readline part
+*/
+
 void					init_signals(void);
 void					signal_handler(int signo);
+
+
+/*
+*** Readline init functions
+*/
+void					init_prompt(int prompt_id);
+void					init_char_list(void);
+void					init_edit(void);
+void					init_prompt(int prompt_id);
+int						get_term_pos(size_t *line, size_t *col);
+void					readline(int prompt_id);
+
+/*
+*** Termcaps and terminal modification functions
+*/
 void					modify_term(void);
 void					reset_term(void);
-void					readline(int prompt_id);
+
+
 void					readline_errors_controler(int errnum);
-int						get_term_pos(size_t *line, size_t *col);
-void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
+
+/*
+*** Charac list use functions
+*/
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
+
+/*
+*** Position Calculation function for each character on screen
+*/
 size_t					get_x_pos(t_char *prev_char, uint32_t col_limit);
 size_t					get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit);
 void					place_base_at_start(void);
@@ -244,15 +270,22 @@ void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
 t_char					*skip_prompt(t_char *head);
+
+/*
+*** 
+*/
 int						get_buf_size(t_char *head, t_char *end);
 uint8_t					*list_to_buff_print(t_char *curr, t_char *end);
-void					init_prompt(int prompt_id);
 uint8_t 				*prompt_to_buff(t_char_list *list);
 void					print_prompt(uint8_t *prompt, size_t prompt_len);
 int 					get_prompt_len(int prompt_id);
 void					clean_screen_from(int x, int y);
 void					clean_and_print(void);
 void					input_controller(void);
+
+/*
+*** Movement functions for readline
+*/
 void					move_up(void);
 void					move_down(void);
 void					move_right(void);
@@ -262,6 +295,10 @@ void					go_to_end(void);
 void					jump_word_forward(void);
 void					jump_word_backward(void);
 void					exchange_point_mark(void);
+
+/*
+*** Delete functions for readline in EMACS mode
+*/
 void					del_charac(void);
 void					supr_charac(void);
 void					delete_backline(void);
@@ -274,28 +311,36 @@ int						transpose_word_conditions(t_char *curr);
 t_char					*get_to_right_position(t_char *curr);
 void					transpose_word(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
+void					eot_fn(void);
+
+/*
+*** Copy functions for readline
+*/
 int						copy_current_word_start_conditions(t_char *curr);
 int						copy_current_word_begin_conditions(t_char *curr);
 int						copy_current_word_end_conditions(t_char *curr);
 void					copy_current_word(void);
 void					copy_all_line(void);
 void					paste_copy(void);
-void					eot_fn(void);
-t_char					*find_first_non_prompt(t_char *head);
+
+
+/*
+*** Readline special action functions
+*/
 void					return_fn(void);
+t_char					*find_first_non_prompt(t_char *head);
 void					free_controler(int code);
-void					get_prev_history(void);
-void					get_next_history(void);
 void					free_all(void);
-void					init_prompt(int prompt_id);
-void					init_char_list(void);
-void					init_edit(void);
 void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
 void					handle_ctrl_c(void);
 void					add_to_undo_list(uint8_t *key, size_t keylen);
 void					undo_last_edit_command(void);
 void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
+
+/*
+*** VIM function for VIM mode in readline
+*/
 void					vi_command_mode(void);
 void					vi_move_next_char(void);
 void					vi_move_prev_char(void);
