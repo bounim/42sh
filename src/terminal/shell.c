@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 15:34:38 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 10:36:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.el_mode = MODE_EMACS;
 	g_shell.line = NULL;
 	g_shell.envl = init_shell_envl(env);
+	g_shell.alias = NULL;	
 	g_shell.hist.history_size = 0;
 	g_shell.hist.history_save = -1;
 	g_shell.hist.history = init_shell_history();
@@ -31,6 +32,7 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.term = STDIN_FILENO;
 	g_shell.is_interactive = isatty(g_shell.term);
 	g_shell.canonic_path = getcwd(NULL, 0);
+	g_shell.ctrl_z = 0;
 	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);

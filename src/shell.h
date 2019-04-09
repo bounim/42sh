@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:26:32 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 15:15:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 10:23:42 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ struct						s_shell
 	pid_t					pgid;
 	int 					state;
 	int						debug_mode;
+	int						ctrl_z;
 };
 
 /*

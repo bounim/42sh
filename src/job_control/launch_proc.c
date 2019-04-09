@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:58:21 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 18:46:59 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 10:14:34 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,6 @@ void		launch_proc(t_proc *proc, pid_t pgid,
 		fatal_exit(7);
 	}
 	start_builtin(proc->arg, g_shell.envl);
+	if (proc->is_fork)
+		exit(1);
 }
