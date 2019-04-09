@@ -19,52 +19,6 @@ void		init_char_list(void)
 	g_shell.edit.char_list.char_nb = 0;
 }
 
-static int	get_term_pos(size_t *line, size_t *col)
-{
-	char	buff[32];
-	size_t	n;
-	int		r;
-
-	write(1, "\033[6n", 4);
-	buff[0] = '\0';
-	while (buff[0] != '\033')
-	{
-		if (read(0, buff, 1) <= 0)
-			return (-1);
-	}
-	if (read(0, buff, 1) <= 0 || buff[0] != '[')
-		return (-1);
-	n = 0;
-	while (n < sizeof(buff) - 1 && (n == 0 || buff[n - 1] != ';'))
-	{
-		if(read (0, buff + n, 1) <= 0)
-			return (-1);
-		n++;
-	}
-	if (n == sizeof(buff) - 1)
-		return (-1);
-	buff[n] = '\0';
-	r = atoi(buff);
-	if (r < 1)
-		return (-1);
-	*line = (size_t)r - 1;
-	n = 0;
-	while (n < sizeof(buff) - 1 && (n == 0 || buff[n - 1] != 'R'))
-	{
-		if(read (0, buff + n, 1) <= 0)
-			return (-1);
-		n++;
-	}
-	if (n == sizeof(buff) - 1)
-		return (-1);
-	buff[n] = '\0';
-	r = atoi(buff);
-	if (r < 1)
-		return (-1);
-	*col = (size_t)r - 1;
-	return (0);
-}
-
 void		init_edit(void)
 {
 	size_t	line;

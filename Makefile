@@ -69,6 +69,7 @@ SRC := \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
 	readline/readline.c \
+	readline/get_term_pos.c \
 	readline/prompt_controler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \

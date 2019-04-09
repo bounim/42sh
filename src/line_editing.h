@@ -232,6 +232,7 @@ void					modify_term(void);
 void					reset_term(void);
 void					readline(int prompt_id);
 void					readline_errors_controler(int errnum);
+int						get_term_pos(size_t *line, size_t *col);
 void					build_key(uint8_t *key, size_t *keylen, const uint8_t *input);
 void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
 void					delete_char_from_list(t_char *charac);
