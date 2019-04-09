@@ -12,6 +12,12 @@
 
 #include "twenty_one_sh.h"
 
+static t_base_rl	g_base_rl[BASE_RL_SIZE] = {
+	{CTRL_D, simple_rl_eot_fn},
+	{RET, simple_readline_return},
+	{NULL, NULL}
+};
+
 static void	init_simple_buff(int prompt_id)
 {
 	uint8_t	*simple_buff;
@@ -42,16 +48,31 @@ static void	add_to_simple_buff(uint8_t *input)
 	g_shell.edit.simple_buff_len++;
 }
 
-static void	simple_input_check(uint8_t *input)
+void		simple_input_check(uint8_t *input)
 {
+	int ki;
+	uint8_t *buff;
+	int 	len;
+
+	ki = 0;
+	buff = g_shell.edit.simple_buff;
+	len = g_shell.edit.simple_buff_len;
 	if (input[0] >= 32 && input[0] <= 126)
 	{
 		add_to_simple_buff(input);
-		write(1, g_shell.edit.simple_buff, g_shell.edit.simple_buff_len);
+		write(1, buff, len);
 	}
-	if (input[0] == 10)
-		simple_readline_return(g_shell.edit.simple_buff,\
-				g_shell.edit.simple_buff_len);
+	else
+	{
+		while (g_base_rl[ki].seq)
+		{
+			if (input[0] == g_base_rl[ki].seq[0])
+			{
+				g_base_rl[ki].base_rl_func(buff, len);
+			}
+			ki++;
+		}
+	}
 }
 
 static void	simple_input_controler(void)
@@ -62,13 +83,14 @@ static void	simple_input_controler(void)
 	{
 		if (read(0, input, 1) < 0)
 			fatal_exit(SH_EINVAL);
-		simple_input_check(input);
+		//simple_input_check(input);
 	}
 }
 
 void		simple_readline(int prompt_id)
 {
 	g_shell.edit.reading = TRUE;
+	raw_terminal();
 	init_simple_buff(prompt_id);
 	write(1, g_shell.edit.simple_buff, g_shell.edit.simple_buff_len);
 	simple_input_controler();
