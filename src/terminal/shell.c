@@ -37,12 +37,8 @@ void		init_shell(int ac, char **av, char **env)
 	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
 			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
 		fatal_exit(SH_EINVAL);
-	if (!(term = get_env_val(g_shell.envl, "TERM")) || tgetent(NULL, term) == -1)
-	{
-		g_shell.edit_complexity = SIMPLE_READLINE;
-		return ;
-	}
-	g_shell.edit_complexity = TERMCAPS_READLINE;
+	term = ft_strdup("xterm-256color");
+	tgetent(NULL, term);
 	g_shell.term_set = 1;
 	/* job control start */
 	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))

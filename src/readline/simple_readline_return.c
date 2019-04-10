@@ -12,6 +12,36 @@
 
 #include "twenty_one_sh.h"
 
+int 	buff_is_prompt(uint8_t *buff, int len)
+{
+	uint8_t	*prompt;
+	int		p_len;
+	int		prompt_id;
+
+	prompt_id = g_shell.edit.prompt_id;
+	p_len = get_prompt_len(prompt_id);
+	if (!(prompt = (uint8_t*)malloc(sizeof(uint8_t) * (p_len + 1))))
+		fatal_exit(SH_ENOMEM);
+	prompt[p_len] = '\0';
+	put_prompt_in_simple_buff(prompt, prompt_id, p_len);
+	if (p_len == len && ft_memcmp(buff, prompt, len) == 0)
+	{
+		free(prompt);
+		return (1);
+	}
+	free(prompt);
+	return (0);
+}
+
+void	simple_rl_eot_fn(uint8_t *buff, int len)
+{
+	if (buff_is_prompt(buff, len) == 1)
+	{
+		cooked_terminal();
+		free_controler(FREE_ALL_AND_EXIT);
+	}
+}
+
 void	put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len)
 {
 	if (prompt_id == BASIC_PROMPT)

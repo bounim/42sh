@@ -28,6 +28,7 @@
 # define MODE_VI_COMMAND	2
 # define EDIT_MODE			3
 # define KEYMAP_SIZE		47
+# define BASE_RL_SIZE		3
 # define SEARCHMAP_SIZE		4
 # define TERM_SET			1
 

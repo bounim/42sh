@@ -69,6 +69,7 @@ SRC := \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
 	readline/readline.c \
+	readline/get_term_pos.c \
 	readline/prompt_controler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \
@@ -91,8 +92,6 @@ SRC := \
 	readline/list_buff_transform.c \
 	readline/add_to_undo_list.c \
 	readline/undo_last_editing_command.c \
-	readline/simple_readline.c \
-	readline/simple_readline_return.c \
 	readline/utils.c \
 	readline/utils_input_controler.c \
 	readline/vi_command_mode.c \
@@ -116,7 +115,7 @@ SRC := \
 	parser/parser_node.c \
 	parser/parser_printer.c \
 	parser/is.c \
-	expansions/expansion.c
+	expansions/expansions.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror -g3
