@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:16:41 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 14:55:51 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/10 15:05:24 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	vi_insert_replace(void)
 
 }
 
-void		vi_replace_char(void)
+void 	vi_replace_char(void)
 {
 	int		count;
 	char	c;

@@ -1,0 +1,11 @@
+Quand tu rentres dans le mode R de vi:
+Fleche de haut ou bas si historique il ya: quitte le mode R.
+Fleche de gauche ou droite, delete la ligne actuelle, meme si multiligne, ne fais pas de saut de ligne, garde le prompt
+Edit, remplacement carac par carac sans insertion differentielle, ca rajoute un nouveau buffer fondu dans l'ancien, si tu deletes les caracs ca les revient au buf d'avant.
+
+Procedure:
+Si on est en mode vi esc et que R est enclenche, on list_to_buff la liste actuelle, pour avoir l'etat en memoire
+Ensuite faut refaire une boucle de read et au lieu d'inserer les characs dans la liste faut remplacer ceux existants.
+Si on depasse la taille de la liste initiale on insere les nouveaux caracs comme d'hab.
+Si on del quelque chose on retrouve quel charac il faut remplacer dans la liste via le buff
+Si fleche droite|gauche est touched on quitte le mode R. Si fleche haut bas pareil sauf qu'il faut que la ligne soit changee par historique
