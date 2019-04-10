@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:17:23 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/10 18:38:00 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/10 18:41:26 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static char	**canonic_path_rework_tab(char **cwd_t, int *k)
 	i = ft_arrlen(cwd_t);
 	if (!(ret = (char **)malloc(sizeof(char *) * i + 1)))
 		return (NULL);
-	ret[i + 1] = NULL;
-	while (ret[j])
+	while (j < i + 1)
 		ret[j++] = NULL;
 	j = 0;
 	i = 0;
