@@ -132,7 +132,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"i", 1, vi_insert_mode},
 		{"I", 1, vi_insert_bol},
 		{"r", 1, vi_replace_char},
-		{"R", 1, vi_insert_replace}, /* to do */
+		{"R", 1, vi_replace}, /* to do */
 		{"c", 1, vi_delete_c}, /* to do */
 		{"C", 1, vi_delete_endline_insert_eol},
 		{"S", 1, vi_clear_line_insert},
