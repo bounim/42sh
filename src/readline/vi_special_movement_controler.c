@@ -29,7 +29,19 @@ void		vi_backward_bigword(void)
 
 void		vi_move_first_nonblank(void)
 {
+	t_char	*tmp;
 
+	tmp = g_shell.edit.char_list.head;
+	while (tmp->is_prompt == TRUE)
+		tmp = tmp->next;
+	while (tmp)
+	{
+		if (tmp->charac[0] != ' ')
+			break ;
+		tmp = tmp->next;
+	}
+	ft_putstr(tgoto(tgetstr("cm", NULL), tmp->x_pos, tmp->y_pos));
+	g_shell.edit.point_char = tmp;
 }
 
 void		vi_move_counth_char(void)

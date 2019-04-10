@@ -14,6 +14,7 @@
 
 void		vi_command_mode(void)
 {
+	move_left();
 	g_shell.edit.edit_mode = MODE_VI_COMMAND;
 }
 
