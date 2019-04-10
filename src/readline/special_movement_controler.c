@@ -62,15 +62,11 @@ void	jump_word_backward(void)
 	curr = g_shell.edit.point_char;
 	if (!curr || curr->is_prompt == 1)
 		return ;
-	while (curr && (curr->charac[0] == '\n'
-		|| curr->charac[0] == ' '
-		|| ft_memcmp(NBSP, curr->charac, 2) == 0) && curr->is_prompt == 0)
+	while (curr && !ft_u8_is_alnum(curr->charac[0]) && curr->is_prompt == 0)
 		curr = curr->prev;
 	while (curr && curr->is_prompt == 0)
 	{
-		if (curr->charac[0] == '\n'
-			|| curr->charac[0] == ' '
-			|| ft_memcmp(NBSP, curr->charac, 2) == 0)
+		if (!ft_u8_is_alnum(curr->charac[0]))
 			break ;
 		curr = curr->prev;
 	}
@@ -84,26 +80,23 @@ void	jump_word_backward(void)
 
 void	jump_word_forward(void)
 {
-	t_char	*curr;
 	int		x;
 	int		y;
+	t_char	*curr;
+	t_char	*tmp;
 
-	curr = g_shell.edit.point_char;
-	if (!curr || curr == g_shell.edit.char_list.tail)
+	if (!(curr = g_shell.edit.point_char->next) || curr->prev->y_pos < 0)
 		return ;
-	if (curr->charac[0] == ' ' || curr->charac[0] == '\n'
-			|| ft_memcmp(NBSP, curr->charac, 2) == 0)
-		curr = curr->next;
-	while (curr && curr->next && curr->charac[0] != ' '
-			&& curr->charac[0] != '\n' && ft_memcmp(NBSP, curr->charac, 2) != 0)
-		curr = curr->next;
-	while (curr && curr->next && (curr->next->charac[0] == ' '
-				|| curr->next->charac[0] == '\n'
-				|| ft_memcmp(NBSP, curr->next->charac, 2) == 0))
-		curr = curr->next;
-	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
-	y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
+	tmp = curr;
+	while (tmp && (!ft_u8_is_alnum(tmp->charac[0])
+				   || !ft_memcmp(tmp->charac, NBSP, 2)))
+		tmp = tmp->next;
+	while (tmp && tmp->next && ft_u8_is_alnum(tmp->next->charac[0])
+		   && ft_memcmp(tmp->next->charac, NBSP, 2) != 0)
+		tmp = tmp->next;
+	x = get_x_pos(tmp, g_shell.edit.term_info.max.ws_col);
+	y = get_y_pos(tmp, g_shell.edit.term_info.max.ws_col,\
 		g_shell.edit.term_info.max.ws_row);
 	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
-	g_shell.edit.point_char = curr;
+	g_shell.edit.point_char = tmp;
 }
