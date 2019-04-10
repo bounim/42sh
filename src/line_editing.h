@@ -367,7 +367,7 @@ void					vi_append_eol(void);
 void					vi_insert_mode(void);
 void					vi_insert_bol(void);
 void					vi_replace_char(void);
-void					vi_insert_replace(void);
+void					vi_replace(void);
 void					vi_delete_c(void);
 void					vi_delete_endline_insert_eol(void);
 void					vi_clear_line_insert(void);
