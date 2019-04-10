@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:17:23 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 15:18:57 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/10 18:38:00 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static char	**canonic_path_rework_tab(char **cwd_t, int *k)
 	if (!(ret = (char **)malloc(sizeof(char *) * i + 1)))
 		return (NULL);
 	ret[i + 1] = NULL;
-	i = 0;
+	while (ret[j])
+		ret[j++] = NULL;
 	j = 0;
+	i = 0;
 	while (cwd_t[i])
 	{
 		if (ft_strequ(cwd_t[i], ".."))
@@ -56,12 +58,13 @@ char		*rework_canonic_path(char *cwd)
 	if (!(ret_t = canonic_path_rework_tab(cwd_t, &j)))
 		return (NULL);
 	ft_strdel(&cwd);
-	cwd = ft_strdup("");
 	if (j == 0)
 		cwd = ft_strdup("/");
+	else
+		cwd = ft_strdup("");
 	while (i < j)
 	{
-		cwd = ft_strjoin(cwd, "/");
+		cwd = ft_strfjoin(cwd, "/", 0);
 		cwd = ft_strfjoin(cwd, ret_t[i++], 0);
 	}
 	ft_arrdel(cwd_t);
