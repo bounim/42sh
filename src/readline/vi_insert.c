@@ -18,9 +18,10 @@ void 	vi_append_mode(void)
 	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
-void 	vi_append_eol(void)
+void 		vi_append_eol(void)
 {
-
+	go_to_end();
+	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
 void 	vi_insert_mode(void)
@@ -30,7 +31,8 @@ void 	vi_insert_mode(void)
 
 void 	vi_insert_bol(void)
 {
-
+	go_to_home();
+	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
 void 	vi_insert_replace(void)
@@ -38,7 +40,17 @@ void 	vi_insert_replace(void)
 
 }
 
-void 	vi_replace_char(void)
+void 		vi_replace_char(void)
 {
+	int		count;
+	char	c;
 
+	if (read(STDIN_FILENO, &c, 1) < 0)
+		fatal_exit(SH_EINVAL);
+	count = g_shell.edit.count;
+	while (count--)
+	{
+		if (read(STDIN_FILENO, &c, 1) < 0)
+			fatal_exit(SH_EINVAL);
+	}
 }

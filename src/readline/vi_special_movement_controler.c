@@ -14,7 +14,23 @@
 
 void		vi_forward_bigword(void)
 {
+	t_char	*curr;
+	int		count;
 
+	curr = g_shell.edit.point_char->next;
+	count = g_shell.edit.count;
+	while (count-- && curr != g_shell.edit.char_list.tail->prev)
+	{
+		while ((curr->is_prompt) || (curr->next && !ft_isspace(curr->charac[0])))
+			curr = curr->next;
+		while (curr && curr->next && ft_isspace(curr->next->charac[0]))
+			curr = curr->next;
+	}
+	if (curr && !curr->is_prompt)
+	{
+		ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+		g_shell.edit.point_char = curr->prev;
+	}
 }
 
 void		vi_end_bigword(void)
@@ -24,7 +40,7 @@ void		vi_end_bigword(void)
 
 void		vi_backward_bigword(void)
 {
-
+	
 }
 
 void		vi_move_first_nonblank(void)
@@ -40,8 +56,10 @@ void		vi_move_first_nonblank(void)
 			break ;
 		tmp = tmp->next;
 	}
+	if (!tmp)
+		return ;
 	ft_putstr(tgoto(tgetstr("cm", NULL), tmp->x_pos, tmp->y_pos));
-	g_shell.edit.point_char = tmp;
+	g_shell.edit.point_char = tmp->prev;
 }
 
 void		vi_move_counth_char(void)

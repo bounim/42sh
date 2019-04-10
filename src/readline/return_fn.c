@@ -16,6 +16,7 @@ static void	return_end(uint8_t *buff, size_t buff_size)
 {
 	free_controler(FREE_ALL_EDIT);
 	write(1, "\n", 1);
+	ft_putstr(tgetstr("cr", NULL));
 	g_shell.edit.reading = FALSE;
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
 					g_shell.hist.history, NULL, NULL)))

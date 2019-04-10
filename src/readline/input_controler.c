@@ -117,7 +117,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"E", 1, vi_end_bigword}, /*to do*/
 		{"b", 1, vi_backward_word}, /*to do*/
 		{"B", 1, vi_backward_bigword}, /*to do*/
-		{"^", 1, vi_move_first_nonblank}, /*to do*/
+		{"^", 1, vi_move_first_nonblank},
 		{"$", 1, go_to_end},
 		{"0", 1, go_to_home},
 		{"|", 1, vi_move_counth_char},
@@ -127,10 +127,10 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"T", 1, vi_search_char_before_after}, /* to do */
 		{";", 1, repeat_last_search_char}, /* to do */
 		{",", 1, repeat_last_search_char_reverse}, /* to do */
-		{"a", 1, vi_append_mode}, /* to do */
-		{"A", 1, vi_append_eol}, /* to do*/
+		{"a", 1, vi_append_mode},
+		{"A", 1, vi_append_eol},
 		{"i", 1, vi_insert_mode},
-		{"I", 1, vi_insert_bol}, /* to do */
+		{"I", 1, vi_insert_bol},
 		{"r", 1, vi_replace_char}, /* to do */
 		{"R", 1, vi_insert_replace}, /* to do */
 		{"c", 1, vi_delete_c}, /* to do */
