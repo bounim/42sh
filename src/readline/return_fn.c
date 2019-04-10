@@ -6,13 +6,50 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:51:35 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 18:36:03 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/10 17:43:45 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void	return_end(uint8_t *buff, size_t buff_size)
+static uint8_t	*check_buff_end_for_b(uint8_t *buff, size_t buff_size)
+{
+	if (buff[buff_size - 1] == '\\')
+		buff[buff_size - 1] = '\0';
+	return (buff);
+}
+
+static void		append_line_to_hist(int is_multi, uint8_t *buff,\
+	size_t buff_size)
+{
+	uint8_t *hist_buff;
+	uint8_t	*tmp;
+
+	tmp = (uint8_t*)ft_strdup((char*)buff);
+	tmp = check_buff_end_for_b(tmp, buff_size);
+	hist_buff = g_shell.hist.history->buf;
+	if (is_multi == MULTI)
+		hist_buff = (uint8_t*)ft_strfjoin((char*)hist_buff, "\n", 0);
+	hist_buff = (uint8_t*)ft_strfjoin((char*)hist_buff, (char*)tmp, 0);
+	g_shell.hist.history->buf = hist_buff;
+	free(tmp);
+}
+
+static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
+{
+	uint8_t	*tmp;
+
+	tmp = (uint8_t*)ft_strdup((char*)buff);
+	tmp = check_buff_end_for_b(tmp, buff_size);
+	g_shell.hist.history = rl_add_hist(g_shell.hist.history,\
+		rl_new_hist(tmp));
+	g_shell.hist.history_size++;
+	resize_history(g_shell.hist.history);
+	g_shell.hist.history_save = -1;
+	free(tmp);
+}
+
+static void		return_end(uint8_t *buff, size_t buff_size)
 {
 	free_controler(FREE_ALL_EDIT);
 	write(1, "\n", 1);
@@ -21,11 +58,13 @@ static void	return_end(uint8_t *buff, size_t buff_size)
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
 					g_shell.hist.history, NULL, NULL)))
 	{
-		g_shell.hist.history = rl_add_hist(g_shell.hist.history,\
-				rl_new_hist(buff));
-		g_shell.hist.history_size++;
-		resize_history(g_shell.hist.history);
-		g_shell.hist.history_save = -1;
+		if (g_shell.edit.prompt_id == QUOTE_PROMPT)
+			append_line_to_hist(MULTI, buff, buff_size);
+		else if (g_shell.edit.prompt_id == HEREDOC_PROMPT
+				|| g_shell.edit.prompt_id == BACKSLASH_PROMPT)
+			append_line_to_hist(1, buff, buff_size);
+		else
+			create_new_hist_line(buff, buff_size);
 		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
 		buff_size = ft_u8_strlen(buff);
 	}
@@ -33,7 +72,7 @@ static void	return_end(uint8_t *buff, size_t buff_size)
 	g_shell.line_size = buff_size;
 }
 
-void		return_fn(void)
+void			return_fn(void)
 {
 	uint8_t		*buff;
 	t_char		*head;
