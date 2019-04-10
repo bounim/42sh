@@ -38,7 +38,29 @@ void		vi_move_prev_char(void)
 
 void		vi_forward_word(void)
 {
+	t_char	*curr;
+	int		count;
 
+	curr = g_shell.edit.point_char->next;
+	count = g_shell.edit.count;
+	while (count-- && curr)
+	{
+		if (ft_u8_is_alnum(curr->charac[0]))
+		{
+			while (curr && ft_u8_is_alnum(curr->charac[0]))
+				curr = curr->next;
+		}
+		else
+		{
+			while (curr && !ft_u8_is_alnum(curr->charac[0]))
+				curr = curr->next;
+		}
+	}
+	if (curr)
+	{
+		ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+		g_shell.edit.point_char = curr->prev;
+	}
 }
 
 void		vi_backward_word(void)
