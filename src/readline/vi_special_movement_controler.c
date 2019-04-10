@@ -68,5 +68,15 @@ void		vi_move_first_nonblank(void)
 
 void		vi_move_counth_char(void)
 {
+	int		count;
 
+	go_to_home();
+	count = g_shell.edit.count - 1;
+	while (count > 0)
+	{
+		if (g_shell.edit.point_char->next &&
+		g_shell.edit.point_char->next->next)
+			move_right();
+		count--;
+	}
 }

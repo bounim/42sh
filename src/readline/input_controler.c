@@ -111,8 +111,8 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"k", 1, vi_get_prev_history},
 		{"l", 1, vi_move_next_char},
 		{"h", 1, vi_move_prev_char},
-		{"w", 1, vi_forward_word}, /*to do*/
-		{"W", 1, vi_forward_bigword}, /* to do */
+		{"w", 1, vi_forward_word}, /* to do */
+		{"W", 1, vi_forward_bigword},
 		{"e", 1, vi_end_word}, /*to do*/
 		{"E", 1, vi_end_bigword}, /*to do*/
 		{"b", 1, vi_backward_word}, /*to do*/
