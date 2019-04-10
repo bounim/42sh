@@ -40,7 +40,11 @@ void		vi_end_bigword(void)
 
 void		vi_backward_bigword(void)
 {
-	
+	//t_char	*curr;
+	//int 	count;
+
+	//count = g_shell.edit.count;
+
 }
 
 void		vi_move_first_nonblank(void)

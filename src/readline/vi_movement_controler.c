@@ -16,7 +16,7 @@ void		vi_move_next_char(void)
 {
 	int			count;
 
-	if (g_shell.edit.point_char->next->next)
+	if (g_shell.edit.point_char->next)
 	{
 		count = g_shell.edit.count;
 		while (count && g_shell.edit.point_char->next->next)
