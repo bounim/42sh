@@ -48,6 +48,7 @@ enum 					e_prompt
 # define PARTIAL_MATCH 0
 # define NO_MATCH -1
 # define NBSP "\302\240"
+# define MULTI 2
 
 /*
 *** DEFINE ERROR CODES
