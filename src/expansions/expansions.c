@@ -62,17 +62,16 @@ static int		append_argv(t_argv *argv, uint8_t *buffer, size_t size)
 	}
 }*/
 
-static size_t	string_expand(t_lexer_token *cur, char **ret,
-		uint8_t *buffer, size_t size)
+static char		*string_expand(t_lexer_token *cur, char *buffer, size_t *size)
 {
 	(void)cur;
+	(void)size;
 	if (buffer != NULL) // arg word expand
 	{
-		*ret = (char *)buffer;
-		return (size);
+		return (buffer);
 	}
 	// else assign or redir
-	return (0);
+	return (NULL);
 }
 
 static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
@@ -89,7 +88,8 @@ static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
 		j++;
 	if (j > *i)
 	{
-		explen = string_expand(cur, (char **)&exp, cur->buffer + *i, j - *i);
+		explen = j - *i;
+		exp = (uint8_t *)string_expand(cur, (char *)cur->buffer + *i, &explen); // FIXME
 		if (append_argv(*argv, exp, explen) < 0)
 			return (-1);
 		*i = j;
@@ -210,6 +210,7 @@ static int		redir_expansions(t_lexer_token *cmd, t_lexer_token *redir)
 	cur = redir;
 	while (cur)
 	{
+		//string_expand(cur, NULL, NULL); // TODO check error
 		cur = cur->redir_next;
 	}
 	return (0);
@@ -223,34 +224,19 @@ static int		assign_expansions(t_lexer_token *cmd, t_lexer_token *assign)
 	cur = assign;
 	while (cur)
 	{
+		//string_expand(cur, NULL, NULL); // TODO check error
 		cur = cur->assign_next;
 	}
 	return (0);
 }
 
-static int		command_expansions(t_lexer_token *cmd)
+int				command_expansions(t_lexer_token *cmd)
 {
+	if (!cmd || cmd->ptype != PARSER_COMMAND)
+		return (0);
 	if (arg_expansions(cmd, cmd->arg_head) < 0
 			|| redir_expansions(cmd, cmd->redir_head) < 0
 			|| assign_expansions(cmd, cmd->assign_head) < 0)
 		return (-1);
-	return (0);
-}
-
-int				do_expansions(t_lexer *lex)
-{
-	if (!lex->expansion_i)
-		lex->expansion_i = lex->head;
-	else
-		lex->expansion_i = lex->expansion_i->next;
-	while (lex->expansion_i && lex->expansion_i->ptype != PARSER_SEPARATOR)
-	{
-		if (lex->expansion_i->ptype == PARSER_COMMAND)
-		{
-			if (command_expansions(lex->expansion_i) < 0)
-				return (-1);
-		}
-		lex->expansion_i = lex->expansion_i->next;
-	}
 	return (0);
 }
