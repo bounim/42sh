@@ -374,4 +374,6 @@ void					vi_delete_endline_insert_eol(void);
 void					vi_clear_line_insert(void);
 void					vi_delete_x(void);
 void					vi_delete_bigx(void);
+void					vi_go_to_end(void);
+
 #endif
