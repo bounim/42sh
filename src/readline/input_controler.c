@@ -123,8 +123,8 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"|", 1, vi_move_counth_char},
 		{"f", 1, vi_search_char_after}, /* to do */
 		{"F", 1, vi_search_char_before}, /* to do */
-		{"t", 1, vi_search_char_after_before}, /* to do */
-		{"T", 1, vi_search_char_before_after}, /* to do */
+		{"T", 1, vi_search_char_after_before}, /* to do */
+		{"t", 1, vi_search_char_before_after}, /* to do */
 		{";", 1, repeat_last_search_char}, /* to do */
 		{",", 1, repeat_last_search_char_reverse}, /* to do */
 		{"a", 1, vi_append_mode},
