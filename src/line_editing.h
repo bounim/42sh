@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/09 19:04:39 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:31:03 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,18 @@ enum 					e_prompt
 # define NO_MATCH -1
 # define NBSP "\302\240"
 # define MULTI 2
+
+/*
+*** DEFINE VI SHORTCUTS
+*/
+
+enum 					e_vi_search
+{
+	SEARCH_CHAR_AFTER  = 0,
+	SEARCH_CHAR_BEFORE,
+	SEARCH_CHAR_AFTER_BEFORE,
+	SEARCH_CHAR_BEFORE_AFTER
+};
 
 /*
 *** DEFINE ERROR CODES
@@ -225,6 +237,8 @@ typedef struct 					s_edit
 	int					cur_base_y;
 	int 				lines_to_shift;
 	uint8_t				*cpy_buff;
+	int 				vi_last_search_fn;
+	uint8_t				vi_last_search_char;
 }								t_edit;
 
 /*
@@ -361,6 +375,12 @@ void					vi_search_char_after(void);
 void					vi_search_char_before(void);
 void					vi_search_char_after_before(void);
 void					vi_search_char_before_after(void);
+void					repeat_last_search_char(void);
+void					repeat_last_search_char_reverse(void);
+void					vi_repeat_after(uint8_t charac);
+void					vi_repeat_before(uint8_t charac);
+void 					vi_repeat_after_before(uint8_t charac);
+void					vi_repeat_before_after(uint8_t charac);
 void					repeat_last_search_char(void);
 void					repeat_last_search_char_reverse(void);
 void					vi_append_mode(void);
