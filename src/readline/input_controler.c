@@ -141,9 +141,9 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"d", 1, vi_delete_motion}, /* to do */
 		{"D", 1, delete_endline},
 		{"y", 1, vi_yank_motion}, /* to do */
-		{"Y", 1, vi_yank_endline}, /* to do */
-		{"p", 1, vi_paste_after}, /* to do */
-		{"P", 1, vi_paste_before}, /* to do */
+		{"Y", 1, vi_yank_endline},
+		{"p", 1, vi_paste_after},
+		{"P", 1, vi_paste_before},
 		{"u", 1, vi_undo}, /* to do */
 		{"U", 1, vi_undo_all}, /* to do */
 		{"+", 1, vi_get_next_history},
