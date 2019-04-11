@@ -44,7 +44,7 @@ void		vi_end_bigword(void)
 		if (curr->next && ft_isspace(curr->next->charac[0]))
 		{
 			curr = curr->next;
-			while (curr && curr->next && ft_isspace(curr->charac[0]))
+			while (curr && ft_isspace(curr->charac[0]))
 				curr = curr->next;
 			while (curr && curr->next && !ft_isspace(curr->next->charac[0]))
 				curr = curr->next;
@@ -72,7 +72,7 @@ void		vi_backward_bigword(void)
 	{
 		while (curr && ft_isspace(curr->charac[0]))
 			curr = curr->prev;
-		while (curr && !ft_isspace(curr->charac[0]))
+		while (curr && curr->prev && !ft_isspace(curr->charac[0]))
 			curr = curr->prev;
 	}
 	if (!curr || curr->is_prompt)
