@@ -38,19 +38,18 @@ int		deal_w_input_r(uint8_t input)
 		return_fn();
 		return (1);
 	}
+	if (input == 27)
+	{
+		input = 13;
+	}
 	return (0);
 }
 
-void	replace_read(void)
+void	vi_replace(void)
 {
 	uint8_t	input;
 
 	while (read(0, &input, 1) >= 0)
 		if (deal_w_input_r(input) == 1)
 			return ;
-}
-
-void	vi_replace(void)
-{
-	replace_read();
 }
