@@ -400,4 +400,5 @@ void					vi_yank_endline(void);
 void					vi_undo(void);
 void					vi_undo_all(void);
 void					vi_delete_motion(void);
+
 #endif
