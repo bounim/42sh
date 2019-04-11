@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vi_delete_controler.c                              :+:      :+:    :+:   */
+/*   vi_yank_paste.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,51 +12,27 @@
 
 #include "twenty_one_sh.h"
 
-void		vi_delete_c(void)
+void		vi_yank_motion(void)
 {
 
 }
 
-void		vi_delete_endline_insert_eol(void)
+void		vi_yank_endline(void)
 {
-	delete_endline();
-	go_to_end();
-	g_shell.edit.edit_mode = MODE_VI_INSERT;
+
 }
 
-void		vi_clear_line_insert(void)
+void		vi_paste_after(void)
 {
-	t_char	*curr;
-	t_char	*tmp;
-	t_char	*prompt;
 
-	curr = g_shell.edit.char_list.head;
-	while (curr->is_prompt)
-		curr = curr->next;
-	prompt = curr->prev;
-	while (curr)
-	{
-		tmp = curr->next;
-		free(curr);
-		curr = tmp;
-	}
-	prompt->next = NULL;
-	g_shell.edit.char_list.tail = prompt;
-	g_shell.edit.point_char = g_shell.edit.char_list.tail;
-	g_shell.edit.edit_mode = MODE_VI_INSERT;
-	clean_and_print();
 }
 
-void					vi_delete_x(void)
+void		vi_paste_before(void)
 {
-	int		count;
 
-	count = g_shell.edit.count;
-	while (count--)
-		supr_charac();
 }
 
-void					vi_delete_bigx(void)
+void		vi_delete_motion(void)
 {
 
 }

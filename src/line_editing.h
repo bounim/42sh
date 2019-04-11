@@ -381,8 +381,6 @@ void					vi_repeat_after(uint8_t charac);
 void					vi_repeat_before(uint8_t charac);
 void 					vi_repeat_after_before(uint8_t charac);
 void					vi_repeat_before_after(uint8_t charac);
-void					repeat_last_search_char(void);
-void					repeat_last_search_char_reverse(void);
 void					vi_append_mode(void);
 void					vi_append_eol(void);
 void					vi_insert_mode(void);
@@ -395,5 +393,11 @@ void					vi_clear_line_insert(void);
 void					vi_delete_x(void);
 void					vi_delete_bigx(void);
 void					vi_go_to_end(void);
-
+void					vi_paste_after(void);
+void					vi_paste_before(void);
+void					vi_yank_motion(void);
+void					vi_yank_endline(void);
+void					vi_undo(void);
+void					vi_undo_all(void);
+void					vi_delete_motion(void);
 #endif
