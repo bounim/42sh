@@ -38,55 +38,58 @@ void		vi_move_prev_char(void)
 
 void		vi_forward_word(void)
 {
-	t_char	*tmp;
+	t_char	*curr;
 	int		count;
-	int		x;
-	int		y;
 
-	if (!(tmp = g_shell.edit.point_char->next) || tmp->prev->y_pos < 0)
-		return ;
+	curr = g_shell.edit.point_char->next;
 	count = g_shell.edit.count;
-	while (count-- && tmp)
+	while (count-- && curr)
 	{
-		while (tmp && (!ft_u8_is_alnum(tmp->charac[0])))
-			tmp = tmp->next;
-		while (tmp && tmp->next && ft_u8_is_alnum(tmp->next->charac[0]))
-			tmp = tmp->next;
+		if (ft_isspace(curr->charac[0]))
+		{
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->next;
+		}
+		else
+		{
+			while (curr && !ft_isspace(curr->charac[0]))
+				curr = curr->next;
+		}
+		while (curr && ft_isspace(curr->charac[0]))
+			curr = curr->next;
 	}
-	x = get_x_pos(tmp, g_shell.edit.term_info.max.ws_col);
-	y = get_y_pos(tmp, g_shell.edit.term_info.max.ws_col,\
-		g_shell.edit.term_info.max.ws_row);
-	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
-	g_shell.edit.point_char = tmp;
+	if (!curr)
+		return (vi_go_to_end());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_backward_word(void)
 {
 	t_char	*curr;
-	int 	count;
-	int		x;
-	int		y;
+	int		count;
 
-	curr = g_shell.edit.point_char;
+	curr = g_shell.edit.point_char->next;
 	count = g_shell.edit.count;
-	if (!curr || curr->is_prompt == 1)
-		return ;
-	while (count--)
+	while (count-- && curr)
 	{
-		while (curr && !ft_u8_is_alnum(curr->charac[0]) && curr->is_prompt == 0)
+		while (curr && ft_isspace(curr->charac[0]))
 			curr = curr->prev;
-		while (curr && curr->is_prompt == 0) {
-			if (!ft_u8_is_alnum(curr->charac[0]))
-				break;
-			curr = curr->prev;
+		if (ft_isspace(curr->charac[0]))
+		{
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->prev;
+		}
+		else
+		{
+			while (curr && !ft_isspace(curr->charac[0]))
+				curr = curr->prev;
 		}
 	}
-	x = get_x_pos(curr, g_shell.edit.term_info.max.ws_col);
-	if ((y = get_y_pos(curr, g_shell.edit.term_info.max.ws_col,\
-		g_shell.edit.term_info.max.ws_row)) < 0)
-		return ;
-	ft_putstr(tgoto(tgetstr("cm", NULL), x, y));
-	g_shell.edit.point_char = curr;
+	if (!curr || curr->is_prompt)
+		return (go_to_home());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_end_word(void)
