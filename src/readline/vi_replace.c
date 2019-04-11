@@ -31,6 +31,8 @@ void	replace_curr_charac(uint8_t input)
 
 int		deal_w_input_r(uint8_t input)
 {
+	uint8_t touch[5];
+
 	if (input >= 32 && input <= 126)
 		replace_curr_charac(input);
 	if (input == 13 || input == 10)
@@ -40,7 +42,9 @@ int		deal_w_input_r(uint8_t input)
 	}
 	if (input == 27)
 	{
-		input = 13;
+		read(0, touch, 5);
+		vi_clear_line_insert();
+		return (1);
 	}
 	return (0);
 }
