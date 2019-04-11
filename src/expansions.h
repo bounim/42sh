@@ -17,6 +17,6 @@
 # include <pwd.h>
 # include "parser.h"
 
-int		do_expansions(t_lexer *lex);
+int		command_expansions(t_lexer_token *cmd);
 
 #endif
