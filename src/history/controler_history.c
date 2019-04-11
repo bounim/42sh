@@ -33,8 +33,8 @@ void	switch_history(void)
 		free(g_shell.hist.history->buf);
 		if (!(g_shell.hist.history->buf = ft_u8_strdup(buf)))
 			fatal_exit(SH_ENOMEM);
-		free(buf);
 	}
+	free(buf);
 	g_shell.hist.history = head;
 }
 
