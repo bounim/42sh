@@ -114,9 +114,9 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"w", 1, vi_forward_word}, /* to do */
 		{"W", 1, vi_forward_bigword},
 		{"e", 1, vi_end_word}, /*to do*/
-		{"E", 1, vi_end_bigword}, /*to do*/
+		{"E", 1, vi_end_bigword},
 		{"b", 1, vi_backward_word}, /* to do */
-		{"B", 1, vi_backward_bigword}, /*to do*/
+		{"B", 1, vi_backward_bigword},
 		{"^", 1, vi_move_first_nonblank},
 		{"$", 1, vi_go_to_end},
 		{"0", 1, go_to_home},
