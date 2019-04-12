@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vi_search_char.c                    :+:      :+:    :+:   */
+/*   vi_repeat_search_fn.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/04 17:16:41 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 14:55:51 by schakor          ###   ########.fr       */
+/*   Created: 2019/04/11 13:19:05 by aguillot          #+#    #+#             */
+/*   Updated: 2019/04/11 13:19:06 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		vi_search_char_after(void)
+void		vi_repeat_after(uint8_t charac)
 {
 	t_char *curr;
-	uint8_t charac;
 
-	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
@@ -37,12 +35,10 @@ void		vi_search_char_after(void)
 	g_shell.edit.vi_last_search_char = charac;
 }
 
-void		vi_search_char_before(void)
+void		vi_repeat_before(uint8_t charac)
 {
 	t_char *curr;
-	uint8_t charac;
 
-	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
@@ -62,12 +58,10 @@ void		vi_search_char_before(void)
 	g_shell.edit.vi_last_search_char = charac;
 }
 
-void		vi_search_char_after_before(void)
+void		vi_repeat_after_before(uint8_t charac)
 {
 	t_char *curr;
-	uint8_t charac;
 
-	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
@@ -88,12 +82,10 @@ void		vi_search_char_after_before(void)
 	g_shell.edit.vi_last_search_char = charac;
 }
 
-void		vi_search_char_before_after(void)
+void		vi_repeat_before_after(uint8_t charac)
 {
 	t_char *curr;
-	uint8_t charac;
 
-	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)

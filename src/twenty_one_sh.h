@@ -39,6 +39,7 @@
 # include "builtin_defines.h"
 # include "job_control.h"
 # include "shell.h"
+# include "random.h"
 
 void						ft_sig_handler(int signo);
 void						ft_signal(int signo);

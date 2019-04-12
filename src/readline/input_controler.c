@@ -100,7 +100,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{NULL, 0, NULL},
 		{NULL, 0, NULL}
 	},
-{
+	{
 		{RIGHT_ARROW, 3, vi_move_next_char},
 		{LEFT_ARROW, 3, vi_move_prev_char},
 		{RET, 1, return_fn},
@@ -114,19 +114,19 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"w", 1, vi_forward_word}, /* to do */
 		{"W", 1, vi_forward_bigword},
 		{"e", 1, vi_end_word}, /*to do*/
-		{"E", 1, vi_end_bigword}, /*to do*/
-		{"b", 1, vi_backward_word}, /*to do*/
-		{"B", 1, vi_backward_bigword}, /*to do*/
+		{"E", 1, vi_end_bigword},
+		{"b", 1, vi_backward_word}, /* to do */
+		{"B", 1, vi_backward_bigword},
 		{"^", 1, vi_move_first_nonblank},
-		{"$", 1, go_to_end},
+		{"$", 1, vi_go_to_end},
 		{"0", 1, go_to_home},
 		{"|", 1, vi_move_counth_char},
-		{"f", 1, vi_search_char_after}, /* to do */
-		{"F", 1, vi_search_char_before}, /* to do */
-		{"t", 1, vi_search_char_after_before}, /* to do */
-		{"T", 1, vi_search_char_before_after}, /* to do */
-		{";", 1, repeat_last_search_char}, /* to do */
-		{",", 1, repeat_last_search_char_reverse}, /* to do */
+		{"f", 1, vi_search_char_after},
+		{"F", 1, vi_search_char_before},
+		{"T", 1, vi_search_char_after_before},
+		{"t", 1, vi_search_char_before_after},
+		{";", 1, repeat_last_search_char},
+		{",", 1, repeat_last_search_char_reverse},
 		{"a", 1, vi_append_mode},
 		{"A", 1, vi_append_eol},
 		{"i", 1, vi_insert_mode},
@@ -138,14 +138,14 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"S", 1, vi_clear_line_insert},
 		{"x", 1, vi_delete_x}, /* to do */
 		{"X", 1, vi_delete_bigx}, /* to do */
-		{"d", 1, NULL}, /* to do */
-		{"D", 1, NULL}, /* to do */
-		{"y", 1, NULL}, /* to do */
-		{"Y", 1, NULL}, /* to do */
-		{"p", 1, NULL}, /* to do */
-		{"P", 1, NULL}, /* to do */
-		{"u", 1, NULL}, /* to do */
-		{"U", 1, NULL}, /* to do */
+		{"d", 1, vi_delete_motion}, /* to do */
+		{"D", 1, delete_endline},
+		{"y", 1, vi_yank_motion}, /* to do */
+		{"Y", 1, vi_yank_endline},
+		{"p", 1, vi_paste_after},
+		{"P", 1, vi_paste_before},
+		{"u", 1, vi_undo}, /* to do */
+		{"U", 1, vi_undo_all}, /* to do */
 		{"+", 1, vi_get_next_history},
 		{"-", 1, vi_get_prev_history}
 	}

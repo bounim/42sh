@@ -45,27 +45,51 @@ void		vi_forward_word(void)
 	count = g_shell.edit.count;
 	while (count-- && curr)
 	{
-		if (ft_u8_is_alnum(curr->charac[0]))
+		if (ft_isspace(curr->charac[0]))
 		{
-			while (curr && ft_u8_is_alnum(curr->charac[0]))
+			while (curr && ft_isspace(curr->charac[0]))
 				curr = curr->next;
 		}
 		else
 		{
-			while (curr && !ft_u8_is_alnum(curr->charac[0]))
+			while (curr && !ft_isspace(curr->charac[0]))
 				curr = curr->next;
 		}
+		while (curr && ft_isspace(curr->charac[0]))
+			curr = curr->next;
 	}
-	if (curr)
-	{
-		ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-		g_shell.edit.point_char = curr->prev;
-	}
+	if (!curr)
+		return (vi_go_to_end());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_backward_word(void)
 {
+	t_char	*curr;
+	int		count;
 
+	curr = g_shell.edit.point_char->next;
+	count = g_shell.edit.count;
+	while (count-- && curr)
+	{
+		while (curr && ft_isspace(curr->charac[0]))
+			curr = curr->prev;
+		if (ft_isspace(curr->charac[0]))
+		{
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->prev;
+		}
+		else
+		{
+			while (curr && !ft_isspace(curr->charac[0]))
+				curr = curr->prev;
+		}
+	}
+	if (!curr || curr->is_prompt)
+		return (go_to_home());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_end_word(void)

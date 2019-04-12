@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:16:41 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 14:55:51 by schakor          ###   ########.fr       */
+/*   Updated: 2019/04/11 13:29:38 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,66 @@ void		vi_forward_bigword(void)
 
 	curr = g_shell.edit.point_char->next;
 	count = g_shell.edit.count;
-	while (count-- && curr != g_shell.edit.char_list.tail->prev)
+	while (count-- && curr)
 	{
-		while ((curr->is_prompt) || (curr->next && !ft_isspace(curr->charac[0])))
+		while (curr && !ft_isspace(curr->charac[0]))
 			curr = curr->next;
-		while (curr && curr->next && ft_isspace(curr->next->charac[0]))
+		while (curr && curr->next && ft_isspace(curr->charac[0]))
 			curr = curr->next;
 	}
-	if (curr && !curr->is_prompt)
-	{
-		ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-		g_shell.edit.point_char = curr->prev;
-	}
+	if (!curr)
+		return (vi_go_to_end());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_end_bigword(void)
 {
+	t_char	*curr;
+	int		count;
 
+	curr = g_shell.edit.point_char->next;
+	count = g_shell.edit.count;
+	while (count-- && curr)
+	{
+		if (curr->next && ft_isspace(curr->next->charac[0]))
+		{
+			curr = curr->next;
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->next;
+			while (curr && curr->next && !ft_isspace(curr->next->charac[0]))
+				curr = curr->next;
+		}
+		else
+		{
+			while (curr && curr->next && !ft_isspace(curr->next->charac[0]))
+				curr = curr->next;
+		}
+	}
+	if (!curr)
+		return (vi_go_to_end());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }
 
 void		vi_backward_bigword(void)
 {
-	//t_char	*curr;
-	//int 	count;
+	t_char	*curr;
+	int		count;
 
-	//count = g_shell.edit.count;
-
+	curr = g_shell.edit.point_char;
+	count = g_shell.edit.count;
+	while (count-- && curr)
+	{
+		while (curr && ft_isspace(curr->charac[0]))
+			curr = curr->prev;
+		while (curr && curr->prev && !ft_isspace(curr->charac[0]))
+			curr = curr->prev;
+	}
+	if (!curr || curr->is_prompt)
+		return (go_to_home());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->next->x_pos, curr->next->y_pos));
+	g_shell.edit.point_char = curr;
 }
 
 void		vi_move_first_nonblank(void)
