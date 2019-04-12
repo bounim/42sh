@@ -210,7 +210,8 @@ static int		redir_expansions(t_lexer_token *cmd, t_lexer_token *redir)
 	cur = redir;
 	while (cur)
 	{
-		//string_expand(cur, NULL, NULL); // TODO check error
+		//if (cur->rtype != DLESS && cur->rtype != DLESSDASH)
+		//	string_expand(cur->next, NULL, NULL); // TODO check error
 		cur = cur->redir_next;
 	}
 	return (0);

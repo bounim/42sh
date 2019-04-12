@@ -98,6 +98,7 @@ int			command_redir(t_lexer_token *cmd)
 		else
 		{
 			// TODO heredoc
+			printer_bin(&g_shell.err, cur->heredoc_buffer, cur->heredoc_size);
 			return (error_restore(cmd, "TODO heredoc\n"));
 		}
 		if (save_dup(cur) < 0)
