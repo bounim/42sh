@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:52:55 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/11 14:56:13 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/12 13:24:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void		execution(t_lexer *lex)
 		new = creat_job_list(av);
 		g_shell.head_job = add_job(g_shell.head_job, new);
 		launch_job(new, 1);
+		job_notif();
 		command_redir_restore(lex->root);
 		resize_history(g_shell.hist.history);
 	}
