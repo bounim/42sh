@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:41:35 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 15:23:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 12:10:13 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	print_jobs(t_job *jobs, t_opt_jobs opts)
 	int	i;
 
 	i = 1;
-	while (jobs)
+	while (jobs->next)
 	{
 		if (opts.p)
 		{

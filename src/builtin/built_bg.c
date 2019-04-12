@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 13:31:55 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 14:43:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:08:58 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ int			built_bg(char **arg, t_envl *envl)
 	t_job	*job;
 
 	(void)envl;
+	if (!g_shell.head_job->next)
+	{
+		ft_putstr_fd("sh: fg: no current job\n", 2);
+		return (1);
+	}
 	if (!(job = g_shell.head_job))
 		return (1);
 	if ((i = check_opts_bg(arg)) == -1)

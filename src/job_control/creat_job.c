@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/08 13:53:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/11 13:54:08 by khsadira         ###   ########.fr       */
+/*   Created: 2019/04/12 13:28:04 by khsadira          #+#    #+#             */
+/*   Updated: 2019/04/12 13:28:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-#define malloc(x) NULL
+
 t_job	*creat_job_list(char **arg)
 {
 	t_job	*new_job;
@@ -36,6 +36,7 @@ t_job	*creat_job(char *cmd)
 	new = NULL;
 	if (!(new = init_job(new)))
 		return (NULL);
+	cmd = NULL;
 	new->cmd = ft_strdup(cmd);
 	return (new);
 }

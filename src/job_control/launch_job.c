@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/09 10:14:52 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:31:57 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void			launch_job(t_job *job, int foreground)
 	int		my_pipe[2];
 	int		std_file[2];
 
+	pid = -1;
 	std_file[0] = STDIN_FILENO;
 	proc = job->head_proc;
 	while (proc)
@@ -53,11 +54,14 @@ void			launch_job(t_job *job, int foreground)
 		else
 			std_file[1] = STDOUT_FILENO;
 		if (proc->next || !proc->is_builtin)
+		{
+			proc->is_fork = 1;
 			pid = fork();
-		if (pid == 0)
-			launch_proc(proc, job->pgid, foreground, std_file);
-		else if (proc->is_builtin && !proc->next)
+		}
+		if (proc->is_fork == 0 && proc->is_builtin)
 			start_builtin(proc->arg, g_shell.envl);
+		else if (pid == 0 || proc->is_builtin)
+			launch_proc(proc, job->pgid, foreground, std_file);
 		else if (pid < 0)
 			return (ft_putstr_fd("fork failed\n", 2));
 		else

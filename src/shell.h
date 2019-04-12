@@ -42,7 +42,7 @@ struct						s_shell
 	pid_t					pgid;
 	int 					state;
 	int						debug_mode;
-	int						ctrl_z;
+	pid_t					stopped_proc;
 };
 
 /*

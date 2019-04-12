@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 15:20:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 17:16:38 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:29:25 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_proc	*init_proc(t_proc *proc)
 	proc->arg = NULL;
 	proc->env = NULL;
 	proc->pid = 0;
-	proc->finish = 0;
+	proc->finish = 1;
 	proc->std_in = 0;
 	proc->std_out = 0;
 	proc->stop = 0;
