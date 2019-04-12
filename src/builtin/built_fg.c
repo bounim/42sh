@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:53:53 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 15:20:46 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:04:40 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,18 @@ static int	print_error_fg(int nb)
 	return (1);
 }
 
+static t_job	*return_job_value(t_job *job)
+{
+	if (!g_shell.head_job->next)
+	{
+		ft_putstr_fd("sh: fg: no current job\n", 2);
+		return (NULL);
+	}
+	if (!(job = g_shell.head_job))
+		return (NULL);
+	return (job);
+}
+
 int			built_fg(char **arg, t_envl *envl)
 {
 	int		i;
@@ -52,7 +64,7 @@ int			built_fg(char **arg, t_envl *envl)
 	t_job	*job;
 
 	(void)envl;
-	if (!(job = g_shell.head_job))
+	if (!(job = return_job_value(NULL)))
 		return (1);
 	if ((i = check_opts_fg(arg)) == -1)
 		return (1);
@@ -62,7 +74,7 @@ int			built_fg(char **arg, t_envl *envl)
 	else if ((i = ft_atoi(arg[i])))
 		return (print_error_fg(0));
 	j = 1;
-	while (j < i && job)
+	while (j < i && job->next)
 	{
 		job = job->next;
 		j++;

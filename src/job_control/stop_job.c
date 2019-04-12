@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:04 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/09 13:49:55 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:44:13 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,38 @@ int				mark_proc_status(pid_t pid, int status)
 	}
 }
 
+static void		rework_head_job(t_job *job)
+{
+	t_job *tmp;
+
+	tmp = g_shell.head_job;
+	if (tmp == job)
+	{
+		g_shell.head_job = NULL;
+		return ;
+	}
+	while (tmp->next != job)
+		tmp = tmp->next;
+	tmp = job->next;
+}
+
 void			wait_for_job(t_job *job)
 {
 	int		status;
+	t_job	*tmp;
 	pid_t	pid;
 
+	tmp = NULL;
+	printf("path = %s\n", job->head_proc->path);
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 	while (!mark_proc_status(pid, status) &&
 			!job_is_stop(job) && !job_is_finish(job))
+	{
+		printf("je suis la\n");
 		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+	}
+	rework_head_job(job);;
+	free_job(job);
 }
 
 void			update_status(void)
