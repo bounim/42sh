@@ -350,6 +350,7 @@ void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
 void					handle_ctrl_c(void);
 void					add_to_undo_list(uint8_t *key, size_t keylen);
 void					undo_last_edit_command(void);
+void					delete_last_command(t_last_command *last);
 void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
 

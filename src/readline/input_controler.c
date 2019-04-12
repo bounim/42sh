@@ -106,7 +106,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{RET, 1, return_fn},
 		{"#", 1, treat_as_comment},
 		{" ", 1, vi_move_next_char},
-		{"v", 1, invoke_vi}, /* to do */
+		{"v", 1, invoke_vi},
 		{"j", 1, vi_get_next_history},
 		{"k", 1, vi_get_prev_history},
 		{"l", 1, vi_move_next_char},
@@ -132,7 +132,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"i", 1, vi_insert_mode},
 		{"I", 1, vi_insert_bol},
 		{"r", 1, vi_replace_char},
-		{"R", 1, vi_replace}, /* to do */
+		{"R", 1, vi_replace},
 		{"c", 1, vi_delete_c}, /* to do */
 		{"C", 1, vi_delete_endline_insert_eol},
 		{"S", 1, vi_clear_line_insert},

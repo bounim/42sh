@@ -14,10 +14,11 @@
 
 void		vi_undo(void)
 {
-
+	delete_last_command(g_shell.edit.last_command);
+	undo_last_edit_command();
 }
 
 void		vi_undo_all(void)
 {
-
+	vi_clear_line_insert();
 }
