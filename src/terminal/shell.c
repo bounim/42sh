@@ -32,7 +32,7 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.term = STDIN_FILENO;
 	g_shell.is_interactive = isatty(g_shell.term);
 	g_shell.canonic_path = getcwd(NULL, 0);
-	g_shell.ctrl_z = 0;
+	g_shell.stopped_proc = 0;
 	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO) ||\
 			!isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);

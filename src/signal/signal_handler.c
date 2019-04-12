@@ -47,10 +47,13 @@ static void	window_modif(void)
 
 static void	stop_received(void)
 {
+	int status;
+
+	WIFSTOPPED(status);
 	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
 	signal(SIGTSTP, SIG_DFL);
-	g_shell.ctrl_z = 1;
 	cooked_terminal();
+	mark_proc_status(g_shell.stopped_proc, status);
 }
 
 static void	cont_received(void)

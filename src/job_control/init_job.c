@@ -35,7 +35,7 @@ t_proc	*init_proc(t_proc *proc)
 	proc->arg = NULL;
 	proc->env = NULL;
 	proc->pid = 0;
-	proc->finish = 0;
+	proc->finish = 1;
 	proc->std_in = 0;
 	proc->std_out = 0;
 	proc->stop = 0;

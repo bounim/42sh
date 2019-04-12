@@ -22,29 +22,31 @@ void		format_job_info(t_job *job, const char *status)
 	write(2, "\n", 1);
 }
 
-static void	job_notif_continue(t_job **job, t_job **last_job, t_job **next_job)
+static void	job_notif_continue(t_job *job, t_job *last_job, t_job *next_job)
 {
 	while (job)
 	{
-		*next_job = (*job)->next;
-		if (job_is_finish(*job))
+		next_job = job->next;
+		printf("start notif\n");
+		if (job_is_finish(job))
 		{
-			format_job_info(*job, "completed");
-			if (*last_job)
-				(*last_job)->next = (*job)->next;
+			format_job_info(job, "completed");
+			if (last_job)
+				last_job->next = next_job;
 			else
-				(*last_job) = g_shell.head_job;
-			free_job(*job);
-			*job = (*job)->next;
+				g_shell.head_job = next_job;
+			free_job(job);
+			printf("end of completed");
 		}
-		else if (job_is_stop(*job) && !(*job)->notified)
+		else if (job_is_stop(job) && !job->notified)
 		{
-			format_job_info(*job, "stopped");
-			(*job)->notified = 1;
-			*last_job = *job;
+			format_job_info(job, "stopped");
+			job->notified = 1;
+			last_job = job;
 		}
 		else
-			*last_job = *job;
+			last_job = job;
+		job = job->next;
 	}
 }
 
@@ -56,6 +58,7 @@ void		job_notif(void)
 
 	update_status();
 	last_job = NULL;
+	next_job = NULL;
 	job = g_shell.head_job;
-	job_notif_continue(&job, &last_job, &next_job);
+	job_notif_continue(job, last_job, next_job);
 }
