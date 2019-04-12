@@ -88,6 +88,7 @@ int				built_alias(char **arg, t_envl *envl)
 
 	(void)envl;
 	ret = 0;
+	opts = 0;
 	if ((i = check_opts_alias(arg, &opts)) == -1)
 		return (1);
 	if (opts == 1)
