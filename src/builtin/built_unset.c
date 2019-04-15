@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 12:00:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 19:17:15 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:44:39 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int		unset_var(char *arg, t_envl **envl)
 
 int				built_unset(char **arg, t_envl *envl)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 	t_envl	*tmp;
 
 	tmp = dup_envl(envl);

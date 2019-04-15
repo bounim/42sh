@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 18:59:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:58:12 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static uint8_t	search_env_var(t_envl *envl, const char *search)
 	return (NOTFOUND);
 }
 
-static void		set_env_var(t_envl **envl, const char *name, char *value, size_t read)
+static void		set_env_var(t_envl **envl, const char *name, char *value,\
+		size_t read)
 {
 	t_envl		*new;
 
@@ -43,7 +44,8 @@ static void		set_env_var(t_envl **envl, const char *name, char *value, size_t re
 	}
 }
 
-static void		set_env_var_unexp(t_envl **envl, const char *name, char *value, size_t read)
+static void		set_env_var_unexp(t_envl **envl, const char *name, char *value,\
+		size_t read)
 {
 	t_envl		*new;
 
@@ -76,7 +78,8 @@ static void		set_envl_default_value(t_envl **envl)
 	set_env_var(envl, "OLDPWD", ft_strdup(cwd), 0);
 //	set_env_var_unexp(envl, "42SH_ARGC", ft_itoa(g_shell.argc), 1);
 //	set_env_var_unexp(envl, "42SH_ARGV", ft_arrdup(g_shell.argv), 1);
-	set_env_var_unexp(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"), "/.42sh_history"), 0);
+	set_env_var_unexp(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"),\
+				"/.42sh_history"), 0);
 	set_env_var_unexp(envl, "HISTSIZE", ft_strdup("50000"), 0);
 	set_env_var_unexp(envl, "$", NULL, 2);
 	set_env_var_unexp(envl, "?", NULL, 2);
