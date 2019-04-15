@@ -16,22 +16,26 @@ void		vi_search_char_after(void)
 {
 	t_char *curr;
 	uint8_t charac;
+	int		count;
 
+	count = g_shell.edit.count;
 	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
 		if (!(curr = curr->next))
 			return ;
-	while (curr)
+	while (count--)
 	{
-		if (charac == curr->charac[0])
+		while (curr)
 		{
-			ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-			g_shell.edit.point_char = curr->prev;
-			break ;
+			if (charac == curr->charac[0])
+			{
+				ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+				g_shell.edit.point_char = curr->prev;
+			}
+			curr = curr->next;
 		}
-		curr = curr->next;
 	}
 	g_shell.edit.vi_last_search_fn = SEARCH_CHAR_AFTER;
 	g_shell.edit.vi_last_search_char = charac;
@@ -41,22 +45,27 @@ void		vi_search_char_before(void)
 {
 	t_char *curr;
 	uint8_t charac;
+	int		count;
 
+	count = g_shell.edit.count;
 	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
 		if ((curr = curr->prev) && curr->is_prompt)
 			return ;
-	while ((curr && curr->prev) && !curr->prev->is_prompt)
+	while (count--)
 	{
-		if (curr->charac[0] == charac)
+		while ((curr && curr->prev) && !curr->prev->is_prompt)
 		{
-			ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-			g_shell.edit.point_char = curr->prev;
-			break ;
+			if (curr->charac[0] == charac)
+			{
+				ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+				g_shell.edit.point_char = curr->prev;
+				break;
+			}
+			curr = curr->prev;
 		}
-		curr = curr->prev;
 	}
 	g_shell.edit.vi_last_search_fn = SEARCH_CHAR_BEFORE;
 	g_shell.edit.vi_last_search_char = charac;
@@ -66,23 +75,28 @@ void		vi_search_char_after_before(void)
 {
 	t_char *curr;
 	uint8_t charac;
+	int		count;
 
+	count = g_shell.edit.count;
 	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
 		if (!(curr = curr->next))
 			return ;
-	while (curr)
+	while (count--)
 	{
-		if (curr->charac[0] == charac)
+		while (curr)
 		{
-			if ((curr = curr->prev) && curr->is_prompt)
-				return ;
-			ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-			break ;
+			if (curr->charac[0] == charac)
+			{
+				if ((curr = curr->prev) && curr->is_prompt)
+					return;
+				ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+				break;
+			}
+			curr = curr->next;
 		}
-		curr = curr->next;
 	}
 	g_shell.edit.vi_last_search_fn = SEARCH_CHAR_AFTER_BEFORE;
 	g_shell.edit.vi_last_search_char = charac;
@@ -92,24 +106,29 @@ void		vi_search_char_before_after(void)
 {
 	t_char *curr;
 	uint8_t charac;
+	int		count;
 
+	count = g_shell.edit.count;
 	read(0, &charac, 1);
 	if (!(curr = g_shell.edit.point_char->next))
 		return ;
 	if (curr->charac[0] == charac)
 		if ((curr = curr->prev) && curr->is_prompt)
 			return ;
-	while (curr && curr->prev && !curr->prev->is_prompt)
+	while (count--)
 	{
-		if (curr->charac[0] == charac)
+		while (curr && curr->prev && !curr->prev->is_prompt)
 		{
-			if (!(curr = curr->next))
-				return ;
-			ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
-			g_shell.edit.point_char = curr->prev;
-			break ;
+			if (curr->charac[0] == charac)
+			{
+				if (!(curr = curr->next))
+					return;
+				ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+				g_shell.edit.point_char = curr->prev;
+				break;
+			}
+			curr = curr->prev;
 		}
-		curr = curr->prev;
 	}
 	g_shell.edit.vi_last_search_fn = SEARCH_CHAR_BEFORE_AFTER;
 	g_shell.edit.vi_last_search_char = charac;

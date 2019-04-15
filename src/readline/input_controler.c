@@ -111,11 +111,11 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"k", 1, vi_get_prev_history},
 		{"l", 1, vi_move_next_char},
 		{"h", 1, vi_move_prev_char},
-		{"w", 1, vi_forward_word}, /* to do */
+		{"w", 1, vi_forward_word},
 		{"W", 1, vi_forward_bigword},
-		{"e", 1, vi_end_word}, /*to do*/
+		{"e", 1, vi_end_word},
 		{"E", 1, vi_end_bigword},
-		{"b", 1, vi_backward_word}, /* to do */
+		{"b", 1, vi_backward_word},
 		{"B", 1, vi_backward_bigword},
 		{"^", 1, vi_move_first_nonblank},
 		{"$", 1, vi_go_to_end},
@@ -132,20 +132,20 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"i", 1, vi_insert_mode},
 		{"I", 1, vi_insert_bol},
 		{"r", 1, vi_replace_char},
-		{"R", 1, vi_replace}, /* to do */
-		{"c", 1, vi_delete_c}, /* to do */
+		{"R", 1, vi_replace},
+		{"c", 1, vi_delete_c},
 		{"C", 1, vi_delete_endline_insert_eol},
 		{"S", 1, vi_clear_line_insert},
-		{"x", 1, vi_delete_x}, /* to do */
-		{"X", 1, vi_delete_bigx}, /* to do */
-		{"d", 1, vi_delete_motion}, /* to do */
+		{"x", 1, vi_delete_x},
+		{"X", 1, vi_delete_bigx},
+		{"d", 1, vi_delete_motion},
 		{"D", 1, delete_endline},
-		{"y", 1, vi_yank_motion}, /* to do */
+		{"y", 1, vi_yank_motion},
 		{"Y", 1, vi_yank_endline},
 		{"p", 1, vi_paste_after},
 		{"P", 1, vi_paste_before},
-		{"u", 1, vi_undo}, /* to do */
-		{"U", 1, vi_undo_all}, /* to do */
+		{"u", 1, vi_undo},
+		{"U", 1, vi_undo_all},
 		{"+", 1, vi_get_next_history},
 		{"-", 1, vi_get_prev_history}
 	}
