@@ -191,7 +191,8 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	{
 		if ((!(key[0] >= 0 && key[0] < 32)) || key[0] == '\n')
 		{
-			add_to_undo_list(NULL, 0);
+			if (g_shell.edit.edit_mode == MODE_EMACS)
+				add_to_undo_list(NULL, 0);
 			add_char_to_list(key, *keylen, 0);
 		}
 		ft_memset(key, 0, *keylen);
