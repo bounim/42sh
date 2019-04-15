@@ -12,7 +12,7 @@
 
 #include "expansions_internal.h"
 
-static t_argv	*add_argv(t_lexer_token *cmd)
+static t_argv	*add_argv(t_lexer_token *cmd) // TODO lazy add_argv in append (unless forced??)
 {
 	t_argv	*ret;
 
@@ -38,6 +38,8 @@ static int		append_argv(t_argv *argv, uint8_t *buffer, size_t size)
 {
 	char	*new;
 
+	if (size == 0)
+		return (0);
 	if (NULL == (new = malloc(argv->len + size + 1)))
 		return (-1);
 	ft_memcpy(new, argv->buffer, argv->len);
@@ -62,24 +64,134 @@ static int		append_argv(t_argv *argv, uint8_t *buffer, size_t size)
 	}
 }*/
 
-static char		*string_expand(t_lexer_token *cur, char *buffer, size_t *size)
+/*static uint8_t	*string_expand(t_lexer_token *cur, uint8_t *buffer, size_t *size)
 {
+	char	*home;
+	size_t	home_len;
+	uint8_t	*ret;
+	size_t	i;
+	size_t	j;
+
 	(void)cur;
 	(void)size;
 	if (buffer != NULL) // arg word expand
 	{
-		return (buffer);
+		i = 0;
+		if (buffer[0] == '~')
+		{
+			if (NULL == (home = get_env_val(g_shell.envl, "HOME")))
+				return (buffer);
+			home_len = ft_strlen(home);
+			if (NULL == (ret = malloc(home_len + *size - 1)))
+				fatal_exit(SH_ENOMEM);
+			ft_memmove(ret, home, home_len);
+			ft_memmove(ret + home_len, buffer + 1, *size - 1);
+			*size = *size - 1 + home_len;
+			i = home_len;
+		}
+		else
+			ret = buffer;
+		while (i < *size - 1)
+		{
+			if (ret[i] == '$')
+			{
+				j = i + 1;
+			}
+			i++;
+		}
+		return (ret);
 	}
 	// else assign or redir
 	return (NULL);
+}*/
+
+static size_t	tilde_arg(t_argv *argv)
+{
+	char	*home;
+
+	if (NULL == (home = get_env_val(g_shell.envl, "HOME")))
+		append_argv(argv, (uint8_t *)"~", 1);
+	else
+		append_argv(argv, (uint8_t *)home, ft_strlen(home));
+	return (1);
+}
+
+static size_t	until_dollar_arg(t_argv *argv, t_lexer_token *cur,
+		size_t j, size_t k)
+{
+	size_t	x;
+
+	x = 0;
+	while (k + x < j && cur->buffer[k + x] != '$')
+		x++;
+	append_argv(argv, cur->buffer + k, x);
+	return (x);
+}
+
+static int		isvarchar(uint8_t ch)
+{
+	return (ch == '_'
+			|| (ch >= '0' && ch <= '9')
+			|| (ch >= 'A' && ch <= 'Z')
+			|| (ch >= 'a' && ch <= 'z'));
+}
+
+static size_t	dollar_arg(t_argv **argv, t_lexer_token *cmd,
+		t_lexer_token *cur, size_t j, size_t k) // FIXME 5 param
+{
+	size_t	x;
+	size_t	s;
+	size_t	e;
+	char	*key;
+	uint8_t	*val;
+
+	if (k + 1 == j)
+	{
+		append_argv(*argv, (uint8_t *)"$", 1);
+		return (1);
+	}
+	x = 1;
+	while (k + x < j && isvarchar(cur->buffer[k + x]))
+		x++;
+	if (NULL == (key = malloc(x)))
+		fatal_exit(SH_ENOMEM);
+	ft_memmove(key, cur->buffer + k + 1, x - 1);
+	key[x - 1] = '\0';
+	if (NULL == (val = (uint8_t *)get_env_val(g_shell.envl, key)))
+	{
+		free(key);
+		return (x);
+	}
+	s = 0;
+	while (1)
+	{
+		while (val[s] == ' ' || val[s] == '\t')
+			s++;
+		if (!val[s])
+			break ;
+		e = s + 1;
+		while (val[e] && val[e] != ' ' && val[e] != '\t')
+			e++;
+		//append_argv
+		append_argv(*argv, val + s, e - s);
+		if (!val[e])
+			break ;
+		// add_argv????
+		*argv = add_argv(cmd); // FIXME need lazy add (on next append or add)
+		s = e;
+	}
+	free(key);
+	return (x);
 }
 
 static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
 		t_argv **argv, size_t *i)
 {
 	size_t	j;
-	uint8_t *exp;
-	size_t explen;
+	/*uint8_t	*exp;
+	size_t	explen;
+	int		r;*/
+	size_t	k;
 
 	j = *i;
 	while (j < cur->size && cur->buffer[j] != ' '
@@ -88,10 +200,23 @@ static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
 		j++;
 	if (j > *i)
 	{
-		explen = j - *i;
-		exp = (uint8_t *)string_expand(cur, (char *)cur->buffer + *i, &explen); // FIXME
-		if (append_argv(*argv, exp, explen) < 0)
-			return (-1);
+		/*explen = j - *i;
+		exp = string_expand(cur, cur->buffer + *i, &explen); // FIXME
+		r = append_argv(*argv, exp, explen);
+		if (exp != cur->buffer + *i)
+			free(exp);
+		if (r < 0)
+			return (-1);*/
+		k = *i;
+		if (cur->buffer[*i] == '~')
+			k += tilde_arg(*argv);
+		while (k < j)
+		{
+			if (cur->buffer[k] != '$')
+				k += until_dollar_arg(*argv, cur, j, k);
+			else
+				k += dollar_arg(argv, cmd, cur, j, k);
+		}
 		*i = j;
 	}
 	if (*i < cur->size)
