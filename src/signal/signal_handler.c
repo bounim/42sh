@@ -23,17 +23,6 @@ static void	window_modif(void)
 	clean_screen_from(0, 0);
 	if ((ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max)) == -1)
 		readline_errors_controler(NO_TERM_INFO);
-	if ((g_shell.edit.term_info.max.ws_row < 15  && g_shell.edit.term_info.max.ws_col < 40)
-		|| g_shell.edit.term_info.max.ws_row < 10 || g_shell.edit.term_info.max.ws_col < 30)
-	{
-		write(1, "Window too small.\n\rWaiting for resize.", 38);
-		init_signals();
-		while (42)
-		{
-			if (signal(SIGWINCH, &signal_handler))
-				return ;
-		}
-	}
 	base_y = g_shell.edit.cur_base_y;
 	while (base_y)
 	{
