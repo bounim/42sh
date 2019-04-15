@@ -105,6 +105,7 @@ SRC := \
 	readline/vi_repeat_search_char.c \
 	readline/vi_repeat_search_fn.c \
 	readline/vi_undo.c \
+	readline/vi_delete_motion_c.c \
 	job_control/manage_job.c \
 	job_control/put_in_xground.c \
 	job_control/launch_job.c \

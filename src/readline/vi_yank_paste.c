@@ -12,11 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-void		vi_yank_motion(void)
-{
-
-}
-
 void		vi_yank_endline(void)
 {
 	t_char	*curr;
@@ -52,9 +47,4 @@ void		vi_paste_before(void)
 		paste_copy();
 		move_left();
 	}
-}
-
-void		vi_delete_motion(void)
-{
-
 }

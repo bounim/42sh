@@ -38,6 +38,8 @@ void	delete_backline(void)
 		curr = curr->prev;
 		c++;
 	}
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(curr, end);
 	while (c >= 0)
 	{
@@ -57,12 +59,15 @@ void	delete_endline(void)
 	if (g_shell.edit.point_char == g_shell.edit.char_list.tail)
 		return ;
 	begin = g_shell.edit.point_char->next;
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(begin, g_shell.edit.char_list.tail);
 	while (g_shell.edit.point_char->next)
 	{
 		begin = g_shell.edit.point_char->next;
 		delete_char_from_list(begin);
 	}
+	update_all_pos();
 	clean_and_print();
 }
 
@@ -121,5 +126,6 @@ void	delete_word_backward(void)
 		delete_char_from_list(curr->next);
 	}
 	delete_char_from_list(curr);
+	update_all_pos();
 	clean_and_print();
 }
