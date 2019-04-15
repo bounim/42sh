@@ -1,0 +1,44 @@
+IMPORTANTS POUR GERER LA COMPLETION:
+- Position du curseur dans la phrase lorsque l'on recquiert une completion. (Ca decidera de ce qu'il faut aller chercher.)
+- On peut ensuite appeler ft_select modifié, attention aux scrolls et sauts de ligne.
+
+1.Recuperer la position dans la phrase, pour savoir quels types (tags) d'objets on va envoyer.
+2.Recuperer la liste de propositions, la rendre prete a envoyer.
+3.Regarder si ca va rentrer dans l'ecran a sa taille max, ne pas commencer a print sinon, juste tout print bien et renvoyer le prompt.
+4.Print les choix comme ft_select, et comme le clean and print, etre sur que le scroll ai bien lieu.
+		5. User a maintenant deux choix: 	- rappuyer sur tab pour faire apparaitre un curseur et naviguer dans les choix a l'ecran
+											- appuyer sur des lettres, ce qui n'aura aucun effet sur la liste affichée grace a la completion 
+													Dans ce cas là, on fait disparaitre la liste de completion.
+
+
+LISTE DES TAGS:
+-array-value-
+The right hand side of an array-assignment (‘name=(...)’)
+-brace-parameter-
+The name of a parameter expansion within braces (‘${...}’)
+-assign-parameter-
+The name of a parameter in an assignment, i.e. on the left hand side of an ‘=’
+-command-
+A word in command position
+-condition-
+A word inside a condition (‘[[...]]’)
+-default-
+Any word for which no other completion is defined
+-equal-
+A word beginning with an equals sign
+-first-
+This is tried before any other completion function. The function called may set the _compskip parameter to one of various values: all: no further completion is attempted; a string containing the substring patterns: no pattern completion functions will be called; a string containing default: the function for the ‘-default-’ context will not be called, but functions defined for commands will be.
+-math-
+Inside mathematical contexts, such as ‘((...))’
+-parameter-
+The name of a parameter expansion (‘$...’)
+-redirect-
+The word after a redirection operator.
+-subscript-
+The contents of a parameter subscript.
+-tilde-
+After an initial tilde (‘~’), but before the first slash in the word.
+-value-
+On the right hand side of an assignment.
+
+:completion:function:completer:command:argument:tag

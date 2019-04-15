@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 19:48:43 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:44:10 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int			name_is_file(char *name, t_envl *envl, int is_file)
 		return (FALSE);
 	tmp = ft_strjoin("/", name);
 	i = 0;
-	while (paths[i])
+	while (paths[i++])
 	{
 		fullpath = ft_strjoin(paths[i], tmp);
 		if (access(fullpath, F_OK) == 0)
@@ -79,7 +79,6 @@ static int			name_is_file(char *name, t_envl *envl, int is_file)
 			break ;
 		}
 		ft_strdel(&fullpath);
-		i++;
 	}
 	ft_arrdel(paths);
 	ft_strdel(&tmp);

@@ -12,6 +12,13 @@
 
 #include "twenty_one_sh.h"
 
+void	nullify_pointers(void)
+{
+	g_shell.edit.char_list.head = NULL;
+	g_shell.edit.char_list.tail = NULL;
+	g_shell.edit.point_char = NULL;
+}
+
 void	free_all_and_exit(void)
 {
 	t_char *curr;
@@ -50,7 +57,6 @@ void	free_only_edit_char_list(void)
 		curr = tmp;
 	}
 	init_char_list();
-	g_shell.edit.point_char = NULL;
 }
 
 void	free_all_edit(void)
@@ -80,4 +86,5 @@ void	free_controler(int code)
 		free_all_edit();
 	if (code == FREE_ONLY_EDIT_CHAR_LIST)
 		free_only_edit_char_list();
+	nullify_pointers();
 }

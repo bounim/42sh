@@ -6,13 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:53:53 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/11 14:04:40 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:47:35 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static int	check_opts_fg(char **arg)
+static int		check_opts_fg(char **arg)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ static int	check_opts_fg(char **arg)
 	return (i);
 }
 
-static int	print_error_fg(int nb)
+static int		print_error_fg(int nb)
 {
 	ft_putstr_fd("sh: fg: ", 2);
 	ft_putnbr_fd(nb, 2);
@@ -57,7 +57,7 @@ static t_job	*return_job_value(t_job *job)
 	return (job);
 }
 
-int			built_fg(char **arg, t_envl *envl)
+int				built_fg(char **arg, t_envl *envl)
 {
 	int		i;
 	int		j;
