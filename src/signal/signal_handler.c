@@ -16,12 +16,11 @@ static void	window_modif(void)
 {
 	int 			base_y;
 
+	if (g_shell.edit.reading == FALSE)
+		return ;
 	g_shell.edit.cur_base_y = 0;
 	g_shell.edit.cur_base_x = 0;
 	clean_screen_from(0, 0);
-	//window_modif_test();
-	if (!g_shell.edit.char_list.head)
-		return ;
 	if ((ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max)) == -1)
 		readline_errors_controler(NO_TERM_INFO);
 	if ((g_shell.edit.term_info.max.ws_row < 15  && g_shell.edit.term_info.max.ws_col < 40)
