@@ -100,7 +100,7 @@ struct							s_lexer_token
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;
 	uint8_t						*heredoc_buffer;
-	size_t						*heredoc_size;
+	size_t						heredoc_size;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
 };
