@@ -51,14 +51,14 @@ void	free_only_edit_char_list(void)
 	}
 }
 
-void	free_last_command_list(t_last_command	*last)
+void	free_last_command_list(t_last_command *last)
 {
 	t_last_command *tmp;
 
 	while (last)
 	{
 		tmp = last->prev;
-		if(last->buff)
+		if (last->buff)
 			free(last->buff);
 		free(last);
 		last = tmp;
