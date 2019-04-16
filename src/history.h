@@ -47,6 +47,7 @@ t_history			*init_shell_history(void);
 void				update_base_y_in_search(uint8_t *buff, int i);
 void				print_history(void);
 void				switch_history(void);
+t_history			*find_first_hist_line(void);
 t_history			*rl_new_hist(uint8_t *buf);
 t_history			*rl_add_hist(t_history *list, t_history *new_hist);
 int					listlen(t_history *list);

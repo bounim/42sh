@@ -41,6 +41,14 @@ struct		s_alias
 	struct s_alias	*next;
 };
 
+enum 		e_fc_opts
+{
+	E = 0,
+	L = 1,
+	R = 2,
+	S = 3
+};
+
 char		*replace_exclaim(char *line, t_history *hist,
 									char *bfr, char *next);
 char		*find_exclaim(char *word, t_history *hist);
@@ -60,6 +68,9 @@ int			built_export(char **arg, t_envl *envl);
 int			built_alias(char **arg, t_envl *envl);
 int			built_unalias(char **arg, t_envl *envl);
 int			built_history(char **arg, t_envl *envl);
+int			built_fc(char **av, t_envl *envl);
+int			check_fc_opts(char **av, int fc_opts[4]);
+void		print_usage_fc(char opt);
 int			built_fg(char **arg, t_envl *envl);
 int			built_bg(char **arg, t_envl *envl);
 int			built_jobs(char **arg, t_envl *envl);

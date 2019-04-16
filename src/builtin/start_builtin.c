@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-static int	init_ptr_func(int (*func[18])(char **arg, t_envl *envl))
+static int	init_ptr_func(int (*func[19])(char **arg, t_envl *envl))
 {
 	func[0] = built_cd;
 	func[1] = built_echo;
@@ -31,11 +31,12 @@ static int	init_ptr_func(int (*func[18])(char **arg, t_envl *envl))
 	func[14] = built_type;
 	func[15] = built_debug;
 	func[16] = built_exit;
-	func[17] = NULL;
+	func[17] = built_fc;
+	func[18] = NULL;
 	return (0);
 }
 
-static int	init_ptr_cmd(char *cmd[18])
+static int	init_ptr_cmd(char *cmd[19])
 {
 	cmd[0] = "cd";
 	cmd[1] = "echo";
@@ -54,14 +55,15 @@ static int	init_ptr_cmd(char *cmd[18])
 	cmd[14] = "type";
 	cmd[15] = "debug";
 	cmd[16] = "exit";
-	cmd[17] = NULL;
+	cmd[17] = "fc";
+	cmd[18] = NULL;
 	return (0);
 }
 
 int			start_builtin(char **arg, t_envl *envl)
 {
-	char	*cmd[18];
-	int		(*func[18])(char **arg, t_envl *envl);
+	char	*cmd[19];
+	int		(*func[19])(char **arg, t_envl *envl);
 	int		i;
 	int		ret;
 

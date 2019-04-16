@@ -12,6 +12,17 @@
 
 #include "twenty_one_sh.h"
 
+t_history	*find_first_hist_line(void)
+{
+	t_history *ret;
+
+	if (!(ret = g_shell.hist.history))
+		return (NULL);
+	while (ret->bfr)
+		ret = ret->bfr;
+	return (ret);
+}
+
 t_history	*rl_new_hist(uint8_t *buf)
 {
 	t_history	*list;

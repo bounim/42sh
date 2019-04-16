@@ -25,7 +25,7 @@ int		check_builtin(char *cmd)
 			ft_strequ(cmd, "jobs") || ft_strequ(cmd, "set") ||
 			ft_strequ(cmd, "setenv") || ft_strequ(cmd, "type") ||
 			ft_strequ(cmd, "unalias") || ft_strequ(cmd, "unset") ||
-			ft_strequ(cmd, "unsetenv"))
+			ft_strequ(cmd, "unsetenv") || ft_strequ(cmd, "fc"))
 		return (1);
 	return (0);
 }

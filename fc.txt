@@ -1,6 +1,6 @@
 FC
 
-Choisit l'editeur de texte a utiliser avec FCEDIT, si FCEDIT n'est pas set ca va prendre la variable EDITOR
+Choisit l'editeur de texte a utiliser avec FCEDIT, si FCEDIT n'est pas set ca va prendre la variable EDITOR, sinon ca prend vi
 Can take negative numbers as arguments, it gets the command done n commands ago.
 Can take a string as an argument, will execute the most recent occurence that starts with that string. If used in list it'll list all occurences from that point to the end
 
