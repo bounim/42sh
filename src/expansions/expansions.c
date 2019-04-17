@@ -12,7 +12,7 @@
 
 #include "expansions_internal.h"
 
-static t_argv	*add_argv(t_lexer_token *cmd) // TODO lazy add_argv in append (unless forced??)
+/*static t_argv	*add_argv(t_lexer_token *cmd) // TODO lazy add_argv in append (unless forced??)
 {
 	t_argv	*ret;
 
@@ -49,7 +49,7 @@ static int		append_argv(t_argv *argv, uint8_t *buffer, size_t size)
 	argv->len += size;
 	new[argv->len] = '\0';
 	return (0);
-}
+}*/
 
 /*static void		free_argv(t_argv *cur)
 {
@@ -105,7 +105,7 @@ static int		append_argv(t_argv *argv, uint8_t *buffer, size_t size)
 	return (NULL);
 }*/
 
-static size_t	tilde_arg(t_argv *argv)
+static size_t	tilde_arg(t_lexer_token *cmd)
 {
 	char	*home;
 
@@ -116,15 +116,14 @@ static size_t	tilde_arg(t_argv *argv)
 	return (1);
 }
 
-static size_t	until_dollar_arg(t_argv *argv, t_lexer_token *cur,
-		size_t j, size_t k)
+static size_t	until_dollar_arg(t_lexer_token *cmd, size_t j, size_t k)
 {
 	size_t	x;
 
 	x = 0;
-	while (k + x < j && cur->buffer[k + x] != '$')
+	while (k + x < j && cmd->exp_cur->buffer[k + x] != '$')
 		x++;
-	append_argv(argv, cur->buffer + k, x);
+	append_argv(argv, cmd->exp_cur->buffer + k, x); // FIXME
 	return (x);
 }
 
@@ -136,8 +135,7 @@ static int		isvarchar(uint8_t ch)
 			|| (ch >= 'a' && ch <= 'z'));
 }
 
-static size_t	dollar_arg(t_argv **argv, t_lexer_token *cmd,
-		t_lexer_token *cur, size_t j, size_t k) // FIXME 5 param
+static size_t	dollar_arg(t_lexer_token *cmd, size_t j, size_t k)
 {
 	size_t	x;
 	size_t	s;
@@ -151,11 +149,11 @@ static size_t	dollar_arg(t_argv **argv, t_lexer_token *cmd,
 		return (1);
 	}
 	x = 1;
-	while (k + x < j && isvarchar(cur->buffer[k + x]))
+	while (k + x < j && isvarchar(cmd->exp_cur->buffer[k + x]))
 		x++;
 	if (NULL == (key = malloc(x)))
 		fatal_exit(SH_ENOMEM);
-	ft_memmove(key, cur->buffer + k + 1, x - 1);
+	ft_memmove(key, cmd->exp_cur->buffer + k + 1, x - 1);
 	key[x - 1] = '\0';
 	if (NULL == (val = (uint8_t *)get_env_val(g_shell.envl, key)))
 	{
@@ -184,8 +182,12 @@ static size_t	dollar_arg(t_argv **argv, t_lexer_token *cmd,
 	return (x);
 }
 
-static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
-		t_argv **argv, size_t *i)
+static int		iswordchar(uint8_t ch)
+{
+	return (ch != ' ' && ch != '\t' && ch != '\\' && ch != '\'' && ch != '\"');
+}
+
+static int		not_quoted(t_lexer_token *cmd)
 {
 	size_t	j;
 	/*uint8_t	*exp;
@@ -193,12 +195,10 @@ static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
 	int		r;*/
 	size_t	k;
 
-	j = *i;
-	while (j < cur->size && cur->buffer[j] != ' '
-			&& cur->buffer[j] != '\t' && cur->buffer[j] != '\\'
-			&& cur->buffer[j] != '\'' && cur->buffer[j] != '\"')
+	j = cmd->exp_i;
+	while (j < cmd->exp_cur->size && iswordchar(cmd->exp_cur->buffer[j]))
 		j++;
-	if (j > *i)
+	if (j > cmd->exp_i)
 	{
 		/*explen = j - *i;
 		exp = string_expand(cur, cur->buffer + *i, &explen); // FIXME
@@ -207,122 +207,138 @@ static int		not_quoted(t_lexer_token *cmd, t_lexer_token *cur,
 			free(exp);
 		if (r < 0)
 			return (-1);*/
-		k = *i;
-		if (cur->buffer[*i] == '~')
-			k += tilde_arg(*argv);
+		k = cmd->exp_i;
+		if (cmd->exp_cur->buffer[cmd->exp_i] == '~')
+			k += tilde_arg(cmd);
 		while (k < j)
 		{
-			if (cur->buffer[k] != '$')
-				k += until_dollar_arg(*argv, cur, j, k);
+			if (cmd->exp_cur->buffer[k] != '$')
+				k += until_dollar_arg(cmd, j, k);
 			else
-				k += dollar_arg(argv, cmd, cur, j, k);
+				k += dollar_arg(cmd, j, k);
 		}
-		*i = j;
+		cmd->exp_i = j;
 	}
-	if (*i < cur->size)
+	if (cmd->exp_i < cmd->exp_cur->size)
 	{
-		if ((cur->buffer[*i] == ' ' || cur->buffer[*i] == '\t')
-				&& (*argv)->len > 0)
-			*argv = add_argv(cmd);
-		else if (cur->buffer[*i] == '\\')
+		if ((cmd->exp_cur->buffer[cmd->exp_i] == ' '
+					|| cmd->exp_cur->buffer[cmd->exp_i] == '\t')
+				&& cmd->argv_foot->len > 0) // FIXME argv_foot NULL on demand?
+		{
+			//*argv = add_argv(cmd); // FIXME
+		}
+		else if (cmd->exp_cur->buffer[cmd->exp_i] == '\\')
 			return (1);
-		else if (cur->buffer[*i] == '\'')
+		else if (cmd->exp_cur->buffer[cmd->exp_i] == '\'')
 			return (2);
-		else if (cur->buffer[*i] == '\"')
+		else if (cmd->exp_cur->buffer[cmd->exp_i] == '\"')
 			return (3);
 	}
 	return (0);
 }
 
-static int		backslash(t_lexer_token *cmd, t_lexer_token *cur,
-		t_argv **argv, size_t *i)
+static int		backslash(t_lexer_token *cmd)
 {
-	(void)cmd;
-	if (append_argv(*argv, cur->buffer + *i, 1) < 0)
+	if (append_argv(*argv, cmd->exp_cur->buffer + cmd->exp_cur->exp_i, 1) < 0) // FIXME
 		return (-1);
 	return (0);
 }
 
-static int		simple_quote(t_lexer_token *cmd, t_lexer_token *cur,
-		t_argv **argv, size_t *i)
+static int		simple_quote(t_lexer_token *cmd)
 {
 	size_t	j;
 
-	(void)cmd;
-	j = *i;
-	while (j < cur->size && cur->buffer[j] != '\'')
+	j = cmd->exp_i;
+	while (j < cmd->exp_cur->size && cmd->exp_cur->buffer[j] != '\'')
 		j++;
-	if (j > *i)
+	if (j > cmd->exp_i)
 	{
-		if (append_argv(*argv, cur->buffer + *i, j - *i) < 0)
+		if (append_argv(*argv, cmd->exp_cur->buffer + cmd->exp_i,
+					j - cmd->exp_i) < 0)
 			return (-1);
-		*i = j;
+		cmd->exp_i = j;
 	}
 	return (0);
 }
 
-static int		double_quote(t_lexer_token *cmd, t_lexer_token *cur,
-		t_argv **argv, size_t *i)
+static int		double_quote(t_lexer_token *cmd)
 {
 	size_t	j;
 	int		quote;
 
 	// TODO expansions
-	(void)cmd;
 	quote = 2;
-	if (*i + 1 < cur->size && cur->buffer[*i] == '\\'
-			&& cur->buffer[*i + 1] == '\"')
+	if (cmd->exp_i + 1 < cmd->exp_cur->size
+			&& cmd->exp_cur->buffer[cmd->exp_i] == '\\'
+			&& cmd->exp_cur->buffer[cmd->exp_i + 1] == '\"')
 	{
-		(*i)++;
-		if (append_argv(*argv, cur->buffer + *i, 1) < 0)
+		cmd->exp_i++;
+		if (append_argv(*argv, cmd->exp_cur->buffer + cmd->exp_i, 1) < 0) // FIXME
 			return (-1);
 	}
 	else
 	{
-		j = *i;
-		while (j < cur->size && cur->buffer[j] != '\"'
-				&& cur->buffer[j] != '\\')
+		j = cmd->exp_i;
+		while (j < cmd->exp_cur->size && cmd->exp_cur->buffer[j] != '\"'
+				&& cmd->exp_cur->buffer[j] != '\\')
 			j++;
-		if (cur->buffer[j] == '\"')
+		if (cmd->exp_cur->buffer[j] == '\"')
 			quote = 0;
-		if (j > *i)
+		if (j > cmd->exp_i)
 		{
-			if (append_argv(*argv, cur->buffer + *i, j - *i) < 0)
+			if (append_argv(*argv, cmd->exp_cur->buffer + cmd->exp_i,
+						j - cmd->exp_i) < 0) // FIXME
 				return (-1);
-			*i = j - 1;
+			cmd->exp_i = j - 1;
 		}
 	}
 	return (quote);
 }
 
-static int		(*g_exp_arg_func[])(t_lexer_token *, t_lexer_token *,
-		t_argv **, size_t *) = {
+static int		(*g_exp_arg_func[])(t_lexer_token *) = {
 	not_quoted,
 	backslash,
 	simple_quote,
 	double_quote,
 };
 
+static int		buffer_append(t_lexer_token *tok, uint8_t buffer, size_t size)
+{
+	uint8_t	*r;
+
+	if (NULL == (r = malloc((tok->exp_buffer ? tok->exp_size : 0) + size + 1)))
+		return (-1);
+	if (tok->exp_buffer)
+		ft_memmove(r, tok->exp_buffer, tok->exp_size);
+	ft_memmove(r + (tok->exp_buffer ? tok->exp_size : 0), buffer, size);
+	r[(tok->exp_buffer ? tok->exp_size : 0) + size] = '\0';
+	free(tok->exp_buffer);
+	tok->exp_buffer = r;
+	tok->exp_size += size;
+}
+
+static int		buffer_expand(t_lexer_token *tok)
+{
+	;
+}
+
 static int		arg_expansions(t_lexer_token *cmd, t_lexer_token *arg)
 {
-	t_lexer_token	*cur;
-	t_argv			*argv;
-	size_t			i;
 	int				quote;
 
-	cur = arg;
-	while (cur)
+	cmd->exp_cur = arg;
+	while (cmd->exp_cur)
 	{
-		i = 0;
+		cmd->exp_i = 0;
 		quote = 0;
-		argv = add_argv(cmd);
-		while (i < cur->size)
+		//add_argv(cmd); // FIXME
+		while (cmd->exp_i < cmd->exp_cur->size)
 		{
-			if ((quote = g_exp_arg_func[quote](cmd, cur, &argv, &i)) < 0)
+			if ((quote = g_exp_arg_func[quote](cmd)) < 0)
 				return (-1);
-			i++;
+			cmd->exp_i++;
 		}
-		cur = cur->arg_next;
+		cmd->exp_cur = cmd->exp_cur->arg_next;
 	}
 	return (0);
 }

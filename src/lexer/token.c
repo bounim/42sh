@@ -36,12 +36,13 @@ int					token(t_lexer *lex, enum e_lexer_type type)
 	ft_memset(t, 0, sizeof(*t));
 	if (type == LEX_TP_WD || type == LEX_TP_OP)
 	{
-		if (NULL == (t->buffer = malloc(1)))
+		if (NULL == (t->buffer = malloc(1 + 1)))
 		{
 			free(t);
 			return (-1);
 		}
 		t->buffer[0] = lex->line[lex->i];
+		t->buffer[1] = '\0';
 		t->size = 1;
 	}
 	token_init(lex, type, t);
@@ -61,11 +62,12 @@ int					append(t_lexer *lex)
 		lex->impl_error = 1;
 		return (-1);
 	}
-	if (NULL == (t = malloc(lex->foot->size + 1)))
+	if (NULL == (t = malloc(lex->foot->size + 1 + 1)))
 		return (-1);
 	ft_memmove(t, lex->foot->buffer, lex->foot->size);
 	free(lex->foot->buffer);
 	t[lex->foot->size] = lex->line[lex->i];
+	t[lex->foot->size + 1] = '\0';
 	lex->foot->buffer = t;
 	lex->foot->size++;
 	return (0);

@@ -103,6 +103,10 @@ struct							s_lexer_token
 	size_t						heredoc_size;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
+	t_lexer_token				*exp_cur;
+	size_t						exp_i;
+	uint8_t						*exp_buffer;
+	size_t						exp_size;
 };
 
 # define EXPANSION_STACK_MAX 128
