@@ -38,6 +38,10 @@ static int		add_wd(t_lexer_token *n, t_lexer_token **cur)
 	return (0);
 }
 
+/*
+** TODO when heredoc delimiter is quoted, needs quote removal + act differently
+*/
+
 static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 {
 	if ((*cur)->next == NULL || (*cur)->next->type != LEX_TP_WD)
@@ -45,7 +49,6 @@ static int		add_op(t_lexer *lex, t_lexer_token *n, t_lexer_token **cur)
 	(*cur)->rtype = get_redirect((*cur)->buffer, (*cur)->size);
 	if ((*cur)->rtype == DLESS || (*cur)->rtype == DLESSDASH)
 	{
-		// TODO when delimiter is quoted, needs quote removal + act differently
 		(*cur)->next->heredoc_delimiter = 1;
 		if (lex->heredoc_foot)
 			lex->heredoc_foot->heredoc_next = *cur;

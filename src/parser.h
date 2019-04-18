@@ -21,14 +21,6 @@ void							print_arg(t_lexer_token *tok);
 void							print_redir(t_lexer_token *tok);
 void							print_assign(t_lexer_token *tok);
 
-uint8_t							is_or(uint8_t *buffer, size_t buffer_size);
-uint8_t							is_and(uint8_t *buffer, size_t buffer_size);
-uint8_t							is_pipeline(uint8_t *buffer,
-		size_t buffer_size);
-uint8_t							is_semicolon(uint8_t *buffer,
-		size_t buffer_size);
-uint8_t							is_shift(uint8_t *buffer, size_t buffer_size);
-uint8_t							is_quote(uint8_t c);
 uint8_t							is_sep_operator(t_lexer_token *t);
 enum e_parser_type				get_node_type(t_lexer_token *token);
 enum e_redirect_type			get_redirect(uint8_t *buffer, size_t size);
@@ -42,7 +34,6 @@ int								parser_input_end(t_lexer *lex);
 int								parser_new_elem(t_lexer *lex,
 		t_lexer_token **cur);
 int								parser_add_tree(t_lexer *lex, t_lexer_token *n);
-void							parser_destroy(t_lexer *lex);
 void							structure(t_lexer_token *root, int level);
 
 #endif

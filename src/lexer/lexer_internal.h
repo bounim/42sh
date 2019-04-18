@@ -44,19 +44,6 @@ enum							e_parser_type
 	PARSER_SEPARATOR,
 };
 
-/*
-** argv buffer is null-terminated
-*/
-
-typedef struct s_argv			t_argv;
-
-struct							s_argv
-{
-	char						*buffer;
-	size_t						len;
-	t_argv						*next;
-};
-
 typedef struct s_lexer_token	t_lexer_token;
 
 struct							s_lexer_token
@@ -69,9 +56,6 @@ struct							s_lexer_token
 	uint8_t						*buffer;
 	size_t						size;
 	char						**argv;
-	t_argv						*argv_head;
-	t_argv						*argv_foot;
-	size_t						argc;
 	int							cannot_append;
 	int							is_number;
 	t_lexer_token				*parent;
@@ -103,7 +87,6 @@ struct							s_lexer_token
 	size_t						heredoc_size;
 	enum e_parser_type			ptype;
 	enum e_redirect_type		rtype;
-	t_lexer_token				*exp_cur;
 	size_t						exp_i;
 	uint8_t						*exp_buffer;
 	size_t						exp_size;

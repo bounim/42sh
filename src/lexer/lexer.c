@@ -36,23 +36,11 @@ static int			lexer_init(t_lexer *lex, uint8_t *line, size_t line_size)
 	{
 		lex->line_y++;
 		lex->backslash_newline = 0;
-		//lex->input_end = 0; // XXX not gonna happen anymore
 	}
 	else
 		lex->init = 1;
 	return (0);
 }
-
-/*static int			lexer_read_end(t_lexer *lex)
-{
-	if (lex->line[lex->line_size - 1] != '\n')
-	{
-		lex->line[lex->line_size - 1] = '\n';
-		lex->i = lex->line_size - 1;
-		return (line_end(lex));
-	}
-	return (0);
-}*/
 
 static int			lexer_read(t_lexer *lex)
 {
@@ -77,7 +65,6 @@ static int			lexer_read(t_lexer *lex)
 		}
 		lex->i++;
 	}
-	//return (lexer_read_end(lex));
 	return (0);
 }
 
@@ -101,7 +88,7 @@ void				lexer_destroy(t_lexer *lex)
 	ft_memset(lex, 0, sizeof(*lex));
 }
 
-void					lexer(t_lexer *lex, uint8_t *buffer, size_t buffer_size)
+void				lexer(t_lexer *lex, uint8_t *buffer, size_t buffer_size)
 {
 	lexer_init(lex, buffer, buffer_size);
 	if (lexer_read(lex) < 0)

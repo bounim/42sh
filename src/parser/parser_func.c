@@ -81,4 +81,3 @@ int			parser_add_tree(t_lexer *lex, t_lexer_token *new)
 	}
 	return (root_operator(lex, new));
 }
-
