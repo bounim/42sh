@@ -41,11 +41,8 @@ void	delete_backline(void)
 	if (g_shell.edit.cpy_buff)
 		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(curr, end);
-	while (c >= 0)
-	{
+	while (c-- >= 0)
 		delete_char_from_list(g_shell.edit.point_char);
-		c--;
-	}
 	if (g_shell.edit.cur_base_y < 0)
 		place_base_at_start();
 	update_all_pos();
@@ -105,8 +102,7 @@ void	delete_word_backward(void)
 	t_char *curr;
 	t_char *tmp;
 
-	curr = g_shell.edit.point_char;
-	if (curr->prev->is_prompt)
+	if (!(curr = g_shell.edit.point_char) && curr->prev->is_prompt)
 		return ;
 	tmp = curr;
 	while (tmp && !tmp->prev->is_prompt && (!ft_u8_is_alnum(tmp->charac[0])

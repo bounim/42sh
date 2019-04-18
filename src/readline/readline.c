@@ -38,9 +38,7 @@ void		init_edit(void)
 	g_shell.edit.term_info.origin = g_shell.cooked_tio;
 	ioctl(STDERR_FILENO, TIOCGWINSZ, &g_shell.edit.term_info.max);
 	if (get_term_pos(&line, &col) < 0)
-	{
-		// TODO
-	}
+		fatal_exit(SH_EINVAL);
 	g_shell.edit.cur_base_x = col;
 	g_shell.edit.cur_base_y = (int)line;
 	g_shell.edit.cpy_buff = NULL;

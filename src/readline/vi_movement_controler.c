@@ -14,7 +14,7 @@
 
 void		vi_move_next_char(void)
 {
-	int			count;
+	int		count;
 
 	if (g_shell.edit.point_char->next)
 	{
@@ -29,7 +29,7 @@ void		vi_move_next_char(void)
 
 void		vi_move_prev_char(void)
 {
-	int 		count;
+	int		count;
 
 	count = g_shell.edit.count;
 	while (count-- && g_shell.edit.point_char->is_prompt == FALSE)
@@ -58,7 +58,6 @@ void		vi_forward_word(void)
 			while (curr && ft_isspace(curr->charac[0]))
 				curr = curr->next;
 		}
-
 	}
 	if (!curr)
 		return (vi_go_to_end());

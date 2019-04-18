@@ -21,7 +21,7 @@ void		vi_go_to_end(void)
 	g_shell.edit.point_char = tail->prev;
 }
 
-void	go_to_end(void)
+void		go_to_end(void)
 {
 	t_char	*curr;
 	int		x;
@@ -39,7 +39,7 @@ void	go_to_end(void)
 	g_shell.edit.point_char = curr;
 }
 
-void	go_to_home(void)
+void		go_to_home(void)
 {
 	t_char	*curr;
 	int		x;
@@ -62,7 +62,7 @@ void	go_to_home(void)
 	g_shell.edit.point_char = curr;
 }
 
-void	jump_word_backward(void)
+void		jump_word_backward(void)
 {
 	t_char	*curr;
 	int		x;
@@ -87,7 +87,7 @@ void	jump_word_backward(void)
 	g_shell.edit.point_char = curr;
 }
 
-void	jump_word_forward(void)
+void		jump_word_forward(void)
 {
 	int		x;
 	int		y;
@@ -98,10 +98,10 @@ void	jump_word_forward(void)
 		return ;
 	tmp = curr;
 	while (tmp && (!ft_u8_is_alnum(tmp->charac[0])
-				   || !ft_memcmp(tmp->charac, NBSP, 2)))
+	|| !ft_memcmp(tmp->charac, NBSP, 2)))
 		tmp = tmp->next;
 	while (tmp && tmp->next && ft_u8_is_alnum(tmp->next->charac[0])
-		   && ft_memcmp(tmp->next->charac, NBSP, 2) != 0)
+	&& ft_memcmp(tmp->next->charac, NBSP, 2) != 0)
 		tmp = tmp->next;
 	x = get_x_pos(tmp, g_shell.edit.term_info.max.ws_col);
 	y = get_y_pos(tmp, g_shell.edit.term_info.max.ws_col,\

@@ -42,7 +42,7 @@ void		vi_clear_line_insert(void)
 	clean_and_print();
 }
 
-void					vi_delete_x(void)
+void		vi_delete_x(void)
 {
 	int		count;
 	t_char	*tail;
@@ -71,7 +71,7 @@ void					vi_delete_x(void)
 		move_left();
 }
 
-void					vi_delete_bigx(void)
+void		vi_delete_bigx(void)
 {
 	int		count;
 	t_char	*tail;
