@@ -43,6 +43,8 @@ struct						s_shell
 	int 					state;
 	int						debug_mode;
 	pid_t					stopped_proc;
+	char					pid_buffer[20];
+	int						exit_code;
 };
 
 /*
@@ -53,6 +55,7 @@ void 						init_shell(int ac, char **av, char **env);
 void						run_shell(void);
 void						raw_terminal(void);
 void						cooked_terminal(void);
+int							get_return_status(int status);
 void						clean_shell(void);
 void						fatal_exit(int code);
 

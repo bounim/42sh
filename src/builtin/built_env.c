@@ -37,6 +37,32 @@ static char		**from_arg_to_cmd(char **arg, int curr_arg)
 	return (ret);
 }
 
+static void		execute_utility(char **arg, char **env)
+{
+	pid_t	pid;
+	int		status;
+	t_envl	*envl;
+	char	*path;
+
+	if (!arg)
+		return ; //TODO error
+	pid = fork();
+	if (pid < 0)
+		return ; //TODO error
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, WUNTRACED | WCONTINUED);
+		g_shell.exit_code = get_return_status(status);
+	}
+	if (!(envl = envarr_to_envl(env)))
+		return ; //TODO error
+	if (!arg[0] || !(path = find_command(arg[0], envl)))
+		return ; //TODO error
+	printf("PATH = %s\n", path);
+	execve(path, arg, env);
+	fatal_exit(7);
+}
+
 static void		exec_env(char **arg, int curr_arg, t_envl *head)
 {
 	char	**ret;
@@ -50,8 +76,9 @@ static void		exec_env(char **arg, int curr_arg, t_envl *head)
 	else
 	{
 		ret = from_arg_to_cmd(arg, curr_arg);
+		printf("RET[0] = %s\n", ret[0]);
 		env = envl_to_envarr(head);
-		//execution(ret, env);
+		execute_utility(ret, env);
 		ft_free_arr(ret);
 		free_envl(head);
 	}
@@ -70,10 +97,11 @@ static void		concat_env(t_envl **head, char *arg, int c)
 }
 
 static int		start_built_env(t_envl *head, char **arg,
-								int last_cmd, int curr_arg)
+								int last_cmd, int curr_arg) // TODO REMOVE RECUR
 {
 	int		c;
 
+	ft_putendl("BUILT ENV");
 	while (arg[curr_arg] && curr_arg != last_cmd)
 	{
 		if (ft_strequ(arg[curr_arg], "env"))
@@ -95,6 +123,11 @@ static int		start_built_env(t_envl *head, char **arg,
 	exec_env(arg, last_cmd, head);
 	return (0);
 }
+
+/*static int		launch_env()
+{
+	
+}*/
 
 int				built_env(char **arg, t_envl *envl)
 {

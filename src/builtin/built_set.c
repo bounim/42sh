@@ -34,8 +34,7 @@ int		built_set(char **arg, t_envl *envl)
 		{
 			ft_putstr(envl->name);
 			ft_putchar('=');
-			ft_putstr(envl->value);
-			ft_putchar(10);
+			ft_putendl(envl->value);
 			envl = envl->next;
 		}
 	}

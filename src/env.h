@@ -35,5 +35,9 @@ void					push_env(t_envl **envl, char *name, char *value, int exp);
 void					clear_envl(t_envl *envl);
 t_envl					*dup_envl(t_envl *env);
 char					**envl_to_envarr(t_envl *envl);
+t_envl					*envarr_to_envl(char **env);
+
+# define ENV_EX (1 << 0)
+# define ENV_RO (1 << 1)
 
 #endif

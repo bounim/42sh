@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "lexer_internal.h"
 
 static int			(*g_lexer_func[])(t_lexer *) = {

@@ -1,23 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   execute_binary.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/23 16:06:31 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Created: 2019/04/09 17:18:20 by kberisha          #+#    #+#             */
+/*   Updated: 2019/04/09 19:24:29 by kberisha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "execution.h"
 
-typedef struct s_lexer			t_lexer;
-typedef struct s_lexer_token	t_lexer_token;
-
-void							lexer(t_lexer *lex, uint8_t *buffer,
-		size_t buffer_size);
-void							lexer_destroy(t_lexer *lex);
-
-#endif
+char	*

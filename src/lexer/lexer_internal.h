@@ -13,8 +13,10 @@
 #ifndef LEXER_INTERNAL_H
 # define LEXER_INTERNAL_H
 
-# include "twenty_one_sh.h"
+# include <stdint.h>
+# include <stddef.h>
 # include "lexer.h"
+# include "sh_typedefs.h"
 
 enum							e_lexer_type
 {

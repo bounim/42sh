@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <sys/stat.h>
-#include <stdio.h>//XXX
+#include "twenty_one_sh.h"
 #include "execution.h"
 #include "random.h"
 
