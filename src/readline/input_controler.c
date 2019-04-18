@@ -123,8 +123,8 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"|", 1, vi_move_counth_char},
 		{"f", 1, vi_search_char_after},
 		{"F", 1, vi_search_char_before},
-		{"T", 1, vi_search_char_after_before},
-		{"t", 1, vi_search_char_before_after},
+		{"T", 1, vi_search_char_before_after},
+		{"t", 1, vi_search_char_after_before},
 		{";", 1, repeat_last_search_char},
 		{",", 1, repeat_last_search_char_reverse},
 		{"a", 1, vi_append_mode},
@@ -202,7 +202,7 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
-void	input_controller(void)
+void		input_controller(void)
 {
 	uint8_t	key[6];
 	size_t	keylen;
@@ -224,7 +224,8 @@ void	input_controller(void)
 				fatal_exit(SH_EINVAL);
 			keylen = (size_t)rd;
 			build_count(key, &keylen, g_shell.edit.edit_mode);
-			if (check_key(key, &keylen) == NO_MATCH && g_shell.edit.edit_mode != MODE_VI_COMMAND)
+			if (check_key(key, &keylen) == NO_MATCH &&
+			g_shell.edit.edit_mode != MODE_VI_COMMAND)
 				check_printable(key, &keylen);
 		}
 	}
