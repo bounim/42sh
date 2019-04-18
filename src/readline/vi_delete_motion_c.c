@@ -13,39 +13,27 @@
 #include "twenty_one_sh.h"
 
 static t_keymap		g_motion_keymap[MOTION_KEYMAP_SIZE] = {
-		{" ", 1, vi_move_next_char},
-		{"l", 1, vi_move_next_char},
-		{"h", 1, vi_move_prev_char},
-		{"w", 1, vi_forward_word},
-		{"W", 1, vi_forward_bigword},
-		{"e", 1, vi_end_word},
-		{"E", 1, vi_end_bigword},
-		{"b", 1, vi_backward_word},
-		{"B", 1, vi_backward_bigword},
-		{"^", 1, vi_move_first_nonblank},
-		{"$", 1, vi_go_to_end},
-		{"0", 1, go_to_home},
-		{"|", 1, vi_move_counth_char},
-		{"f", 1, vi_search_char_after},
-		{"F", 1, vi_search_char_before},
-		{"T", 1, vi_search_char_after_before},
-		{"t", 1, vi_search_char_before_after},
-		{";", 1, repeat_last_search_char},
-		{",", 1, repeat_last_search_char_reverse},
-		{"c", 1, vi_clear_line_insert}
+	{" ", 1, vi_move_next_char},
+	{"l", 1, vi_move_next_char},
+	{"h", 1, vi_move_prev_char},
+	{"w", 1, vi_forward_word},
+	{"W", 1, vi_forward_bigword},
+	{"e", 1, vi_end_word},
+	{"E", 1, vi_end_bigword},
+	{"b", 1, vi_backward_word},
+	{"B", 1, vi_backward_bigword},
+	{"^", 1, vi_move_first_nonblank},
+	{"$", 1, vi_go_to_end},
+	{"0", 1, go_to_home},
+	{"|", 1, vi_move_counth_char},
+	{"f", 1, vi_search_char_after},
+	{"F", 1, vi_search_char_before},
+	{"T", 1, vi_search_char_after_before},
+	{"t", 1, vi_search_char_before_after},
+	{";", 1, repeat_last_search_char},
+	{",", 1, repeat_last_search_char_reverse},
+	{"c", 1, vi_clear_line_insert}
 };
-
-static int		check_motion_character(char *c)
-{
-	if (read(STDIN_FILENO, c, 1) < 0)
-		fatal_exit(SH_EINVAL);
-	if (*c != ' ' && *c != '0' && *c != 'b' && *c != 'F' && *c != 'l' &&
-		*c != 'W' && *c != '^' && *c != '$' && *c != ';' && *c != 'E' &&
-		*c != 'f' && *c != 'T' && *c != 'w' && *c != '|' && *c != ',' &&
-		*c != 'B' && *c != 'e' && *c != 'h' && *c != 't' && *c != 'c')
-		return (-1);
-	return (0);
-}
 
 static int		begin_is_before_end(t_char *begin, t_char *end)
 {
@@ -95,13 +83,16 @@ void			vi_delete_c(void)
 	vi_insert_mode();
 }
 
-void		vi_delete_motion(void)
+void			vi_delete_motion(void)
 {
 	char	c;
 	int		i;
 	t_char	*begin;
 
-	if (check_motion_character(&c) == -1)
+	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b' &&
+	c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';' &&
+	c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ',' &&
+	c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
 		return ;
 	begin = g_shell.edit.point_char->next;
 	i = 0;
@@ -118,22 +109,24 @@ void		vi_delete_motion(void)
 	clean_and_print();
 }
 
-void		vi_yank_motion(void)
+void			vi_yank_motion(void)
 {
 	char	c;
 	int		i;
 	t_char	*cpy_begin;
 	t_char	*cpy_end;
 
-	if (check_motion_character(&c) == -1)
+	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b' &&
+	c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';' &&
+	c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ',' &&
+	c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
 		return ;
 	cpy_begin = g_shell.edit.point_char->next;
 	i = 0;
-	while (g_motion_keymap[i].seq && i < MOTION_KEYMAP_SIZE)
+	while (g_motion_keymap[i].seq && i++ < MOTION_KEYMAP_SIZE)
 	{
 		if (g_motion_keymap[i].seq[0] == c)
 			g_motion_keymap[i].funckey();
-		i++;
 	}
 	if (!g_shell.edit.point_char || cpy_begin == g_shell.edit.point_char)
 		return ;
