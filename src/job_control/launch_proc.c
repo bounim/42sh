@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:58:21 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/11 15:11:40 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/18 14:12:42 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static void	set_signal_dfl(void)
 {
-	signal(SIGINT, SIG_DFL);
+/*	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGTSTP, SIG_DFL);
 	signal(SIGTTIN, SIG_DFL);
 	signal(SIGTTOU, SIG_DFL);
-	signal(SIGCHLD, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);*/
 }
 
 static void	dup_close_file(int std_file[2])

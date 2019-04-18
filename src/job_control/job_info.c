@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:17:22 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/09 13:48:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/18 13:50:11 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		job_notif(void)
 	t_job	*last_job;
 	t_job	*next_job;
 
+	mark_process_status();
 	update_status();
 	last_job = NULL;
 	next_job = NULL;

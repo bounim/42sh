@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:04 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/12 13:26:15 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/18 14:17:02 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,39 @@ int				mark_proc_status(pid_t pid, int status)
 	}
 }
 
+void			mark_process_status(void)
+{
+	t_job	*job;
+	t_proc	*proc;
+
+	job = g_shell.head_job;
+	while (job)
+	{
+		proc = job->head_proc;
+		while (proc)
+		{
+			if (proc->is_builtin)
+				proc->finish = 1;
+			else if (kill(proc->pid, 0) < 0)
+				proc->finish = 1;
+			else if (WIFSTOPPED(proc->status))
+				proc->stop = 1;
+			proc = proc->next;
+		}
+		job = job->next;
+	}
+}
+
 void			wait_for_job(t_job *job)
 {
 	int		status;
 	pid_t	pid;
 
-	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+	if ((pid = waitpid(-1, &status, 0)) == -1)
+	{
+		printf("waitpid return -1\n");
+		return ;
+	}
 	while (!mark_proc_status(pid, status) &&
 				!job_is_stop(job) &&
 				!job_is_finish(job))
