@@ -89,10 +89,10 @@ void			vi_delete_motion(void)
 	int		i;
 	t_char	*begin;
 
-	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b' &&
-	c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';' &&
-	c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ',' &&
-	c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
+	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b'
+	&& c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';'
+	&& c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ','
+	&& c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
 		return ;
 	begin = g_shell.edit.point_char->next;
 	i = 0;
@@ -116,10 +116,10 @@ void			vi_yank_motion(void)
 	t_char	*cpy_begin;
 	t_char	*cpy_end;
 
-	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b' &&
-	c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';' &&
-	c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ',' &&
-	c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
+	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b'
+	&& c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';'
+	&& c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ','
+	&& c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
 		return ;
 	cpy_begin = g_shell.edit.point_char->next;
 	i = 0;

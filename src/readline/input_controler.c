@@ -224,8 +224,8 @@ void		input_controller(void)
 				fatal_exit(SH_EINVAL);
 			keylen = (size_t)rd;
 			build_count(key, &keylen, g_shell.edit.edit_mode);
-			if (check_key(key, &keylen) == NO_MATCH &&
-			g_shell.edit.edit_mode != MODE_VI_COMMAND)
+			if (check_key(key, &keylen) == NO_MATCH
+			&& g_shell.edit.edit_mode != MODE_VI_COMMAND)
 				check_printable(key, &keylen);
 		}
 	}
