@@ -12,25 +12,28 @@
 
 #include "twenty_one_sh.h"
 
-static void set_fc_opts_to_null(int	fc_opts[4])
+static void set_fc_opts_to_null(int	fc_opts[5])
 {
 	fc_opts[E] = 0;
 	fc_opts[L] = 0;
+	fc_opts[N] = 0;
 	fc_opts[R] = 0;
 	fc_opts[S] = 0; 
 }
 
-static int 	set_fc_opts_to_one(char opt, int fc_opts[4])
+static int 	set_fc_opts_to_one(char opt, int fc_opts[5])
 {
 	if (opt == 'e')
 		fc_opts[E] = 1;
 	if (opt == 'l')
 		fc_opts[L] = 1;
+	if (opt == 'n')
+		fc_opts[N] = 1;
 	if (opt == 'r')
 		fc_opts[R] = 1;
 	if (opt == 's')
 		fc_opts[S] = 1;
-	if (opt == 'e' || opt == 'l' || opt == 'r' || opt == 's')
+	if (opt == 'e' || opt == 'l' || opt == 'n'|| opt == 'r' || opt == 's')
 		return (1);
 	else
 		return (-1);
@@ -38,7 +41,7 @@ static int 	set_fc_opts_to_one(char opt, int fc_opts[4])
 
 void		print_usage_fc(char opt)
 {
-	if (opt != 'e' && opt != 'l' && opt != 'r' && opt != 's')
+	if (opt != 'e' && opt != 'l' && opt != 'n' && opt != 'r' && opt != 's')
 	{
 		ft_putstr("21sh: fc: -");
 		ft_putchar(opt);
@@ -50,7 +53,7 @@ void		print_usage_fc(char opt)
 		ft_putstr("21sh: fc: history specification out of range");
 }
 
-int			check_fc_opts(char **av, int fc_opts[4])
+int			check_fc_opts(char **av, int fc_opts[5])
 {
 	int i;
 	int j;

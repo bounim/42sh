@@ -45,8 +45,17 @@ enum 		e_fc_opts
 {
 	E = 0,
 	L = 1,
-	R = 2,
-	S = 3
+	N = 2,
+	R = 3,
+	S = 4
+};
+
+enum 	e_range_code{
+	OUT_OF_RANGE = 0,
+	IN_RANGE,
+	NUMBER,
+	RANGE,
+	NO_ARG
 };
 
 char		*replace_exclaim(char *line, t_history *hist,
@@ -69,8 +78,10 @@ int			built_alias(char **arg, t_envl *envl);
 int			built_unalias(char **arg, t_envl *envl);
 int			built_history(char **arg, t_envl *envl);
 int			built_fc(char **av, t_envl *envl);
-int			check_fc_opts(char **av, int fc_opts[4]);
+int			check_fc_opts(char **av, int fc_opts[5]);
 void		print_usage_fc(char opt);
+int			build_fc_range(char **av, int fc_range[2], int i);
+int			check_fc_range(int fc_range[2], int range_nb);
 int			built_fg(char **arg, t_envl *envl);
 int			built_bg(char **arg, t_envl *envl);
 int			built_jobs(char **arg, t_envl *envl);

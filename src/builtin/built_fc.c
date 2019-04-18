@@ -12,83 +12,66 @@
 
 #include "twenty_one_sh.h"
 
-//parser, check la syntaxe de la phrase, 
-//if cest du -, on check les options, on les sets, ensuite on teste le range, qu'on peut mettre dans un tableau;
+//option -e est prio sur toutes les options, ensuite c'est s;
 
-t_history	*find_specific_hist_line(int line, t_history *head)
+int 	get_nb_of_zeros(int nb)
 {
-	int i;
+	int ret;
 
-	i = 0;
-	while (i != line && head)
-	{
-		i++;
-		head = head->next;
-	}
-	if (i == line)
-		return (head);
-	return (NULL);
+	ret = 0;
+	while (nb /= 10)
+		ret++;
+	return (ret);
 }
 
-int 	check_one_nb(int fc_value, t_history *head)
-{
-	if (find_specific_hist_line(fc_value, head) != NULL)
-		return (1);
-	print_usage_fc('e');
-	return (-1);
-}
 
-int		check_a_range(int fc_range[2], t_history *head)
-{
-	(void)fc_range;
-	(void)head;
-	return (0);
-}
-
-int		check_fc_range(int fc_range[2], int range_nb)
+//Il y a inversement avec l'ordre de la liste. ca peut venir de head qui n'est pas head mais qui est tail.
+//faire -r ensuite.
+// faire le sans argument ensuite.
+//listing sera done
+void	print_fc_list(int fc_opts[5], int range_nb, int fc_range[2])
 {
 	t_history 	*head;
-	//int			line_nb;
+	int 		nb_o_zer;
 
 	head = find_first_hist_line();
-	if (range_nb == 0)
-		return (0);
-	if (range_nb == 1)
+	if (!(head = find_specific_hist_line(fc_range[0], head)))
+		return ;
+	if (range_nb == NUMBER)
+		fc_range[1] = get_hist_full_size(g_shell.hist.history);
+	while (head && fc_range[0] <= fc_range[1])
 	{
-		if(check_one_nb(fc_range[0], head) == 1)
-			return (1);
-		return (-1);
+		if (fc_opts[N])
+			write(1, "         ", 7);
+		else
+		{
+			ft_putstr(ft_itoa(fc_range[0]));
+			nb_o_zer = 6 - get_nb_of_zeros(fc_range[0]);		
+			while (nb_o_zer--)
+				write(1, " ", 1);
+		}
+		write(1, head->buf, ft_u8_strlen(head->buf));
+		write(1, "\n", 1);
+		fc_range[0]++;
+		head = head->next;
 	}
-	if (range_nb == 2)
+}
+
+int 	fc_controler(int range_nb, int fc_range[2], int fc_opts[5], char **av, t_envl *envl)
+{
+	(void)av;
+	(void)envl;
+	if (fc_opts[L])
 	{
-		if (check_a_range(fc_range, head) == 1)
-			return (2);
-		return (-1);
+		print_fc_list(fc_opts, range_nb, fc_range);
+		return (1);
 	}
 	return (1);
 }
 
-int		build_fc_range(char **av, int fc_range[2], int i)
-{
-	int first;
-	int last;
-
-	if (!av[i])
-		return (0);//ca veut dire pas de range.
-	first = ft_atoi(av[i]);
-	i++;
-	if (!av[i])
-		return (1);//une seule valeur
-	last = ft_atoi(av[i]);
-	fc_range[0] = first;
-	fc_range[1] = last;
-	printf("first %d, last %d\n", first, last);
-	return (2);//2 valeurs
-}
-
 int		built_fc(char **av, t_envl *envl)
 {
-	int fc_opts[4];
+	int fc_opts[5];
 	int index;
 	int fc_range[2];
 	int range_nb;
@@ -96,10 +79,10 @@ int		built_fc(char **av, t_envl *envl)
 	(void)envl;
 	if ((index = check_fc_opts(av, fc_opts)) == -1)
 		return (-1);
-	if ((nb_range = build_fc_range(av, fc_range, index)) == -1)
+	//printf("E: %d, L: %d, N: %d, R: %d, S: %d\n", fc_opts[0], fc_opts[1], fc_opts[2], fc_opts[3], fc_opts[4]);
+	range_nb = build_fc_range(av, fc_range, index);
+	if ((range_nb = check_fc_range(fc_range, range_nb)) == OUT_OF_RANGE)
 		return (-1);
-	if (range_nb > 0)
-		if (check_fc_range(fc_range, range_nb))
-			return (-1);
+	fc_controler(range_nb, fc_range, fc_opts, av, envl);
 	return (1);
 }
