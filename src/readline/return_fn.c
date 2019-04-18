@@ -52,8 +52,8 @@ static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
 static void		return_end(uint8_t *buff, size_t buff_size)
 {
 	free_controler(FREE_ALL_EDIT);
+	cooked_terminal();
 	write(1, "\n", 1);
-	ft_putstr(tgetstr("cr", NULL));
 	g_shell.edit.reading = FALSE;
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
 					g_shell.hist.history, NULL, NULL)))
@@ -82,12 +82,10 @@ void			return_fn(void)
 	if ((head = find_first_non_prompt(g_shell.edit.char_list.head)) == NULL)
 		buff_size = 0;
 	else
-		buff_size = get_buf_size(head, g_shell.edit.char_list.tail);
-	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 2))))
+		buff_size = get_buf_size(head, NULL);
+	if (!(buff = (uint8_t*)malloc(sizeof(uint8_t) * (buff_size + 1))))
 		readline_errors_controler(MALLOC_ERROR);
-	buff[buff_size] = '\n';
-	buff[buff_size + 1] = '\0';
-	buff_size++;
+	buff[buff_size] = '\0';
 	i = 0;
 	while (head)
 	{
