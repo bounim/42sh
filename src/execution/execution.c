@@ -16,21 +16,21 @@
 
 static char	**arg_to_argv(t_lexer_token *cmd)
 {
-	size_t	i;
-	t_argv	*cur;
-	char	**av;
+	size_t			i;
+	t_lexer_token	*cur;
+	char			**av;
 
-	if (NULL == (av = malloc((cmd->argc + 1) * sizeof(*av))))
+	if (NULL == (av = malloc((cmd->arg_nb + 1) * sizeof(*av))))
 		return (NULL);
 	i = 0;
-	cur = cmd->argv_head;
-	while (i < cmd->argc)
+	cur = cmd->arg_head;
+	while (i < cmd->arg_nb)
 	{
-		av[i] = cur->buffer;
+		av[i] = (char *)cur->buffer;
 		i++;
-		cur = cur->next;
+		cur = cur->arg_next;
 	}
-	av[cmd->argc] = NULL;
+	av[cmd->arg_nb] = NULL;
 	return (av);
 }
 

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <errno.h>
 #include "printer.h"
 
 void	printer_flush(t_printer *handle)
@@ -25,8 +24,7 @@ void	printer_flush(t_printer *handle)
 		while (i < handle->length)
 		{
 			r = write(handle->fd, handle->buffer + i, handle->length - i);
-			if (r == 0
-					|| (r == -1 && (errno != EAGAIN && errno != EWOULDBLOCK)))
+			if (r <= 0)
 				break ;
 			i += r;
 		}

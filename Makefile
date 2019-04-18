@@ -116,12 +116,14 @@ SRC := \
 	job_control/creat_job.c \
 	job_control/job_info.c \
 	parser/parser.c \
-	parser/parser_destroy.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \
 	parser/is.c \
 	expansions/expansions.c \
+	expansions/expansions2.c \
+	expansions/expansions3.c \
+	expansions/expansions4.c \
 	random/file.c
 
 CFLAGS ?=
