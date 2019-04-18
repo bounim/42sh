@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-void	vi_append_mode(void)
+void		vi_append_mode(void)
 {
 	move_right();
 	g_shell.edit.edit_mode = MODE_VI_INSERT;
@@ -24,23 +24,18 @@ void		vi_append_eol(void)
 	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
-void	vi_insert_mode(void)
+void		vi_insert_mode(void)
 {
 	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
-void	vi_insert_bol(void)
+void		vi_insert_bol(void)
 {
 	go_to_home();
 	g_shell.edit.edit_mode = MODE_VI_INSERT;
 }
 
-void	vi_insert_replace(void)
-{
-
-}
-
-void 	vi_replace_char(void)
+void		vi_replace_char(void)
 {
 	int		count;
 	char	c;
