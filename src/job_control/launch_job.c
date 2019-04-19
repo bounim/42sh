@@ -40,9 +40,9 @@ void			launch_job(t_job *job)
 
 	std_file[0] = STDIN_FILENO;
 	cur = job->head_proc;
-	if (!cur->next)
+	if (cur && !cur->next)
 		launch_proc(cur);
-	else
+	else if (cur)
 	{
 		while (cur->next)
 		{

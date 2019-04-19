@@ -43,7 +43,7 @@ void		init_shell(int ac, char **av, char **env)
 	tgetent(NULL, term);
 	g_shell.term_set = 1;
 	/* job control start */
-	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
+	/*while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
 		kill(-g_shell.pgid, SIGTTIN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -59,7 +59,7 @@ void		init_shell(int ac, char **av, char **env)
 		exit (1);
 	}
 	tcsetpgrp(g_shell.term, g_shell.pgid);
-	/*if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
+	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
 			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
 		fatal_exit(SH_EINVAL);*/
 	/* job control end */

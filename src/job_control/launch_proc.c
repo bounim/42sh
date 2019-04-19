@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-static void	set_signal_dfl(void)
+void	set_signal_dfl(void)
 {
 	//signal(SIGINT, SIG_DFL);
 	//signal(SIGQUIT, SIG_DFL);

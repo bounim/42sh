@@ -56,6 +56,7 @@ void						run_shell(void);
 void						raw_terminal(void);
 void						cooked_terminal(void);
 int							get_return_status(int status);
+void						set_signal_dfl(void);
 void						clean_shell(void);
 void						fatal_exit(int code);
 

@@ -18,6 +18,7 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 	char	*name;
 	char	*value;
 
+	printf("size %zu && pos %zu\n", assign->size, assign->assign_position);
 	if (NULL == (name = malloc(assign->assign_position + 1)))
 		return (-1);
 	if (NULL == (value = malloc(assign->size - assign->assign_position)))

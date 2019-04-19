@@ -51,9 +51,10 @@ int		assign_expansions(t_lexer_token *cmd)
 	while (cur)
 	{
 		cur->exp_i = cur->assign_position + 1;
+		buffer_append(cur, cur->buffer, cur->assign_position + 1);
 		if (buffer_expand(cur) < 0)
 			return (-1);
-		cur = cur->arg_next;
+		cur = cur->assign_next;
 	}
 	return (0);
 }

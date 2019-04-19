@@ -91,10 +91,23 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 	return (0); //TODO
 }
 
+void	print_uint(char *str, uint8_t *buf, size_t size)
+{
+	size_t	i = 0;
+
+	ft_putstr(str);
+	ft_putstr(" : ");
+	while (i < size)
+		ft_putchar(buf[i++]);
+	ft_putchar('\n');
+}
+
 int		execute_and_or(t_lexer_token *and_or)
 {
 	t_lexer_token	*cur;
+	int				execute;
 
+	execute = 0;
 	if (!and_or)
 		return (-1);
 	if (and_or->ptype != PARSER_AND_OR)
@@ -102,29 +115,32 @@ int		execute_and_or(t_lexer_token *and_or)
 	cur = and_or;
 	while (cur && cur->ptype == PARSER_AND_OR)
 	{
-		if (execute_pipe(cur->left) < 0)
-			return (-1);
-		//printf("EXIT CODE IS %d\n", g_shell.exit_code);
+		if (!execute)
+		{
+			if (execute_pipe(cur->left) < 0)
+				return (-1);
+			execute = 0;
+		}
 		if (cur->buffer[0] == '&')
 		{
-			//puts("<&&>");
 			if (g_shell.exit_code != 0)
 			{
-			//	ft_putendl("AND 0");
-				return (0);
+				if (cur->right && cur->right->ptype != PARSER_AND_OR)
+					return (0);
+				execute = 1;
 			}
 		}
 		else
 		{
-			//puts("<||>");
 			if (g_shell.exit_code == 0)
 			{
-			//	ft_putendl("OR 0");
-				return (0);
+				if (cur->right && cur->right->ptype != PARSER_AND_OR)
+					return (0);
+				execute = 1;
 			}
 		}
 		cur = cur->right;
-		g_shell.exit_code = 0;
+		//g_shell.exit_code = 0;
 	}
 	return (execute_pipe(cur));
 }

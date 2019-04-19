@@ -59,6 +59,7 @@ char	*find_command(char *cmd, t_envl *envl)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
+		ft_putendl("SLAASH");
 		ft_memmove(ret, cmd, size);
 		ret[size] = '\0';
 		if (access(ret, F_OK) == 0)

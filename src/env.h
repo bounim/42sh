@@ -31,7 +31,8 @@ void					free_envl(t_envl *env);
 t_envl					*init_shell_envl(char **env);
 t_envl					*addlast_envl(t_envl *head, t_envl *new);
 char					*get_env_val(t_envl *envl, char *name);
-void					push_env(t_envl **envl, char *name, char *value, int exp);
+void					push_env(t_envl **envl, char *name, char *value,
+		int exp);
 void					clear_envl(t_envl *envl);
 t_envl					*dup_envl(t_envl *env);
 char					**envl_to_envarr(t_envl *envl);
