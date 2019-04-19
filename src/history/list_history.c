@@ -29,11 +29,22 @@ int 		get_hist_full_size(t_history *tail)
 	return (ret);
 }
 
+t_history	*find_last_hist_line(void)
+{
+	t_history *ret;
+
+	if (!(ret = g_shell.hist.history))
+		return (NULL);
+	while (ret->next)
+		ret = ret->next;
+	return (ret);
+}
+
 t_history	*find_specific_hist_line(int line, t_history *head)
 {
 	int i;
 
-	i = 0;
+	i = 1;
 	while (i != line && head)
 	{
 		i++;

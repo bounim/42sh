@@ -6,22 +6,22 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:33:12 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/16 16:33:13 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/19 15:58:04 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void set_fc_opts_to_null(int	fc_opts[5])
+static void	set_fc_opts_to_null(int fc_opts[5])
 {
 	fc_opts[E] = 0;
 	fc_opts[L] = 0;
 	fc_opts[N] = 0;
 	fc_opts[R] = 0;
-	fc_opts[S] = 0; 
+	fc_opts[S] = 0;
 }
 
-static int 	set_fc_opts_to_one(char opt, int fc_opts[5])
+static int	set_fc_opts_to_one(char opt, int fc_opts[5])
 {
 	if (opt == 'e')
 		fc_opts[E] = 1;
@@ -33,24 +33,10 @@ static int 	set_fc_opts_to_one(char opt, int fc_opts[5])
 		fc_opts[R] = 1;
 	if (opt == 's')
 		fc_opts[S] = 1;
-	if (opt == 'e' || opt == 'l' || opt == 'n'|| opt == 'r' || opt == 's')
+	if (opt == 'e' || opt == 'l' || opt == 'n' || opt == 'r' || opt == 's')
 		return (1);
 	else
 		return (-1);
-}
-
-void		print_usage_fc(char opt)
-{
-	if (opt != 'e' && opt != 'l' && opt != 'n' && opt != 'r' && opt != 's')
-	{
-		ft_putstr("21sh: fc: -");
-		ft_putchar(opt);
-		ft_putstr(": invalid option\n");
-		ft_putstr("fc: usage: fc [-e ename] [-nlr]\
-			[first] [last] or fc -s [pat=rep] [cmd]");
-	}
-	else
-		ft_putstr("21sh: fc: history specification out of range");
 }
 
 int			check_fc_opts(char **av, int fc_opts[5])
@@ -74,6 +60,7 @@ int			check_fc_opts(char **av, int fc_opts[5])
 			}
 			j++;
 		}
+		j = 1;
 		i++;
 	}
 	return (i);

@@ -78,5 +78,6 @@ size_t 	ft_count_bn(char *str);
 size_t	ft_wchar_len(unsigned char *str);
 size_t	ft_ustrlen(const uint8_t *ustr);
 uint8_t	*ft_u8_strdup(const uint8_t *s);
+int 	ft_get_nb_len(int nb);
 
 #endif
