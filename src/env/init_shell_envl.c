@@ -67,7 +67,7 @@ static void		set_envl_default_value(t_envl **envl)
 	t_passwd	*pwuid;
 	char		*cwd;
 
-	if ((pwuid = getpwuid(getuid())) == NULL)
+	if ((pwuid = getpwnam(getlogin())) == NULL)
 		fatal_exit(SH_ENOMEM);
 	if ((cwd = getcwd(NULL, 0)) == NULL)
 		fatal_exit(SH_ENOMEM);

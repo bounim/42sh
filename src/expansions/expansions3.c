@@ -25,7 +25,7 @@ static int		not_quoted(t_lexer_token *tok)
 		k = tok->exp_i;
 		if ((k == 0 || (tok->assign_position > 0 && k == tok->assign_position
 						+ 1)) && tok->buffer[k] == '~')
-			k += tilde_expand(tok);
+			k += tilde_expand(tok, j, k);
 		var_expand(tok, j, k);
 		tok->exp_i = j;
 	}

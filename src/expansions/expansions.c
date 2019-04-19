@@ -22,3 +22,19 @@ int				command_expansions(t_lexer_token *cmd)
 		return (-1);
 	return (0);
 }
+
+int				buffer_append(t_lexer_token *tok, uint8_t *buffer, size_t size)
+{
+	uint8_t	*r;
+
+	if (NULL == (r = malloc((tok->exp_buffer ? tok->exp_size : 0) + size + 1)))
+		return (-1);
+	if (tok->exp_buffer)
+		ft_memmove(r, tok->exp_buffer, tok->exp_size);
+	ft_memmove(r + (tok->exp_buffer ? tok->exp_size : 0), buffer, size);
+	r[(tok->exp_buffer ? tok->exp_size : 0) + size] = '\0';
+	free(tok->exp_buffer);
+	tok->exp_buffer = r;
+	tok->exp_size += size;
+	return (0);
+}
