@@ -14,76 +14,36 @@
 
 //option -e est prio sur toutes les options, ensuite c'est s;
 
-void	print_usage_fc(char opt)
+void	rebuild_charac_list(uint8_t *buff)
 {
-	if (opt != 'e' && opt != 'l' && opt != 'n' && opt != 'r' && opt != 's')
-	{
-		ft_putstr("21sh: fc: -");
-		ft_putchar(opt);
-		ft_putstr(": invalid option\n");
-		ft_putstr("fc: usage: fc [-e ename] [-nlr]\
-			[first] [last] or fc -s [pat=rep] [cmd]");
-	}
-	else
-		ft_putstr("21sh: fc: history specification out of range");
-}
+	int i;
+	int len;
 
-void	print_fc_list_reverse(int fc_opts[5], int fc_range[2])
-{
-	t_history	*curr;
-	int			blank_nb;
-	char		*line;
-
-	curr = find_first_hist_line();
-	if (!(curr = find_specific_hist_line(fc_range[1], curr)))
-		return ;
-	while (curr && fc_range[1] >= fc_range[0])
+	i = 0;
+	len = 0;
+	free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+	init_char_list();
+	init_prompt(BASIC_PROMPT);
+	while (buff[i])
 	{
-		if (fc_opts[N])
-			write(1, "         ", 7);
-		else
-		{
-			line = ft_itoa(fc_range[1]);
-			ft_putstr(line);
-			free(line);
-			blank_nb = 6 - ft_get_nb_len(fc_range[0]);
-			while (blank_nb--)
-				write(1, " ", 1);
-		}
-		ft_putstr((char*)curr->buf);
-		write(1, "\n", 1);
-		curr = curr->bfr;
-		fc_range[1]--;
+		len = ft_wchar_len(buff + i);
+		add_char_to_list(buff + i, len, 0);
+		i += len;
 	}
 }
 
-void	print_fc_list(int fc_opts[5], int fc_range[2])
+void	fc_s(int fc_range[2])
 {
+	int 		histsize;
 	t_history	*curr;
-	int			blank_nb;
-	char		*line;
 
+	histsize = get_hist_full_size(g_shell.hist.history);
 	curr = find_first_hist_line();
+	if (fc_range[0] == histsize - 15 && fc_range[1] == histsize)
+		fc_range[0] = fc_range[1];
 	if (!(curr = find_specific_hist_line(fc_range[0], curr)))
 		return ;
-	while (curr && (fc_range[0] <= fc_range[1]))
-	{
-		if (fc_opts[N])
-			write(1, "         ", 7);
-		else
-		{
-			line = ft_itoa(fc_range[0]);
-			ft_putstr(line);
-			free(line);
-			blank_nb = 6 - ft_get_nb_len(fc_range[0]);
-			while (blank_nb--)
-				write(1, " ", 1);
-		}
-		ft_putstr((char*)curr->buf);
-		write(1, "\n", 1);
-		curr = curr->next;
-		fc_range[0]++;
-	}
+	//rebuild_charac_list(curr->buf);
 }
 
 int		fc_controler(int fc_range[2], int fc_opts[5], char **av, t_envl *envl)
@@ -98,6 +58,8 @@ int		fc_controler(int fc_range[2], int fc_opts[5], char **av, t_envl *envl)
 			print_fc_list_reverse(fc_opts, fc_range);
 		return (1);
 	}
+	if (fc_opts[S])
+		fc_s(fc_range);
 	return (1);
 }
 

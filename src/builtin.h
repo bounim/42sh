@@ -65,6 +65,10 @@ int			built_cd(char **arg, t_envl *envl);
 char		*rework_canonic_path(char *cwd);
 int			cd_first_arg(char **arg, int *opts);
 int			check_builtin(char *cmd);
+int			built_test(char **av, t_envl *envl);
+int			unary_test(char *cmd, char *operator, char *operand);
+int			binary_test(char *cmd, char *operand1, char *operator, char *operand2);
+int			unexpected(char *cmd, char *arg, char *reason);
 int			built_echo(char **arg, t_envl *envl);
 int			built_env(char **arg, t_envl *envl);
 int			built_env_find_last_cmd(char **arg, int stock, int i);
@@ -82,6 +86,8 @@ int			check_fc_opts(char **av, int fc_opts[5]);
 void		print_usage_fc(char opt);
 void		build_fc_range(char **av, int fc_range[2], int i);
 int			check_fc_range(int fc_range[2]);
+void		print_fc_list(int fc_opts[5], int fc_range[2]);
+void		print_fc_list_reverse(int fc_opts[5], int fc_range[2]);
 int			built_fg(char **arg, t_envl *envl);
 int			built_bg(char **arg, t_envl *envl);
 int			built_jobs(char **arg, t_envl *envl);
@@ -98,5 +104,4 @@ int			start_builtin(char **arg, t_envl *envl);
 int			built_debug(char **arg, t_envl *envl);
 int			built_exit(char **arg, t_envl *envl);
 char		*find_path(char *cmd, t_envl *envl);
-
 #endif
