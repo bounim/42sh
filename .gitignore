@@ -1,5 +1,5 @@
 *.[doa]
+/obj
 /21sh
-/test/canonical_path
-test/*
-/.vscode/*
+/.vscode
+*.dSYM
