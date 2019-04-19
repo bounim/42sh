@@ -1,0 +1,26 @@
+FC
+
+Choisit l'editeur de texte a utiliser avec FCEDIT, si FCEDIT n'est pas set ca va prendre la variable EDITOR, sinon ca prend vi
+Can take negative numbers as arguments, it gets the command done n commands ago.
+Can take a string as an argument, will execute the most recent occurence that starts with that string. If used in list it'll list all occurences from that point to the end
+
+
+OPTIONS:
+			-l: Displays a list of the most recently used commands, no doublons next to each other.
+					.You can get it to start at the line you want with a number next to -l: fc -l 600
+						.if you provide a start line number, it will list till the end
+						.fc -l 0 gives you the last line of the histo
+						.if you give a number bigger than max histo line, it gives you the last one.
+					.You can provide a range: fc -l 100 130
+						.range will adapt its listing style (increasing | decreasing) depending on the < || > of the two given args:
+							.EX: fc -l 5 10
+								--> Will list lines from small to big
+							.EX: fc -l 10 5
+								--> From big to small
+						.if range starts or ends with bigger number it adapts
+			-n: (with -l): suppresses numbers in the listing
+			-r: (with -l): reverses the lists order
+			-e: set the editor dynamically: set -e vi
+					.can reexecute the command without going through a text editor if you pass a dash with it:
+						.EX: fc -e -
+						.Also accepts number (range only in zsh)

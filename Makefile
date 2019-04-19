@@ -59,6 +59,9 @@ SRC := \
 	builtin/built_jobs.c \
 	builtin/built_jobs_extra.c \
 	builtin/built_fg.c \
+	builtin/built_fc.c \
+	builtin/fc_opts_controler.c \
+	builtin/fc_range_controler.c \
 	builtin/built_bg.c \
 	builtin/built_type.c \
 	builtin/built_debug.c \

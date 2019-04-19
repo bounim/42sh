@@ -12,6 +12,60 @@
 
 #include "twenty_one_sh.h"
 
+int 		get_hist_full_size(t_history *tail)
+{
+	int ret;
+
+	ret = 0;
+	if (!tail)
+		return (0);
+	while (tail->next)
+		tail = tail->next;
+	while (tail)
+	{
+		ret++;
+		tail = tail->bfr;
+	}
+	return (ret);
+}
+
+t_history	*find_last_hist_line(void)
+{
+	t_history *ret;
+
+	if (!(ret = g_shell.hist.history))
+		return (NULL);
+	while (ret->next)
+		ret = ret->next;
+	return (ret);
+}
+
+t_history	*find_specific_hist_line(int line, t_history *head)
+{
+	int i;
+
+	i = 1;
+	while (i != line && head)
+	{
+		i++;
+		head = head->next;
+	}
+	if (i == line)
+		return (head);
+	return (NULL);
+}
+
+t_history	*find_first_hist_line(void)
+{
+	t_history *ret;
+
+	if (!(ret = g_shell.hist.history))
+		return (NULL);
+	while (ret->bfr)
+		ret = ret->bfr;
+	return (ret);
+}
+
 t_history	*rl_new_hist(uint8_t *buf)
 {
 	t_history	*list;

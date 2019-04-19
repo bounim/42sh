@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstr.c                                        :+:      :+:    :+:   */
+/*   ft_get_nb_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/19 11:58:52 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 11:58:54 by aguillot         ###   ########.fr       */
+/*   Created: 2019/04/19 15:48:31 by aguillot          #+#    #+#             */
+/*   Updated: 2019/04/19 15:48:33 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <string.h>
 
-char	*ft_strstr(const char *h, const char *n)
+int 	ft_get_nb_len(int nb)
 {
-	size_t	i;
-	size_t	j;
+	int ret;
 
-	i = 0;
-	while (i <= ft_strlen(h))
-	{
-		j = 0;
-		while (h[i + j] == n[j] && n[j])
-			j++;
-		if (!n[j])
-			return ((char*)(h + i));
-		i++;
-	}
-	return (0);
+	ret = 0;
+	while (nb /= 10)
+		ret++;
+	return (ret);
 }
