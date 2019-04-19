@@ -10,33 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits.h>
 #include "expansions_internal.h"
 
-int				buffer_append(t_lexer_token *tok, uint8_t *buffer, size_t size)
+static char		*tilde_gethome(uint8_t *buffer, size_t size)
 {
-	uint8_t	*r;
+	char			*home;
+	char			login[_POSIX_LOGIN_NAME_MAX + 1];
+	struct passwd	*pw;
 
-	if (NULL == (r = malloc((tok->exp_buffer ? tok->exp_size : 0) + size + 1)))
-		return (-1);
-	if (tok->exp_buffer)
-		ft_memmove(r, tok->exp_buffer, tok->exp_size);
-	ft_memmove(r + (tok->exp_buffer ? tok->exp_size : 0), buffer, size);
-	r[(tok->exp_buffer ? tok->exp_size : 0) + size] = '\0';
-	free(tok->exp_buffer);
-	tok->exp_buffer = r;
-	tok->exp_size += size;
-	return (0);
+	if (size == 0)
+	{
+		if ((home = get_env_val(g_shell.envl, "HOME")) && home[0])
+			return (home);
+		return (NULL);
+	}
+	if (size > _POSIX_LOGIN_NAME_MAX)
+		return (NULL);
+	ft_memmove(login, buffer, size);
+	login[size] = '\0';
+	if ((pw = getpwnam(login)) && pw->pw_dir && pw->pw_dir[0])
+		return (pw->pw_dir);
+	return (NULL);
 }
 
-size_t			tilde_expand(t_lexer_token *tok)
+size_t			tilde_expand(t_lexer_token *tok, size_t j, size_t k)
 {
-	char	*home;
+	char			*home;
+	size_t			x;
 
-	if (NULL == (home = get_env_val(g_shell.envl, "HOME")))
-		buffer_append(tok, (uint8_t *)"~", 1);
-	else
+	x = 1;
+	while (x < j && tok->buffer[k + x] != '/' && tok->buffer[k + x] != ':')
+		x++;
+	if ((home = tilde_gethome(tok->buffer + k + 1, x - 1)))
 		buffer_append(tok, (uint8_t *)home, ft_strlen(home));
-	return (1);
+	else
+		buffer_append(tok, tok->buffer + k, x);
+	return (x);
 }
 
 static size_t	until_dollar_copy(t_lexer_token *tok, size_t j, size_t k)
