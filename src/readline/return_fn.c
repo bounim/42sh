@@ -14,6 +14,8 @@
 
 static uint8_t	*check_buff_end_for_b(uint8_t *buff, size_t buff_size)
 {
+	if (buff_size <= 0)
+		return (buff);
 	if (buff[buff_size - 1] == '\\')
 		buff[buff_size - 1] = '\0';
 	return (buff);
