@@ -12,7 +12,10 @@ SRC := \
 	env/free_envl.c \
 	env/print_envl.c \
 	env/envl_to_envarr.c \
-	execution/execution.c \
+	execution/execute_assign.c \
+	execution/execution_str.c \
+	execution/execute_cmd.c \
+	execution/execute_command_search.c \
 	execution/redir.c \
 	history/controler_history.c \
 	history/down_history.c \
@@ -120,7 +123,7 @@ SRC := \
 	job_control/stop_job.c \
 	job_control/continue_job.c \
 	job_control/init_job.c \
-	job_control/creat_job.c \
+	job_control/create_job.c \
 	job_control/job_info.c \
 	parser/parser.c \
 	parser/parser_func.c \

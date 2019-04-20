@@ -13,6 +13,7 @@
 #ifndef EXPANSIONS_INTERNAL_H
 # define EXPANSIONS_INTERNAL_H
 
+# include "twenty_one_sh.h"
 # include "expansions.h"
 
 int		arg_expansions(t_lexer_token *cmd);

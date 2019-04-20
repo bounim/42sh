@@ -18,12 +18,10 @@ static char	**canonic_path_rework_tab(char **cwd_t, int *k)
 	int		i;
 	int		j;
 
-	j = 0;
 	i = ft_arrlen(cwd_t);
-	if (!(ret = (char **)malloc(sizeof(char *) * i + 1)))
+	if (!(ret = (char **)malloc((i + 1) * sizeof(char *))))
 		return (NULL);
-	while (j < i + 1)
-		ret[j++] = NULL;
+	ft_memset(ret, 0, (i + 1) * sizeof(char *));
 	j = 0;
 	i = 0;
 	while (cwd_t[i])

@@ -23,7 +23,7 @@ static char	*memmove_to_arr(char *name, char *value)
 	n_size = ft_strlen(name);
 	v_size = ft_strlen(value);
 	g_size = n_size + v_size + 1;
-	if (!(ret = (char *)malloc(sizeof(char) * g_size + 1)))
+	if (!(ret = malloc(g_size + 1)))
 		return (NULL);
 	ret[g_size] = 0;
 	ft_memmove(ret, name, n_size);
@@ -47,7 +47,7 @@ char		**envl_to_envarr(t_envl *envl)
 			i++;
 		envl = envl->next;
 	}
-	if (!(buff = (char **)malloc(sizeof(char *) * (i + 1))))
+	if (!(buff = malloc((i + 1) * sizeof(char *))))
 		return (NULL);
 	buff[i] = NULL;
 	i = 0;

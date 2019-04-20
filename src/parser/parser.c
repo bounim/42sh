@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "parser.h"
 
 int		parser_create_tree(t_lexer *lex)

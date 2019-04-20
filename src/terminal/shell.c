@@ -23,7 +23,7 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.el_mode = MODE_EMACS;
 	g_shell.line = NULL;
 	g_shell.envl = init_shell_envl(env);
-	g_shell.alias = NULL;	
+	g_shell.alias = NULL;
 	g_shell.hist.history_size = 0;
 	g_shell.hist.history_save = -1;
 	g_shell.hist.history = init_shell_history();
@@ -33,17 +33,17 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.is_interactive = isatty(g_shell.term);
 	g_shell.canonic_path = getcwd(NULL, 0);
 	g_shell.stopped_proc = 0;
-	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO) ||\
-			!isatty(STDERR_FILENO))
+	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO)
+			|| !isatty(STDERR_FILENO))
 		fatal_exit(SH_ENOTTY);
-	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
-			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
+	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1
+			|| tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
 		fatal_exit(SH_EINVAL);
 	term = ft_strdup("xterm-256color");
 	tgetent(NULL, term);
 	g_shell.term_set = 1;
 	/* job control start */
-	while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
+	/*while (tcgetpgrp(g_shell.term) != (g_shell.pgid = getpgrp()))
 		kill(-g_shell.pgid, SIGTTIN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -59,7 +59,7 @@ void		init_shell(int ac, char **av, char **env)
 		exit (1);
 	}
 	tcsetpgrp(g_shell.term, g_shell.pgid);
-	/*if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
+	if (tcgetattr(g_shell.term, &(g_shell.cooked_tio)) == -1 ||\
 			tcgetattr(g_shell.term, &(g_shell.raw_tio)) == -1)
 		fatal_exit(SH_EINVAL);*/
 	/* job control end */

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "lexer_internal.h"
 
 static inline void	token_init(t_lexer *lex, enum e_lexer_type type,

@@ -26,28 +26,28 @@ t_job	*find_job(pid_t pgid)
 	return (NULL);
 }
 
-int		job_is_stop(t_job *job)
+int		job_is_stopped(t_job *job)
 {
 	t_proc	*proc;
 
 	proc = job->head_proc;
 	while (proc)
 	{
-		if (!proc->finish && !proc->stop)
+		if (!proc->completed && !proc->stopped)
 			return (0);
 		proc = proc->next;
 	}
 	return (1);
 }
 
-int		job_is_finish(t_job *job)
+int		job_is_completed(t_job *job)
 {
 	t_proc	*proc;
 
 	proc = job->head_proc;
 	while (proc)
 	{
-		if (!proc->finish)
+		if (!proc->completed)
 			return (0);
 		proc = proc->next;
 	}

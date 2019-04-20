@@ -67,7 +67,8 @@ void	update_all_pos(void)
 	t_char			*curr;
 	struct winsize	max;
 
-	ioctl(STDERR_FILENO, TIOCGWINSZ, &max);
+	if (ioctl(STDERR_FILENO, TIOCGWINSZ, &max) < 0)
+		return ;
 	curr = g_shell.edit.char_list.head;
 	while (curr)
 	{

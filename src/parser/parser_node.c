@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "parser.h"
 
 static int		add_wd(t_lexer_token *n, t_lexer_token **cur)

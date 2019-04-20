@@ -14,19 +14,13 @@
 
 int		check_builtin(char *cmd)
 {
-	printf("cmd = %s\n", cmd);
-	if (!cmd)
-		return (0);
-	if (ft_strequ(cmd, "alias") || ft_strequ(cmd, "bg") ||
-			ft_strequ(cmd, "fg") || ft_strequ(cmd, "cd") ||
-			ft_strequ(cmd, "debug") || ft_strequ(cmd, "echo") ||
-			ft_strequ(cmd, "env") || ft_strequ(cmd, "exit") ||
-			ft_strequ(cmd, "export") || ft_strequ(cmd, "history") ||
-			ft_strequ(cmd, "jobs") || ft_strequ(cmd, "set") ||
-			ft_strequ(cmd, "setenv") || ft_strequ(cmd, "type") ||
-			ft_strequ(cmd, "unalias") || ft_strequ(cmd, "unset") ||
-			ft_strequ(cmd, "unsetenv") || ft_strequ(cmd, "fc") ||
-			ft_strequ(cmd, "test"))
-		return (1);
-	return (0);
+	return (cmd && (ft_strequ(cmd, "alias")
+			|| ft_strequ(cmd, "bg") || ft_strequ(cmd, "fg")
+			|| ft_strequ(cmd, "cd") || ft_strequ(cmd, "debug")
+			|| ft_strequ(cmd, "echo") || ft_strequ(cmd, "env")
+			|| ft_strequ(cmd, "exit") || ft_strequ(cmd, "export")
+			|| ft_strequ(cmd, "history") || ft_strequ(cmd, "jobs")
+			|| ft_strequ(cmd, "set") || ft_strequ(cmd, "setenv")
+			|| ft_strequ(cmd, "type") || ft_strequ(cmd, "unalias")
+			|| ft_strequ(cmd, "unset") || ft_strequ(cmd, "unsetenv")));
 }

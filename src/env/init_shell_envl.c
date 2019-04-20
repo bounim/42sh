@@ -26,8 +26,8 @@ static uint8_t	search_env_var(t_envl *envl, const char *search)
 	return (NOTFOUND);
 }
 
-static void		set_env_var(t_envl **envl, const char *name, char *value,\
-		size_t read)
+static void		set_env_var(t_envl **envl, const char *name, char *value,
+		int opt)
 {
 	t_envl		*new;
 
@@ -36,27 +36,9 @@ static void		set_env_var(t_envl **envl, const char *name, char *value,\
 		if (!(new = (t_envl *)malloc(sizeof(*new))))
 			fatal_exit(SH_ENOMEM);
 		new->name = ft_strdup(name);
-		new->read_only = read;
+		new->read_only = (opt & ENV_RO) == ENV_RO;
 		new->value = value;
-		new->exp = 1;
-		new->next = NULL;
-		*envl = addlast_envl(*envl, new);
-	}
-}
-
-static void		set_env_var_unexp(t_envl **envl, const char *name, char *value,\
-		size_t read)
-{
-	t_envl		*new;
-
-	if (search_env_var(*envl, name) == NOTFOUND)
-	{
-		if (!(new = (t_envl *)malloc(sizeof(*new))))
-			fatal_exit(SH_ENOMEM);
-		new->name = ft_strdup(name);
-		new->read_only = read;
-		new->value = value;
-		new->exp = 0;
+		new->exp = (opt & ENV_EX) == ENV_EX;
 		new->next = NULL;
 		*envl = addlast_envl(*envl, new);
 	}
@@ -71,22 +53,18 @@ static void		set_envl_default_value(t_envl **envl)
 		fatal_exit(SH_ENOMEM);
 	if ((cwd = getcwd(NULL, 0)) == NULL)
 		fatal_exit(SH_ENOMEM);
-	set_env_var(envl, "HOME", ft_strjoin("/Users/", pwuid->pw_name), 0);
-	set_env_var(envl, "LOGNAME", ft_strdup(pwuid->pw_name), 1);
-	set_env_var(envl, "SHLVL", ft_strdup("1"), 0);
-	set_env_var(envl, "PWD", ft_strdup(cwd), 0);
-	set_env_var(envl, "OLDPWD", ft_strdup(cwd), 0);
-//	set_env_var_unexp(envl, "42SH_ARGC", ft_itoa(g_shell.argc), 1);
-//	set_env_var_unexp(envl, "42SH_ARGV", ft_arrdup(g_shell.argv), 1);
-	set_env_var_unexp(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"),\
+	set_env_var(envl, "HOME", ft_strjoin("/Users/", pwuid->pw_name), ENV_EX);
+	set_env_var(envl, "LOGNAME", ft_strdup(pwuid->pw_name), ENV_RO | ENV_EX);
+	set_env_var(envl, "SHLVL", ft_strdup("1"), ENV_EX);
+	set_env_var(envl, "PWD", ft_strdup(cwd), ENV_EX);
+	set_env_var(envl, "OLDPWD", ft_strdup(cwd), ENV_EX);
+	set_env_var(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"),
 				"/.42sh_history"), 0);
-	set_env_var_unexp(envl, "HISTSIZE", ft_strdup("50000"), 0);
-	set_env_var_unexp(envl, "$", NULL, 2);
-	set_env_var_unexp(envl, "?", NULL, 2);
-	set_env_var_unexp(envl, "0", NULL, 2);
+	set_env_var(envl, "HISTSIZE", ft_strdup("50000"), 0);
+	//set_env_var(envl, "0", NULL, ENV_RO); // TODO argv[0]
 }
 
-static t_envl	*envarr_to_envl(char **env)
+t_envl	*envarr_to_envl(char **env)
 {
 	t_envl		*ret;
 	t_envl		*new;
@@ -97,21 +75,23 @@ static t_envl	*envarr_to_envl(char **env)
 		return (ret);
 	while (*env != NULL)
 	{
-		if (!(new = (t_envl *)malloc(sizeof(*new))))
-			return (NULL);
-		ptr = ft_strchr(*env, '=');
-		new->name = ft_strsub(*env, 0, ptr - *env);
-		new->value = ft_strsub(*env, ptr - *env + 1, ft_strlen(ptr));
-		new->exp = 1;
-		new->read_only = 0;
-		new->next = NULL;
-		if (ft_strcmp(new->name, "SHLVL") == 0)
+		if ((ptr = ft_strchr(*env, '=')))
 		{
-			ptr = ft_itoa(ft_atoi(new->value) + 1);
-			free(new->value);
-			new->value = ptr;
+			if (!(new = (t_envl *)malloc(sizeof(*new))))
+				return (NULL);
+			new->name = ft_strsub(*env, 0, ptr - *env);
+			new->value = ft_strsub(*env, ptr - *env + 1, ft_strlen(ptr));
+			new->exp = 1;
+			new->read_only = 0;
+			new->next = NULL;
+			if (ft_strcmp(new->name, "SHLVL") == 0)
+			{
+				ptr = ft_itoa(ft_atoi(new->value) + 1);
+				free(new->value);
+				new->value = ptr;
+			}
+			ret = addlast_envl(ret, new);
 		}
-		ret = addlast_envl(ret, new);
 		env++;
 	}
 	return (ret);

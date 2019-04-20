@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "parser.h"
 
 static int	add_root(t_lexer *lex, t_lexer_token *new)

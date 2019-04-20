@@ -19,7 +19,7 @@ void	mark_job_as_running(t_job *job)
 	proc = job->head_proc;
 	while (proc)
 	{
-		proc->stop = 0;
+		proc->stopped = 0;
 		proc = proc->next;
 	}
 }

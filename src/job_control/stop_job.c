@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:44:04 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/12 13:26:15 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:49:55 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ static t_proc	*mark_proc_status_next(t_proc *proc, pid_t pid,
 		{
 			proc->status = status;
 			if (WIFSTOPPED(status))
+				proc->stopped = 1;
+			else if (WIFEXITED(status))
 			{
-				proc->stop = 1;
-				proc->finish = 0;
+				ft_putendl("exited mannn");
+				g_shell.exit_code = WEXITSTATUS(status);
 			}
 			else
 			{
-				proc->finish = 1;
+				proc->completed = 1;
 				if (WIFSIGNALED(status))
 				{
 					ft_putnbr_fd((int)pid, 2);
@@ -45,10 +47,8 @@ static t_proc	*mark_proc_status_next(t_proc *proc, pid_t pid,
 	return (proc);
 }
 
-static int		print_proc_child_err(pid_t pid, int status)
+static int		print_proc_child_err(pid_t pid)
 {
-	if (WIFSTOPPED(status))
-		printf("stopeed\n");
 	ft_putstr_fd("No child process", 2);
 	ft_putnbr_fd((int)pid, 2);
 	write(2, ".\n", 2);
@@ -66,20 +66,19 @@ int				mark_proc_status(pid_t pid, int status)
 		job = g_shell.head_job;
 		while (job)
 		{
-			printf("ic into status\n");
 			proc = job->head_proc;
 			proc = mark_proc_status_next(proc, pid, &ret, status);
 			if (ret)
 				return (0);
 			job = job->next;
 		}
-		return (print_proc_child_err(pid, status));
+		return (print_proc_child_err(pid));
 	}
 	else if (pid == 0)
 		return (-1);
 	else
 	{
-		ft_putstr_fd("end job\n", 2);
+		ft_putstr_fd("end job\n", 2); //TODO ERROR ????
 		return (-1);
 	}
 }
@@ -91,8 +90,7 @@ void			wait_for_job(t_job *job)
 
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 	while (!mark_proc_status(pid, status) &&
-				!job_is_stop(job) &&
-				!job_is_finish(job))
+			!job_is_stopped(job) && !job_is_completed(job))
 		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 }
 
@@ -101,7 +99,7 @@ void			update_status(void)
 	int		status;
 	pid_t	pid;
 
-	pid = waitpid(WAIT_ANY, &status, WUNTRACED|WNOHANG);
+	pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
 	while (!mark_proc_status(pid, status))
-		pid = waitpid(WAIT_ANY, &status, WUNTRACED|WNOHANG);
+		pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
 }

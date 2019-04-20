@@ -148,7 +148,7 @@ void					run_shell(void)
 			lexer_destroy(&lex);
 			continue ;
 		}
-		execution(&lex);
+		execute(&lex);
 		lexer_destroy(&lex);
 	}
 }
