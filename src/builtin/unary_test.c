@@ -6,26 +6,14 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:44:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 17:44:54 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/20 11:14:59 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-int			unary_test(char *cmd, char *operator, char *operand)
+int	unary_test_end(char *operator, struct stat sb)
 {
-	struct stat	sb;
-
-	if (operator[1] == 'z')
-		return (operand[0] == '\0');
-	if (operator[1] == 'n')
-		return (operand[0] != '\0');
-	if (operator[1] == 'L')
-		return (lstat(operand, &sb) != 0 || (sb.st_mode & S_IFMT) != S_IFLNK);
-	if (stat(operand, &sb) != 0)
-		return (0);
-	if (operator[1] == 'e')
-		return (0);
 	if (operator[1] == 'b')
 		return ((sb.st_mode & S_IFMT) == S_IFBLK);
 	if (operator[1] == 'c')
@@ -50,5 +38,25 @@ int			unary_test(char *cmd, char *operator, char *operand)
 		return (sb.st_mode & S_ISUID);
 	if (operator[1] == 'g')
 		return (sb.st_mode & S_ISGID);
+	return (-1);
+}
+
+int	unary_test(char *cmd, char *operator, char *operand)
+{
+	struct stat	sb;
+	int			ret;
+
+	if (operator[1] == 'z')
+		return (operand[0] == '\0');
+	if (operator[1] == 'n')
+		return (operand[0] != '\0');
+	if (operator[1] == 'L')
+		return (lstat(operand, &sb) != 0 || (sb.st_mode & S_IFMT) != S_IFLNK);
+	if (stat(operand, &sb) != 0)
+		return (0);
+	if (operator[1] == 'e')
+		return (0);
+	if ((ret = unary_test_end(operator, sb)) != -1)
+		return (ret);
 	return (unexpected(cmd, operator, "unary operator"));
 }
