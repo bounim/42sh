@@ -14,10 +14,12 @@
 
 int		built_exit(char **arg, t_envl *envl)
 {
-	file_from_history(g_shell.hist.history);
 	(void)envl;
-	//free_all
-	if (arg[1])
-		exit(ft_atoi(arg[1]));
+	file_from_history(g_shell.hist.history);
+	cooked_terminal();
+	clean_shell();
+	if (arg)
+		if (arg[1])
+			exit(ft_atoi(arg[1]));
 	exit(0);
 }

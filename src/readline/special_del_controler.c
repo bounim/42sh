@@ -15,10 +15,7 @@
 void	eot_fn(void)
 {
 	if (g_shell.edit.char_list.tail->is_prompt == 1)
-	{
-		cooked_terminal();
-		free_controler(FREE_ALL_AND_EXIT);
-	}
+		built_exit(NULL, NULL);
 	supr_charac();
 }
 

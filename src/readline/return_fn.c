@@ -14,6 +14,8 @@
 
 static uint8_t	*check_buff_end_for_b(uint8_t *buff, size_t buff_size)
 {
+	if (buff_size <= 0)
+		return (buff);
 	if (buff[buff_size - 1] == '\\')
 		buff[buff_size - 1] = '\0';
 	return (buff);
@@ -51,7 +53,7 @@ static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
 
 static void		return_end(uint8_t *buff, size_t buff_size)
 {
-	free_controler(FREE_ALL_EDIT);
+	rl_free_controler(FREE_ALL_EDIT);
 	cooked_terminal();
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;

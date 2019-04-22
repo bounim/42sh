@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 19:51:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:28:23 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct		s_alias
 	struct s_alias	*next;
 };
 
-enum 		e_fc_opts
+enum		e_fc_opts
 {
 	E = 0,
 	L = 1,
@@ -50,7 +50,8 @@ enum 		e_fc_opts
 	S = 4
 };
 
-enum 	e_range_code{
+enum		e_range_code
+{
 	OUT_OF_RANGE = 0,
 	IN_RANGE,
 	NUMBER,
@@ -67,7 +68,8 @@ int			cd_first_arg(char **arg, int *opts);
 int			check_builtin(char *cmd);
 int			built_test(char **av, t_envl *envl);
 int			unary_test(char *cmd, char *operator, char *operand);
-int			binary_test(char *cmd, char *operand1, char *operator, char *operand2);
+int			binary_test(char *cmd, char *operand1, char *operator,\
+		char *operand2);
 int			unexpected(char *cmd, char *arg, char *reason);
 int			built_echo(char **arg, t_envl *envl);
 int			built_env(char **arg, t_envl *envl);

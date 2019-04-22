@@ -6,16 +6,16 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:47:19 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/10 15:44:01 by kberisha         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:05:19 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef JOB_CONTROL_H
 # define JOB_CONTROL_H
 
-#include "twenty_one_sh.h"
-#include "lexer.h"
-#include "execution.h"
+# include "twenty_one_sh.h"
+# include "lexer.h"
+# include "execution.h"
 
 struct			s_proc
 {

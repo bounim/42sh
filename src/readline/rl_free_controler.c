@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_controler.c                                   :+:      :+:    :+:   */
+/*   rl_free_controler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 17:16:17 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/04 14:54:36 by aguillot         ###   ########.fr       */
+/*   Created: 2019/04/22 14:24:15 by aguillot          #+#    #+#             */
+/*   Updated: 2019/04/22 14:24:16 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	free_all_edit(void)
 	free_last_command_list(g_shell.edit.last_command);
 }
 
-void	free_controler(int code)
+void	rl_free_controler(int code)
 {
 	if (code == FREE_ALL_AND_EXIT)
 		free_all_and_exit();

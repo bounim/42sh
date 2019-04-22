@@ -94,7 +94,7 @@ SRC := \
 	readline/copy_controler.c \
 	readline/copy_conditions.c \
 	readline/return_fn.c \
-	readline/free_controler.c \
+	readline/rl_free_controler.c \
 	readline/special_del_controler.c \
 	readline/handle_ctrl_c.c \
 	readline/drag_char.c \
