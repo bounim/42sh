@@ -21,7 +21,10 @@ void			raw_terminal(void)
 	if (g_shell.term_set == TERM_SET)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(g_shell.raw_tio)))
+		{
+			perror("");
 			fatal_exit(SH_EINVAL);
+		}
 	}
 }
 
