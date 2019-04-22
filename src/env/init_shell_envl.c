@@ -42,6 +42,8 @@ static void		set_env_var(t_envl **envl, const char *name, char *value,
 		new->next = NULL;
 		*envl = addlast_envl(*envl, new);
 	}
+	else
+		free(value);
 }
 
 static void		set_envl_default_value(t_envl **envl)
