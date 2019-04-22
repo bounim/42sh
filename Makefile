@@ -118,15 +118,10 @@ SRC := \
 	readline/vi_repeat_search_fn.c \
 	readline/vi_undo.c \
 	readline/vi_delete_motion_c.c \
-	job_control/manage_job.c \
-	job_control/put_in_xground.c \
 	job_control/launch_job.c \
 	job_control/launch_proc.c \
-	job_control/stop_job.c \
-	job_control/continue_job.c \
 	job_control/init_job.c \
 	job_control/create_job.c \
-	job_control/job_info.c \
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
