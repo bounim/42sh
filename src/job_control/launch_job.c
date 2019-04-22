@@ -30,9 +30,8 @@ void			launch_job(t_job *job)
 				cur->tunnel[0] = -1;
 				cur->tunnel[1] = -1;
 				free_job(job);
-				return ;
+				return ; // TODO
 			}
-				return ;//TODO set pipe error and exit clean --> close all previous pipes
 			cur = cur->next;
 		}
 		cur = job->head_proc;
