@@ -61,7 +61,7 @@ int		assign_expansions(t_lexer_token *cmd)
 
 int		isvarchar(uint8_t ch)
 {
-	return (ch == '_' || ch == '$' || ch == '?'
+	return (ch == '_'
 			|| (ch >= '0' && ch <= '9')
 			|| (ch >= 'A' && ch <= 'Z')
 			|| (ch >= 'a' && ch <= 'z'));
