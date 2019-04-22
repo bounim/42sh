@@ -68,4 +68,6 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.raw_tio.c_cc[VMIN] = 1;
 	g_shell.raw_tio.c_cc[VTIME] = 0;
 	g_shell.debug_mode = 0;
+	if (hashmap_init(&g_shell.hmap, HASHMAP_SIZE, hashmap_hash_crc32) < 0)
+		fatal_exit(SH_EINVAL);
 }
