@@ -51,7 +51,7 @@ static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
 	free(tmp);
 }
 
-static void		return_end(uint8_t *buff, size_t buff_size)
+static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 {
 	rl_free_controler(FREE_ALL_EDIT);
 	cooked_terminal();
@@ -60,13 +60,16 @@ static void		return_end(uint8_t *buff, size_t buff_size)
 	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
 					g_shell.hist.history, NULL, NULL)))
 	{
-		if (g_shell.edit.prompt_id == QUOTE_PROMPT)
-			append_line_to_hist(MULTI, buff, buff_size);
-		else if (g_shell.edit.prompt_id == HEREDOC_PROMPT
-				|| g_shell.edit.prompt_id == BACKSLASH_PROMPT)
-			append_line_to_hist(1, buff, buff_size);
-		else
-			create_new_hist_line(buff, buff_size);
+		if (g_shell.edit.prompt_id != HEREDOC_PROMPT
+			&& add_to_hist == 1)
+		{
+			if (g_shell.edit.prompt_id == QUOTE_PROMPT)
+				append_line_to_hist(MULTI, buff, buff_size);
+			else if (g_shell.edit.prompt_id == BACKSLASH_PROMPT)
+				append_line_to_hist(1, buff, buff_size);
+			else
+				create_new_hist_line(buff, buff_size);
+		}
 		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
 		buff_size = ft_u8_strlen(buff);
 	}
@@ -95,5 +98,9 @@ void			return_fn(void)
 		i += head->len;
 		head = head->next;
 	}
-	return_end(buff, buff_size);
+	if (g_shell.edit.char_list.tail->is_prompt == 0)
+		i = 1;
+	else
+		i = 0;
+	return_end(buff, buff_size, i);
 }
