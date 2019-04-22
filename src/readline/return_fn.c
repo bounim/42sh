@@ -53,7 +53,7 @@ static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
 
 static void		return_end(uint8_t *buff, size_t buff_size)
 {
-	free_controler(FREE_ALL_EDIT);
+	rl_free_controler(FREE_ALL_EDIT);
 	cooked_terminal();
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;

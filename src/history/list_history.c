@@ -6,28 +6,11 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 13:43:34 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/26 15:13:55 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:10:05 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
-int 		get_hist_full_size(t_history *tail)
-{
-	int ret;
-
-	ret = 0;
-	if (!tail)
-		return (0);
-	while (tail->next)
-		tail = tail->next;
-	while (tail)
-	{
-		ret++;
-		tail = tail->bfr;
-	}
-	return (ret);
-}
 
 t_history	*find_last_hist_line(void)
 {

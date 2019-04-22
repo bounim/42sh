@@ -12,6 +12,23 @@
 
 #include "twenty_one_sh.h"
 
+int			get_hist_full_size(t_history *tail)
+{
+	int ret;
+
+	ret = 0;
+	if (!tail)
+		return (0);
+	while (tail->next)
+		tail = tail->next;
+	while (tail)
+	{
+		ret++;
+		tail = tail->bfr;
+	}
+	return (ret);
+}
+
 void		resize_history(t_history *hist)
 {
 	t_history	*tmp;

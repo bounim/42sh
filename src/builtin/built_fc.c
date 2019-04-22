@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 13:45:08 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 15:56:17 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:48:58 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 //option -e est prio sur toutes les options, ensuite c'est s;
 
-void	rebuild_charac_list(uint8_t *buff)
+void		rebuild_charac_list(uint8_t *buff)
 {
 	int i;
 	int len;
 
 	i = 0;
 	len = 0;
-	free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+	rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
 	init_char_list();
 	init_prompt(BASIC_PROMPT);
 	while (buff[i])
@@ -32,7 +32,7 @@ void	rebuild_charac_list(uint8_t *buff)
 	}
 }
 
-void	fc_s(int fc_range[2])
+static void	fc_s(int fc_range[2])
 {
 	int 		histsize;
 	t_history	*curr;
@@ -46,7 +46,8 @@ void	fc_s(int fc_range[2])
 	//rebuild_charac_list(curr->buf);
 }
 
-int		fc_controler(int fc_range[2], int fc_opts[5], char **av, t_envl *envl)
+int			fc_controler(int fc_range[2], int fc_opts[5], char **av,\
+		t_envl *envl)
 {
 	(void)av;
 	(void)envl;

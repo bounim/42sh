@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:48:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/11 15:47:49 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:42:42 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	window_modif(void)
 {
-	int 			base_y;
+	int	base_y;
 
 	if (g_shell.edit.reading == FALSE)
 		return ;
@@ -63,13 +63,13 @@ void		signal_handler(int signo)
 		cont_received();
 	else if (signo > 0 && signo < 33)
 	{
-		free_controler(FREE_ALL_AND_EXIT);
+		rl_free_controler(FREE_ALL_AND_EXIT);
 		cooked_terminal();
 		exit(1);
 	}
 }
 
-void	init_signals(void)
+void		init_signals(void)
 {
 	int i;
 

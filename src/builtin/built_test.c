@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:31:02 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 17:31:03 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:41:38 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,29 @@ int			get_ac(char **av)
 		ret++;
 	return (ret);
 }
+
+/*int			built_test_end(int *argc, char **av, int r)
+{
+	if (av[1][0] == '!' && av[1][1] == '\0')
+	{
+		r ^= 1;
+		argc--;
+		av++;
+		continue ;
+	}
+	if (argc == 3)
+	{
+		if (av[1][0] == '-' || av[1][2] == '\0')
+			return (unary_test(cmd, av[1], av[2]) ^ r);
+		return (unexpected(cmd, av[1], "unary operator"));
+	}
+	if (argc == 4)
+	{
+		return (binary_test(cmd, av[1], av[2], av[3]) ^ r);
+	}
+	printf("21sh: %s: too many arguments\n", cmd);
+	return (2);
+}*/
 
 int			built_test(char **av, t_envl *envl)
 {

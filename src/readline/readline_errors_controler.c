@@ -32,6 +32,6 @@ void		readline_errors_controler(int errnum)
 		ft_putstr("Malloc error\n");
 	else if (errnum == EXIT)
 		ft_putstr("Exit(0)\n");
-	free_controler(FREE_ALL_AND_EXIT);
+	rl_free_controler(FREE_ALL_AND_EXIT);
 	exit(1);
 }

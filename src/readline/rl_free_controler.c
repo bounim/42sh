@@ -86,7 +86,7 @@ void	free_all_edit(void)
 	free_last_command_list(g_shell.edit.last_command);
 }
 
-void	free_controler(int code)
+void	rl_free_controler(int code)
 {
 	if (code == FREE_ALL_AND_EXIT)
 		free_all_and_exit();
