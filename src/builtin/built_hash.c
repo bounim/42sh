@@ -74,7 +74,7 @@ int				built_hash(char **argv, t_envl *envl)
 	{
 		hashmap_clean(&g_shell.hmap);
 		if (hashmap_init(&g_shell.hmap, HASHMAP_SIZE, hashmap_hash_crc32) < 0)
-			fatal_exit(SH_EINVAL);
+			fatal_exit(SH_ENOMEM);
 		return (1);
 	}
 	r = 0;

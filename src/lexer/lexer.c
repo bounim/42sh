@@ -60,10 +60,7 @@ static int			lexer_read(t_lexer *lex)
 			f++;
 		}
 		if (f == sizeof(g_lexer_func) / sizeof(g_lexer_func[0]))
-		{
-			lex->impl_error = 1;
 			return (-1);
-		}
 		lex->i++;
 	}
 	return (0);

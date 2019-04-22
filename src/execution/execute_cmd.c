@@ -145,22 +145,32 @@ int		execute_and_or(t_lexer_token *and_or)
 	return (execute_pipe(cur));
 }
 
-int		execute_subshell(t_lexer_token *cmd)
-{
-	pid_t	pid;
-	int		r;
-
-	if ((pid = fork()) < 0)
-		return (-1);
-	if (pid > 0)
-	{
-		// TODO job control (pid)
-		return (1); //asynchronous list
-	}
-	r = execute_and_or(cmd);
-	// TODO clean
-	exit(r < 0 ? 128 : g_shell.exit_code);
-}
+/*
+** int		execute_subshell(t_lexer_token *cmd)
+** {
+** 	pid_t	pid;
+** 	int		r;
+**
+** 	if ((pid = fork()) < 0)
+** 		return (-1);
+** 	if (pid > 0)
+** 	{
+** 		// TODO job control (pid)
+** 		return (1); //asynchronous list
+** 	}
+** 	r = execute_and_or(cmd);
+** 	// TODO clean
+** 	exit(r < 0 ? 128 : g_shell.exit_code);
+** }
+**
+**
+** 		if (cur->buffer[0] == '&')
+** 		{
+** 			if (execute_subshell(cur->left) > 0)
+** 				g_shell.exit_code = 0;
+** 		}
+** 		else if (execute_and_or(cur->left) < 0)
+*/
 
 int		execute_list(t_lexer_token *list)
 {
@@ -173,12 +183,7 @@ int		execute_list(t_lexer_token *list)
 	cur = list;
 	while (cur && cur->ptype == PARSER_SEPARATOR)
 	{
-		if (cur->buffer[0] == '&')
-		{
-			if (execute_subshell(cur->left) > 0)
-				g_shell.exit_code = 0;
-		}
-		else if (execute_and_or(cur->left) < 0)
+		if (execute_and_or(cur->left) < 0)
 			return (-1);
 		cur = cur->right;
 	}

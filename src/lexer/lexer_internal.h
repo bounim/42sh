@@ -107,7 +107,6 @@ struct							s_lexer
 	size_t						line_y;
 	size_t						i;
 	int							input_end;
-	int							impl_error;
 	int							backslash_newline;
 	int							quoted;
 	int							next_quoted;
