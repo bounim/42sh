@@ -21,7 +21,12 @@ t_hashmap_key	*hashmap_get(t_hashmap *hashmap, uint8_t *key, size_t keysize)
 	if (!current->key)
 		return (NULL);
 	if (!current->next)
-		return (current);
+	{
+		if (current->keysize == keysize
+				&& ft_memcmp(current->key, key, keysize) == 0)
+			return (current);
+		return (NULL);
+	}
 	while (current)
 	{
 		if (current->keysize == keysize
