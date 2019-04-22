@@ -85,7 +85,7 @@ static int				copy_heredoc_line(t_lexer_token *heredoc, size_t *i)
 			*i = j + 1;
 			return (0);
 		}
-		if (NULL == (buf = malloc(j - *i + 1)))
+		if (NULL == (buf = malloc(heredoc->heredoc_size + j - *i + 1)))
 			return (-1);
 		ft_memmove(buf, heredoc->heredoc_buffer, heredoc->heredoc_size);
 		ft_memmove(buf + heredoc->heredoc_size, g_shell.line + *i, j - *i);
