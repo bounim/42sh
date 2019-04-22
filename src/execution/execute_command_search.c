@@ -59,7 +59,6 @@ char	*find_command(char *cmd, t_envl *envl)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-		ft_putendl("SLAASH");
 		ft_memmove(ret, cmd, size);
 		ret[size] = '\0';
 		if (access(ret, F_OK) == 0)
@@ -76,7 +75,7 @@ char	*command_search(t_lexer_token *cmd, t_envl *envl)
 	if (cmd->ptype != PARSER_COMMAND || !cmd->argv[0])
 	{
 		if (!cmd->argv[0])
-			ft_putendl("1"); //DEBUG
+			fatal_exit(7);
 		return (NULL);
 	}
 	return (find_command(cmd->argv[0], envl));

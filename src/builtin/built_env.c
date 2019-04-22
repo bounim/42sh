@@ -16,8 +16,8 @@ static int		env_exit(char *str)
 {
 	ft_putstr_fd("env: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putendl_fd(": no such file or directory", 2);
-	exit(EXIT_FAILURE);
+	ft_putendl_fd(": No such file or directory", 2);
+	exit(125);
 	return (-1);
 }
 
@@ -54,36 +54,28 @@ static int		execute_utility(char **arg, char **env)
 	char	*path;
 
 	envl = NULL;
-	if (!arg)
-		return (-1); //TODO error
 	set_signal_dfl();
 	pid = fork();
 	if (pid < 0)
 		return (-1); //TODO error
 	else if (pid > 0)
 	{
-		ft_putendl("in parent process");
 		waitpid(pid, &status, WUNTRACED | WCONTINUED);
 		g_shell.exit_code = get_return_status(status);
-		return (0);
+		return (g_shell.exit_code);
 	}
-	ft_putendl("in child process");
-	if (arg[0] && ft_strchr(arg[0], '/'))
-		path = ft_strdup(arg[0]);
-	else if (arg[0])
-	{
+	if (!arg[0])
+		return (125);
+	else
 		if ((env && !(envl = envarr_to_envl(env)))
 			|| !(path = find_command(arg[0], envl)))
-			return (env_exit(arg[0])); //TODO error
-	}
-	else if (!arg[0])
-		return (-1); //TODO error
+			return (env_exit(arg[0]));
 	execve(path, arg, env);
 	fatal_exit(7);
-	return (-1);
+	return (125);
 }
 
-static int		exec_env(char **arg, int start, size_t i, t_envl *head)
+static int		exec_env(char **arg, int start, t_envl *head)
 {
 	char	**ret;
 	char	**env;
@@ -91,10 +83,8 @@ static int		exec_env(char **arg, int start, size_t i, t_envl *head)
 
 	r = 0;
 	env = NULL;
-	printf("start = %d && i = %zu\n", start, i);
 	if (start == -1)
 	{
-		ft_putendl("built env");
 		print_envl(head, 0);
 		free_envl(head);
 	}
@@ -102,6 +92,8 @@ static int		exec_env(char **arg, int start, size_t i, t_envl *head)
 	{
 		ret = from_arg_to_cmd(arg, start);
 		env = envl_to_envarr(head);
+		if (!env)
+			return (125);
 		r = execute_utility(ret, env);
 		ft_free_arr(ret);
 		free_envl(head);
@@ -148,7 +140,6 @@ int				built_env(char **arg, t_envl *envl)
 			options = 0;
 		else if (ft_strchr(arg[i], '=') && is_valid_name(arg[i]))
 		{
-			ft_putendl("pushing env");
 			j = 0;
 			while (arg[i][j] != '=')
 				j++;
@@ -156,19 +147,13 @@ int				built_env(char **arg, t_envl *envl)
 				return (-1);
 			ft_memmove(name, arg[i], j);
 			name[j] = '\0';
-			/*if (!tmp)
-			{
-				if (!(tmp = malloc(sizeof(*tmp))))
-					return (-1);
-				ft_memset(tmp, 0, sizeof(*tmp));
-			}*/
 			push_env(&tmp, name, ft_strchr(arg[i], '=') + 1, 1);
 			options = 0;
 		}
-		else if (!options || arg[i][0] != '-')
+		else if ((!options || arg[i][0] != '-') && start == -1)
 			start = i;
 		i++;
 	}
-	exec_env(arg, start, i, tmp);
+	exec_env(arg, start, tmp);
 	return (0);
 }
