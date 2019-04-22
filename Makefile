@@ -56,7 +56,6 @@ SRC := \
 	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
-	builtin/check_builtin.c \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
@@ -65,12 +64,10 @@ SRC := \
 	builtin/built_alias_extra.c \
 	builtin/built_jobs.c \
 	builtin/built_jobs_extra.c \
-	builtin/built_fg.c \
 	builtin/built_fc.c \
 	builtin/fc_opts_controler.c \
 	builtin/fc_range_controler.c \
 	builtin/fc_print.c \
-	builtin/built_bg.c \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
