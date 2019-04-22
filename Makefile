@@ -16,6 +16,7 @@ SRC := \
 	execution/execution_str.c \
 	execution/execute_cmd.c \
 	execution/execute_command_search.c \
+	execution/execution_errors.c \
 	execution/redir.c \
 	history/controler_history.c \
 	history/down_history.c \

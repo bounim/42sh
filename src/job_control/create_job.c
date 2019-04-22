@@ -23,7 +23,6 @@ t_job	*create_job(t_lexer_token *cmd)
 	if (!(new = init_job(new)))
 		return (NULL);
 	new->cmd = lst_to_str(cmd);
-	printf("COMMAND = %s\n", new->cmd); //DEBUG
 	if (!g_shell.head_job)
 	{
 		g_shell.head_job = new;
@@ -49,13 +48,13 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	new->cmd = cmd; //TODO
 	new->job = *job;
 	if (!cmd->assign_head || !cmd->arg_head)
-		new->envl = g_shell.envl;	//affects current execution env
+		new->envl = g_shell.envl;
 	else
-		new->envl = dup_envl(g_shell.envl); 	//only affects cpy of env
+		new->envl = dup_envl(g_shell.envl);
 	if (!(new->is_builtin = check_builtin(cmd->argv[0])))
 	{
-		if (!(new->path = command_search(cmd, new->envl)))
-			ft_putendl("PATH ERROR");
+		if (!(new->path = command_search(cmd, new->envl)) || access(new->path, X_OK))
+			exec_error(cmd->argv[0], new->path);
 	}
 	if ((*job)->foot_proc)
 	{
