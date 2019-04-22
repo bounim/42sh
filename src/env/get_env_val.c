@@ -34,12 +34,37 @@ static char	*savepid(void)
 	return (g_shell.pid_buffer);
 }
 
+static char	*save_exit(void)
+{
+	uint32_t	code;
+	uint32_t	code_copy;
+	size_t		i;
+
+	i = 1;
+	code = (uint32_t)g_shell.exit_code;
+	code_copy = code;
+	while (code_copy > 9)
+	{
+		i++;
+		code_copy /= 10;
+	}
+	g_shell.exit_buffer[i] = '\0';
+	while (i--)
+	{
+		g_shell.exit_buffer[i] = '0' + code % 10;
+		code /= 10;
+	}
+	return (g_shell.exit_buffer);
+}
+
 char		*get_env_val(t_envl *envl, char *name)
 {
 	if (!envl || !name)
 		return (NULL);
 	if (name[0] == '$' && name[1] == '\0')
 		return (savepid());
+	if (name[0] == '?' && name[1] == '\0')
+		return (save_exit());
 	while (envl != NULL)
 	{
 		if (envl->name != NULL && ft_strcmp(envl->name, name) == 0)
