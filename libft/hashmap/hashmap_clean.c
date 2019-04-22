@@ -17,6 +17,8 @@ void	hashmap_clean(t_hashmap *hashmap)
 {
 	size_t	i;
 
+	if (!hashmap->array)
+		return ;
 	i = 0;
 	while (i < hashmap->arraysize)
 	{

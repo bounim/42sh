@@ -79,6 +79,7 @@ SRC := \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
+	builtin/built_hash.c \
 	readline/readline.c \
 	readline/get_term_pos.c \
 	readline/prompt_controler.c \

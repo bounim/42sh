@@ -46,6 +46,7 @@ struct						s_shell
 	char					pid_buffer[20];
 	int						exit_code;
 	char					exit_buffer[10];
+	t_hashmap				hmap;
 };
 
 /*

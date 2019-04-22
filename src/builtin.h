@@ -104,4 +104,6 @@ int			start_builtin(char **arg, t_envl *envl);
 int			built_debug(char **arg, t_envl *envl);
 int			built_exit(char **arg, t_envl *envl);
 char		*find_path(char *cmd, t_envl *envl);
+int			built_hash(char **arg, t_envl *envl);
+
 #endif

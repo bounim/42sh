@@ -33,4 +33,6 @@
 # define TERM_SET			1
 # define MOTION_KEYMAP_SIZE	20
 
+# define HASHMAP_SIZE		32
+
 #endif

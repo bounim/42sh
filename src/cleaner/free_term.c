@@ -30,4 +30,5 @@ void			clean_envl(t_envl *list)
 void			clean_shell(void)
 {
 	clean_envl(g_shell.envl);
+	hashmap_clean(&g_shell.hmap);
 }
