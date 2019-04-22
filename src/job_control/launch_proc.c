@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:58:21 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/22 17:27:05 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/09 10:14:34 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ void		launch_proc(t_proc *proc)
 		}
 		if (command_redir(proc->cmd) < 0 || execute_assign_list(proc->cmd, proc) < 0)
 		{
-			fatal_exit(g_shell.exit_code); // TODO leaks
+			//exit_cmd(125); // TODO leaks + return quoi??
 		}
 		if (proc->is_builtin)
 		{
-			start_builtin(proc->arg, proc->envl);
+			g_shell.exit_code = start_builtin(proc->arg, proc->envl);
 			exit(0); // TODO leaks
 		}
 		else
@@ -90,7 +90,7 @@ void		launch_proc(t_proc *proc)
 		if (execute_assign_list(proc->cmd, proc) < 0)
 			g_shell.exit_code = 125;
 		else
-			start_builtin(proc->arg, proc->envl);
+			g_shell.exit_code = start_builtin(proc->arg, proc->envl);
 		command_redir_restore(proc->cmd);
 	}
 }

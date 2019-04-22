@@ -29,7 +29,7 @@ void			launch_job(t_job *job)
 			{
 				cur->tunnel[0] = -1;
 				cur->tunnel[1] = -1;
-				free_job(job);
+				//free_job(job);
 				return ; // TODO
 			}
 			cur = cur->next;

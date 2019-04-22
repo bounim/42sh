@@ -43,7 +43,7 @@ static void	stop_received(void)
 	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
 	signal(SIGTSTP, SIG_DFL);
 	cooked_terminal();
-	mark_proc_status(g_shell.stopped_proc, status);
+	//mark_proc_status(g_shell.stopped_proc, status);
 }
 
 static void	cont_received(void)

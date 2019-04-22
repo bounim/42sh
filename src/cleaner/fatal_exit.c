@@ -14,6 +14,9 @@
 
 void		fatal_exit(int code)
 {
+	if (g_shell.is_exiting)
+		return ;
+	g_shell.is_exiting = 1;
 	clean_shell();
 	if (code == SH_ENOMEM)
 		ft_putendl_fd("Cannot allocate memory.", STDERR_FILENO);

@@ -56,7 +56,6 @@ SRC := \
 	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
-	builtin/check_builtin.c \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
@@ -65,12 +64,10 @@ SRC := \
 	builtin/built_alias_extra.c \
 	builtin/built_jobs.c \
 	builtin/built_jobs_extra.c \
-	builtin/built_fg.c \
 	builtin/built_fc.c \
 	builtin/fc_opts_controler.c \
 	builtin/fc_range_controler.c \
 	builtin/fc_print.c \
-	builtin/built_bg.c \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
@@ -118,15 +115,10 @@ SRC := \
 	readline/vi_repeat_search_fn.c \
 	readline/vi_undo.c \
 	readline/vi_delete_motion_c.c \
-	job_control/manage_job.c \
-	job_control/put_in_xground.c \
 	job_control/launch_job.c \
 	job_control/launch_proc.c \
-	job_control/stop_job.c \
-	job_control/continue_job.c \
 	job_control/init_job.c \
 	job_control/create_job.c \
-	job_control/job_info.c \
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \

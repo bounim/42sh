@@ -63,7 +63,6 @@ void			update_status(void);
 void			format_job_info(t_job *job, const char *status);
 void			job_notif(void);
 void			mark_job_as_running(t_job *job);
-void			continue_job(t_job *job, int foreground);
 void			free_job(t_job *job);
 void			free_proc(t_proc *proc);
 t_job			*init_job(t_job *job);

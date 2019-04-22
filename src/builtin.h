@@ -59,6 +59,12 @@ enum		e_range_code
 	NO_ARG
 };
 
+typedef struct	s_builtin
+{
+	char		*name;
+	int			(*func)(char **, t_envl *);
+}				t_builtin;
+
 char		*replace_exclaim(char *line, t_history *hist,
 									char *bfr, char *next);
 char		*find_exclaim(char *word, t_history *hist);
