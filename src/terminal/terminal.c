@@ -22,7 +22,7 @@ void			raw_terminal(void)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(g_shell.raw_tio)))
 		{
-			perror("");
+			perror(""); //FIXMESENPAII
 			fatal_exit(SH_EINVAL);
 		}
 	}
