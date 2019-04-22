@@ -16,6 +16,7 @@ void			clean_shell(void)
 {
 	t_history *curr;
 
+	cooked_terminal();
 	curr = find_last_hist_line();
 	free_envl(g_shell.envl);
 	free_history(curr);
