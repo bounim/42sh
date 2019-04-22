@@ -15,7 +15,7 @@
 int	ft_strisdigit(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str[i])
 	{
