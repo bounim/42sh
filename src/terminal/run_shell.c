@@ -14,7 +14,6 @@
 #include "parser.h"
 #include "execution.h"
 
-// TODO set $* accordingly (0 or 1 if ^C)
 static void		lex_a_line(t_lexer *lex, enum e_prompt prompt, size_t *i)
 {
 	while (1)
@@ -35,6 +34,7 @@ static void		lex_a_line(t_lexer *lex, enum e_prompt prompt, size_t *i)
 			readline(prompt);
 			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
 			{
+				g_shell.exit_code = 1;
 				lexer_destroy(lex);
 				prompt = BASIC_PROMPT;
 			}
@@ -49,7 +49,6 @@ static enum e_prompt	determine_prompt(t_lexer *lex)
 		return (BASIC_PROMPT);
 	if (lex->quoted)
 		return (QUOTE_PROMPT);
-	//if (lex->last_parsed) // TODO op prompt
 	return (BACKSLASH_PROMPT);
 }
 
@@ -64,6 +63,7 @@ static int				copy_heredoc_line(t_lexer_token *heredoc, size_t *i)
 		*i = 0;
 		if (!g_shell.line || g_shell.edit.ret_ctrl_c)
 		{
+			g_shell.exit_code = 1;
 			free(g_shell.line);
 			g_shell.line = NULL;
 			return (-1);
@@ -122,7 +122,6 @@ void					run_shell(void)
 	t_lexer		lex;
 	size_t		i;
 
-	// FIXME useful?
 	if (signal(SIGINT, ft_signal) < 0)
 		fatal_exit(SH_EINVAL);
 	if (signal(SIGABRT, ft_signal) < 0)
@@ -152,48 +151,3 @@ void					run_shell(void)
 		lexer_destroy(&lex);
 	}
 }
-
-/*
-static void test_job(void)
-{
-	t_job	*new_job;
-	t_proc	*new_proc;
-
-	printf("je suis la \n");
-	new_job = NULL;
-	new_proc = NULL;
-	new_job = creat_job("ls -l | wc | pwd");
-	char *arg[3] = {"ls", "-l", NULL};
-	new_proc = creat_proc(arg, g_shell.envl, "/bin/ls");
-	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-	char *arg1[2] = {"wc", NULL};
-	new_proc = creat_proc(arg1, g_shell.envl, "/usr/bin/wc");
-	printf("is_builtin = %d\n", new_proc->is_builtin);
-	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-	char *arg2[4] = {"set", "..", "/", NULL};
-	new_proc = creat_proc(arg2, g_shell.envl, "set");
-	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-	g_shell.head_job = add_job(g_shell.head_job, new_job);
-	// NEW JOB HERE
-	new_job = NULL;
-	new_proc = NULL;
-	new_job = creat_job("ls -a | echo salut les gens");
-	char *brg[3] = {"set", "-R", NULL};
-	new_proc = creat_proc(brg, g_shell.envl, "set");
-	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-//	char *brg1[2] = {"wc", NULL};
-//	new_proc = creat_proc(brg1, g_shell.envl, "/usr/bin/wc");
-//	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-//	char *brg2[3] = {"echo", "salut les gens", NULL};
-//	new_proc = creat_proc(brg2, g_shell.envl, "/bin/echo");
-//	printf("is_builtin = %d\n", new_proc->is_builtin);
-//	new_job->head_proc = add_proc(new_job->head_proc, new_proc);
-
-	printf("1icika\n");
-//	g_shell.head_job = add_job(g_shell.head_job, new_job);
-
-	printf("1ici\n");
-	printf("ici\n");
-	launch_job(g_shell.head_job, 1);
-	printf("fin\n");
-}*/

@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include "libft.h"
 
-#include <stdio.h>
 void		ft_arrdel(char **arr)
 {
 	size_t	i;

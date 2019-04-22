@@ -59,10 +59,7 @@ int					append(t_lexer *lex)
 	uint8_t	*t;
 
 	if (!lex->foot || lex->foot->size == 0)
-	{
-		lex->impl_error = 1;
 		return (-1);
-	}
 	if (NULL == (t = malloc(lex->foot->size + 1 + 1)))
 		return (-1);
 	ft_memmove(t, lex->foot->buffer, lex->foot->size);

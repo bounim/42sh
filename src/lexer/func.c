@@ -17,10 +17,7 @@ int		unquoted_backslash_newline(t_lexer *lex)
 	if (!lex->quoted && lex->line[lex->i] == '\\')
 	{
 		if (lex->i == lex->line_size - 1)
-		{
-			lex->impl_error = 1;
 			return (-1);
-		}
 		if (lex->line[lex->i + 1] == '\n')
 		{
 			lex->backslash_newline = 1;
