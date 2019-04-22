@@ -47,10 +47,11 @@ static int		hash_list(void)
 static int		hash_set(char *cmd, t_envl *envl)
 {
 	size_t	cmdsize;
+	char	*r;
 
 	cmdsize = ft_strlen(cmd) + 1;
 	hashmap_unset(&g_shell.hmap, (uint8_t *)cmd, cmdsize);
-	if (find_command(cmd, envl) == NULL)
+	if (NULL == (r = find_command(cmd, envl)))
 	{
 		printer_str(&g_shell.err, "21sh: hash: ");
 		printer_str(&g_shell.err, cmd);
@@ -58,6 +59,7 @@ static int		hash_set(char *cmd, t_envl *envl)
 		printer_flush(&g_shell.err);
 		return (1);
 	}
+	free(r);
 	return (0);
 }
 
