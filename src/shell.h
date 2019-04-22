@@ -45,6 +45,7 @@ struct						s_shell
 	pid_t					stopped_proc;
 	char					pid_buffer[20];
 	int						exit_code;
+	char					exit_buffer[10];
 };
 
 /*

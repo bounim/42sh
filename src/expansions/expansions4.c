@@ -76,8 +76,11 @@ static size_t	dollar_expand(t_lexer_token *tok, size_t j, size_t k)
 		return (1);
 	}
 	x = 1;
-	while (k + x < j && isvarchar(tok->buffer[k + x]))
+	if (k + 1 < j && (tok->buffer[k + 1] == '$' || tok->buffer[k + 1] == '?'))
 		x++;
+	else
+		while (k + x < j && isvarchar(tok->buffer[k + x]))
+			x++;
 	if (NULL == (key = malloc(x)))
 		fatal_exit(SH_ENOMEM);
 	ft_memmove(key, tok->buffer + k + 1, x - 1);
