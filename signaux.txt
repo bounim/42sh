@@ -1,4 +1,3 @@
 SIGQUIT (3): ca quitte et ca pette le shell.
-
-
-Also histo ne pas mettre si c'est la meme commande qu'avant.
+SIGINT: 	lorsquon exec une commande genre ls -R / 1>/dev/null
+			faut faire un \n avant de reprint le prompt

@@ -75,6 +75,6 @@ int			get_term_pos(size_t *line, size_t *col)
 	r = atoi(buff);
 	if (r < 1)
 		return (-1);
-	*col = (size_t)r - 1;
+	*col = 0;//(size_t)r - 1;
 	return (0);
 }

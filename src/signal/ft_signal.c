@@ -28,7 +28,7 @@ void	ft_signal(int signo)
 		cooked_terminal();
 		ft_putstr("\n");
 	}
-	else if (signo == SIGSEGV)
+	if (signo == SIGSEGV)
 	{
 		cooked_terminal();
 		ft_putstr("\n");
