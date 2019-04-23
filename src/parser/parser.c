@@ -26,6 +26,20 @@ static void		parser_error(t_lexer_token *tok)
 	printer_flush(&g_shell.err);
 }
 
+static void		parser_debug(t_lexer_token *n)
+{
+	if (g_shell.debug_mode)
+	{
+		ft_putendl("args");
+		print_arg(n);
+		ft_putendl("redirs");
+		print_redir(n);
+		ft_putendl("assignement words");
+		print_assign(n);
+		ft_putendl("END.");
+	}
+}
+
 int				parser_create_tree(t_lexer *lex)
 {
 	t_lexer_token	*cur;
@@ -41,16 +55,7 @@ int				parser_create_tree(t_lexer *lex)
 			return (-1);
 		}
 		lex->last_parsed = n;
-		if (g_shell.debug_mode)
-		{
-			ft_putendl("args");
-			print_arg(n);
-			ft_putendl("redirs");
-			print_redir(n);
-			ft_putendl("assignement words");
-			print_assign(n);
-			ft_putendl("END.");
-		}
+		parser_debug(n);
 	}
 	if (g_shell.debug_mode)
 		structure(lex->root, 0);
