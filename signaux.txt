@@ -1,0 +1,4 @@
+SIGQUIT (3): ca quitte et ca pette le shell.
+
+
+Also histo ne pas mettre si c'est la meme commande qu'avant.
