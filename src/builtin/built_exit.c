@@ -18,6 +18,7 @@ int		built_exit(char **arg, t_envl *envl)
 	file_from_history(g_shell.hist.history);
 	cooked_terminal();
 	clean_shell();
+	ft_putstr("exit\n");
 	if (arg)
 		if (arg[1])
 			exit(ft_atoi(arg[1]));
