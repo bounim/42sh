@@ -63,7 +63,7 @@ void		signal_handler(int signo)
 		cont_received();
 	else if (signo > 0 && signo < 33)
 	{
-		rl_free_controler(FREE_ALL_AND_EXIT);
+		clean_shell();
 		cooked_terminal();
 		exit(1);
 	}
