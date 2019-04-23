@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:59:38 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/23 12:18:07 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:19:22 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void			rl_line_to_hist(int add_to_hist, uint8_t *buff, size_t b_size)
 			&& add_to_hist == 1 && is_same_hist(buff, b_size) != 1)
 	{
 		if (g_shell.edit.prompt_id == QUOTE_PROMPT)
-			append_line_to_hist(MULTI, buff, buff_size);
+			append_line_to_hist(MULTI, buff, b_size);
 		else if (g_shell.edit.prompt_id == BACKSLASH_PROMPT)
-			append_line_to_hist(1, buff, buff_size);
+			append_line_to_hist(1, buff, b_size);
 		else
-			create_new_hist_line(buff, buff_size);
+			create_new_hist_line(buff, b_size);
 	}
 }
