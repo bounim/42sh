@@ -43,15 +43,9 @@ int		execute_simple_command(t_lexer_token *cmd) //ajouter exit status ds launch 
 	new_job = NULL;
 	if (!cmd ||  cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
 		return (-1);
-	if (command_redir(cmd) < 0)
-		return (-1); //TODO redir error
 	new_proc = create_proc(&new_job, cmd);
 	execute_assign_list(cmd, new_proc);        //0 = & (background)
-	/*if (cmd->background == 1)
-		launch_job(new_job, 0);
-	else*/
 	launch_job(new_job); //1 == foreground
-	command_redir_restore(cmd);
 	return (0);
 }
 
@@ -62,9 +56,6 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 	t_proc			*new_proc;
 
 	new_job = NULL;
-//	ft_putendl("Executing pipe....");
-//	printer_bin(&g_shell.out, pipe_seq->buffer, pipe_seq->size);
-//	printer_endl(&g_shell.out);
 	if (!pipe_seq)
 		return (-1);
 	if (pipe_seq->ptype != PARSER_PIPE)
@@ -140,7 +131,6 @@ int		execute_and_or(t_lexer_token *and_or)
 			}
 		}
 		cur = cur->right;
-		//g_shell.exit_code = 0;
 	}
 	return (execute_pipe(cur));
 }
