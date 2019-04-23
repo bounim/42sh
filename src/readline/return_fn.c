@@ -12,6 +12,19 @@
 
 #include "twenty_one_sh.h"
 
+static int		is_line_empty(t_char *tail)
+{
+	while (tail && !tail->is_prompt)
+	{
+		if (tail->charac[0] != ' ' && tail->charac[0] != '\n'
+			&& tail->charac[0] != '\t'
+			&& ft_memcmp(tail->charac, NBSP, 2) != 0)
+			return (1);
+		tail = tail->prev;
+	}
+	return (0);
+}
+
 static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 {
 	rl_free_controler(FREE_ALL_EDIT);
@@ -50,7 +63,7 @@ void			return_fn(void)
 		i += head->len;
 		head = head->next;
 	}
-	if (g_shell.edit.char_list.tail->is_prompt == 0)
+	if (is_line_empty(g_shell.edit.char_list.tail))
 		i = 1;
 	else
 		i = 0;

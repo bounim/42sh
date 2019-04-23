@@ -53,6 +53,12 @@ void		readline(int prompt_id)
 	raw_terminal();
 	init_edit();
 	init_char_list();
+	if (g_shell.edit.cur_base_x != 0)
+	{
+		g_shell.edit.cur_base_x = 0;
+		g_shell.edit.cur_base_y++;
+		write(1, "\n", 1);
+	}
 	init_prompt(prompt_id);
 	prompt = prompt_to_buff(&g_shell.edit.char_list);
 	print_prompt(prompt, ft_ustrlen(prompt));
