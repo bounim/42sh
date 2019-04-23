@@ -39,12 +39,14 @@ static void		append_line_to_hist(int is_multi, uint8_t *buff,\
 
 static void		create_new_hist_line(uint8_t *buff, size_t buff_size)
 {
-	uint8_t	*tmp;
+	uint8_t		*tmp;
+	t_history	*curr;
 
+	if (!(curr = find_last_hist_line()))
+		curr = g_shell.hist.history;
 	tmp = (uint8_t*)ft_strdup((char*)buff);
 	tmp = check_buff_end_for_b(tmp, buff_size);
-	g_shell.hist.history = rl_add_hist(g_shell.hist.history,\
-		rl_new_hist(tmp));
+	g_shell.hist.history = rl_add_hist(curr, rl_new_hist(tmp));
 	g_shell.hist.history_size++;
 	resize_history(g_shell.hist.history);
 	g_shell.hist.history_save = -1;
