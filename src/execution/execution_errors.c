@@ -36,6 +36,10 @@ int				exec_error(char *cmd, char *path)
 	else if (access(path, X_OK) < 0)
 		write_error(path, "Permission denied");
 	else
+	{
+		free(cmd);
 		return (0);
+	}
+	free(cmd);
 	return (-1);
 }
