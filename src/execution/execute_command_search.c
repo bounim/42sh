@@ -54,8 +54,6 @@ static char	*find_command_in_env(char *cmd, size_t size, t_envl *envl)
 		}
 		start = end;
 	}
-	if (ret)
-		free(ret);
 	return (NULL);
 }
 
@@ -78,7 +76,6 @@ char		*find_command(char *cmd, t_envl *envl)
 		ret[size] = '\0';
 		if (access(ret, X_OK) == 0)
 			return (ret);
-		free(ret);
 		return (NULL);
 	}
 	else
