@@ -17,9 +17,11 @@ static int		is_line_empty(t_char *tail)
 	while (tail && !tail->is_prompt)
 	{
 		if (tail->charac[0] != ' ' && tail->charac[0] != '\n'
-			&& tail->charac[0] != '\t'
-			&& ft_memcmp(tail->charac, NBSP, 2) != 0)
+			&& tail->charac[0] != '\t')
 			return (1);
+		if (tail->len == 2)
+			if (ft_memcmp(tail->charac, NBSP, 2) != 0)
+				return (1);
 		tail = tail->prev;
 	}
 	return (0);
