@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 14:33:03 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:52:06 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ static void	write_operands(char arg)
 static int	find_operands(char *arg)
 {
 	int		i;
-	char	op[2];
 
-	op[0] = '\\';
 	i = 0;
 	while (arg[i])
 	{
+		printf("start\n");
 		if (arg[i] == '\\')
 		{
 			if (arg[i + 1] == 'c')
@@ -49,8 +48,10 @@ static int	find_operands(char *arg)
 				write_operands(arg[i + 1]);
 			i += 2;
 		}
-		write(1, arg + i, 1);
+		if (arg[i])
+			write(1, arg + i, 1);
 		i++;
+		printf("end\n");
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/22 16:17:11 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:17:29 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_history	*parse_histfile_content(uint8_t *cont)
 	{
 		new = rl_new_hist(split_content[i]);
 		ret = rl_add_hist(ret, new);
+		g_shell.hist.history_size++;
 		free(split_content[i]);
 		i++;
 	}

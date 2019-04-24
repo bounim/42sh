@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 17:36:57 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:37:50 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:15:19 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char		*replace_exclaim_nb(t_history *history, char *word)
 		nb += (int)(*word) - 48;
 		word++;
 	}
-	if (g_shell.hist.history_size < nb)
+	if (g_shell.hist.history_size < nb || nb == 0)
 		return (NULL);
 	while (history->bfr)
 		history = history->bfr;
@@ -61,7 +61,7 @@ static char		*replace_exclaim_neg(t_history *history, char *word)
 		nb += (int)(*word) - 48;
 		word++;
 	}
-	if (g_shell.hist.history_size < nb)
+	if (g_shell.hist.history_size < nb || nb == 0)
 		return (NULL);
 	while (--nb)
 		history = history->bfr;
