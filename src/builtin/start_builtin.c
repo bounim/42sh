@@ -25,7 +25,7 @@ int			check_builtin(char *cmd)
 			|| ft_strequ(cmd, "hash") || ft_strequ(cmd, "test")));
 }
 
-static int	init_ptr_func(int (*func[19])(char **arg, t_envl *envl))
+static int	init_ptr_func(int (*func[18])(char **arg, t_envl *envl))
 {
 	func[0] = built_cd;
 	func[1] = built_echo;
@@ -42,14 +42,13 @@ static int	init_ptr_func(int (*func[19])(char **arg, t_envl *envl))
 	func[12] = built_type;
 	func[13] = built_debug;
 	func[14] = built_exit;
-	func[15] = built_fc;
-	func[16] = built_test;
-	func[17] = built_hash;
-	func[18] = NULL;
+	func[15] = built_test;
+	func[16] = built_hash;
+	func[17] = NULL;
 	return (0);
 }
 
-static int	init_ptr_cmd(char *cmd[19])
+static int	init_ptr_cmd(char *cmd[18])
 {
 	cmd[0] = "cd";
 	cmd[1] = "echo";
@@ -66,17 +65,16 @@ static int	init_ptr_cmd(char *cmd[19])
 	cmd[12] = "type";
 	cmd[13] = "debug";
 	cmd[14] = "exit";
-	cmd[15] = "fc";
-	cmd[16] = "test";
-	cmd[17] = "hash";
-	cmd[18] = NULL;
+	cmd[15] = "test";
+	cmd[16] = "hash";
+	cmd[17] = NULL;
 	return (0);
 }
 
 int			start_builtin(char **arg, t_envl *envl)
 {
-	char	*cmd[19];
-	int		(*func[19])(char **arg, t_envl *envl);
+	char	*cmd[18];
+	int		(*func[18])(char **arg, t_envl *envl);
 	int		i;
 	int		ret;
 

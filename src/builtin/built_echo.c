@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:28:32 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/24 15:35:29 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:57:29 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	find_operands(char *arg)
 {
 	int		i;
 	int		len;
-	
+
 	len = ft_strlen(arg);
 	i = 0;
 	while (i < len)
