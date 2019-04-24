@@ -24,9 +24,13 @@ void	set_signal_dfl(void)
 
 int			get_return_status(int status)
 {
-	if (WIFEXITED(status) || WIFSIGNALED(status) || WIFSTOPPED(status))
+	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (0); //TODO
+	else if (WIFSIGNALED(status))
+		return (WTERMSIG(status));
+	else if (WIFSTOPPED(status))
+		return (WSTOPSIG(status));
+	return (1);
 }
 
 void		launch_proc(t_proc *proc)
@@ -37,13 +41,12 @@ void		launch_proc(t_proc *proc)
 	status = 0;
 	if (proc->next || !proc->is_builtin)
 	{
-		//set_signal_dfl();
+		set_signal_dfl();
 		pid = fork();
 		if (pid < 0)
 			return ; //TODO fork error
 		else if (pid > 0)
 		{
-			signal(SIGCHLD, SIG_IGN);
 			if (proc->prev)
 				close(proc->prev->tunnel[0]);
 			if (proc->next)
