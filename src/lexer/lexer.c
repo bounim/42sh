@@ -81,6 +81,7 @@ void				lexer_destroy(t_lexer *lex)
 		previous = current;
 		current = current->next;
 		free(previous->buffer);
+		free(previous->heredoc_buffer);
 		free(previous);
 	}
 	ft_memset(lex, 0, sizeof(*lex));

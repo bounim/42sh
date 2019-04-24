@@ -124,6 +124,7 @@ void					run_shell(void)
 	size_t		i;
 
 	ft_memset(&lex, 0, sizeof(lex));
+	g_shell.lexer = &lex;
 	i = 0;
 	while (1)
 	{

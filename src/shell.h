@@ -48,6 +48,7 @@ struct						s_shell
 	char					exit_buffer[10];
 	t_hashmap				hmap;
 	int						is_exiting;
+	t_lexer					*lexer;
 };
 
 /*
