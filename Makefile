@@ -116,6 +116,7 @@ SRC := \
 	job_control/launch_proc.c \
 	job_control/init_job.c \
 	job_control/create_job.c \
+	job_control/free_jobs.c \
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
