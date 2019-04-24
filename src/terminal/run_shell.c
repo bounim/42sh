@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 18:20:17 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/08 15:55:36 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:12:45 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "parser.h"
 #include "execution.h"
 
-static void		lex_a_line(t_lexer *lex, enum e_prompt prompt, size_t *i)
+static void				lex_a_line(t_lexer *lex, enum e_prompt prompt,\
+		size_t *i)
 {
 	while (1)
 	{

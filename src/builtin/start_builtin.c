@@ -6,15 +6,13 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 15:23:17 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/22 16:36:59 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:19:37 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-//static int	g_builtin[][]
-
-int		check_builtin(char *cmd)
+int			check_builtin(char *cmd)
 {
 	return (cmd && (ft_strequ(cmd, "alias")
 			|| ft_strequ(cmd, "cd") || ft_strequ(cmd, "debug")
