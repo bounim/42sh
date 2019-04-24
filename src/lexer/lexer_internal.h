@@ -57,7 +57,6 @@ struct							s_lexer_token
 	size_t						line_x;
 	uint8_t						*buffer;
 	size_t						size;
-	char						**argv;
 	int							cannot_append;
 	int							is_number;
 	t_lexer_token				*parent;

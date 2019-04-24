@@ -22,4 +22,7 @@ void			clean_shell(void)
 	free_history(curr);
 	rl_free_controler(FREE_ALL_EDIT);
 	hashmap_clean(&g_shell.hmap);
+	lexer_destroy(g_shell.lexer);
+	free(g_shell.line);
+	free(g_shell.canonic_path);
 }
