@@ -63,7 +63,6 @@ static void		set_envl_default_value(t_envl **envl)
 	set_env_var(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"),
 				"/.42sh_history"), 0);
 	set_env_var(envl, "HISTSIZE", ft_strdup("50000"), 0);
-	ft_strdel(&cwd);
 	//set_env_var(envl, "0", NULL, ENV_RO); // TODO argv[0]
 }
 
