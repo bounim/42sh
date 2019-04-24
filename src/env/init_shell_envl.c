@@ -46,27 +46,22 @@ static void		set_env_var(t_envl **envl, const char *name, char *value,
 		free(value);
 }
 
-static void		set_envl_default_value(t_envl **envl)
+static void		init_new_env(t_envl *new, char *env, char *ptr)
 {
-	t_passwd	*pwuid;
-	char		cwd[PATH_MAX + 1];
-
-	if ((pwuid = getpwnam(getlogin())) == NULL)
-		fatal_exit(SH_ENOMEM);
-	if (getcwd(cwd, PATH_MAX) == NULL)
-		fatal_exit(SH_ENOMEM);
-	set_env_var(envl, "HOME", ft_strjoin("/Users/", pwuid->pw_name), ENV_EX);
-	set_env_var(envl, "LOGNAME", ft_strdup(pwuid->pw_name), ENV_RO | ENV_EX);
-	set_env_var(envl, "SHLVL", ft_strdup("1"), ENV_EX);
-	set_env_var(envl, "PWD", ft_strdup(cwd), ENV_EX);
-	set_env_var(envl, "OLDPWD", ft_strdup(cwd), ENV_EX);
-	set_env_var(envl, "HISTFILE", ft_strjoin(get_env_val(*envl, "HOME"),
-				"/.42sh_history"), 0);
-	set_env_var(envl, "HISTSIZE", ft_strdup("50000"), 0);
-	//set_env_var(envl, "0", NULL, ENV_RO); // TODO argv[0]
+	new->name = ft_strsub(env, 0, ptr - env);
+	new->value = ft_strsub(env, (uint32_t)(ptr - env + 1), ft_strlen(ptr));
+	new->exp = 1;
+	new->read_only = 0;
+	new->next = NULL;
+	if (ft_strcmp(new->name, "SHLVL") == 0)
+	{
+		ptr = ft_itoa(ft_atoi(new->value) + 1);
+		free(new->value);
+		new->value = ptr;
+	}
 }
 
-t_envl	*envarr_to_envl(char **env)
+t_envl			*envarr_to_envl(char **env)
 {
 	t_envl		*ret;
 	t_envl		*new;
@@ -81,17 +76,7 @@ t_envl	*envarr_to_envl(char **env)
 		{
 			if (!(new = (t_envl *)malloc(sizeof(*new))))
 				return (NULL);
-			new->name = ft_strsub(*env, 0, ptr - *env);
-			new->value = ft_strsub(*env, ptr - *env + 1, ft_strlen(ptr));
-			new->exp = 1;
-			new->read_only = 0;
-			new->next = NULL;
-			if (ft_strcmp(new->name, "SHLVL") == 0)
-			{
-				ptr = ft_itoa(ft_atoi(new->value) + 1);
-				free(new->value);
-				new->value = ptr;
-			}
+			init_new_env(new, *env, ptr);
 			ret = addlast_envl(ret, new);
 		}
 		env++;
@@ -102,8 +87,21 @@ t_envl	*envarr_to_envl(char **env)
 t_envl			*init_shell_envl(char **env)
 {
 	t_envl		*ret;
+	t_passwd	*pwuid;
+	char		cwd[PATH_MAX + 1];
 
 	ret = envarr_to_envl(env);
-	set_envl_default_value(&ret);
+	if ((pwuid = getpwnam(getlogin())) == NULL)
+		fatal_exit(SH_ENOMEM);
+	if (getcwd(cwd, PATH_MAX) == NULL)
+		fatal_exit(SH_ENOMEM);
+	set_env_var(&ret, "HOME", ft_strjoin("/Users/", pwuid->pw_name), ENV_EX);
+	set_env_var(&ret, "LOGNAME", ft_strdup(pwuid->pw_name), ENV_RO | ENV_EX);
+	set_env_var(&ret, "SHLVL", ft_strdup("1"), ENV_EX);
+	set_env_var(&ret, "PWD", ft_strdup(cwd), ENV_EX);
+	set_env_var(&ret, "OLDPWD", ft_strdup(cwd), ENV_EX);
+	set_env_var(&ret, "HISTFILE", ft_strjoin(get_env_val(ret, "HOME"),
+			"/.42sh_history"), 0);
+	set_env_var(&ret, "HISTSIZE", ft_strdup("50000"), 0);
 	return (ret);
 }
