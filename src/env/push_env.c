@@ -61,10 +61,9 @@ void			push_env(t_envl **head, char *name, char *value, int exp)
 		if (ft_strcmp(cur->name, name) == 0)
 		{
 			free(cur->value);
-			cur->value = value ? ft_strdup(value) : NULL;
+			cur->value = value_copy;
 			if (exp && !cur->exp)
 				cur->exp = 1;
-			free(value_copy);
 			return ;
 		}
 		cur = cur->next;
