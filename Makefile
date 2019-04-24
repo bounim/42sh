@@ -38,7 +38,6 @@ SRC := \
 	lexer/token.c \
 	lexer/debug.c \
 	main.c \
-	signal/ft_signal.c \
 	signal/signal_handler.c \
 	terminal/shell.c \
 	terminal/run_shell.c \

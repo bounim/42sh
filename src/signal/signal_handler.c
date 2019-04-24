@@ -35,45 +35,19 @@ static void	window_modif(void)
 	clean_and_print();
 }
 
-static void	stop_received(void)
-{
-	int status;
-
-	WIFSTOPPED(status);
-	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
-	signal(SIGTSTP, SIG_DFL);
-	cooked_terminal();
-	//mark_proc_status(g_shell.stopped_proc, status);
-}
-
-static void	cont_received(void)
-{
-	init_signals();
-	raw_terminal();
-	window_modif();
-}
-
 void		signal_handler(int signo)
 {
-	if (signo == SIGWINCH)
-		window_modif();
-	else if (signo == SIGTSTP)
-		stop_received();
-	else if (signo == SIGCONT)
-		cont_received();
-	else if (signo > 0 && signo < 33)
+	if (signo == SIGINT)
 	{
-		clean_shell();
-		cooked_terminal();
-		exit(1);
+		write(1, "\n", 1);
+		(void)signo;
 	}
+	if (signo == SIGWINCH)
+		window_modif();	
 }
 
 void		init_signals(void)
 {
-	int i;
-
-	i = 0;
-	while (++i < 33)
-		signal(i, &signal_handler);
+	signal(SIGINT, &signal_handler);
+	signal(SIGWINCH, &signal_handler);
 }
