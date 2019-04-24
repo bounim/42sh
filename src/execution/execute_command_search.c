@@ -44,6 +44,7 @@ static char	*test_access(char *env_path, char *cmd, size_t *border, size_t size)
 	ret[border[1] - border[0] + 1 + size] = '\0';
 	if (init_hash(ret, border, cmd, size))
 		return (ret);
+	free(ret);
 	return (NULL);
 }
 
@@ -66,8 +67,10 @@ static char	*find_command_in_env(char *cmd, size_t size, t_envl *envl)
 		while (env_path[border[1]] && env_path[border[1]] != ':')
 			border[1]++;
 		if (border[1] - border[0] + 1 + size <= PATH_MAX)
+		{
 			if ((r = test_access(env_path, cmd, border, size)))
 				return (r);
+		}
 		border[0] = border[1];
 	}
 	return (NULL);
