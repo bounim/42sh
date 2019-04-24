@@ -69,7 +69,6 @@ SRC := \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
 	builtin/replace_exclaim_extra.c \
-	builtin/find_path.c \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
