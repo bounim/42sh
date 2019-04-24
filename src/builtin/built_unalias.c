@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 15:19:40 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 17:42:56 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	start_arg_unalias(char **arg, int *opts)
 	t_opts	flag;
 	int		i;
 
+	*opts = 0;
 	i = 0;
 	if ((i = check_opts(arg, &flag, 'a')) != -1)
 	{

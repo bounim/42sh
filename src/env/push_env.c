@@ -35,6 +35,16 @@ static void		push_env_new(t_envl **head, char *name, char *value_copy,
 	*head = addlast_envl(*head, new);
 }
 
+static void		path_empty_hashmap(char *name)
+{
+	if (ft_strcmp(name, "PATH") == 0)
+	{
+		hashmap_clean(&g_shell.hmap);
+		if (hashmap_init(&g_shell.hmap, HASHMAP_SIZE, hashmap_hash_crc32) < 0)
+			fatal_exit(SH_ENOMEM);
+	}
+}
+
 void			push_env(t_envl **head, char *name, char *value, int exp)
 {
 	t_envl		*cur;
@@ -42,6 +52,7 @@ void			push_env(t_envl **head, char *name, char *value, int exp)
 
 	if (!name)
 		return ;
+	path_empty_hashmap(name);
 	if (NULL == (value_copy = ft_strdup(value)))
 		return ;
 	cur = *head;
