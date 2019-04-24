@@ -49,11 +49,11 @@ static void		set_env_var(t_envl **envl, const char *name, char *value,
 static void		set_envl_default_value(t_envl **envl)
 {
 	t_passwd	*pwuid;
-	char		*cwd;
+	char		cwd[PATH_MAX + 1];
 
 	if ((pwuid = getpwnam(getlogin())) == NULL)
 		fatal_exit(SH_ENOMEM);
-	if ((cwd = getcwd(NULL, 0)) == NULL)
+	if (getcwd(cwd, PATH_MAX) == NULL)
 		fatal_exit(SH_ENOMEM);
 	set_env_var(envl, "HOME", ft_strjoin("/Users/", pwuid->pw_name), ENV_EX);
 	set_env_var(envl, "LOGNAME", ft_strdup(pwuid->pw_name), ENV_RO | ENV_EX);
