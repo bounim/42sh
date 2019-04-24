@@ -45,16 +45,7 @@ static int	save_dup(t_lexer_token *cur)
 	return (0);
 }
 
-static int	copy_path(t_lexer_token *cur, char *path)
-{
-	if (cur->redir_target->size > PATH_MAX)
-		return (-1);
-	ft_memmove(path, cur->redir_target->buffer, cur->redir_target->size);
-	path[cur->redir_target->size] = '\0';
-	return (0);
-}
-
-static int	error_restore(t_lexer_token *cmd, char *msg)
+int			error_restore(t_lexer_token *cmd, char *msg)
 {
 	command_redir_restore(cmd);
 	printer_str(&g_shell.err, msg);
@@ -62,61 +53,25 @@ static int	error_restore(t_lexer_token *cmd, char *msg)
 	return (-1);
 }
 
-/*
-** TODO heredoc: replace close + open by lseek in 42sh
-** lseek(cur->fd_new, 0, SEEK_SET);
-*/
+static void	get_fd_saved(t_lexer_token *cur)
+{
+	if (cur->rtype == LESS || cur->rtype == DLESS || cur->rtype == DLESSDASH
+			|| cur->rtype == LESSAND || cur->rtype == LESSGREAT)
+		cur->fd_saved = cur->redir_input < 0 ? 0 : cur->redir_input;
+	else
+		cur->fd_saved = cur->redir_input < 0 ? 1 : cur->redir_input;
+}
 
 int			command_redir(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
-	char			path[PATH_MAX + 1];
 
 	cur = cmd->redir_head;
 	while (cur)
 	{
-		if (cur->rtype == LESS || cur->rtype == DLESS || cur->rtype == DLESSDASH
-				|| cur->rtype == LESSAND || cur->rtype == LESSGREAT)
-			cur->fd_saved = cur->redir_input < 0 ? 0 : cur->redir_input;
-		else
-			cur->fd_saved = cur->redir_input < 0 ? 1 : cur->redir_input;
-		if (cur->rtype == LESS || cur->rtype == GREAT || cur->rtype == DGREAT)
-		{
-			if (copy_path(cur, path) < 0)
-				return (error_restore(cmd, "Error: path too long\n"));
-			if (cur->rtype == LESS)
-			{
-				if ((cur->fd_new = open(path, O_RDONLY)) < 0)
-					return (error_restore(cmd, "Error: couldn't open\n"));
-			}
-			else if ((cur->fd_new = open(path, O_WRONLY | O_CREAT | (cur->rtype
-								== GREAT ? O_TRUNC : O_APPEND), 0666)) < 0)
-				return (error_restore(cmd, "Error: couldn't open\n"));
-		}
-		else if (cur->rtype == LESSAND || cur->rtype == GREATAND)
-		{
-			if (cur->redir_target->buffer[0] == '-')
-				cur->fd_new = -1;
-			else
-				cur->fd_new = ft_memtoi(cur->redir_target->buffer,
-						cur->redir_target->size);
-		}
-		else
-		{
-			if ((cur->fd_new = random_file(path)) < 0)
-				return (error_restore(cmd, "Error: couldn't open\n"));
-			if (write(cur->fd_new, cur->heredoc_buffer,
-						cur->heredoc_size) != (ssize_t)cur->heredoc_size)
-			{
-				unlink(path);
-				return (error_restore(cmd, "Error: couldn't write\n"));
-			}
-			close(cur->fd_new);
-			cur->fd_new = open(path, O_RDONLY);
-			unlink(path);
-			if (cur->fd_new < 0)
-				return (error_restore(cmd, "Error: couldn't open\n"));
-		}
+		get_fd_saved(cur);
+		if (redir_op(cmd, cur) < 0)
+			return (-1);
 		if (save_dup(cur) < 0)
 		{
 			if (cur->rtype == LESS || cur->rtype == GREAT
