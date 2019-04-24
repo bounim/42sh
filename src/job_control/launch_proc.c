@@ -34,9 +34,10 @@ void		launch_proc(t_proc *proc)
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	if (proc->next || !proc->is_builtin)
 	{
-		set_signal_dfl();
+		//set_signal_dfl();
 		pid = fork();
 		if (pid < 0)
 			return ; //TODO fork error
@@ -75,6 +76,8 @@ void		launch_proc(t_proc *proc)
 		}
 		else
 		{
+			if (!proc->path)
+				exit(1);
 			proc->env = envl_to_envarr(proc->envl);
 			execve(proc->path, proc->arg, proc->env);
 			command_redir_restore(proc->cmd);
