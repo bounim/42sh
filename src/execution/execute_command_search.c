@@ -14,45 +14,61 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
+static int	init_hash(char *ret, size_t *border, char *cmd, size_t size)
+{
+	t_hashmap_key	k;
+
+	if (access(ret, X_OK) == 0)
+	{
+		k.next = NULL;
+		k.key = (uint8_t *)cmd;
+		k.keysize = size + 1;
+		k.value = ret;
+		k.valuesize = border[1] - border[0] + 1 + size + 1;
+		hashmap_set(&g_shell.hmap, &k);
+		return (1);
+	}
+	return (0);
+}
+
+static char	*test_access(char *env_path, char *cmd, size_t *border, size_t size)
+{
+	char			*ret;
+
+	ret = NULL;
+	if (!(ret = malloc(PATH_MAX + 1)))
+		return (NULL);
+	ft_memmove(ret, env_path + border[0], border[1] - border[0]);
+	ret[border[1] - border[0]] = '/';
+	ft_memmove(ret + border[1] - border[0] + 1, cmd, size);
+	ret[border[1] - border[0] + 1 + size] = '\0';
+	if (init_hash(ret, border, cmd, size))
+		return (ret);
+	return (NULL);
+}
+
 static char	*find_command_in_env(char *cmd, size_t size, t_envl *envl)
 {
 	char			*env_path;
-	size_t			start;
-	size_t			end;
-	char			*ret;
-	t_hashmap_key	k;
+	char			*r;
+	size_t			border[2];
 
-	if (!(ret = malloc(PATH_MAX + 1))
-			|| !(env_path = get_env_val(envl, "PATH")))
+	if (!(env_path = get_env_val(envl, "PATH")))
 		return (NULL);
-	start = 0;
-	while (env_path[start])
+	border[0] = 0;
+	while (env_path[border[0]])
 	{
-		while (env_path[start] && env_path[start] == ':')
-			start++;
-		if (!env_path[start])
+		while (env_path[border[0]] && env_path[border[0]] == ':')
+			border[0]++;
+		if (!env_path[border[0]])
 			return (NULL);
-		end = start + 1;
-		while (env_path[end] && env_path[end] != ':')
-			end++;
-		if (end - start + 1 + size <= PATH_MAX)
-		{
-			ft_memmove(ret, env_path + start, end - start);
-			ret[end - start] = '/';
-			ft_memmove(ret + end - start + 1, cmd, size);
-			ret[end - start + 1 + size] = '\0';
-			if (access(ret, X_OK) == 0)
-			{
-				k.next = NULL;
-				k.key = (uint8_t *)cmd;
-				k.keysize = size + 1;
-				k.value = ret;
-				k.valuesize = end - start + 1 + size + 1;
-				hashmap_set(&g_shell.hmap, &k);
-				return (ret);
-			}
-		}
-		start = end;
+		border[1] = border[0] + 1;
+		while (env_path[border[1]] && env_path[border[1]] != ':')
+			border[1]++;
+		if (border[1] - border[0] + 1 + size <= PATH_MAX)
+			if ((r = test_access(env_path, cmd, border, size)))
+				return (r);
+		border[0] = border[1];
 	}
 	return (NULL);
 }
@@ -82,14 +98,13 @@ char		*find_command(char *cmd, t_envl *envl)
 		return (find_command_in_env(cmd, size, envl));
 }
 
-char		*command_search(t_lexer_token *cmd, t_envl *envl)
+char		*command_search(t_lexer_token *cmd, char **arg, t_envl *envl)
 {
-
-	if (cmd->ptype != PARSER_COMMAND || !cmd->argv[0])
+	if (cmd->ptype != PARSER_COMMAND || !arg[0])
 	{
-		if (!cmd->argv[0])
+		if (arg[0]) //TODO arg[0] ou !arg[0]
 			fatal_exit(7);
 		return (NULL);
 	}
-	return (find_command(cmd->argv[0], envl));
+	return (find_command(arg[0], envl));
 }

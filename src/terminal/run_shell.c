@@ -145,6 +145,7 @@ void					run_shell(void)
 			continue ;
 		}
 		execute(&lex);
+		//free_exec();
 		lexer_destroy(&lex);
 	}
 }

@@ -42,19 +42,18 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	new = NULL;
 	if (!*job && !(*job = create_job(cmd)))
 		return (NULL);
-	if (!cmd->arg_head || !(cmd->argv = arg_to_argv(cmd)) || !(new = init_proc(new)))
+	if (!cmd->arg_head || !(new = init_proc(new)) || !(new->arg = arg_to_argv(cmd)))
 		return (NULL);
-	new->arg = ft_arrdup(cmd->argv);
 	new->cmd = cmd; //TODO
 	new->job = *job;
 	if (!cmd->assign_head || !cmd->arg_head)
 		new->envl = g_shell.envl;
 	else
 		new->envl = dup_envl(g_shell.envl);
-	if (!(new->is_builtin = check_builtin(cmd->argv[0])))
+	if (!(new->is_builtin = check_builtin(new->arg[0])))
 	{
-		if (!(new->path = command_search(cmd, new->envl)) || access(new->path, X_OK))
-			exec_error(cmd->argv[0], new->path);
+		if (!(new->path = command_search(cmd, new->arg, new->envl)) || access(new->path, X_OK))
+			exec_error(new->arg[0], new->path);
 	}
 	if ((*job)->foot_proc)
 	{
