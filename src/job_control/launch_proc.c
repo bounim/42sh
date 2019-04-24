@@ -42,6 +42,7 @@ void		launch_proc(t_proc *proc)
 			return ; //TODO fork error
 		else if (pid > 0)
 		{
+			signal(SIGCHLD, SIG_IGN);
 			if (proc->prev)
 				close(proc->prev->tunnel[0]);
 			if (proc->next)
