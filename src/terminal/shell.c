@@ -6,13 +6,13 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/24 15:17:49 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/24 15:33:46 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static void		init_shell_end(void)
+static void	init_shell_end(void)
 {
 	if (!g_shell.is_interactive || !isatty(STDOUT_FILENO)
 			|| !isatty(STDERR_FILENO))

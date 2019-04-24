@@ -74,6 +74,7 @@ int		built_fc(char **av, t_envl *envl)
 	if ((index = check_fc_opts(av, fc_opts)) == -1)
 		return (-1);
 	build_fc_range(av, fc_range, index);
+	printf("range: %d, range: %d\n", fc_range[0], fc_range[1]);
 	if (check_fc_range(fc_range) == OUT_OF_RANGE)
 		return (-1);
 	fc_controler(fc_range, fc_opts, av, envl);

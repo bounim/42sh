@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:48:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/22 15:42:42 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:13:54 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		signal_handler(int signo)
 		(void)signo;
 	}
 	if (signo == SIGWINCH)
-		window_modif();	
+		window_modif();
 }
 
 void		init_signals(void)
