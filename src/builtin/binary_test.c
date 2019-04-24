@@ -24,7 +24,7 @@ static int	integer_expression(char *arg)
 			return (0);
 		arg++;
 	}
-	return (0);
+	return (1);
 }
 
 int			binary_test_end(char *operand1, char *operand2, char *operator)
