@@ -12,109 +12,47 @@
 
 #include "twenty_one_sh.h"
 
-static int			name_is_alias(char *name)
+static int	print_type(char *name, t_envl *envl)
 {
-	t_alias			*tmp;
+	char	*path;
 
-	tmp = g_shell.alias;
-	if (tmp)
+	if (check_builtin(name))
 	{
-		while (tmp)
-		{
-			if (ft_strequ(tmp->name, name))
-			{
-				ft_putstr_fd(name, STDOUT_FILENO);
-				ft_putstr_fd(" is aliased to `", STDOUT_FILENO);
-				ft_putstr_fd(tmp->value, STDOUT_FILENO);
-				ft_putstr_fd("'\n", STDOUT_FILENO);
-				return (TRUE);
-			}
-			tmp = tmp->next;
-		}
+		printer_str(&g_shell.out, name);
+		printer_str(&g_shell.out, " is a shell builtin\n");
 	}
-	return (FALSE);
-}
-
-static int			name_is_builtin(char *name)
-{
-	static void		*builtin[12] = {"cd", "echo", "env", "setenv",
-							"unsetenv", "set", "unset", "export",
-							"alias", "unalias", "type", NULL};
-	size_t			i;
-
-	i = 0;
-	while (builtin[i])
+	else if ((path = find_command(name, envl)))
 	{
-		if (ft_strequ(builtin[i], name))
-		{
-			ft_putstr_fd(name, STDOUT_FILENO);
-			ft_putstr_fd(" is a shell builtin\n", STDOUT_FILENO);
-			return (TRUE);
-		}
-		i++;
+		printer_str(&g_shell.out, name);
+		printer_str(&g_shell.out, " is ");
+		printer_str(&g_shell.out, path);
+		printer_endl(&g_shell.out);
+		free(path);
 	}
-	return (FALSE);
-}
-
-static int			name_is_file(char *name, t_envl *envl, int is_file)
-{
-	char			**paths;
-	char			*fullpath;
-	char			*tmp;
-	size_t			i;
-
-	if (!(paths = ft_strsplit(get_env_val(envl, "PATH"), ':')))
-		return (FALSE);
-	tmp = ft_strjoin("/", name);
-	i = 0;
-	while (paths[i++])
-	{
-		fullpath = ft_strjoin(paths[i], tmp);
-		if (access(fullpath, F_OK) == 0)
-		{
-			ft_putstr_fd(name, STDOUT_FILENO);
-			ft_putstr_fd(" is ", STDOUT_FILENO);
-			ft_putendl_fd(fullpath, STDOUT_FILENO);
-			is_file = TRUE;
-			break ;
-		}
-		ft_strdel(&fullpath);
-	}
-	ft_arrdel(paths);
-	ft_strdel(&tmp);
-	return (is_file);
-}
-
-static void			print_type(char *name, int *all_found, t_envl *envl)
-{
-	if (name_is_alias(name))
-		return ;
-	else if (name_is_builtin(name))
-		return ;
-	else if (name_is_file(name, envl, FALSE))
-		return ;
 	else
 	{
-		ft_putstr_fd("sh: type: ", STDERR_FILENO);
-		ft_putstr_fd(name, STDERR_FILENO);
-		ft_putstr_fd(": not found\n", STDERR_FILENO);
-		*all_found = FALSE;
+		printer_str(&g_shell.out, "21sh: type: ");
+		printer_str(&g_shell.out, name);
+		printer_str(&g_shell.out, ": not found\n");
+		return (1);
 	}
+	return (0);
 }
 
-int					built_type(char **arg, t_envl *envl)
+int			built_type(char **arg, t_envl *envl)
 {
-	size_t			i;
-	int				all_found;
+	size_t	i;
+	int		r;
 
-	if (!arg)
+	if (!arg[1])
 		return (1);
-	all_found = TRUE;
+	r = 0;
 	i = 1;
 	while (arg[i])
 	{
-		print_type(arg[i], &all_found, envl);
+		r |= print_type(arg[i], envl);
 		i++;
 	}
-	return (all_found);
+	printer_flush(&g_shell.out);
+	return (r);
 }
