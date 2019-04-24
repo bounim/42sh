@@ -54,7 +54,6 @@ static char	*find_command_in_env(char *cmd, size_t size, t_envl *envl)
 		}
 		start = end;
 	}
-	free(ret);
 	return (NULL);
 }
 
