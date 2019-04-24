@@ -122,10 +122,6 @@ void					run_shell(void)
 	t_lexer		lex;
 	size_t		i;
 
-	if (signal(SIGINT, ft_signal) < 0)
-		fatal_exit(SH_EINVAL);
-	if (signal(SIGABRT, ft_signal) < 0)
-		fatal_exit(SH_EINVAL);
 	ft_memset(&lex, 0, sizeof(lex));
 	i = 0;
 	while (1)

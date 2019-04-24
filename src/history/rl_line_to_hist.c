@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 11:59:38 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/23 14:19:22 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/23 19:18:41 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,15 @@ static int		is_same_hist(uint8_t *buff, size_t buff_size)
 	tmp = (uint8_t*)ft_strdup((char*)buff);
 	tmp = check_buff_end_for_b(tmp, buff_size);
 	if (!(tail = find_last_hist_line()))
+	{
+		free(tmp);
 		return (0);
+	}
 	if (ft_strequ((char*)buff, (char*)tail->buf) == 1)
+	{
+		free(tmp);
 		return (1);
+	}
 	free(tmp);
 	return (0);
 }
