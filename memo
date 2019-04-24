@@ -1,11 +1,20 @@
-Quand tu rentres dans le mode R de vi:
-Fleche de haut ou bas si historique il ya: quitte le mode R.
-Fleche de gauche ou droite, delete la ligne actuelle, meme si multiligne, ne fais pas de saut de ligne, garde le prompt
-Edit, remplacement carac par carac sans insertion differentielle, ca rajoute un nouveau buffer fondu dans l'ancien, si tu deletes les caracs ca les revient au buf d'avant.
-
-Procedure:
-Si on est en mode vi esc et que R est enclenche, on list_to_buff la liste actuelle, pour avoir l'etat en memoire
-Ensuite faut refaire une boucle de read et au lieu d'inserer les characs dans la liste faut remplacer ceux existants.
-Si on depasse la taille de la liste initiale on insere les nouveaux caracs comme d'hab.
-Si on del quelque chose on retrouve quel charac il faut remplacer dans la liste via le buff
-Si fleche droite|gauche est touched on quitte le mode R. Si fleche haut bas pareil sauf qu'il faut que la ligne soit changee par historique
+- Determiner ce qu'on garde pour le 21;
+- Tester de lancer un executable qui segfault dans le 21sh.
+- Normer:	./terminal/run_shell.c
+			./terminal/shell.c
+			./readline/get_term_pos.c
+			./job_control/stop_job.c
+			./job_control/launch_proc.c
+			./job_control.h
+			./job_control/launch_job.c
+			./job_control/create_job.c
+			./execution/redir.c
+			./ft.c
+			./execution/execute_cmd.c
+			./execution/execute_assign.c
+			./execution/execute_command_search.c
+			./execution/execution_str.c
+			./env/init_shell_envl.c
+			./builtin/built_env.c
+			./builtin/built_test.c
+			./builtin/built_fc.c

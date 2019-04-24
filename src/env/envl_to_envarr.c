@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:29:27 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/21 19:34:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:36:26 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,24 @@ static char	*memmove_to_arr(char *name, char *value)
 	n_size = ft_strlen(name);
 	v_size = ft_strlen(value);
 	g_size = n_size + v_size + 1;
-	if (!(ret = (char *)malloc(sizeof(char) * g_size + 1)))
+	if (!(ret = malloc(g_size + 1)))
 		return (NULL);
 	ret[g_size] = 0;
 	ft_memmove(ret, name, n_size);
 	ft_memmove(ret + n_size, "=", 1);
 	ft_memmove(ret + n_size + 1, value, v_size);
 	return (ret);
+}
+
+t_envl		*envl_to_envarr_start(t_envl *envl, int *i)
+{
+	while (envl)
+	{
+		if (envl->exp == 1)
+			(*i)++;
+		envl = envl->next;
+	}
+	return (envl);
 }
 
 char		**envl_to_envarr(t_envl *envl)
@@ -41,13 +52,8 @@ char		**envl_to_envarr(t_envl *envl)
 	buff = NULL;
 	tmp = envl;
 	i = 0;
-	while (envl)
-	{
-		if (envl->exp == 1)
-			i++;
-		envl = envl->next;
-	}
-	if (!(buff = (char **)malloc(sizeof(char *) * (i + 1))))
+	envl = envl_to_envarr_start(envl, &i);
+	if (!(buff = malloc((i + 1) * sizeof(char *))))
 		return (NULL);
 	buff[i] = NULL;
 	i = 0;

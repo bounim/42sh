@@ -6,13 +6,22 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:27:12 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 12:13:41 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:51:01 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static char		**from_arg_to_cmd(char **arg, int curr_arg)
+static int		env_exit(char *str)
+{
+	ft_putstr_fd("env: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putendl_fd(": No such file or directory", 2);
+	exit(125);
+	return (-1);
+}
+
+static char		**from_arg_to_cmd(char **arg, int start)
 {
 	int		nb_arg;
 	char	**ret;
@@ -21,90 +30,130 @@ static char		**from_arg_to_cmd(char **arg, int curr_arg)
 
 	i = 0;
 	ret = NULL;
-	nb_arg = curr_arg;
+	nb_arg = start;
 	while (arg[nb_arg])
 		nb_arg++;
-	g_size = nb_arg - curr_arg;
+	g_size = nb_arg - start;
 	if (!(ret = (char **)malloc(sizeof(char *) * (g_size + 1))))
 		return (NULL);
 	ret[g_size] = NULL;
-	while (arg[curr_arg])
+	while (arg[start])
 	{
-		ret[i] = ft_strdup(arg[curr_arg]);
+		ret[i] = ft_strdup(arg[start]);
 		i++;
-		curr_arg++;
+		start++;
 	}
 	return (ret);
 }
 
-static void		exec_env(char **arg, int curr_arg, t_envl *head)
+static int		execute_utility(char **arg, char **env)
+{
+	pid_t	pid;
+	int		status;
+	t_envl	*envl;
+	char	*path;
+
+	envl = NULL;
+	set_signal_dfl();
+	pid = fork();
+	if (pid < 0)
+		return (-1); //TODO error
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, WUNTRACED | WCONTINUED);
+		g_shell.exit_code = get_return_status(status);
+		return (g_shell.exit_code);
+	}
+	if (!arg[0])
+		return (125);
+	else
+		if ((env && !(envl = envarr_to_envl(env)))
+			|| !(path = find_command(arg[0], envl)))
+			return (env_exit(arg[0]));
+	execve(path, arg, env);
+	fatal_exit(7);
+	return (125);
+}
+
+static int		exec_env(char **arg, int start, t_envl *head)
 {
 	char	**ret;
 	char	**env;
+	int 	r;
 
-	if (!arg[curr_arg])
+	r = 0;
+	env = NULL;
+	if (start == -1)
 	{
 		print_envl(head, 0);
 		free_envl(head);
 	}
 	else
 	{
-		ret = from_arg_to_cmd(arg, curr_arg);
+		ret = from_arg_to_cmd(arg, start);
 		env = envl_to_envarr(head);
-		//execution(ret, env);
+		if (!env)
+			return (125);
+		r = execute_utility(ret, env);
 		ft_free_arr(ret);
 		free_envl(head);
 	}
+	return (r);
 }
 
-static void		concat_env(t_envl **head, char *arg, int c)
+int		is_valid_name(char *str)
 {
-	char	*tmp;
-	char	*tmp2;
+	size_t	i;
 
-	tmp = ft_strsub(arg, 0, c);
-	tmp2 = ft_strsub(arg, c + 1, ft_strlen(arg) - c);
-	push_env(&*head, tmp, tmp2, 1);
-	ft_strdel(&tmp);
-	ft_strdel(&tmp2);
-}
-
-static int		start_built_env(t_envl *head, char **arg,
-								int last_cmd, int curr_arg)
-{
-	int		c;
-
-	while (arg[curr_arg] && curr_arg != last_cmd)
+	i = 0;
+	if (str[i] && ft_isdigit(str[i]))
+		return (0);
+	while (str[i] && str[i] != '=')
 	{
-		if (ft_strequ(arg[curr_arg], "env"))
-			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
-		else if (ft_strequ(arg[curr_arg], "--"))
-			;
-		else if (ft_strnequ(arg[curr_arg], "-i", 2))
-		{
-			free_envl(head);
-			return (start_built_env(NULL, arg, last_cmd, curr_arg + 1));
-		}
-		else if ((c = ft_strichr(arg[curr_arg], '=')))
-		{
-			concat_env(&head, arg[curr_arg], c);
-			return (start_built_env(head, arg, last_cmd, curr_arg + 1));
-		}
-		curr_arg++;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
 	}
-	exec_env(arg, last_cmd, head);
-	return (0);
+	return (1);
 }
 
 int				built_env(char **arg, t_envl *envl)
 {
-	int		last_cmd;
 	t_envl	*tmp;
-	int		ret;
+	size_t	i, j;
+	int		start;
+	int		options;
+	char	*name = NULL;
 
+	i = 1;
+	options = 1;
+	start = -1;
 	tmp = dup_envl(envl);
-	if ((last_cmd = built_env_find_last_cmd(arg, 0, 0)) == -1)
-		return (1);
-	ret = start_built_env(tmp, arg, last_cmd, 0);
-	return (ret);
+	while (arg[i])
+	{
+		if (!ft_strcmp(arg[i], "-i") && options)
+		{
+			free_envl(tmp);
+			tmp = NULL;
+		}
+		else if (options && !ft_strcmp(arg[i], "--"))
+			options = 0;
+		else if (ft_strchr(arg[i], '=') && is_valid_name(arg[i]))
+		{
+			j = 0;
+			while (arg[i][j] != '=')
+				j++;
+			if (!(name = malloc(j + 1)))
+				return (-1);
+			ft_memmove(name, arg[i], j);
+			name[j] = '\0';
+			push_env(&tmp, name, ft_strchr(arg[i], '=') + 1, 1);
+			options = 0;
+		}
+		else if ((!options || arg[i][0] != '-') && start == -1)
+			start = i;
+		i++;
+	}
+	exec_env(arg, start, tmp);
+	return (0);
 }

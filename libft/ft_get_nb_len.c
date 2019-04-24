@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.h                                     :+:      :+:    :+:   */
+/*   ft_get_nb_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 23:01:28 by kberisha          #+#    #+#             */
-/*   Updated: 2019/03/14 23:01:30 by kberisha         ###   ########.fr       */
+/*   Created: 2019/04/19 15:48:31 by aguillot          #+#    #+#             */
+/*   Updated: 2019/04/19 15:48:33 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REDIRECTIONS_H
-# define REDIRECTIONS_H
+#include "libft.h"
 
-# include "parser.h"
-# include "expansions.h"
+int		ft_get_nb_len(int nb)
+{
+	int ret;
 
-#endif
+	ret = 0;
+	while (nb /= 10)
+		ret++;
+	return (ret);
+}

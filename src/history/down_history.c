@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 16:37:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/12 13:19:40 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:52:13 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void			get_next_history(void)
 	switch_history();
 	if (g_shell.hist.history_save == 0)
 	{
-		free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+		rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
 		g_shell.edit.point_char = NULL;
 		g_shell.edit.cur_base_x = 0;
 		init_char_list();
@@ -55,7 +55,7 @@ void			get_next_history(void)
 	}
 }
 
-void 			vi_get_next_history(void)
+void			vi_get_next_history(void)
 {
 	int			count;
 
@@ -63,4 +63,3 @@ void 			vi_get_next_history(void)
 	while (count--)
 		get_next_history();
 }
-

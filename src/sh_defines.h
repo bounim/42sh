@@ -31,5 +31,8 @@
 # define BASE_RL_SIZE		3
 # define SEARCHMAP_SIZE		4
 # define TERM_SET			1
+# define MOTION_KEYMAP_SIZE	20
+
+# define HASHMAP_SIZE		32
 
 #endif

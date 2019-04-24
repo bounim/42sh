@@ -77,6 +77,7 @@ LIBFT_SRC := \
 	ft_u8_strdup.c \
 	ft_memtoi.c \
 	ft_isdigit.c \
+	ft_get_nb_len.c 
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)

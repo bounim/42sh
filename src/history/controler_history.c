@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 13:33:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/04 17:04:14 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:19:09 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	print_history(void)
 {
 	if (g_shell.edit.cur_base_y < 0)
 		g_shell.edit.cur_base_y = 0;
-	free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+	rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();

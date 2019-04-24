@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:09:53 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/04 15:04:42 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:09:00 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	search_read(void)
 	keylen = 0;
 	while (g_shell.edit.reading == TRUE)
 	{
-		if (read(0,  &key[keylen++], 1) < 0)
+		if (read(0, &key[keylen++], 1) < 0)
 			fatal_exit(SH_EINVAL);
 		if (check_key_for_search(key, &keylen) == NO_MATCH)
 		{

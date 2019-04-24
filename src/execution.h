@@ -15,8 +15,14 @@
 
 # include "parser.h"
 
-void	execution(t_lexer *lex);
+int		execute(t_lexer *lex);
+char	*command_search(t_lexer_token *cmd, t_envl *envl);
+char	*find_command(char *cmd, t_envl *envl);
+int		exec_error(char *cmd, char *path);
 int		command_redir(t_lexer_token *cmd);
 void	command_redir_restore(t_lexer_token *cmd);
+int		execute_assign_list(t_lexer_token *cmd, t_proc *proc);
+char	*lst_to_str(t_lexer_token *head);
+char	**arg_to_argv(t_lexer_token *cmd);
 
 #endif

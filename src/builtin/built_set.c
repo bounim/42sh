@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 11:29:37 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/05 14:34:45 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/15 14:54:38 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int		built_set(char **arg, t_envl *envl)
 		{
 			ft_putstr(envl->name);
 			ft_putchar('=');
-			ft_putstr(envl->value);
-			ft_putchar(10);
+			ft_putendl(envl->value);
 			envl = envl->next;
 		}
 	}

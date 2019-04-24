@@ -6,13 +6,13 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:41:06 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/05 15:14:44 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:17:11 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static t_history 	*parse_histfile_content(uint8_t *cont)
+static t_history	*parse_histfile_content(uint8_t *cont)
 {
 	t_history	*ret;
 	t_history	*new;
@@ -43,7 +43,7 @@ static uint8_t		*get_histfile_content(void)
 
 	if (!(histpath = get_env_val(g_shell.envl, "HISTFILE")))
 		return (NULL);
-	if ((((fd = open(histpath, O_RDONLY)) < 0) || (read(fd, buf, 0) < 0)) || 
+	if ((((fd = open(histpath, O_RDONLY)) < 0) || (read(fd, buf, 0) < 0)) ||
 		(!(ret = ft_u8_strnew(0))))
 		return (NULL);
 	while ((rd = read(fd, buf, BUFF_SIZE)))

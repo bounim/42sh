@@ -12,11 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-void		vi_delete_c(void)
-{
-
-}
-
 void		vi_delete_endline_insert_eol(void)
 {
 	delete_endline();
@@ -47,16 +42,60 @@ void		vi_clear_line_insert(void)
 	clean_and_print();
 }
 
-void					vi_delete_x(void)
+void		vi_delete_x(void)
 {
 	int		count;
+	t_char	*tail;
+	t_char	*begin;
+	t_char	*tmp;
 
+	begin = g_shell.edit.point_char->next;
+	tail = g_shell.edit.point_char->next;
 	count = g_shell.edit.count;
-	while (count--)
-		supr_charac();
+	while (count-- && tail != g_shell.edit.char_list.tail)
+		tail = tail->next;
+	if (!begin || begin == tail)
+		return ;
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
+	g_shell.edit.cpy_buff = build_cpy_buff(begin, tail);
+	while (begin && begin != tail->next)
+	{
+		tmp = begin;
+		begin = begin->next;
+		delete_char_from_list(tmp);
+	}
+	update_all_pos();
+	clean_and_print();
+	if (g_shell.edit.point_char == g_shell.edit.char_list.tail)
+		move_left();
 }
 
-void					vi_delete_bigx(void)
+void		vi_delete_bigx(void)
 {
+	int		count;
+	t_char	*tail;
+	t_char	*begin;
+	t_char	*tmp;
 
+	count = g_shell.edit.count;
+	tail = g_shell.edit.point_char;
+	begin = g_shell.edit.point_char;
+	while (count-- && begin && begin->prev && !(begin->prev->is_prompt))
+		begin = begin->prev;
+	if (!tail || begin == tail)
+		return ;
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
+	g_shell.edit.cpy_buff = build_cpy_buff(begin, tail);
+	while (begin && begin != tail->next)
+	{
+		tmp = begin;
+		begin = begin->next;
+		delete_char_from_list(tmp);
+	}
+	update_all_pos();
+	clean_and_print();
+	if (g_shell.edit.point_char == g_shell.edit.char_list.tail)
+		move_left();
 }

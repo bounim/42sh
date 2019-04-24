@@ -21,7 +21,10 @@ void			raw_terminal(void)
 	if (g_shell.term_set == TERM_SET)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(g_shell.raw_tio)))
+		{
+			perror(""); //FIXMESENPAII
 			fatal_exit(SH_EINVAL);
+		}
 	}
 }
 
@@ -34,6 +37,9 @@ void			cooked_terminal(void)
 	if (g_shell.term_set == TERM_SET)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &(g_shell.cooked_tio)))
+		{
+			perror("");//FIXME
 			fatal_exit(SH_ENOMEM);
+		}
 	}
 }

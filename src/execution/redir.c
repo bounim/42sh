@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:16:41 by emartine          #+#    #+#             */
-/*   Updated: 2019/03/27 17:16:42 by emartine         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:27:37 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <sys/stat.h>
-#include <stdio.h>//XXX
+#include "twenty_one_sh.h"
 #include "execution.h"
+#include "random.h"
 
 static int	save_dup(t_lexer_token *cur)
 {
@@ -61,6 +62,11 @@ static int	error_restore(t_lexer_token *cmd, char *msg)
 	return (-1);
 }
 
+/*
+** TODO heredoc: replace close + open by lseek in 42sh
+** lseek(cur->fd_new, 0, SEEK_SET);
+*/
+
 int			command_redir(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
@@ -97,8 +103,19 @@ int			command_redir(t_lexer_token *cmd)
 		}
 		else
 		{
-			// TODO heredoc
-			return (error_restore(cmd, "TODO heredoc\n"));
+			if ((cur->fd_new = random_file(path)) < 0)
+				return (error_restore(cmd, "Error: couldn't open\n"));
+			if (write(cur->fd_new, cur->heredoc_buffer,
+						cur->heredoc_size) != (ssize_t)cur->heredoc_size)
+			{
+				unlink(path);
+				return (error_restore(cmd, "Error: couldn't write\n"));
+			}
+			close(cur->fd_new);
+			cur->fd_new = open(path, O_RDONLY);
+			unlink(path);
+			if (cur->fd_new < 0)
+				return (error_restore(cmd, "Error: couldn't open\n"));
 		}
 		if (save_dup(cur) < 0)
 		{

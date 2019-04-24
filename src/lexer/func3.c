@@ -55,10 +55,7 @@ int		word_append(t_lexer *lex)
 		return (0);
 	}
 	if (lex->expansion_size > 0)
-	{
-		lex->impl_error = 1;
 		return (-1);
-	}
 	return (1);
 }
 

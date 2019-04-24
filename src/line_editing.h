@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 18:00:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/11 13:31:03 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:55:35 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 *** DEFINE PROMPT IDENTIFIERS
 */
 
-enum 					e_prompt
+enum					e_prompt
 {
 	BASIC_PROMPT = 0,
 	QUOTE_PROMPT,
@@ -54,9 +54,9 @@ enum 					e_prompt
 *** DEFINE VI SHORTCUTS
 */
 
-enum 					e_vi_search
+enum					e_vi_search
 {
-	SEARCH_CHAR_AFTER  = 0,
+	SEARCH_CHAR_AFTER = 0,
 	SEARCH_CHAR_BEFORE,
 	SEARCH_CHAR_AFTER_BEFORE,
 	SEARCH_CHAR_BEFORE_AFTER
@@ -69,7 +69,7 @@ enum 					e_vi_search
 enum					e_errnum
 {
 	PRINT_USAGE = 0,
-	NO_TERM_ENV, 
+	NO_TERM_ENV,
 	NO_TERM_INFO,
 	CANT_MODIFY_TERM,
 	MALLOC_ERROR,
@@ -80,7 +80,7 @@ enum					e_errnum
 *** DEFINE FREE CODES
 */
 
-enum 					e_freenum
+enum					e_freenum
 {
 	FREE_ALL_AND_EXIT = 0,
 	FREE_ALL_EDIT,
@@ -133,8 +133,8 @@ enum 					e_freenum
 # define LEFT_ARROW "\033[D"
 # define HOME "\033[H"
 # define END "\033[F"
-# define FORWARD_WORD "\033f"//0x06
-# define BACKWARD_WORD "\033b"//0x02
+# define FORWARD_WORD "\033f"
+# define BACKWARD_WORD "\033b"
 
 /*
 *** DEFINE COMMAND CODES
@@ -169,29 +169,29 @@ enum					e_multi_oct_comm_code
 *** DEFINE STRUCTS
 */
 
-typedef struct s_char   t_char;
+typedef struct s_char	t_char;
 
-struct 					s_char
+struct					s_char
 {
 	uint8_t				charac[6];
 	size_t				len;
 	uint32_t			x_pos;
 	int					y_pos;
-	int 				is_prompt;
-	struct s_char 		*prev;
+	int					is_prompt;
+	struct s_char		*prev;
 	struct s_char		*next;
 };
 
-typedef struct s_cpy    t_cpy;
+typedef struct s_cpy	t_cpy;
 
-struct 					s_cpy
+struct					s_cpy
 {
 	uint8_t				charac[6];
 	size_t				len;
 	t_cpy				*next;
 };
 
-typedef struct 			s_char_list
+typedef struct			s_char_list
 {
 	t_char				*head;
 	t_char				*tail;
@@ -200,46 +200,46 @@ typedef struct 			s_char_list
 
 typedef void			(*t_key_func)(void);
 
-typedef struct  		s_keymap
+typedef struct			s_keymap
 {
 	char				*seq;
 	size_t				len;
 	t_key_func			funckey;
 }						t_keymap;
 
-typedef struct 				 s_term
+typedef struct			s_term
 {
 	struct termios		origin;
 	struct termios		capa;
 	struct winsize		max;
 }						t_term;
 
-struct			s_last_command
+struct					s_last_command
 {
 	uint8_t				*buff;
-	int 				cursor_pos;// par rapport a la liste chainee.
+	int					cursor_pos;
 	t_last_command		*prev;
 };
 
-typedef struct 					s_edit
+typedef struct			s_edit
 {
-	t_char 				*point_char;
+	t_char				*point_char;
 	t_char				*mark;
 	t_last_command		*last_command;
 	t_char_list			char_list;
 	t_term				term_info;
-	int 				prompt_id;
+	int					prompt_id;
 	int					reading;
 	int					ret_ctrl_c;
 	int					count;
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
-	int 				lines_to_shift;
+	int					lines_to_shift;
 	uint8_t				*cpy_buff;
-	int 				vi_last_search_fn;
+	int					vi_last_search_fn;
 	uint8_t				vi_last_search_char;
-}								t_edit;
+}						t_edit;
 
 /*
 *** Signals handling functions for readline part
@@ -247,7 +247,6 @@ typedef struct 					s_edit
 
 void					init_signals(void);
 void					signal_handler(int signo);
-
 
 /*
 *** Readline init functions
@@ -265,20 +264,19 @@ void					readline(int prompt_id);
 void					modify_term(void);
 void					reset_term(void);
 
-
-void					readline_errors_controler(int errnum);
-
 /*
 *** Charac list use functions
 */
-void					add_char_to_list(uint8_t *charac, size_t len, int is_prompt);
+void					add_char_to_list(uint8_t *charac, size_t len,\
+		int is_prompt);
 void					delete_char_from_list(t_char *charac);
 
 /*
 *** Position Calculation function for each character on screen
 */
 size_t					get_x_pos(t_char *prev_char, uint32_t col_limit);
-size_t					get_y_pos(t_char *prev_char, uint32_t col_limit, uint32_t row_limit);
+size_t					get_y_pos(t_char *prev_char, uint32_t col_limit,\
+		uint32_t row_limit);
 void					place_base_at_start(void);
 void					update_all_pos(void);
 void					check_all_pos(void);
@@ -287,16 +285,17 @@ void					shift_pos_down(void);
 t_char					*skip_prompt(t_char *head);
 
 /*
-*** 
+***
 */
 int						get_buf_size(t_char *head, t_char *end);
 uint8_t					*list_to_buff_print(t_char *curr, t_char *end);
-uint8_t 				*prompt_to_buff(t_char_list *list);
+uint8_t					*prompt_to_buff(t_char_list *list);
 void					print_prompt(uint8_t *prompt, size_t prompt_len);
-int 					get_prompt_len(int prompt_id);
+int						get_prompt_len(int prompt_id);
 void					clean_screen_from(int x, int y);
 void					clean_and_print(void);
 void					input_controller(void);
+void					readline_errors_controler(int errnum);
 
 /*
 *** Movement functions for readline
@@ -338,20 +337,21 @@ void					copy_current_word(void);
 void					copy_all_line(void);
 void					paste_copy(void);
 
-
 /*
 *** Readline special action functions
 */
 void					return_fn(void);
 t_char					*find_first_non_prompt(t_char *head);
-void					free_controler(int code);
+void					rl_free_controler(int code);
 void					free_all(void);
-void					place_cursor_after_print(t_char *curr, int max_x, int max_y);
+void					place_cursor_after_print(t_char *curr, int max_x,\
+		int max_y);
 void					handle_ctrl_c(void);
 void					add_to_undo_list(uint8_t *key, size_t keylen);
 void					undo_last_edit_command(void);
 void					delete_last_command(t_last_command *last);
-void					put_prompt_in_simple_buff(uint8_t *simple_buff, int prompt_id, int len);
+void					put_prompt_in_simple_buff(uint8_t *simple_buff,\
+		int prompt_id, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
 
 /*
@@ -380,7 +380,7 @@ void					repeat_last_search_char(void);
 void					repeat_last_search_char_reverse(void);
 void					vi_repeat_after(uint8_t charac);
 void					vi_repeat_before(uint8_t charac);
-void 					vi_repeat_after_before(uint8_t charac);
+void					vi_repeat_after_before(uint8_t charac);
 void					vi_repeat_before_after(uint8_t charac);
 void					vi_append_mode(void);
 void					vi_append_eol(void);

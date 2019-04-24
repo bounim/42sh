@@ -12,7 +12,11 @@ SRC := \
 	env/free_envl.c \
 	env/print_envl.c \
 	env/envl_to_envarr.c \
-	execution/execution.c \
+	execution/execute_assign.c \
+	execution/execution_str.c \
+	execution/execute_cmd.c \
+	execution/execute_command_search.c \
+	execution/execution_errors.c \
 	execution/redir.c \
 	history/controler_history.c \
 	history/down_history.c \
@@ -25,6 +29,7 @@ SRC := \
 	history/resize_history.c \
 	history/free_history.c \
 	history/print_search.c \
+	history/rl_line_to_hist.c \
 	history/history_utils.c \
 	lexer/func.c \
 	lexer/func2.c \
@@ -33,7 +38,6 @@ SRC := \
 	lexer/token.c \
 	lexer/debug.c \
 	main.c \
-	signal/ft_signal.c \
 	signal/signal_handler.c \
 	terminal/shell.c \
 	terminal/run_shell.c \
@@ -42,6 +46,9 @@ SRC := \
 	builtin/start_builtin.c \
 	builtin/built_history.c \
 	builtin/built_cd.c \
+	builtin/built_test.c \
+	builtin/unary_test.c \
+	builtin/binary_test.c \
 	builtin/built_cd_opts.c \
 	builtin/built_cd_extra.c \
 	builtin/built_echo.c \
@@ -49,7 +56,6 @@ SRC := \
 	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\
-	builtin/check_builtin.c \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
@@ -58,8 +64,10 @@ SRC := \
 	builtin/built_alias_extra.c \
 	builtin/built_jobs.c \
 	builtin/built_jobs_extra.c \
-	builtin/built_fg.c \
-	builtin/built_bg.c \
+	builtin/built_fc.c \
+	builtin/fc_opts_controler.c \
+	builtin/fc_range_controler.c \
+	builtin/fc_print.c \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
@@ -68,6 +76,7 @@ SRC := \
 	builtin/print_general_error.c \
 	builtin/check_opts.c \
 	builtin/built_exit.c \
+	builtin/built_hash.c \
 	readline/readline.c \
 	readline/get_term_pos.c \
 	readline/prompt_controler.c \
@@ -82,7 +91,7 @@ SRC := \
 	readline/copy_controler.c \
 	readline/copy_conditions.c \
 	readline/return_fn.c \
-	readline/free_controler.c \
+	readline/rl_free_controler.c \
 	readline/special_del_controler.c \
 	readline/handle_ctrl_c.c \
 	readline/drag_char.c \
@@ -105,22 +114,21 @@ SRC := \
 	readline/vi_repeat_search_char.c \
 	readline/vi_repeat_search_fn.c \
 	readline/vi_undo.c \
-	job_control/manage_job.c \
-	job_control/put_in_xground.c \
+	readline/vi_delete_motion_c.c \
 	job_control/launch_job.c \
 	job_control/launch_proc.c \
-	job_control/stop_job.c \
-	job_control/continue_job.c \
 	job_control/init_job.c \
-	job_control/creat_job.c \
-	job_control/job_info.c \
+	job_control/create_job.c \
 	parser/parser.c \
-	parser/parser_destroy.c \
 	parser/parser_func.c \
 	parser/parser_node.c \
 	parser/parser_printer.c \
 	parser/is.c \
-	expansions/expansions.c
+	expansions/expansions.c \
+	expansions/expansions2.c \
+	expansions/expansions3.c \
+	expansions/expansions4.c \
+	random/file.c
 
 CFLAGS ?=
 CPPFLAGS ?= -Wall -Wextra -Werror -g3

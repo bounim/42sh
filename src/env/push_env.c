@@ -6,40 +6,56 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 19:30:17 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/04 13:50:14 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/09 16:41:59 by kberisha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
+static void		push_env_new(t_envl **head, char *name, char *value_copy,
+		int exp)
+{
+	t_envl		*new;
+	char		*name_copy;
+
+	if (NULL == (new = (t_envl *)malloc(sizeof(*new))))
+	{
+		free(value_copy);
+		return ;
+	}
+	ft_memset(new, 0, sizeof(*new));
+	if (NULL == (name_copy = ft_strdup(name)))
+	{
+		free(value_copy);
+		return ;
+	}
+	new->name = name_copy;
+	new->value = value_copy;
+	new->exp = exp;
+	*head = addlast_envl(*head, new);
+}
+
 void			push_env(t_envl **head, char *name, char *value, int exp)
 {
-	t_envl		*tmp;
+	t_envl		*cur;
+	char		*value_copy;
 
-	tmp = NULL;
-	if (!head || !name || !value)
+	if (!name)
 		return ;
-	tmp = *head;
-	if (tmp)
+	if (NULL == (value_copy = ft_strdup(value)))
+		return ;
+	cur = *head;
+	while (cur)
 	{
-		while (tmp->next != NULL)
+		if (ft_strcmp(cur->name, name) == 0)
 		{
-			if (ft_strcmp(tmp->name, name) == 0)
-			{
-				free(tmp->value);
-				tmp->value = ft_strdup(value);
-				tmp->exp = exp;
-				return ;
-			}
-			tmp = tmp->next;
+			free(cur->value);
+			cur->value = value ? ft_strdup(value) : NULL;
+			if (exp && !cur->exp)
+				cur->exp = 1;
+			return ;
 		}
+		cur = cur->next;
 	}
-	if (!(tmp = (t_envl *)malloc(sizeof(*tmp))))
-		return ;
-	tmp->name = ft_strdup(name);
-	tmp->value = ft_strdup(value);
-	tmp->exp = exp;
-	tmp->read_only = 0;
-	tmp->next = NULL;
-	*head = addlast_envl(*head, tmp);
+	push_env_new(head, name, value_copy, exp);
 }

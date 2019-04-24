@@ -111,11 +111,11 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"k", 1, vi_get_prev_history},
 		{"l", 1, vi_move_next_char},
 		{"h", 1, vi_move_prev_char},
-		{"w", 1, vi_forward_word}, /* to do */
+		{"w", 1, vi_forward_word},
 		{"W", 1, vi_forward_bigword},
-		{"e", 1, vi_end_word}, /*to do*/
+		{"e", 1, vi_end_word},
 		{"E", 1, vi_end_bigword},
-		{"b", 1, vi_backward_word}, /* to do */
+		{"b", 1, vi_backward_word},
 		{"B", 1, vi_backward_bigword},
 		{"^", 1, vi_move_first_nonblank},
 		{"$", 1, vi_go_to_end},
@@ -123,8 +123,8 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"|", 1, vi_move_counth_char},
 		{"f", 1, vi_search_char_after},
 		{"F", 1, vi_search_char_before},
-		{"T", 1, vi_search_char_after_before},
-		{"t", 1, vi_search_char_before_after},
+		{"T", 1, vi_search_char_before_after},
+		{"t", 1, vi_search_char_after_before},
 		{";", 1, repeat_last_search_char},
 		{",", 1, repeat_last_search_char_reverse},
 		{"a", 1, vi_append_mode},
@@ -133,19 +133,19 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{"I", 1, vi_insert_bol},
 		{"r", 1, vi_replace_char},
 		{"R", 1, vi_replace},
-		{"c", 1, vi_delete_c}, /* to do */
+		{"c", 1, vi_delete_c},
 		{"C", 1, vi_delete_endline_insert_eol},
 		{"S", 1, vi_clear_line_insert},
-		{"x", 1, vi_delete_x}, /* to do */
-		{"X", 1, vi_delete_bigx}, /* to do */
-		{"d", 1, vi_delete_motion}, /* to do */
+		{"x", 1, vi_delete_x},
+		{"X", 1, vi_delete_bigx},
+		{"d", 1, vi_delete_motion},
 		{"D", 1, delete_endline},
-		{"y", 1, vi_yank_motion}, /* to do */
+		{"y", 1, vi_yank_motion},
 		{"Y", 1, vi_yank_endline},
 		{"p", 1, vi_paste_after},
 		{"P", 1, vi_paste_before},
-		{"u", 1, vi_undo}, /* to do */
-		{"U", 1, vi_undo_all}, /* to do */
+		{"u", 1, vi_undo},
+		{"U", 1, vi_undo_all},
 		{"+", 1, vi_get_next_history},
 		{"-", 1, vi_get_prev_history}
 	}
@@ -191,7 +191,8 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	{
 		if ((!(key[0] >= 0 && key[0] < 32)) || key[0] == '\n')
 		{
-			add_to_undo_list(NULL, 0);
+			if (g_shell.edit.edit_mode == MODE_EMACS)
+				add_to_undo_list(NULL, 0);
 			add_char_to_list(key, *keylen, 0);
 		}
 		ft_memset(key, 0, *keylen);
@@ -201,7 +202,7 @@ static void	check_printable(uint8_t *key, size_t *keylen)
 	}
 }
 
-void	input_controller(void)
+void		input_controller(void)
 {
 	uint8_t	key[6];
 	size_t	keylen;
@@ -223,7 +224,8 @@ void	input_controller(void)
 				fatal_exit(SH_EINVAL);
 			keylen = (size_t)rd;
 			build_count(key, &keylen, g_shell.edit.edit_mode);
-			if (check_key(key, &keylen) == NO_MATCH && g_shell.edit.edit_mode != MODE_VI_COMMAND)
+			if (check_key(key, &keylen) == NO_MATCH
+			&& g_shell.edit.edit_mode != MODE_VI_COMMAND)
 				check_printable(key, &keylen);
 		}
 	}

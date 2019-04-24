@@ -108,8 +108,8 @@ void		vi_move_counth_char(void)
 	count = g_shell.edit.count - 1;
 	while (count > 0)
 	{
-		if (g_shell.edit.point_char->next &&
-		g_shell.edit.point_char->next->next)
+		if (g_shell.edit.point_char->next
+			&& g_shell.edit.point_char->next->next)
 			move_right();
 		count--;
 	}

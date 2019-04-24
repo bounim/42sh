@@ -13,10 +13,11 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-typedef struct s_lexer	t_lexer;
+typedef struct s_lexer			t_lexer;
+typedef struct s_lexer_token	t_lexer_token;
 
-void					lexer(t_lexer *lex, uint8_t *buffer,
+void							lexer(t_lexer *lex, uint8_t *buffer,
 		size_t buffer_size);
-void					lexer_destroy(t_lexer *lex);
+void							lexer_destroy(t_lexer *lex);
 
 #endif

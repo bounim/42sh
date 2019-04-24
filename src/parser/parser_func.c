@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "twenty_one_sh.h"
 #include "parser.h"
 
 static int	add_root(t_lexer *lex, t_lexer_token *new)
@@ -81,4 +82,3 @@ int			parser_add_tree(t_lexer *lex, t_lexer_token *new)
 	}
 	return (root_operator(lex, new));
 }
-

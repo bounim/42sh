@@ -14,7 +14,7 @@
 
 void		vi_move_next_char(void)
 {
-	int			count;
+	int		count;
 
 	if (g_shell.edit.point_char->next)
 	{
@@ -29,7 +29,7 @@ void		vi_move_next_char(void)
 
 void		vi_move_prev_char(void)
 {
-	int 		count;
+	int		count;
 
 	count = g_shell.edit.count;
 	while (count-- && g_shell.edit.point_char->is_prompt == FALSE)
@@ -41,7 +41,8 @@ void		vi_forward_word(void)
 	t_char	*curr;
 	int		count;
 
-	curr = g_shell.edit.point_char->next;
+	if (!(curr = g_shell.edit.point_char->next))
+		return ;
 	count = g_shell.edit.count;
 	while (count-- && curr)
 	{
@@ -54,9 +55,9 @@ void		vi_forward_word(void)
 		{
 			while (curr && !ft_isspace(curr->charac[0]))
 				curr = curr->next;
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->next;
 		}
-		while (curr && ft_isspace(curr->charac[0]))
-			curr = curr->next;
 	}
 	if (!curr)
 		return (vi_go_to_end());
@@ -69,20 +70,20 @@ void		vi_backward_word(void)
 	t_char	*curr;
 	int		count;
 
-	curr = g_shell.edit.point_char->next;
+	curr = g_shell.edit.point_char;
 	count = g_shell.edit.count;
 	while (count-- && curr)
 	{
-		while (curr && ft_isspace(curr->charac[0]))
-			curr = curr->prev;
 		if (ft_isspace(curr->charac[0]))
 		{
 			while (curr && ft_isspace(curr->charac[0]))
 				curr = curr->prev;
+			while (curr && curr->prev && !ft_isspace(curr->prev->charac[0]))
+				curr = curr->prev;
 		}
 		else
 		{
-			while (curr && !ft_isspace(curr->charac[0]))
+			while (curr && curr->prev && !ft_isspace(curr->prev->charac[0]))
 				curr = curr->prev;
 		}
 	}
@@ -94,5 +95,29 @@ void		vi_backward_word(void)
 
 void		vi_end_word(void)
 {
+	t_char	*curr;
+	int		count;
 
+	curr = g_shell.edit.point_char->next;
+	count = g_shell.edit.count;
+	while (count-- && curr)
+	{
+		if (curr->next && ft_isspace(curr->next->charac[0]))
+		{
+			curr = curr->next;
+			while (curr && ft_isspace(curr->charac[0]))
+				curr = curr->next;
+			while (curr && curr->next && !ft_isspace(curr->next->charac[0]))
+				curr = curr->next;
+		}
+		else
+		{
+			while (curr && curr->next && !ft_isspace(curr->next->charac[0]))
+				curr = curr->next;
+		}
+	}
+	if (!curr)
+		return (vi_go_to_end());
+	ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+	g_shell.edit.point_char = curr->prev;
 }

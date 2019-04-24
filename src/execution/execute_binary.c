@@ -1,22 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_typedefs.h                                      :+:      :+:    :+:   */
+/*   execute_binary.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: kberisha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 16:40:01 by schakor           #+#    #+#             */
-/*   Updated: 2019/03/06 15:59:46 by schakor          ###   ########.fr       */
+/*   Created: 2019/04/09 17:18:20 by kberisha          #+#    #+#             */
+/*   Updated: 2019/04/09 19:24:29 by kberisha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RL_TYPEDEFS_H
-# define RL_TYPEDEFS_H
+#include "execution.h"
 
-typedef struct s_rl				t_rl;
-typedef struct s_keymapi		t_keymapi;
-typedef struct s_bufvar			t_bufvar;
-typedef void	(*t_rl_command_func)(t_rl *rl);
-typedef struct s_history		t_history;
-
-#endif
+char	*

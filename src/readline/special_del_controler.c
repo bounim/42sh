@@ -15,10 +15,7 @@
 void	eot_fn(void)
 {
 	if (g_shell.edit.char_list.tail->is_prompt == 1)
-	{
-		cooked_terminal();
-		free_controler(FREE_ALL_AND_EXIT);
-	}
+		built_exit(NULL, NULL);
 	supr_charac();
 }
 
@@ -38,12 +35,11 @@ void	delete_backline(void)
 		curr = curr->prev;
 		c++;
 	}
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(curr, end);
-	while (c >= 0)
-	{
+	while (c-- >= 0)
 		delete_char_from_list(g_shell.edit.point_char);
-		c--;
-	}
 	if (g_shell.edit.cur_base_y < 0)
 		place_base_at_start();
 	update_all_pos();
@@ -57,12 +53,15 @@ void	delete_endline(void)
 	if (g_shell.edit.point_char == g_shell.edit.char_list.tail)
 		return ;
 	begin = g_shell.edit.point_char->next;
+	if (g_shell.edit.cpy_buff)
+		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(begin, g_shell.edit.char_list.tail);
 	while (g_shell.edit.point_char->next)
 	{
 		begin = g_shell.edit.point_char->next;
 		delete_char_from_list(begin);
 	}
+	update_all_pos();
 	clean_and_print();
 }
 
@@ -100,8 +99,7 @@ void	delete_word_backward(void)
 	t_char *curr;
 	t_char *tmp;
 
-	curr = g_shell.edit.point_char;
-	if (curr->prev->is_prompt)
+	if (!(curr = g_shell.edit.point_char) && curr->prev->is_prompt)
 		return ;
 	tmp = curr;
 	while (tmp && !tmp->prev->is_prompt && (!ft_u8_is_alnum(tmp->charac[0])
@@ -121,5 +119,6 @@ void	delete_word_backward(void)
 		delete_char_from_list(curr->next);
 	}
 	delete_char_from_list(curr);
+	update_all_pos();
 	clean_and_print();
 }

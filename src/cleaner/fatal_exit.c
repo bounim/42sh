@@ -6,7 +6,7 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:48:23 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/04 15:15:53 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/22 22:57:01 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void		fatal_exit(int code)
 {
-	//cooked_terminal();
+	if (g_shell.is_exiting)
+		return ;
+	g_shell.is_exiting = 1;
 	clean_shell();
 	if (code == SH_ENOMEM)
 		ft_putendl_fd("Cannot allocate memory.", STDERR_FILENO);
