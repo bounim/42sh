@@ -12,84 +12,51 @@
 
 #include "twenty_one_sh.h"
 
-int			check_builtin(char *cmd)
-{
-	return (cmd && (ft_strequ(cmd, "alias")
-			|| ft_strequ(cmd, "cd") || ft_strequ(cmd, "debug")
-			|| ft_strequ(cmd, "echo") || ft_strequ(cmd, "env")
-			|| ft_strequ(cmd, "exit") || ft_strequ(cmd, "export")
-			|| ft_strequ(cmd, "history") || ft_strequ(cmd, "jobs")
-			|| ft_strequ(cmd, "set") || ft_strequ(cmd, "setenv")
-			|| ft_strequ(cmd, "type") || ft_strequ(cmd, "unalias")
-			|| ft_strequ(cmd, "unset") || ft_strequ(cmd, "unsetenv")
-			|| ft_strequ(cmd, "hash") || ft_strequ(cmd, "test")));
-}
+static t_builtin	g_builtin[] = {
+	{"alias", built_alias},
+	{"cd", built_cd},
+	{"debug", built_debug},
+	{"echo", built_echo},
+	{"env", built_env},
+	{"exit", built_exit},
+	{"export", built_export},
+	{"hash", built_hash},
+	{"history", built_history},
+	{"jobs", built_jobs},
+	{"set", built_set},
+	{"setenv", built_setenv},
+	{"test", built_test},
+	{"type", built_type},
+	{"unalias", built_unalias},
+	{"unset", built_unset},
+	{"unsetenv", built_unsetenv},
+};
 
-static int	init_ptr_func(int (*func[18])(char **arg, t_envl *envl))
+int					check_builtin(char *cmd)
 {
-	func[0] = built_cd;
-	func[1] = built_echo;
-	func[2] = built_env;
-	func[3] = built_setenv;
-	func[4] = built_unsetenv;
-	func[5] = built_set;
-	func[6] = built_unset;
-	func[7] = built_export;
-	func[8] = built_alias;
-	func[9] = built_unalias;
-	func[10] = built_history;
-	func[11] = built_jobs;
-	func[12] = built_type;
-	func[13] = built_debug;
-	func[14] = built_exit;
-	func[15] = built_test;
-	func[16] = built_hash;
-	func[17] = NULL;
+	size_t	i;
+
+	i = 0;
+	while (i < sizeof(g_builtin) / sizeof(g_builtin[0]))
+	{
+		if (ft_strequ(cmd, g_builtin[i].name))
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
-static int	init_ptr_cmd(char *cmd[18])
+int					start_builtin(char **arg, t_envl *envl)
 {
-	cmd[0] = "cd";
-	cmd[1] = "echo";
-	cmd[2] = "env";
-	cmd[3] = "setenv";
-	cmd[4] = "unsetenv";
-	cmd[5] = "set";
-	cmd[6] = "unset";
-	cmd[7] = "export";
-	cmd[8] = "alias";
-	cmd[9] = "unalias";
-	cmd[10] = "history";
-	cmd[11] = "jobs";
-	cmd[12] = "type";
-	cmd[13] = "debug";
-	cmd[14] = "exit";
-	cmd[15] = "test";
-	cmd[16] = "hash";
-	cmd[17] = NULL;
-	return (0);
-}
-
-int			start_builtin(char **arg, t_envl *envl)
-{
-	char	*cmd[18];
-	int		(*func[18])(char **arg, t_envl *envl);
-	int		i;
-	int		ret;
+	size_t	i;
 
 	if (!arg || !arg[0])
 		return (-1);
-	init_ptr_cmd(cmd);
-	init_ptr_func(func);
 	i = 0;
-	while (cmd[i])
+	while (i < sizeof(g_builtin) / sizeof(g_builtin[0]))
 	{
-		if (ft_strequ(cmd[i], arg[0]))
-		{
-			ret = func[i](arg, envl);
-			return (ret);
-		}
+		if (ft_strequ(arg[0], g_builtin[i].name))
+			return (g_builtin[i].func(arg, envl));
 		i++;
 	}
 	return (-1);
