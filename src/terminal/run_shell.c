@@ -53,69 +53,30 @@ static enum e_prompt	determine_prompt(t_lexer *lex)
 	return (BACKSLASH_PROMPT);
 }
 
-static int				copy_heredoc_line(t_lexer_token *heredoc, size_t *i)
+static void				run_shell_loop(t_lexer *lex, size_t *i)
 {
-	size_t	j;
-	uint8_t	*buf;
-
-	if (!g_shell.line || *i >= g_shell.line_size)
+	while (1)
 	{
-		readline(HEREDOC_PROMPT);
-		*i = 0;
-		if (!g_shell.line || g_shell.edit.ret_ctrl_c)
+		while (!lex->input_end)
+			lex_a_line(lex, determine_prompt(lex), i);
+		if (parser_create_tree(lex) < 0)
 		{
-			g_shell.exit_code = 1;
-			free(g_shell.line);
-			g_shell.line = NULL;
-			return (-1);
+			lexer_destroy(lex);
+			continue ;
 		}
-	}
-	if (*i < g_shell.line_size)
-	{
-		if (heredoc->rtype == DLESSDASH)
+		if (!parser_input_end(lex))
 		{
-			while (*i < g_shell.line_size && g_shell.line[*i] == '\t')
-				(*i)++;
+			lex->input_end = 0;
+			continue ;
 		}
-		j = *i;
-		while (j < g_shell.line_size && g_shell.line[j] != '\n')
-			j++;
-		if (j - *i == heredoc->next->size && ft_memcmp(g_shell.line + *i,
-					heredoc->next->buffer, heredoc->next->size) == 0)
+		if (read_heredoc(lex, i) < 0)
 		{
-			*i = j + 1;
-			return (0);
+			lexer_destroy(lex);
+			continue ;
 		}
-		if (NULL == (buf = malloc(heredoc->heredoc_size + j - *i + 1)))
-			return (-1);
-		ft_memmove(buf, heredoc->heredoc_buffer, heredoc->heredoc_size);
-		ft_memmove(buf + heredoc->heredoc_size, g_shell.line + *i, j - *i);
-		buf[heredoc->heredoc_size + (j - *i)] = '\n';
-		free(heredoc->heredoc_buffer);
-		heredoc->heredoc_buffer = buf;
-		heredoc->heredoc_size += j - *i + 1;
-		*i = j + 1;
-		return (1);
+		execute(lex);
+		lexer_destroy(lex);
 	}
-	return (1);
-}
-
-static int				read_heredoc(t_lexer *lex, size_t *i)
-{
-	t_lexer_token	*cur;
-	int				r;
-
-	cur = lex->heredoc_head;
-	while (cur)
-	{
-		r = 1;
-		while (r > 0)
-			r = copy_heredoc_line(cur, i);
-		if (r < 0)
-			return (-1);
-		cur = cur->heredoc_next;
-	}
-	return (0);
 }
 
 void					run_shell(void)
@@ -126,27 +87,5 @@ void					run_shell(void)
 	ft_memset(&lex, 0, sizeof(lex));
 	g_shell.lexer = &lex;
 	i = 0;
-	while (1)
-	{
-		while (!lex.input_end)
-			lex_a_line(&lex, determine_prompt(&lex), &i);
-		if (parser_create_tree(&lex) < 0)
-		{
-			lexer_destroy(&lex);
-			continue ;
-		}
-		if (!parser_input_end(&lex))
-		{
-			lex.input_end = 0;
-			continue ;
-		}
-		if (read_heredoc(&lex, &i) < 0)
-		{
-			lexer_destroy(&lex);
-			continue ;
-		}
-		execute(&lex);
-		//free_exec();
-		lexer_destroy(&lex);
-	}
+	run_shell_loop(&lex, &i);
 }

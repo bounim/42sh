@@ -27,5 +27,6 @@ char	**arg_to_argv(t_lexer_token *cmd);
 
 int		redir_op(t_lexer_token *cmd, t_lexer_token *cur);
 int		error_restore(t_lexer_token *cmd, char *msg);
+int		read_heredoc(t_lexer *lex, size_t *i);
 
 #endif

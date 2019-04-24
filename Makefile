@@ -42,6 +42,7 @@ SRC := \
 	signal/signal_handler.c \
 	terminal/shell.c \
 	terminal/run_shell.c \
+	terminal/run_shell2.c \
 	terminal/terminal.c \
 	ft.c \
 	builtin/start_builtin.c \
