@@ -18,7 +18,6 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 	char	*name;
 	char	*value;
 
-	printf("size %zu && pos %zu\n", assign->size, assign->assign_position);
 	if (NULL == (name = malloc(assign->assign_position + 1)))
 		return (-1);
 	if (NULL == (value = malloc(assign->size - assign->assign_position)))
@@ -31,12 +30,8 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 	ft_memcpy(value, assign->buffer + assign->assign_position + 1,
 			assign->size - assign->assign_position - 1);
 	value[assign->size - assign->assign_position - 1] = '\0';
-	//if (!cmd->arg_head)
-	//	push_env(&g_shell.envl, name, value, 0);
-		//TODO add assignement word to current exec env -- ask khan
-	//else
 	if (proc)
-		push_env(&proc->envl, name, value, 1); //grv pas sur... recup copie environnement
+		push_env(&proc->envl, name, value, 1);
 	else
 		push_env(&g_shell.envl, name, value, 0);
 	return (0);
