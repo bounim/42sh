@@ -6,7 +6,7 @@
 /*   By: schakor <schakor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:27:07 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/15 14:58:12 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/25 16:31:24 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_envl			*init_shell_envl(char **env)
 	set_env_var(&ret, "PWD", ft_strdup(cwd), ENV_EX);
 	set_env_var(&ret, "OLDPWD", ft_strdup(cwd), ENV_EX);
 	set_env_var(&ret, "HISTFILE", ft_strjoin(get_env_val(ret, "HOME"),
-			"/.42sh_history"), 0);
-	set_env_var(&ret, "HISTSIZE", ft_strdup("50000"), 0);
+											"/.42sh_history"), ENV_EX);
+	set_env_var(&ret, "HISTSIZE", ft_strdup("50000"), ENV_EX);
 	return (ret);
 }
