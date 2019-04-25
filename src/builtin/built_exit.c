@@ -12,12 +12,31 @@
 
 #include "twenty_one_sh.h"
 
-int		built_exit(char **arg, t_envl *envl)
+static void	print_exit_error_message(char *arg)
+{
+	ft_putstr("sh: exit: ");
+	ft_putstr(arg);
+	ft_putstr(": numeric argument required");
+}
+
+static void	check_if_exit_arg_is_digit(char **arg)
+{
+	if (arg[1][0] == '-')
+	{
+		if (ft_strisdigit(arg[1] + 1) != 0)
+			print_exit_error_message(arg[1]);
+	}
+	else if (ft_strisdigit(arg[1]) != 0)
+		print_exit_error_message(arg[1]);
+}
+
+int			built_exit(char **arg, t_envl *envl)
 {
 	(void)envl;
 	file_from_history(g_shell.hist.history);
 	clean_shell();
 	ft_putstr("exit\n");
+	check_if_exit_arg_is_digit(arg);
 	if (arg)
 		if (arg[1])
 			exit(ft_atoi(arg[1]));
