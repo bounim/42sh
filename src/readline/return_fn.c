@@ -30,8 +30,8 @@ static int		is_line_empty(t_char *tail)
 static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 {
 	rl_free_controler(FREE_ALL_EDIT);
-	cooked_terminal();
 	write(1, "\n", 1);
+	ft_putstr(tgetstr("cr", NULL));
 	g_shell.edit.reading = FALSE;
 	if (g_shell.edit.prompt_id == BASIC_PROMPT)
 		buff = (uint8_t *)replace_exclaim((char *)buff,\

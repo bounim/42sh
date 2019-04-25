@@ -20,7 +20,6 @@ static void	print_usage(void)
 
 void		readline_errors_controler(int errnum)
 {
-	cooked_terminal();
 	ft_putstr(tgetstr("cr", NULL));
 	if (errnum == PRINT_USAGE)
 		print_usage();
@@ -33,5 +32,6 @@ void		readline_errors_controler(int errnum)
 	else if (errnum == EXIT)
 		ft_putstr("Exit(0)\n");
 	rl_free_controler(FREE_ALL_AND_EXIT);
+	cooked_terminal();
 	exit(1);
 }
