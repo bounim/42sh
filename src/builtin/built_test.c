@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:31:02 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/22 16:41:38 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:22:12 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 int			unexpected(char *cmd, char *arg, char *reason)
 {
-	write(1, "21sh: ", 6);
-	ft_putstr(cmd);
-	ft_putstr(": ");
-	ft_putstr(arg);
-	ft_putstr(": ");
-	ft_putstr(reason);
-	write(1, "\n", 1);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(reason, 2);
 	return (2);
 }
 
@@ -46,9 +44,8 @@ int			built_test_end(int argc, char **av, char *cmd, int r)
 	{
 		return (binary_test(cmd, av[1], av[2], av[3]) ^ r);
 	}
-	write(1, "21sh: ", 6);
-	ft_putstr(cmd);
-	write(1, ": too many arguments\n", 21);
+	ft_putstr_fd(cmd, 2);
+	write(2, ": too many arguments\n", 21);
 	return (2);
 }
 

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:18:16 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/22 16:38:43 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:39:01 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void		*print_flag_error(char *str, int i, char *cmd)
 	buf = ft_strdup("-");
 	buf2 = ft_strsub(str, i, 1);
 	buf = ft_strfjoin(buf, buf2, 2);
-	put_error("sh: ", cmd, buf, "invalid option\n");
+	put_error(NULL, cmd, buf, "invalid option\n");
+	ft_strdel(&buf);
 	return (NULL);
 }
 

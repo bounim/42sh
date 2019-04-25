@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 14:39:07 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/28 16:59:23 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:14:09 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ static int		put_setenv_error(int err)
 	if (err == 1)
 		ft_putendl_fd("setenv: Variable name must begin with a letter", 2);
 	else if (err == 2)
-		ft_putendl_fd("setenv: Too many arguments.", 2);
+		ft_putendl_fd("setenv: Too many arguments", 2);
 	else if (err == 3)
-		ft_putendl_fd("setenv: Variable name must containt \
-						alphanumeric characters.", 2);
+	{
+		ft_putstr_fd("setenv: Variable name must "
+					"containt alphanumeric characters\n", 2);
+	}
 	return (1);
 }
 
@@ -60,7 +62,7 @@ static int		check_env_opts(char *arg)
 			ft_putstr_fd("env: illegal option -- -", 2);
 			write(2, arg + i, 1);
 			ft_putstr_fd("\nusage: env [-i] [name=value ..."
-					"] [utility [argumment ...]]\n", 2);
+						"] [utility [argumment ...]]\n", 2);
 			return (1);
 		}
 		i++;

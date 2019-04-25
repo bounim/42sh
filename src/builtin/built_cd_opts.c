@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_cd_extra.c                                   :+:      :+:    :+:   */
+/*   built_cd_opts.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/30 14:31:39 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/02 10:33:35 by khsadira         ###   ########.fr       */
+/*   Created: 2019/04/25 15:17:55 by khsadira          #+#    #+#             */
+/*   Updated: 2019/04/25 15:17:57 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	cd_check_opts(char *arg, int *opts)
 			*opts = 2;
 		else if (arg[i] != 'P')
 		{
-			ft_putstr_fd("sh: cd: -", 2);
+			ft_putstr_fd("cd: -", 2);
 			write(2, arg + i, 1);
 			ft_putstr_fd(": invalid option\ncd: usage: cd [-L|-P] [dir]\n", 2);
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 18:40:47 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/24 18:40:49 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:14:46 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 
 static int	cd_path_failed_perror(char *arg, char *path, char *oldpwd)
 {
-	ft_putstr_fd("sh: cd: ", 2);
+	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
 	ft_strdel(&path);

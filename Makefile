@@ -61,6 +61,7 @@ SRC := \
 	builtin/built_set.c \
 	builtin/built_unset.c \
 	builtin/built_export.c \
+	builtin/check_opts.c \
 	builtin/built_alias.c \
 	builtin/built_unalias.c \
 	builtin/built_alias_extra.c \
@@ -71,7 +72,6 @@ SRC := \
 	builtin/replace_exclaim.c \
 	builtin/replace_exclaim_extra.c \
 	builtin/print_general_error.c \
-	builtin/check_opts.c \
 	builtin/built_exit.c \
 	builtin/built_hash.c \
 	readline/readline.c \

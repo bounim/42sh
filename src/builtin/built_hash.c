@@ -6,7 +6,7 @@
 /*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 15:11:50 by emartine          #+#    #+#             */
-/*   Updated: 2019/04/22 15:11:52 by emartine         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:16:16 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int		hash_set(char *cmd, t_envl *envl)
 	hashmap_unset(&g_shell.hmap, (uint8_t *)cmd, cmdsize);
 	if (NULL == (r = find_command(cmd, envl)))
 	{
-		printer_str(&g_shell.err, "21sh: hash: ");
+		printer_str(&g_shell.err, "hash: ");
 		printer_str(&g_shell.err, cmd);
 		printer_str(&g_shell.err, ": not found\n");
 		printer_flush(&g_shell.err);

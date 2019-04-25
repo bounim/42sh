@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 10:46:11 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/15 14:44:10 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:28:30 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,22 @@ static int	print_type(char *name, t_envl *envl)
 
 	if (check_builtin(name))
 	{
-		printer_str(&g_shell.out, name);
-		printer_str(&g_shell.out, " is a shell builtin\n");
+		printer_str(&g_shell.err, name);
+		printer_str(&g_shell.err, " is a shell builtin\n");
 	}
 	else if ((path = find_command(name, envl)))
 	{
-		printer_str(&g_shell.out, name);
-		printer_str(&g_shell.out, " is ");
-		printer_str(&g_shell.out, path);
-		printer_endl(&g_shell.out);
+		printer_str(&g_shell.err, name);
+		printer_str(&g_shell.err, " is ");
+		printer_str(&g_shell.err, path);
+		printer_endl(&g_shell.err);
 		free(path);
 	}
 	else
 	{
-		printer_str(&g_shell.out, "21sh: type: ");
-		printer_str(&g_shell.out, name);
-		printer_str(&g_shell.out, ": not found\n");
+		printer_str(&g_shell.err, "type: ");
+		printer_str(&g_shell.err, name);
+		printer_str(&g_shell.err, ": not found\n");
 		return (1);
 	}
 	return (0);
@@ -53,6 +53,6 @@ int			built_type(char **arg, t_envl *envl)
 		r |= print_type(arg[i], envl);
 		i++;
 	}
-	printer_flush(&g_shell.out);
+	printer_flush(&g_shell.err);
 	return (r);
 }

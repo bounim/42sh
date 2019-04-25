@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:01:03 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/03 11:57:06 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:17:07 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_opt_jobs	*init_opt_jobs(t_opt_jobs *opts)
 
 static void			*print_error_jobs(char *arg)
 {
-	ft_putstr_fd("sh: jobs: -", 2);
+	ft_putstr_fd("jobs: -", 2);
 	write(2, arg, 1);
 	ft_putstr_fd(": invalid option\njobs: usage: jobs [-lp]", 2);
 	ft_putstr_fd("[jobspec]\n", 2);

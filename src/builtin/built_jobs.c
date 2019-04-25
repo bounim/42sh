@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:41:35 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/11 12:10:13 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:16:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	print_jobs_continue(t_job *jobs, t_opt_jobs opts, int i)
 		ft_putnbr(jobs->pgid);
 		ft_putstr(" ");
 	}
-	if (opts.l == 1)
-		ft_putstr("Suspended: 18\t");
-	else
-		ft_putstr("Stopped(SIGTSTP)\t");
+	//if (opts.l == 1)
+	//	ft_putstr("Suspended: 18\t");
+	//else
+	//	ft_putstr("Stopped(SIGTSTP)\t"); todo get the good inf jobs
 	ft_putendl(jobs->cmd);
 }
 

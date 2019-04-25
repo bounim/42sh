@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:08:25 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/24 17:42:56 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/04/25 15:38:41 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int			built_unalias(char **arg, t_envl *envl)
 
 	(void)envl;
 	ret = 0;
-	if (!g_shell.alias)
-		return (1);
 	if ((i = start_arg_unalias(arg, &opts)) == -1)
+		return (1);
+	if (!g_shell.alias)
 		return (1);
 	if (opts == 1)
 		free_alias(g_shell.alias);
