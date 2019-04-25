@@ -14,9 +14,11 @@
 
 void	eot_fn(void)
 {
-	cooked_terminal();
 	if (g_shell.edit.char_list.tail->is_prompt == 1)
+	{
+		cooked_terminal();
 		built_exit(NULL, NULL);
+	}
 	supr_charac();
 }
 
