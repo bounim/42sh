@@ -14,12 +14,12 @@
 
 void	set_signal_dfl(void)
 {
-	//signal(SIGINT, SIG_DFL);
-	//signal(SIGQUIT, SIG_DFL);
-	//signal(SIGTSTP, SIG_DFL);
-	//signal(SIGTTIN, SIG_DFL);
-	//signal(SIGTTOU, SIG_DFL);
-	//signal(SIGCHLD, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);
 } //a rajouter
 
 int			get_return_status(int status)
@@ -30,7 +30,8 @@ int			get_return_status(int status)
 		return (WTERMSIG(status));
 	else if (WIFSTOPPED(status))
 		return (WSTOPSIG(status));
-	return (1);
+	else
+		return (EXIT_FAILURE);
 }
 
 void		launch_proc(t_proc *proc)
@@ -41,7 +42,6 @@ void		launch_proc(t_proc *proc)
 	status = 0;
 	if (proc->next || !proc->is_builtin)
 	{
-		set_signal_dfl();
 		pid = fork();
 		if (pid < 0)
 			return ; //TODO fork error
@@ -55,9 +55,11 @@ void		launch_proc(t_proc *proc)
 			{
 				waitpid(pid, &status, WUNTRACED | WCONTINUED);
 				g_shell.exit_code = get_return_status(status);
+				wait(NULL);
 			}
 			return ;
 		}
+		signal(SIGINT, SIG_DFL);
 		if (proc->prev)
 		{
 			dup2(proc->prev->tunnel[0], STDIN_FILENO);
