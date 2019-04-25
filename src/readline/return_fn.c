@@ -33,13 +33,12 @@ static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 	cooked_terminal();
 	write(1, "\n", 1);
 	g_shell.edit.reading = FALSE;
-	if ((buff = (uint8_t *)replace_exclaim((char *)buff,\
-					g_shell.hist.history, NULL, NULL)))
-	{
-		rl_line_to_hist(add_to_hist, buff, buff_size);
-		buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
-		buff_size = ft_u8_strlen(buff);
-	}
+	if (g_shell.edit.prompt_id == BASIC_PROMPT)
+		buff = (uint8_t *)replace_exclaim((char *)buff,\
+		g_shell.hist.history, NULL, NULL);
+	rl_line_to_hist(add_to_hist, buff, buff_size);
+	buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);
+	buff_size = ft_u8_strlen(buff);
 	g_shell.line = buff;
 	g_shell.line_size = buff_size;
 }
