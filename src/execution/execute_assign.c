@@ -34,6 +34,8 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 		push_env(&proc->envl, name, value, 1);
 	else
 		push_env(&g_shell.envl, name, value, 0);
+	free(name);
+	free(value);
 	return (0);
 }
 
