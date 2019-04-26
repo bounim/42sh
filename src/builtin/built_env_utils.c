@@ -12,13 +12,32 @@
 
 #include "twenty_one_sh.h"
 
-int			env_exit(char *str)
+int			env_exit(char *str, char *path)
 {
 	ft_putstr_fd("env: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putendl_fd(": No such file or directory", 2);
-	exit(125);
+	if (!path)
+	{
+		ft_putendl_fd(": No such file or directory", 2);
+		exit(127);
+	}
+	else if (access(path, X_OK))
+	{
+		ft_putendl_fd(": Operation not permitted", 2);
+		exit(126);
+	}
 	return (-1);
+}
+
+int			env_usage(char *str)
+{
+	printer_str(&g_shell.err, "env: illegal option -- ");
+	printer_char(&g_shell.err, *(str + 1));
+	printer_str(&g_shell.err, "\nusage: env [-i] [name=value ...]");
+	printer_str(&g_shell.err, " [utility [argument ...]]");
+	printer_endl(&g_shell.err);
+	printer_flush(&g_shell.err);
+	return (125);
 }
 
 char		**from_arg_to_cmd(char **start)
