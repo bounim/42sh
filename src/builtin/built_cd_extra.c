@@ -52,9 +52,9 @@ char		*rework_canonic_path(char *cwd)
 		return (NULL);
 	}
 	i = 0;
+	ft_strdel(&cwd);
 	if (!(ret_t = canonic_path_rework_tab(cwd_t, &j)))
 		return (NULL);
-	ft_strdel(&cwd);
 	cwd = (j == 0) ? ft_strdup("/") : ft_strdup("");
 	while (i < j)
 	{
@@ -63,5 +63,71 @@ char		*rework_canonic_path(char *cwd)
 	}
 	ft_arrdel(cwd_t);
 	ft_arrdel(ret_t);
+	return (cwd);
+}
+
+static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts)
+{
+	char		*cwd;
+	int		i;
+	struct stat	sb;
+
+	cwd = NULL;
+	i = 0;
+	while (cdpath_t[i])
+	{
+		if (ft_strnequ(cdpath_t[i], ".", 1) || ft_strnequ(cdpath_t[i], "..", 2))
+		{
+			ft_strdel(&cdpath_t[i]);
+			cdpath_t[i] = getcwd(NULL, 0);
+		}
+		cwd = ft_strdup(cdpath_t[i]);
+		cwd = ft_strfjoin(cwd, "/", 0);
+		cwd = ft_strfjoin(cwd, arg, 0);
+		if (lstat(cwd, &sb) == 0)
+			return (cwd);
+		ft_strdel(&cwd);
+		i++;
+	}
+	if (!opts)
+		return (NULL);
+	return (ft_strdup(arg));
+}
+
+static char	*rework_last_cwd(char *cwd, char *arg, int len)
+{
+	if (cwd)
+		return (cwd);
+	if (len != 0)
+		return (NULL);
+	if (!(cwd = ft_strdup(g_shell.canonic_path)))
+		return (NULL);
+	cwd = ft_strfjoin(cwd, "/", 0);
+	cwd = ft_strfjoin(cwd, arg, 0);
+	return (cwd);
+}
+
+char		*find_cdpath(char *arg, t_envl *envl, int opts)
+{
+	char		*cdpath;
+	char		**cdpath_t;
+	char		*cwd;
+	int		len;
+
+	len = 0;
+	cwd = NULL;
+	if (ft_strnequ(arg, "/", 1) || ft_strnequ(arg, "./", 2) ||
+		ft_strnequ(arg, "../", 3) || ft_strnequ(arg, ".", 1) ||
+		ft_strnequ(arg, "..", 2))
+		return (rework_last_cwd(cwd, arg, 0));
+	if ((cdpath = get_env_val(envl, "CDPATH")))
+	{
+		if (!(cdpath_t = ft_strsplit(cdpath, ':')))
+			return (ft_strdup(arg));
+		cwd = check_cdpath_t(cdpath_t, arg, opts);
+		len = ft_arrlen(cdpath_t);
+		ft_arrdel(cdpath_t);
+	}
+	cwd = rework_last_cwd(cwd, arg, len);
 	return (cwd);
 }
