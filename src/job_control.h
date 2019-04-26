@@ -44,7 +44,7 @@ struct			s_job
 	char			*cmd;
 	t_proc			*head_proc;
 	t_proc			*foot_proc;
-	pid_t			pgid; // FIXME
+	pid_t			pgid;
 	char			notified;
 	t_termios		tmodes;
 	struct s_job	*next;
