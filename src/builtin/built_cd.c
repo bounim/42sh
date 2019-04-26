@@ -40,7 +40,6 @@ static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 			return (find_cdpath(arg, envl, opts));
 		if (!(cwd = find_cdpath(arg, envl, opts)))
 			return (NULL);
-		printf("ici\n");
 	}
 	else
 		cwd = ft_strdup(arg);
