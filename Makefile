@@ -55,6 +55,7 @@ SRC := \
 	builtin/built_cd_extra.c \
 	builtin/built_echo.c \
 	builtin/built_env.c \
+	builtin/built_env_utils.c \
 	builtin/built_extra.c \
 	builtin/built_setenv.c \
 	builtin/built_unsetenv.c\

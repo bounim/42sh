@@ -74,6 +74,8 @@ int					built_cd(char **arg, t_envl *envl);
 int					built_debug(char **arg, t_envl *envl);
 int					built_echo(char **arg, t_envl *envl);
 int					built_env(char **arg, t_envl *envl);
+int					exec_env(char **arg, int start, t_envl *head);
+int					is_valid_name(char *str);
 int					built_exit(char **arg, t_envl *envl);
 int					built_export(char **arg, t_envl *envl);
 int					built_fg(char **arg, t_envl *envl);
