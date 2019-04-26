@@ -12,17 +12,14 @@
 
 #include "twenty_one_sh.h"
 
-static char	**canonic_path_rework_tab(char **cwd_t, int *k)
+static char	**canonic_path_rework_tab(char **cwd_t, int *k, int i, int j)
 {
 	char	**ret;
-	int		i;
-	int		j;
 
 	i = ft_arrlen(cwd_t);
 	if (!(ret = (char **)malloc((i + 1) * sizeof(char *))))
 		return (NULL);
 	ft_memset(ret, 0, (i + 1) * sizeof(char *));
-	j = 0;
 	i = 0;
 	while (cwd_t[i])
 	{
@@ -32,7 +29,11 @@ static char	**canonic_path_rework_tab(char **cwd_t, int *k)
 				j--;
 		}
 		else if (!ft_strequ(cwd_t[i], "."))
-			ret[j++] = ft_strdup(cwd_t[i]);
+		{
+			ft_strdel(&ret[j]);
+			ret[j] = ft_strdup(cwd_t[i]);
+			j++;
+		}
 		i++;
 	}
 	*k = j;
@@ -53,7 +54,7 @@ char		*rework_canonic_path(char *cwd)
 	}
 	i = 0;
 	ft_strdel(&cwd);
-	if (!(ret_t = canonic_path_rework_tab(cwd_t, &j)))
+	if (!(ret_t = canonic_path_rework_tab(cwd_t, &j, ft_arrlen(cwd_t), 0)))
 		return (NULL);
 	cwd = (j == 0) ? ft_strdup("/") : ft_strdup("");
 	while (i < j)
