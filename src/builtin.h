@@ -65,16 +65,25 @@ typedef struct		s_builtin
 	int				(*func)(char **, t_envl *);
 }					t_builtin;
 
+typedef struct		s_cor
+{
+	t_envl			*dup_env;
+	char			**arg_ptr;
+	char			**start;
+	int				opt;
+	char			*name;
+}					t_cor;
+
 int					check_builtin(char *cmd);
 int					start_builtin(char **arg, t_envl *envl);
-
+char				**from_arg_to_cmd(char **start);
+int					env_exit(char *str);
 int					built_alias(char **arg, t_envl *envl);
 int					built_bg(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);
 int					built_debug(char **arg, t_envl *envl);
 int					built_echo(char **arg, t_envl *envl);
 int					built_env(char **arg, t_envl *envl);
-int					exec_env(char **arg, int start, t_envl *head);
 int					is_valid_name(char *str);
 int					built_exit(char **arg, t_envl *envl);
 int					built_export(char **arg, t_envl *envl);
