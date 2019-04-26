@@ -26,8 +26,8 @@ static char	*cd_oldpwd(t_envl *envl)
 
 static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 {
-	if (opts)
-		return (ft_strdup(arg));
+	if (ft_strequ(arg, "-"))
+		return (cd_oldpwd(envl));
 	if (!arg)
 	{
 		if (!(cwd = ft_strdup(get_env_val(envl, "HOME"))))
@@ -36,15 +36,11 @@ static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 	}
 	if (!ft_strnequ(arg, "/", 1))
 	{
-		if (ft_strequ(arg, "-"))
-			return (cd_oldpwd(envl));
-		if (g_shell.canonic_path)
-			cwd = ft_strdup(g_shell.canonic_path);
-		else if (!(cwd = ft_strdup(get_env_val(envl, "PWD"))))
-			if (!(cwd = getcwd(NULL, 0)))
-				return (NULL);
-		cwd = ft_strfjoin(cwd, "/", 0);
-		cwd = ft_strfjoin(cwd, arg, 0);
+		if (opts)
+			return (find_cdpath(arg, envl, opts));
+		if (!(cwd = find_cdpath(arg, envl, opts)))
+			return (NULL);
+		printf("ici\n");
 	}
 	else
 		cwd = ft_strdup(arg);
@@ -52,20 +48,28 @@ static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 	return (cwd);
 }
 
-/*static char	*search_cd_path(char *arg, t_envl *envl, char *cwd, int opts)
-{
-	
-}*/
-
-
 static int	cd_path_failed_perror(char *arg, char *path, char *oldpwd)
 {
-	ft_putstr_fd("cd: ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
-	ft_strdel(&path);
-	ft_strdel(&oldpwd);
-	return (1);
+	int		ret;
+	struct stat	sb;
+
+	ret = 0;
+	if (access(path, F_OK) || path == NULL)
+		ret = 1 + put_error(NULL, "cd", arg,
+			"No such file or directory\n");
+	else if (lstat(path, &sb) == 0 && (!S_ISDIR(sb.st_mode) && !S_ISLNK(sb.st_mode)))
+		ret = 1 + put_error(NULL, "cd", arg, "Not a directory\n");
+	else if (access(path, X_OK))
+		ret = 1 + put_error(NULL, "cd", arg, "Permission denied\n");
+	else if (chdir(path))
+		ret = 1 + put_error(NULL, "cd", arg, "Unable to process\n");
+	if (ret == 1)
+	{
+		ft_strdel(&path);
+		ft_strdel(&oldpwd);
+		return (1);
+	}
+	return (0);
 }
 
 static int	cd_push_env(char *path, char *oldpwd)
@@ -89,15 +93,14 @@ int			built_cd(char **arg, t_envl *envl)
 	opts = 0;
 	if (!(i = cd_first_arg(arg, &opts)))
 		return (1);
-	else if (!(path = search_path(*(arg + i), envl, NULL, opts)))
-		return (1);
+	path = search_path(*(arg + i), envl, NULL, opts);
 	if (!(oldpwd = ft_strdup(get_env_val(envl, "PWD"))))
 	{
 		ft_strdel(&path);
 		return (1);
 	}
-	if (chdir(path))
-		return (cd_path_failed_perror(*(arg + i), path, oldpwd));
+	if (cd_path_failed_perror(*(arg + i), path, oldpwd))
+		return (1);
 	if (ft_strequ(arg[i], "-"))
 		ft_putendl(path);
 	if (opts)
