@@ -105,7 +105,7 @@ char		*command_search(t_lexer_token *cmd, char **arg, t_envl *envl)
 {
 	if (cmd->ptype != PARSER_COMMAND || !arg[0])
 	{
-		if (arg[0]) //TODO arg[0] ou !arg[0]
+		if (!arg[0])
 			fatal_exit(7);
 		return (NULL);
 	}

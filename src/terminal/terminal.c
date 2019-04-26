@@ -32,5 +32,4 @@ void			cooked_terminal(void)
 	if (g_shell.term_set == TERM_SET)
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &(g_shell.cooked_tio)) == -1)
 			fatal_exit(SH_EINVAL);
-
 }
