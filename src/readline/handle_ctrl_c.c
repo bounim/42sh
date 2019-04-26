@@ -17,6 +17,7 @@ void		handle_ctrl_c(void)
 	write(1, "\n", 1);
 	ft_putstr(tgetstr("cr", NULL));
 	rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+	free_last_command_list();
 	g_shell.edit.reading = FALSE;
 	g_shell.edit.ret_ctrl_c = TRUE;
 }

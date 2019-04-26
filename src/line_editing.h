@@ -343,6 +343,7 @@ void					paste_copy(void);
 void					return_fn(void);
 t_char					*find_first_non_prompt(t_char *head);
 void					rl_free_controler(int code);
+void					free_last_command_list(void);
 void					free_all(void);
 void					place_cursor_after_print(t_char *curr, int max_x,\
 		int max_y);
