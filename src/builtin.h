@@ -68,16 +68,17 @@ typedef struct		s_builtin
 typedef struct		s_cor
 {
 	t_envl			*dup_env;
-	char			**arg_ptr;
+	char			**t;
 	char			**start;
-	int				opt;
+	int				o;
 	char			*name;
 }					t_cor;
 
 int					check_builtin(char *cmd);
 int					start_builtin(char **arg, t_envl *envl);
 char				**from_arg_to_cmd(char **start);
-int					env_exit(char *str);
+int					env_exit(char *str, char *path);
+int					env_usage(char *str);
 int					built_alias(char **arg, t_envl *envl);
 int					built_bg(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);

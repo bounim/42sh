@@ -20,6 +20,7 @@ static int		execute_utility(char **arg, char **env)
 	char	*path;
 
 	envl = NULL;
+	path = NULL;
 	set_signal_dfl();
 	pid = fork();
 	if (pid < 0)
@@ -33,8 +34,8 @@ static int		execute_utility(char **arg, char **env)
 	if (!arg[0])
 		return (125);
 	else if ((env && !(envl = envarr_to_envl(env)))
-	|| !(path = find_command(arg[0], envl)))
-		return (env_exit(arg[0]));
+	|| !(path = find_command(arg[0], envl)) || access(path, X_OK))
+		return (env_exit(arg[0], path));
 	execve(path, arg, env);
 	fatal_exit(7);
 	return (125);
@@ -69,38 +70,45 @@ static int		exec_env(char **start, t_envl *head)
 
 static void		init_cor(char **arg, t_envl *envl, t_cor *cor)
 {
-	cor->arg_ptr = arg + 1;
+	cor->t = arg + 1;
 	cor->dup_env = dup_envl(envl);
 	cor->name = NULL;
 	cor->start = NULL;
-	cor->opt = 1;
+	cor->o = 1;
+}
+
+static void		env_assign(t_cor *c, char *ptr)
+{
+	c->name = ft_strsub(*c->t, 0, ptr - *(c->t));
+	push_env(&(c->dup_env), c->name, ptr + 1, 1);
+	c->o = 0;
 }
 
 int				built_env(char **arg, t_envl *envl)
 {
-	t_cor	cor;
+	t_cor	c;
 	char	*ptr;
 
-	init_cor(arg, envl, &cor);
-	while (*(cor.arg_ptr))
+	init_cor(arg, envl, &c);
+	while (*(c.t))
 	{
-		if (!ft_strcmp(*(cor.arg_ptr), "-i") && cor.opt)
+		if (!ft_strcmp(*(c.t), "-i") && c.o)
 		{
-			free_envl(cor.dup_env);
-			cor.dup_env = NULL;
+			free_envl(c.dup_env);
+			c.dup_env = NULL;
 		}
-		else if (cor.opt && !ft_strcmp(*(cor.arg_ptr), "--"))
-			cor.opt = 0;
-		else if ((ptr = ft_strchr(*(cor.arg_ptr), '=')) && is_valid_name(*arg))
+		else if (c.o && (!ft_strcmp(*(c.t), "--") || !ft_strcmp(*(c.t), "-")))
+			c.o = 0;
+		else if (c.o && ft_strcmp(*(c.t), "-i") && *(c.t[0]) == '-')
+			return (env_usage(*(c.t)));
+		else if ((ptr = ft_strchr(*(c.t), '=')) && is_valid_name(*arg))
+			env_assign(&c, ptr);
+		else if ((!c.o || (*(c.t))[0] != '-') && c.start == NULL)
 		{
-			cor.name = ft_strsub(*cor.arg_ptr, 0, ptr - *(cor.arg_ptr));
-			push_env(&(cor.dup_env), cor.name, ptr + 1, 1);
-			cor.opt = 0;
+			c.o = 0;
+			c.start = c.t;
 		}
-		else if ((!cor.opt || (*(cor.arg_ptr))[0] != '-') && cor.start == NULL)
-			cor.start = cor.arg_ptr;
-		(cor.arg_ptr)++;
+		(c.t)++;
 	}
-	exec_env(cor.start, cor.dup_env);
-	return (0);
+	return (exec_env(c.start, c.dup_env));
 }
