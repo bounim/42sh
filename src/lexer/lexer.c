@@ -75,6 +75,8 @@ void				lexer_destroy(t_lexer *lex)
 	t_lexer_token	*current;
 	t_lexer_token	*previous;
 
+	if (!lex)
+		return ;
 	current = lex->head;
 	while (current)
 	{
