@@ -38,22 +38,28 @@ t_job	*create_job(t_lexer_token *cmd)
 t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 {
 	t_proc	*new;
+	int		r;
 
 	new = NULL;
 	if (!*job && !(*job = create_job(cmd)))
 		return (NULL);
 	if (!cmd->arg_head || !(new = init_proc(new)) || !(new->arg = arg_to_argv(cmd)))
 		return (NULL);
-	new->cmd = cmd; //TODO
+	new->cmd = cmd;
 	new->job = *job;
 	if (!cmd->assign_head || !cmd->arg_head)
 		new->envl = g_shell.envl;
 	else
 		new->envl = dup_envl(g_shell.envl);
-	if (!(new->is_builtin = check_builtin(new->arg[0])))
+	if (execute_assign_list(cmd, new) < 0)
+		new->error = 125;
+	else if (!(new->is_builtin = check_builtin(new->arg[0])))
 	{
-		if (!(new->path = command_search(cmd, new->arg, new->envl)))
-			exec_error(new->arg[0], new->path);
+		if ((r = find_command(new->path, new->arg[0], new->envl)) != 0)
+		{
+			exec_error(new->arg[0], r);
+			new->error = 127;
+		}
 	}
 	if ((*job)->foot_proc)
 	{

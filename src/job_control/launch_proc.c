@@ -119,14 +119,16 @@ void		launch_proc(t_proc *proc)
 		}
 		proc_child(proc);
 	}
-	if (command_redir(proc->cmd) < 0 || execute_assign_list(proc->cmd, proc) < 0)
+	if (command_redir(proc->cmd) < 0)
+		proc->error = 125;
+	if (proc->error)
 	{
 		if (!proc->is_builtin || proc->next || proc->prev)
 		{
 			clean_shell();
-			exit(125);
+			exit(proc->error);
 		}
-		g_shell.exit_code = 125;
+		g_shell.exit_code = proc->error;
 		return ;
 	}
 	if (proc->is_builtin)

@@ -49,6 +49,7 @@ struct						s_shell
 	t_hashmap				hmap;
 	int						is_exiting;
 	t_lexer					*lexer;
+	char					*progname;
 };
 
 /*

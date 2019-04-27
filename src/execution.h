@@ -13,12 +13,23 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
+# include <limits.h>
 # include "parser.h"
 
 int		execute(t_lexer *lex);
-char	*command_search(t_lexer_token *cmd, char **arg, t_envl *envl);
-char	*find_command(char *cmd, t_envl *envl);
-int		exec_error(char *cmd, char *path);
+
+/*
+** find_command returns:
+** > 0 if found but can't be executed (for paths with slashes, not commands)
+**   1 if cannot stat
+**   2 if is a directory
+**   3 if no execute permission
+** < 0 if not found
+** = 0 if found and can be executed
+*/
+
+int		find_command(char path[PATH_MAX + 1], char *cmd, t_envl *envl);
+void	exec_error(char *cmd, int r);
 int		command_redir(t_lexer_token *cmd);
 void	command_redir_restore(t_lexer_token *cmd);
 int		execute_assign_list(t_lexer_token *cmd, t_proc *proc);

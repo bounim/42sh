@@ -15,7 +15,8 @@
 
 static void		write_error(char *cmd, char *str)
 {
-	printer_str(&g_shell.err, "21sh: ");
+	printer_str(&g_shell.err, g_shell.progname);
+	printer_str(&g_shell.err, ": ");
 	printer_str(&g_shell.err, cmd);
 	printer_str(&g_shell.err, ": ");
 	printer_str(&g_shell.err, str);
@@ -23,19 +24,14 @@ static void		write_error(char *cmd, char *str)
 	printer_flush(&g_shell.err);
 }
 
-int				exec_error(char *cmd, char *path)
+void			exec_error(char *cmd, int r)
 {
-	struct stat	buf;
-
-	if (!path)
+	if (r < 0)
 		write_error(cmd, "command not found");
-	else if (stat(path, &buf) < 0)
-		write_error(path, "cannot stat");
-	else if ((buf.st_mode & S_IFMT) == S_IFDIR)
-		write_error(path, "is a directory");
-	else if (access(path, X_OK) < 0)
-		write_error(path, "Permission denied");
-	else
-		return (0);
-	return (-1);
+	else if (r == 1)
+		write_error(cmd, "cannot stat");
+	else if (r == 2)
+		write_error(cmd, "is a directory");
+	else if (r == 3)
+		write_error(cmd, "Permission denied");
 }

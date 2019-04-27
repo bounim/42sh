@@ -44,7 +44,6 @@ int		execute_simple_command(t_lexer_token *cmd) //ajouter exit status ds launch 
 	if (!cmd ||  cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
 		return (-1);
 	new_proc = create_proc(&new_job, cmd);
-	execute_assign_list(cmd, new_proc);        //0 = & (background)
 	launch_job(new_job); //1 == foreground
 	return (0);
 }

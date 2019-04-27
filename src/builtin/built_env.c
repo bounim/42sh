@@ -17,10 +17,9 @@ static int		execute_utility(char **arg, char **env)
 	pid_t	pid;
 	int		status;
 	t_envl	*envl;
-	char	*path;
+	char	path[PATH_MAX];
 
 	envl = NULL;
-	path = NULL;
 	clear_signals();
 	pid = fork();
 	if (pid < 0)
@@ -34,7 +33,7 @@ static int		execute_utility(char **arg, char **env)
 	if (!arg[0])
 		return (125);
 	else if ((env && !(envl = envarr_to_envl(env)))
-	|| !(path = find_command(arg[0], envl)) || access(path, X_OK))
+			|| find_command(path, arg[0], envl) != 0)
 		return (env_exit(arg[0], path));
 	execve(path, arg, env);
 	fatal_exit(7);

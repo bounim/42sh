@@ -14,28 +14,29 @@
 
 static int	print_type(char *name, t_envl *envl)
 {
-	char	*path;
+	char	path[PATH_MAX + 1];
 
 	if (check_builtin(name))
 	{
-		printer_str(&g_shell.err, name);
-		printer_str(&g_shell.err, " is a shell builtin\n");
+		printer_str(&g_shell.out, name);
+		printer_str(&g_shell.out, " is a shell builtin\n");
 	}
-	else if ((path = find_command(name, envl)))
+	else if (find_command(path, name, envl) == 0)
 	{
-		printer_str(&g_shell.err, name);
-		printer_str(&g_shell.err, " is ");
-		printer_str(&g_shell.err, path);
-		printer_endl(&g_shell.err);
-		free(path);
+		printer_str(&g_shell.out, name);
+		printer_str(&g_shell.out, " is ");
+		printer_str(&g_shell.out, path);
+		printer_endl(&g_shell.out);
 	}
 	else
 	{
 		printer_str(&g_shell.err, "type: ");
 		printer_str(&g_shell.err, name);
 		printer_str(&g_shell.err, ": not found\n");
+		printer_flush(&g_shell.err);
 		return (1);
 	}
+	printer_flush(&g_shell.out);
 	return (0);
 }
 
@@ -53,6 +54,5 @@ int			built_type(char **arg, t_envl *envl)
 		r |= print_type(arg[i], envl);
 		i++;
 	}
-	printer_flush(&g_shell.err);
 	return (r);
 }
