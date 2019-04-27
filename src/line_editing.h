@@ -246,6 +246,7 @@ typedef struct			s_edit
 */
 
 void					init_signals(void);
+void					clear_signals(void);
 void					signal_handler(int signo);
 
 /*

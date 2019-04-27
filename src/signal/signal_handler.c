@@ -48,6 +48,31 @@ void		signal_handler(int signo)
 
 void		init_signals(void)
 {
-	signal(SIGINT, &signal_handler);
-	signal(SIGWINCH, &signal_handler);
+	int	sig;
+
+	sig = 1;
+	while (sig < 32)
+	{
+		if (sig == SIGINT)
+			signal(SIGINT, &signal_handler);
+		else if (sig == SIGWINCH)
+			signal(SIGWINCH, &signal_handler);
+		else if (sig == SIGCHLD)
+			signal(SIGCHLD, SIG_DFL);
+		else
+			signal(sig, SIG_IGN);
+		sig++;
+	}
+}
+
+void		clear_signals(void)
+{
+	int	sig;
+
+	sig = 1;
+	while (sig < 32)
+	{
+		signal(sig, SIG_DFL);
+		sig++;
+	}
 }

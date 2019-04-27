@@ -52,7 +52,7 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 		new->envl = dup_envl(g_shell.envl);
 	if (!(new->is_builtin = check_builtin(new->arg[0])))
 	{
-		if (!(new->path = command_search(cmd, new->arg, new->envl)) || access(new->path, X_OK))
+		if (!(new->path = command_search(cmd, new->arg, new->envl)))
 			exec_error(new->arg[0], new->path);
 	}
 	if ((*job)->foot_proc)

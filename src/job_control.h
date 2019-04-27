@@ -48,6 +48,7 @@ struct			s_job
 	char			notified;
 	t_termios		tmodes;
 	struct s_job	*next;
+	int				running;
 };
 
 t_job			*find_job(pid_t pgid);

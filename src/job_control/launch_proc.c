@@ -12,94 +12,140 @@
 
 #include "twenty_one_sh.h"
 
-void	set_signal_dfl(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGTSTP, SIG_DFL);
-	signal(SIGTTIN, SIG_DFL);
-	signal(SIGTTOU, SIG_DFL);
-	signal(SIGCHLD, SIG_DFL);
-} //a rajouter
-
 int			get_return_status(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		return (WTERMSIG(status));
+		return (1000 + WTERMSIG(status));
 	else if (WIFSTOPPED(status))
-		return (WSTOPSIG(status));
-	else
-		return (EXIT_FAILURE);
+		return (2000 + WSTOPSIG(status));
+	return (1);
+}
+
+static void	wait_job(t_proc *proc)
+{
+	int		status;
+	pid_t	wpid;
+	t_proc	*cur;
+
+	if (proc->next)
+		return ;
+	// TODO set job as launched?
+	// TODO the rest is for foreground, background is other stuff
+	tcsetpgrp(g_shell.term, proc->job->pgid);
+	// TODO cont stuff (only for `fg`) goes here (DRY)
+	// TODO ^^^^
+	// FIXME wait job func
+	status = 0;
+	while (proc->job->running > 0 && (wpid = waitpid(WAIT_ANY /*-proc->job->head_proc->pid*/, &status, WUNTRACED/* | WCONTINUED*/)) >= 0) // TODO replace by WAIT_ANY when we do background
+	{
+		//close(open("./x", O_RDONLY | O_CREAT, 0666));
+		if (WIFSTOPPED(status))
+		{
+			kill(wpid, SIGTERM); // TODO
+			kill(wpid, SIGCONT); // TODO
+			continue ;
+		}
+		cur = proc->job->head_proc;
+		while (cur)
+		{
+			if (wpid == cur->pid)
+			{
+				cur->completed = 1; // FIXME
+				proc->job->running--;
+				if (!cur->next)
+				{
+					if (WIFSIGNALED(status))
+						g_shell.exit_code = 1000 + WTERMSIG(status);
+					else
+						g_shell.exit_code = WEXITSTATUS(status);
+				}
+				if (cur->prev && !cur->prev->completed)
+				{
+					kill(cur->prev->pid, SIGPIPE);
+				}
+				break ;
+			}
+			cur = cur->next;
+		}
+		status = 0;
+	}
+	// FIXME ^^^^
+	tcsetpgrp(g_shell.term, g_shell.pgid);
+	tcgetattr(g_shell.term, &proc->job->tmodes);
+	cooked_terminal();
+}
+
+static void	proc_parent(t_proc *proc)
+{
+	proc->job->running++;
+	if (proc->job->pgid == 0)
+		proc->job->pgid = proc->pid;
+	if (proc->prev)
+		close(proc->prev->tunnel[0]);
+	if (proc->next)
+		close(proc->tunnel[1]);
+	wait_job(proc);
+}
+
+static void	proc_child(t_proc *proc)
+{
+	if (proc->job->pgid == 0)
+		proc->job->pgid = getpid();
+	setpgid(0, proc->job->pgid);
+	tcsetpgrp(g_shell.term, proc->job->pgid); // FIXME don't do this in background
+	clear_signals();
+	if (proc->prev)
+	{
+		dup2(proc->prev->tunnel[0], STDIN_FILENO);
+		close(proc->prev->tunnel[0]);
+	}
+	if (proc->next)
+	{
+		dup2(proc->tunnel[1], STDOUT_FILENO);
+		close(proc->tunnel[1]);
+	}
 }
 
 void		launch_proc(t_proc *proc)
 {
-	pid_t	pid;
-	int		status;
-
-	status = 0;
-	if (proc->next || !proc->is_builtin)
+	if (!proc->is_builtin || proc->next || proc->prev)
 	{
-		pid = fork();
-		if (pid < 0)
+		if ((proc->pid = fork()) < 0)
 			return ; //TODO fork error
-		else if (pid > 0)
+		else if (proc->pid > 0)
 		{
-			if (proc->prev)
-				close(proc->prev->tunnel[0]);
-			if (proc->next)
-				close(proc->tunnel[1]);
-			if (!proc->next)
-			{
-				waitpid(pid, &status, WUNTRACED | WCONTINUED);
-				g_shell.exit_code = get_return_status(status);
-				wait(NULL);
-			}
+			proc_parent(proc);
 			return ;
 		}
-		signal(SIGINT, SIG_DFL);
-		if (proc->prev)
+		proc_child(proc);
+	}
+	if (command_redir(proc->cmd) < 0 || execute_assign_list(proc->cmd, proc) < 0)
+	{
+		if (!proc->is_builtin || proc->next || proc->prev)
 		{
-			dup2(proc->prev->tunnel[0], STDIN_FILENO);
-			close(proc->prev->tunnel[0]);
+			clean_shell();
+			exit(125);
 		}
-		if (proc->next)
+		g_shell.exit_code = 125;
+		return ;
+	}
+	if (proc->is_builtin)
+	{
+		g_shell.exit_code = start_builtin(proc->arg, proc->envl);
+		command_redir_restore(proc->cmd);
+		if (proc->next || proc->prev)
 		{
-			dup2(proc->tunnel[1], STDOUT_FILENO);
-			close(proc->tunnel[1]);
-		}
-		if (command_redir(proc->cmd) < 0 || execute_assign_list(proc->cmd, proc) < 0)
-		{
-			//exit_cmd(125); // TODO leaks + return quoi??
-		}
-		if (proc->is_builtin)
-		{
-			g_shell.exit_code = start_builtin(proc->arg, proc->envl);
-			exit(0); // TODO leaks
-		}
-		else
-		{
-			if (!proc->path)
-				exit(1);
-			proc->env = envl_to_envarr(proc->envl);
-			execve(proc->path, proc->arg, proc->env);
-			command_redir_restore(proc->cmd);
-			fatal_exit(7); // TODO leaks
+			clean_shell();
+			exit(g_shell.exit_code);
 		}
 	}
 	else
 	{
-		if (command_redir(proc->cmd) < 0)
-		{
-			g_shell.exit_code = 125;
-			return ;
-		}
-		if (execute_assign_list(proc->cmd, proc) < 0)
-			g_shell.exit_code = 125;
-		else
-			g_shell.exit_code = start_builtin(proc->arg, proc->envl);
+		proc->env = envl_to_envarr(proc->envl);
+		execve(proc->path, proc->arg, proc->env);
 		command_redir_restore(proc->cmd);
+		fatal_exit(7);
 	}
 }
