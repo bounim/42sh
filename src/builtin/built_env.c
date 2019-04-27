@@ -21,7 +21,7 @@ static int		execute_utility(char **arg, char **env)
 
 	envl = NULL;
 	path = NULL;
-	set_signal_dfl();
+	clear_signals();
 	pid = fork();
 	if (pid < 0)
 		return (-1);
