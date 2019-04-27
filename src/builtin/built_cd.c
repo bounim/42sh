@@ -16,9 +16,11 @@ static char	*cd_oldpwd(t_envl *envl)
 {
 	char	*tmp;
 
+	tmp = NULL;
 	if (!(tmp = ft_strdup(get_env_val(envl, "OLDPWD"))) || ft_strlen(tmp) == 0)
 	{
 		ft_putendl_fd("cd: OLDPWD not set", 2);
+		ft_strdel(&tmp);
 		return (NULL);
 	}
 	return (tmp);
@@ -56,10 +58,10 @@ static int	cd_path_failed_perror(char *arg, char *path, char *oldpwd)
 	if (access(path, F_OK) || path == NULL)
 		ret = 1 + put_error(NULL, "cd", arg,
 			"No such file or directory\n");
-	else if (lstat(path, &sb) == 0 && (!S_ISDIR(sb.st_mode) && !S_ISLNK(sb.st_mode)))
-		ret = 1 + put_error(NULL, "cd", arg, "Not a directory\n");
 	else if (access(path, X_OK))
 		ret = 1 + put_error(NULL, "cd", arg, "Permission denied\n");
+	else if (lstat(path, &sb) == 0 && (!S_ISDIR(sb.st_mode) && !S_ISLNK(sb.st_mode)))
+		ret = 1 + put_error(NULL, "cd", arg, "Not a directory\n");
 	else if (chdir(path))
 		ret = 1 + put_error(NULL, "cd", arg, "Unable to process\n");
 	if (ret == 1)
@@ -90,10 +92,12 @@ int			built_cd(char **arg, t_envl *envl)
 	int		opts;
 
 	opts = 0;
+	oldpwd = NULL;
 	if (!(i = cd_first_arg(arg, &opts)))
 		return (1);
-	path = search_path(*(arg + i), envl, NULL, opts);
-	if (!(oldpwd = ft_strdup(get_env_val(envl, "PWD"))))
+	if (!(path = search_path(*(arg + i), envl, NULL, opts)))
+		return (1);
+	if ((oldpwd = ft_strdup(get_env_val(envl, "PWD"))) == NULL)
 	{
 		ft_strdel(&path);
 		return (1);

@@ -117,7 +117,7 @@ t_alias				*new_alias(char *name, char *value);
 void				push_alias(t_alias **alias, char *name, char *value);
 t_alias				*addlast_alias(t_alias *head, t_alias *new);
 int					print_alias(t_alias *alias);
-int					free_alias(t_alias *alias);
+int					free_alias(t_alias *alias, int a);
 int					put_error(char *sh, char *cmd, char *arg, char *error);
 int					check_opts(char **arg, t_opts *flag, char opts);
 

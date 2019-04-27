@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-int			free_alias(t_alias *alias)
+int			free_alias(t_alias *alias, int a)
 {
 	t_alias	*tmp;
 
@@ -25,6 +25,8 @@ int			free_alias(t_alias *alias)
 		alias = alias->next;
 		free(tmp);
 	}
+	if (a == 1)
+		g_shell.alias = NULL;
 	return (0);
 }
 
