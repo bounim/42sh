@@ -40,7 +40,6 @@ static void	wait_job(t_proc *proc)
 	status = 0;
 	while (proc->job->running > 0 && (wpid = waitpid(WAIT_ANY /*-proc->job->head_proc->pid*/, &status, WUNTRACED/* | WCONTINUED*/)) >= 0) // TODO replace by WAIT_ANY when we do background
 	{
-		//close(open("./x", O_RDONLY | O_CREAT, 0666));
 		if (WIFSTOPPED(status))
 		{
 			kill(wpid, SIGTERM); // TODO
@@ -60,10 +59,6 @@ static void	wait_job(t_proc *proc)
 						g_shell.exit_code = 1000 + WTERMSIG(status);
 					else
 						g_shell.exit_code = WEXITSTATUS(status);
-				}
-				if (cur->prev && !cur->prev->completed)
-				{
-					kill(cur->prev->pid, SIGPIPE);
 				}
 				break ;
 			}
@@ -91,20 +86,23 @@ static void	proc_parent(t_proc *proc)
 
 static void	proc_child(t_proc *proc)
 {
+	t_proc *cur;
+
 	if (proc->job->pgid == 0)
 		proc->job->pgid = getpid();
 	setpgid(0, proc->job->pgid);
 	tcsetpgrp(g_shell.term, proc->job->pgid); // FIXME don't do this in background
 	clear_signals();
 	if (proc->prev)
-	{
 		dup2(proc->prev->tunnel[0], STDIN_FILENO);
-		close(proc->prev->tunnel[0]);
-	}
 	if (proc->next)
-	{
 		dup2(proc->tunnel[1], STDOUT_FILENO);
-		close(proc->tunnel[1]);
+	cur = proc->job->head_proc;
+	while (cur->next)
+	{
+		close(cur->tunnel[0]);
+		close(cur->tunnel[1]);
+		cur = cur->next;
 	}
 }
 
