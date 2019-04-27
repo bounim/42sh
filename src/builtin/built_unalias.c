@@ -36,7 +36,7 @@ static int	swap_ptr_alias(t_alias **alias, t_alias **lst, t_alias **tmp, int i)
 	else
 		(*tmp)->next = (*lst)->next;
 	(*lst)->next = NULL;
-	free_alias(*lst);
+	free_alias(*lst, 0);
 	return (0);
 }
 
@@ -46,10 +46,11 @@ int			unset_alias(char *arg, t_alias **alias)
 	t_alias	*lst;
 
 	lst = *alias;
-	if (ft_strequ(arg, lst->name))
+	if (lst && ft_strequ(arg, lst->name))
 		return (swap_ptr_alias(alias, &lst, &tmp, 1));
 	tmp = lst;
-	lst = lst->next;
+	if (lst)
+		lst = lst->next;
 	while (lst)
 	{
 		if (ft_strequ(lst->name, arg))
@@ -73,16 +74,12 @@ int			built_unalias(char **arg, t_envl *envl)
 	ret = 0;
 	if ((i = start_arg_unalias(arg, &opts)) == -1)
 		return (1);
-	if (!g_shell.alias)
-		return (1);
 	if (opts == 1)
-		free_alias(g_shell.alias);
+		free_alias(g_shell.alias, 1);
 	else
 	{
 		while (arg[i])
 		{
-			if (!g_shell.alias)
-				break ;
 			ret += unset_alias(arg[i], &g_shell.alias);
 			i++;
 		}
