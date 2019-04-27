@@ -16,7 +16,8 @@
 static void		parser_error(t_lexer_token *tok)
 {
 	g_shell.exit_code = 258;
-	printer_str(&g_shell.err, "21sh: syntax error near unexpected token `");
+	printer_str(&g_shell.err, g_shell.progname);
+	printer_str(&g_shell.err, ": syntax error near unexpected token `");
 	printer_bin(&g_shell.err, tok->buffer, tok->size);
 	printer_str(&g_shell.err, "' on line ");
 	printer_ulong(&g_shell.err, tok->line_y + 1);

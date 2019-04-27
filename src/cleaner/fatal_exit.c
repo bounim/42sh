@@ -18,15 +18,18 @@ void		fatal_exit(int code)
 		return ;
 	g_shell.is_exiting = 1;
 	clean_shell();
+	printer_str(&g_shell.err, g_shell.progname);
+	printer_str(&g_shell.err, ": fatal: ");
 	if (code == SH_ENOMEM)
-		ft_putendl_fd("Cannot allocate memory.", STDERR_FILENO);
+		printer_str(&g_shell.err, "Cannot allocate memory.\n");
 	else if (code == SH_EINVAL)
-		ft_putendl_fd("Invalid argument.", STDERR_FILENO);
+		printer_str(&g_shell.err, "Invalid argument.\n");
 	else if (code == SH_ENOTTY)
-		ft_putendl_fd("Inappropriate ioctl device.", STDERR_FILENO);
-	else if (code == 6)
-		ft_putendl_fd("exit", STDERR_FILENO);
+		printer_str(&g_shell.err, "Inappropriate ioctl device.\n");
 	else if (code == 7)
-		ft_putendl_fd("Exec format error", STDERR_FILENO);
-	exit(EXIT_FAILURE);
+		printer_str(&g_shell.err, "Exec format error\n");
+	else
+		printer_str(&g_shell.err, "exit\n");
+	printer_flush(&g_shell.err);
+	exit(127);
 }

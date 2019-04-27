@@ -47,11 +47,11 @@ static int		hash_list(void)
 static int		hash_set(char *cmd, t_envl *envl)
 {
 	size_t	cmdsize;
-	char	*r;
+	char	path[PATH_MAX + 1];
 
 	cmdsize = ft_strlen(cmd) + 1;
 	hashmap_unset(&g_shell.hmap, (uint8_t *)cmd, cmdsize);
-	if (NULL == (r = find_command(cmd, envl)))
+	if (ft_strchr(cmd, '/') || find_command(path, cmd, envl) != 0)
 	{
 		printer_str(&g_shell.err, "hash: ");
 		printer_str(&g_shell.err, cmd);
@@ -59,7 +59,6 @@ static int		hash_set(char *cmd, t_envl *envl)
 		printer_flush(&g_shell.err);
 		return (1);
 	}
-	free(r);
 	return (0);
 }
 

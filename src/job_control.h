@@ -13,6 +13,7 @@
 #ifndef JOB_CONTROL_H
 # define JOB_CONTROL_H
 
+# include <limits.h>
 # include "twenty_one_sh.h"
 # include "lexer.h"
 # include "execution.h"
@@ -22,7 +23,7 @@ struct			s_proc
 	char			**arg;
 	t_envl			*envl;
 	char			**env;
-	char			*path;
+	char			path[PATH_MAX + 1];
 	pid_t			pid;
 	int				completed;
 	int				stopped;
@@ -32,6 +33,7 @@ struct			s_proc
 	int				tunnel[2];
 	int				is_fork;
 	int				is_builtin;
+	int				error;
 	t_lexer_token	*cmd;
 	struct s_proc	*prev;
 	struct s_proc	*next;
