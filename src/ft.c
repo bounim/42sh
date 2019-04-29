@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/29 16:54:48 by emartine          #+#    #+#             */
+/*   Updated: 2019/04/29 16:54:49 by emartine         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "twenty_one_sh.h"
 
 void	ft_putendl_fd(char const *s, int fd)
@@ -32,11 +44,6 @@ void	ft_putnbr(int nb)
 {
 	printer_int(&g_shell.out, nb);
 	printer_flush(&g_shell.out);
-}
-
-void	ft_putu8str(uint8_t *str)
-{
-	ft_putstr((char *)str);
 }
 
 void	ft_putendl(char *str)
