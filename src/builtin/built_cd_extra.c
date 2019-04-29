@@ -70,7 +70,7 @@ char		*rework_canonic_path(char *cwd)
 static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts)
 {
 	char		*cwd;
-	int		i;
+	int			i;
 	struct stat	sb;
 
 	cwd = NULL;
@@ -110,7 +110,7 @@ char		*find_cdpath(char *arg, t_envl *envl, int opts)
 	char		*cdpath;
 	char		**cdpath_t;
 	char		*cwd;
-	int		len;
+	int			len;
 
 	len = 0;
 	cwd = NULL;

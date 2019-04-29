@@ -6,13 +6,13 @@
 /*   By: schakor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 11:24:42 by schakor           #+#    #+#             */
-/*   Updated: 2019/04/24 15:33:46 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/04/29 16:57:05 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-static int	init_terminal()
+static int	init_terminal(void)
 {
 	if (!isatty(g_shell.term)
 			|| !isatty(STDOUT_FILENO) || !isatty(STDERR_FILENO))

@@ -51,7 +51,7 @@ static char	*search_path(char *arg, t_envl *envl, char *cwd, int opts)
 
 static int	cd_path_failed_perror(char *arg, char *path, char *oldpwd)
 {
-	int		ret;
+	int			ret;
 	struct stat	sb;
 
 	ret = 0;
