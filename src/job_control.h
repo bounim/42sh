@@ -34,6 +34,7 @@ struct			s_proc
 	int				is_fork;
 	int				is_builtin;
 	int				error;
+	int				find_error;
 	t_lexer_token	*cmd;
 	struct s_proc	*prev;
 	struct s_proc	*next;

@@ -37,7 +37,6 @@ t_job	*create_job(t_lexer_token *cmd)
 t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 {
 	t_proc	*new;
-	int		r;
 
 	if (!*job && !(*job = create_job(cmd)))
 		return (NULL);
@@ -54,11 +53,9 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 		new->error = 125;
 	else if (new->arg && !(new->is_builtin = check_builtin(new->arg[0])))
 	{
-		if ((r = find_command(new->path, new->arg[0], new->envl)) != 0)
-		{
-			exec_error(new->arg[0], r);
+		if ((new->find_error = find_command(new->path,
+						new->arg[0], new->envl)) != 0)
 			new->error = 127;
-		}
 	}
 	if ((*job)->foot_proc)
 	{
