@@ -85,7 +85,7 @@ int		execute_and_or(t_lexer_token *and_or)
 
 	if (!(cur = and_or))
 		return (-1);
-	if (and_or->ptype != PARSER_AND_OR && !(execute = 0))
+	if (!(execute = 0) && and_or->ptype != PARSER_AND_OR)
 		return (execute_pipe(and_or));
 	while (cur && cur->ptype == PARSER_AND_OR)
 	{
