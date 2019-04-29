@@ -12,16 +12,20 @@
 
 #include "twenty_one_sh.h"
 
-t_job	*init_job(t_job *job)
+t_job	*init_job(void)
 {
+	t_job	*job;
+
 	if (!(job = (t_job *)malloc(sizeof(t_job))))
 		return (NULL);
 	ft_memset(job, 0, sizeof(*job));
 	return (job);
 }
 
-t_proc	*init_proc(t_proc *proc)
+t_proc	*init_proc(void)
 {
+	t_proc	*proc;
+
 	if (!(proc = (t_proc *)malloc(sizeof(t_proc))))
 		return (NULL);
 	ft_memset(proc, 0, sizeof(*proc));

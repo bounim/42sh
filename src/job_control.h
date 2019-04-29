@@ -47,7 +47,6 @@ struct			s_job
 	t_proc			*head_proc;
 	t_proc			*foot_proc;
 	pid_t			pgid;
-	char			notified;
 	t_termios		tmodes;
 	struct s_job	*next;
 	int				running;
@@ -66,8 +65,8 @@ void			update_status(void);
 void			format_job_info(t_job *job, const char *status);
 void			job_notif(void);
 void			mark_job_as_running(t_job *job);
-t_job			*init_job(t_job *job);
-t_proc			*init_proc(t_proc *proc);
+t_job			*init_job(void);
+t_proc			*init_proc(void);
 t_job			*create_job(t_lexer_token *cmd);
 t_proc			*create_proc(t_job **job, t_lexer_token *cmd);
 t_job			*add_job(t_job *head, t_job *new_job);

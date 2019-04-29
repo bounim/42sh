@@ -1,22 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_jobs.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emartine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/29 17:15:08 by emartine          #+#    #+#             */
+/*   Updated: 2019/04/29 17:15:10 by emartine         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "twenty_one_sh.h"
-
-void	free_arr(char **arr)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		ft_strdel(&arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 void	free_proc(t_proc *proc)
 {
-	free_arr(proc->arg);
-	//free env only if dup envl...
+	if (!proc)
+		return ;
+	free(proc->arg);
+	if (proc->envl && proc->envl != g_shell.envl)
+		free_envl(proc->envl);
 	free(proc);
 }
 
@@ -25,14 +27,17 @@ void	free_job(t_job *job)
 	t_proc	*proc;
 	t_proc	*next;
 
+	if (!job)
+		return ;
 	proc = job->head_proc;
 	while (proc)
 	{
 		next = proc->next;
 		free_proc(proc);
-		ft_strdel(&job->cmd);
 		proc = next;
 	}
+	free(job->cmd);
+	free(job);
 }
 
 void	free_exec(void)
@@ -47,4 +52,5 @@ void	free_exec(void)
 		free_job(job);
 		job = next;
 	}
+	g_shell.head_job = NULL;
 }
