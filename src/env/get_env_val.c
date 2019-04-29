@@ -65,6 +65,8 @@ char		*get_env_val(t_envl *envl, char *name)
 		return (savepid());
 	if (name[0] == '?' && name[1] == '\0')
 		return (save_exit());
+	if (name[0] == '0' && name[1] == '\0')
+		return (g_shell.progname);
 	while (envl != NULL)
 	{
 		if (envl->name != NULL && ft_strcmp(envl->name, name) == 0)

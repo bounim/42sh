@@ -49,7 +49,7 @@ void		init_shell(int ac, char **av, char **env)
 	ft_memset(&g_shell, 0, sizeof(g_shell));
 	printer_init(&g_shell.out, STDOUT_FILENO);
 	printer_init(&g_shell.err, STDERR_FILENO);
-	g_shell.progname = get_progname(av[0]);
+	g_shell.progname = get_progname((!av[0] || !av[0][0]) ? "21sh" : av[0]);
 	g_shell.term = STDIN_FILENO;
 	if (init_terminal() < 0)
 		fatal_exit(SH_ENOTTY);

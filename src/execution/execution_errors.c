@@ -13,7 +13,7 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-static void		write_error(char *cmd, char *str)
+void			write_error(char *cmd, char *str)
 {
 	printer_str(&g_shell.err, g_shell.progname);
 	printer_str(&g_shell.err, ": ");

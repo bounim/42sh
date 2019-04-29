@@ -123,12 +123,15 @@ void		launch_proc(t_proc *proc)
 		proc->error = 125;
 	if (proc->error)
 	{
+		if (proc->find_error)
+			exec_error(proc->arg[0], proc->find_error);
+		g_shell.exit_code = proc->error;
 		if (!proc->is_builtin || proc->next || proc->prev)
 		{
+			command_redir_restore(proc->cmd);
 			clean_shell();
-			exit(proc->error);
+			exit(g_shell.exit_code);
 		}
-		g_shell.exit_code = proc->error;
 		return ;
 	}
 	if (!proc->arg || proc->is_builtin)

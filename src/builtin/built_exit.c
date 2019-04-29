@@ -14,28 +14,37 @@
 
 static void	print_exit_error_message(char *arg)
 {
-	ft_putstr("sh: exit: ");
-	ft_putstr(arg);
-	ft_putstr(": numeric argument required");
+	printer_str(&g_shell.err, g_shell.progname);
+	printer_str(&g_shell.err, ": exit: ");
+	printer_str(&g_shell.err, arg);
+	printer_str(&g_shell.err, ": numeric argument required\n");
+	printer_flush(&g_shell.err);
 }
 
-static void	check_if_exit_arg_is_digit(char **arg)
+static int	check_if_exit_arg_is_digit(char **arg)
 {
 	if (arg)
 	{
 		if (!arg[1])
-			return ;
+			return (0);
 		if (arg[1])
 		{
 			if (arg[1][0] == '-')
 			{
 				if (ft_strisdigit(arg[1] + 1) != 0)
+				{
 					print_exit_error_message(arg[1]);
+					return (-1);
+				}
 			}
 			else if (ft_strisdigit(arg[1]) != 0)
+			{
 				print_exit_error_message(arg[1]);
+				return (-1);
+			}
 		}
 	}
+	return (0);
 }
 
 static int	check_exit_arg_nb(char **arg)
@@ -46,7 +55,7 @@ static int	check_exit_arg_nb(char **arg)
 		{
 			if (arg[2])
 			{
-				ft_putstr("sh: exit: too many arguments\n");
+				write_error("exit", "too many arguments");
 				return (-1);
 			}
 		}
@@ -59,13 +68,14 @@ int			built_exit(char **arg, t_envl *envl)
 	int		r;
 
 	(void)envl;
-	r = 0;
-	if (check_exit_arg_nb(arg) == -1)
-		return (-1);
-	file_from_history(g_shell.hist.history);
+	r = g_shell.exit_code;
 	ft_putstr("exit\n");
-	check_if_exit_arg_is_digit(arg);
-	if (arg)
+	if (check_exit_arg_nb(arg) == -1)
+		return (1);
+	file_from_history(g_shell.hist.history);
+	if (check_if_exit_arg_is_digit(arg) < 0)
+		r = 255;
+	else if (arg)
 		if (arg[1])
 			r = ft_atoi(arg[1]);
 	clean_shell();
