@@ -12,6 +12,20 @@
 
 #include "twenty_one_sh.h"
 
+static void		close_pipe_error(t_job *job, t_proc *err)
+{
+	t_proc	*cur;
+
+	cur = job->head_proc;
+	while (cur && cur != err)
+	{
+		close(cur->tunnel[0]);
+		close(cur->tunnel[1]);
+		cur = cur->next;
+	}
+	fatal_exit(SH_ENOPIPE);
+}
+
 void			launch_job(t_job *job)
 {
 	t_proc	*cur;
@@ -27,10 +41,8 @@ void			launch_job(t_job *job)
 		{
 			if (pipe(cur->tunnel) < 0)
 			{
-				cur->tunnel[0] = -1;
-				cur->tunnel[1] = -1;
-				//free_job(job);
-				return ; // TODO
+				close_pipe_error(job, cur);
+				return ;
 			}
 			cur = cur->next;
 		}

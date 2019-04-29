@@ -28,6 +28,8 @@ void		fatal_exit(int code)
 		printer_str(&g_shell.err, "Inappropriate ioctl device.\n");
 	else if (code == 7)
 		printer_str(&g_shell.err, "Exec format error\n");
+	else if (code == SH_ENOPIPE)
+		printer_str(&g_shell.err, "Too many open files\n");
 	else
 		printer_str(&g_shell.err, "exit\n");
 	printer_flush(&g_shell.err);
