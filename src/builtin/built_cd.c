@@ -60,7 +60,8 @@ static int	cd_path_failed_perror(char *arg, char *path, char *oldpwd)
 			"No such file or directory\n");
 	else if (access(path, X_OK))
 		ret = 1 + put_error(NULL, "cd", arg, "Permission denied\n");
-	else if (lstat(path, &sb) == 0 && (!S_ISDIR(sb.st_mode) && !S_ISLNK(sb.st_mode)))
+	else if (lstat(path, &sb) == 0 && (!S_ISDIR(sb.st_mode) &&
+						!S_ISLNK(sb.st_mode)))
 		ret = 1 + put_error(NULL, "cd", arg, "Not a directory\n");
 	else if (chdir(path))
 		ret = 1 + put_error(NULL, "cd", arg, "Unable to process\n");
@@ -91,7 +92,6 @@ int			built_cd(char **arg, t_envl *envl)
 	size_t	i;
 	int		opts;
 
-	opts = 0;
 	oldpwd = NULL;
 	if (!(i = cd_first_arg(arg, &opts)))
 		return (1);

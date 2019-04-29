@@ -41,6 +41,7 @@ int			cd_first_arg(char **arg, int *opts)
 {
 	int	i;
 
+	*opts = 0;
 	i = 1;
 	while (arg[i])
 	{

@@ -83,6 +83,7 @@ int					built_alias(char **arg, t_envl *envl);
 int					built_bg(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);
 char				*find_cdpath(char *arg, t_envl *envl, int opts);
+char				*rework_cdpath_arr(char *cdpath);
 int					built_debug(char **arg, t_envl *envl);
 int					built_echo(char **arg, t_envl *envl);
 int					built_env(char **arg, t_envl *envl);
