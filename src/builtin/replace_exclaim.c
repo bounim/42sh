@@ -43,6 +43,14 @@ static char		*free_exclaim(char *s1, char *s2, char *s3, char *s4)
 	return (NULL);
 }
 
+static void		print_special_error(char *line, int i)
+{
+	ft_putstr_fd("event not found: ", 2);
+	ft_putendl_fd(line + i, 2);
+	ft_putstr(tgetstr("cr", NULL));
+	ft_strdel(&line);
+}
+
 char			*replace_exclaim(char *line, t_history *hist,
 											char *bfr, char *next)
 {
@@ -51,19 +59,17 @@ char			*replace_exclaim(char *line, t_history *hist,
 	char	*concat;
 	char	*tmp;
 
-	while ((i = ft_strichr(line, '!')) != -1 && line[i + 1])
+	while ((i = ft_strichr(line, '!')) != -1)
 	{
 		if ((j = concat_exclaim(line, i)) == 0)
-			return (NULL);
+			return (free_exclaim(line, NULL, NULL, NULL));
 		if (!(concat = ft_strsub(line, i, j - i + 1)) ||
 			!(bfr = ft_strsub(line, 0, i)) ||
 			!(tmp = find_exclaim(concat, hist)) ||
 			!(next = ft_strsub(line, j + 1, ft_strlen(line) - j)))
 		{
-			ft_putstr_fd("event not found: ", 2);
-			ft_putendl_fd(line + i, 2);
-			ft_strdel(&concat);
-			return (free_exclaim(line, bfr, tmp, next));
+			print_special_error(line, i);
+			return (free_exclaim(concat, bfr, tmp, next));
 		}
 		ft_strdel(&line);
 		line = ft_strfjoin(bfr, tmp, 0);
