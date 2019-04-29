@@ -87,7 +87,7 @@ int			find_command(char path[PATH_MAX + 1], char *cmd, t_envl *envl)
 		return (-1);
 	if ((k = hashmap_get(&g_shell.hmap, (uint8_t *)cmd, size + 1)))
 	{
-		ft_memmove(path, k->value, k->valuesize + 1);
+		ft_memmove(path, k->value, k->valuesize);
 		return (0);
 	}
 	if (ft_strchr(cmd, '/'))
