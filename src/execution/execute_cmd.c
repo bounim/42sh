@@ -96,7 +96,7 @@ int		execute_and_or(t_lexer_token *and_or)
 			execute = 0;
 		}
 		if ((cur->buffer[0] == '&' && g_shell.exit_code != 0)
-		|| (cur->buffer[0] != '&' && g_shell.exit_code == 0))
+			|| (cur->buffer[0] != '&' && g_shell.exit_code == 0))
 		{
 			if (cur->right && cur->right->ptype != PARSER_AND_OR)
 				return (0);
