@@ -34,6 +34,15 @@ static int		concat_exclaim(char *line, int i)
 	return (j - 1);
 }
 
+static char		*free_exclaim(char *s1, char *s2, char *s3, char *s4)
+{
+	ft_strdel(&s1);
+	ft_strdel(&s2);
+	ft_strdel(&s3);
+	ft_strdel(&s4);
+	return (NULL);
+}
+
 char			*replace_exclaim(char *line, t_history *hist,
 											char *bfr, char *next)
 {
@@ -42,7 +51,7 @@ char			*replace_exclaim(char *line, t_history *hist,
 	char	*concat;
 	char	*tmp;
 
-	while ((i = ft_strichr(line, '!')) != -1)
+	while ((i = ft_strichr(line, '!')) != -1 && line[i + 1])
 	{
 		if ((j = concat_exclaim(line, i)) == 0)
 			return (NULL);
@@ -52,17 +61,14 @@ char			*replace_exclaim(char *line, t_history *hist,
 			!(next = ft_strsub(line, j + 1, ft_strlen(line) - j)))
 		{
 			ft_putstr_fd("event not found: ", 2);
-			ft_putendl_fd(line + i + 1, 2);
+			ft_putendl_fd(line + i, 2);
 			ft_strdel(&concat);
-			ft_strdel(&bfr);
-			ft_strdel(&tmp);
-			ft_strdel(&next);
-			ft_strdel(&line);
-			return (NULL);
+			return (free_exclaim(line, bfr, tmp, next));
 		}
 		ft_strdel(&line);
 		line = ft_strfjoin(bfr, tmp, 0);
 		line = ft_strfjoin(line, next, 2);
+		ft_strdel(&concat);
 	}
 	return (line);
 }
