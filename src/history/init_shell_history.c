@@ -44,8 +44,8 @@ static uint8_t		*get_histfile_content(void)
 
 	if (!(histpath = get_env_val(g_shell.envl, "HISTFILE")))
 		return (NULL);
-	if ((((fd = open(histpath, O_RDONLY)) < 0) || (read(fd, buf, 0) < 0)) ||
-		(!(ret = ft_u8_strnew(0))))
+	if ((((fd = open(histpath, O_RDONLY)) < 0) || (read(fd, buf, 0) < 0))
+			|| (!(ret = ft_u8_strnew(0))))
 		return (NULL);
 	while ((rd = read(fd, buf, BUFF_SIZE)))
 	{

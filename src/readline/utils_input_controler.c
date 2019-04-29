@@ -24,8 +24,8 @@ void		build_count(uint8_t *key, size_t *keylen, int mode)
 	ssize_t		rd;
 
 	g_shell.edit.count = 1;
-	if (*keylen == 1 && key[0] >= '1' && key[0] <= '9' && mode ==
-	MODE_VI_COMMAND)
+	if (*keylen == 1 && key[0] >= '1' && key[0] <= '9'
+			&& mode == MODE_VI_COMMAND)
 	{
 		g_shell.edit.count = key[0] - '0';
 		i = 0;
