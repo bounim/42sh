@@ -83,7 +83,7 @@ void	print_historyl(t_history *hist)
 			ft_putchar(' ');
 		ft_putnbr(i);
 		ft_putstr("  ");
-		ft_putu8str(hist->buf);
+		ft_putstr((char *)hist->buf);
 		if (hist->next)
 			ft_putchar('\n');
 		i++;

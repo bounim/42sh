@@ -54,30 +54,26 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 {
 	t_lexer_token	*cur;
 	t_job			*new_job;
-	t_proc			*new_proc;
 
 	new_job = NULL;
 	if (!(cur = pipe_seq))
 		return (-1);
 	if (pipe_seq->ptype != PARSER_PIPE)
 		return (execute_simple_command(pipe_seq));
-	if (!cur->left)
-		return (-1);
 	while (cur && cur->ptype == PARSER_PIPE)
 	{
 		if (!cur->left || command_expansions(cur->left) < 0)
 			return (-1);
 		cur = cur->right;
 	}
-	if (!cur || command_expansions(cur) < 0)
+	if (!(cur = pipe_seq) || command_expansions(cur) < 0)
 		return (-1);
-	cur = pipe_seq;
 	while (cur && cur->ptype == PARSER_PIPE)
 	{
-		new_proc = create_proc(&new_job, cur->left);
+		create_proc(&new_job, cur->left);
 		cur = cur->right;
 	}
-	new_proc = create_proc(&new_job, cur);
+	create_proc(&new_job, cur);
 	launch_job(new_job);
 	return (0);
 }

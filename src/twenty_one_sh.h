@@ -46,7 +46,6 @@ void						ft_putendl_fd(char const *s, int fd);
 void						ft_putstr(char const *s);
 void						ft_putchar(char ch);
 void						ft_putnbr(int nb);
-void						ft_putu8str(uint8_t *str);
 void						ft_putendl(char *str);
 
 #endif
