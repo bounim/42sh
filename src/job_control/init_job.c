@@ -17,7 +17,6 @@ t_job	*init_job(t_job *job)
 	if (!(job = (t_job *)malloc(sizeof(t_job))))
 		return (NULL);
 	ft_memset(job, 0, sizeof(*job));
-	job->tmodes = g_shell.cooked_tio;
 	return (job);
 }
 
