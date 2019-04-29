@@ -63,7 +63,6 @@ void		init_shell(int ac, char **av, char **env)
 	g_shell.envl = init_shell_envl(env);
 	g_shell.hist.history_save = -1;
 	g_shell.hist.history = init_shell_history();
-	g_shell.is_interactive = 1;
 	if (NULL == (g_shell.canonic_path = getcwd(NULL, 0))
 			|| hashmap_init(&g_shell.hmap, HASHMAP_SIZE,
 				hashmap_hash_crc32) < 0)

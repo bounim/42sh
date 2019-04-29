@@ -23,7 +23,6 @@ void	init_last_command(void)
 	if (!(head = (t_last_command*)malloc(sizeof(t_last_command))))
 		fatal_exit(SH_ENOMEM);
 	head->buff = list_to_buff_print(begin, end);
-	head->cursor_pos = g_shell.edit.char_list.char_nb - 1;
 	head->prev = NULL;
 	g_shell.edit.last_command = head;
 }
@@ -37,7 +36,6 @@ void	add_buff_to_undo(void)
 	if (!(tail = (t_last_command*)malloc(sizeof(t_last_command))))
 		fatal_exit(SH_ENOMEM);
 	tail->buff = list_to_buff_print(begin, NULL);
-	tail->cursor_pos = g_shell.edit.char_list.char_nb - 1;
 	tail->prev = g_shell.edit.last_command;
 	g_shell.edit.last_command = tail;
 }
