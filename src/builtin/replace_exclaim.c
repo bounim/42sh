@@ -52,7 +52,7 @@ static void		print_special_error(char *line, int i)
 }
 
 char			*replace_exclaim(char *line, t_history *hist,
-											char *bfr, char *next)
+		char *bfr, char *next)
 {
 	int		i;
 	int		j;
@@ -63,10 +63,10 @@ char			*replace_exclaim(char *line, t_history *hist,
 	{
 		if ((j = concat_exclaim(line, i)) == 0)
 			return (free_exclaim(line, NULL, NULL, NULL));
-		if (!(concat = ft_strsub(line, i, j - i + 1)) ||
-			!(bfr = ft_strsub(line, 0, i)) ||
-			!(tmp = find_exclaim(concat, hist)) ||
-			!(next = ft_strsub(line, j + 1, ft_strlen(line) - j)))
+		if (!(concat = ft_strsub(line, i, j - i + 1))
+				|| !(bfr = ft_strsub(line, 0, i))
+				|| !(tmp = find_exclaim(concat, hist))
+				|| !(next = ft_strsub(line, j + 1, ft_strlen(line) - j)))
 		{
 			print_special_error(line, i);
 			return (free_exclaim(concat, bfr, tmp, next));

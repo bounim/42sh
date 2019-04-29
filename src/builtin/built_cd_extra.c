@@ -114,9 +114,9 @@ char		*find_cdpath(char *arg, t_envl *envl, int opts)
 
 	len = 0;
 	cwd = NULL;
-	if (ft_strnequ(arg, "/", 1) || ft_strnequ(arg, "./", 2) ||
-		ft_strnequ(arg, "../", 3) || ft_strnequ(arg, ".", 1) ||
-		ft_strnequ(arg, "..", 2))
+	if (ft_strnequ(arg, "/", 1) || ft_strnequ(arg, "./", 2)
+			|| ft_strnequ(arg, "../", 3) || ft_strnequ(arg, ".", 1)
+			|| ft_strnequ(arg, "..", 2))
 		return (rework_last_cwd(cwd, arg, 0));
 	if ((cdpath = get_env_val(envl, "CDPATH")))
 	{

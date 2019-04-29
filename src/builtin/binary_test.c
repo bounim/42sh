@@ -49,8 +49,8 @@ int			binary_test_end(char *operand1, char *operand2, char *operator)
 	return (-1);
 }
 
-int			binary_test(char *cmd, char *operand1, char *operator, char\
-		*operand2)
+int			binary_test(char *cmd, char *operand1, char *operator,
+		char *operand2)
 {
 	int ret;
 
