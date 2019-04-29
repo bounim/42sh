@@ -87,8 +87,7 @@ static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts, char *tmp)
 		cwd = ft_strdup(cdpath_t[i]);
 		cwd = ft_strfjoin(cwd, "/", 0);
 		cwd = ft_strfjoin(cwd, arg, 0);
-		printf("path = %s\n", cwd);
-		if (lstat(cwd, &sb) == 0)
+		if (lstat(cwd, &sb) == 0 || cdpath_t[i + 1] == NULL)
 			return (cwd);
 		ft_strdel(&cwd);
 		i++;
