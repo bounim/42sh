@@ -24,4 +24,5 @@ void			clean_shell(void)
 	lexer_destroy(g_shell.lexer);
 	free(g_shell.line);
 	free(g_shell.canonic_path);
+	free_exec();
 }

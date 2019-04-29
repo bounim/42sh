@@ -19,8 +19,7 @@ t_job	*create_job(t_lexer_token *cmd)
 	t_job	*new;
 	t_job	*cur;
 
-	new = NULL;
-	if (!(new = init_job(new)))
+	if (!(new = init_job()))
 		return (NULL);
 	new->cmd = lst_to_str(cmd);
 	if (!g_shell.head_job)
@@ -40,10 +39,9 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	t_proc	*new;
 	int		r;
 
-	new = NULL;
 	if (!*job && !(*job = create_job(cmd)))
 		return (NULL);
-	if (!(new = init_proc(new)))
+	if (!(new = init_proc()))
 		return (NULL);
 	new->arg = arg_to_argv(cmd);
 	new->cmd = cmd;
@@ -51,7 +49,7 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	if (!cmd->assign_head || !cmd->arg_head)
 		new->envl = g_shell.envl;
 	else
-		new->envl = dup_envl(g_shell.envl); // TODO free
+		new->envl = dup_envl(g_shell.envl);
 	if (execute_assign_list(cmd, new) < 0)
 		new->error = 125;
 	else if (new->arg && !(new->is_builtin = check_builtin(new->arg[0])))
@@ -72,4 +70,3 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	(*job)->foot_proc = new;
 	return (new);
 }
-

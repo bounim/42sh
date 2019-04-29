@@ -56,15 +56,18 @@ static int	check_exit_arg_nb(char **arg)
 
 int			built_exit(char **arg, t_envl *envl)
 {
+	int		r;
+
 	(void)envl;
+	r = 0;
 	if (check_exit_arg_nb(arg) == -1)
 		return (-1);
 	file_from_history(g_shell.hist.history);
-	clean_shell();
 	ft_putstr("exit\n");
 	check_if_exit_arg_is_digit(arg);
 	if (arg)
 		if (arg[1])
-			exit(ft_atoi(arg[1]));
-	exit(0);
+			r = ft_atoi(arg[1]);
+	clean_shell();
+	exit(r);
 }
