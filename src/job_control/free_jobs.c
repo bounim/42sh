@@ -17,7 +17,7 @@ void	free_proc(t_proc *proc)
 	if (!proc)
 		return ;
 	free(proc->arg);
-	if (proc->envl && proc->envl != g_shell.envl)
+	if (proc->envl)
 		free_envl(proc->envl);
 	free(proc);
 }

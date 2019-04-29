@@ -69,7 +69,11 @@ int			built_exit(char **arg, t_envl *envl)
 
 	(void)envl;
 	r = g_shell.exit_code;
-	ft_putstr("exit\n");
+	if (g_shell.pgid == getpid())
+	{
+		printer_str(&g_shell.err, "exit\n");
+		printer_flush(&g_shell.err);
+	}
 	if (check_exit_arg_nb(arg) == -1)
 		return (1);
 	file_from_history(g_shell.hist.history);

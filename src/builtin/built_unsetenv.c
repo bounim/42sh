@@ -35,8 +35,8 @@ static int		unset_env(char *arg, t_envl **envl)
 	h_env = h_env->next;
 	while (h_env)
 	{
-		if (ft_strequ(arg, h_env->name) && h_env->exp == 1 &&
-											h_env->read_only == 0)
+		if (ft_strequ(arg, h_env->name) && h_env->exp == 1
+				&& h_env->read_only == 0)
 			return (swap_var(envl, &h_env, &tmp, 0));
 		tmp = h_env;
 		h_env = h_env->next;

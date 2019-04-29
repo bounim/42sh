@@ -25,7 +25,10 @@ void	printer_flush(t_printer *handle)
 		{
 			r = write(handle->fd, handle->buffer + i, handle->length - i);
 			if (r <= 0)
+			{
+				handle->length = 0;
 				break ;
+			}
 			i += r;
 		}
 		handle->length = 0;

@@ -99,7 +99,7 @@ int				built_alias(char **arg, t_envl *envl)
 	{
 		if (ft_strchr(arg[i], '='))
 			ret += alias_var_egual(arg[i], &g_shell.alias,
-									ft_strichr(arg[i], '='));
+					ft_strichr(arg[i], '='));
 		else
 			ret += alias_var(arg[i], &g_shell.alias);
 		i++;

@@ -45,10 +45,7 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 	new->arg = arg_to_argv(cmd);
 	new->cmd = cmd;
 	new->job = *job;
-	if (!cmd->assign_head || !cmd->arg_head)
-		new->envl = g_shell.envl;
-	else
-		new->envl = dup_envl(g_shell.envl);
+	new->envl = dup_envl(g_shell.envl);
 	if (execute_assign_list(cmd, new) < 0)
 		new->error = 125;
 	else if (new->arg && !(new->is_builtin = check_builtin(new->arg[0])))

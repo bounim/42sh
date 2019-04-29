@@ -21,7 +21,7 @@ static int		put_setenv_error(int err)
 	else if (err == 3)
 	{
 		ft_putstr_fd("setenv: Variable name must "
-					"containt alphanumeric characters\n", 2);
+				"containt alphanumeric characters\n", 2);
 	}
 	return (1);
 }
@@ -62,7 +62,7 @@ static int		check_env_opts(char *arg)
 			ft_putstr_fd("env: illegal option -- -", 2);
 			write(2, arg + i, 1);
 			ft_putstr_fd("\nusage: env [-i] [name=value ..."
-						"] [utility [argumment ...]]\n", 2);
+					"] [utility [argumment ...]]\n", 2);
 			return (1);
 		}
 		i++;
