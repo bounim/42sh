@@ -23,7 +23,7 @@ char	**arg_to_argv(t_lexer_token *cmd)
 
 	if (!cmd->arg_head)
 		return (NULL);
-	if (NULL == (av = malloc((cmd->arg_nb + 1) * sizeof(*av))))
+	if (NULL == (av = (char **)malloc((cmd->arg_nb + 1) * sizeof(*av))))
 		return (NULL);
 	i = 0;
 	cur = cmd->arg_head;
@@ -37,7 +37,7 @@ char	**arg_to_argv(t_lexer_token *cmd)
 	return (av);
 }
 
-int		execute_simple_command(t_lexer_token *cmd) //ajouter exit status ds launch job ou end_job
+int		execute_simple_command(t_lexer_token *cmd)
 {
 	t_proc			*new_proc;
 	t_job			*new_job;
@@ -46,7 +46,7 @@ int		execute_simple_command(t_lexer_token *cmd) //ajouter exit status ds launch 
 	if (!cmd || cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
 		return (-1);
 	new_proc = create_proc(&new_job, cmd);
-	launch_job(new_job); //1 == foreground
+	launch_job(new_job);
 	return (0);
 }
 
@@ -57,11 +57,10 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 	t_proc			*new_proc;
 
 	new_job = NULL;
-	if (!pipe_seq)
+	if (!(cur = pipe_seq))
 		return (-1);
 	if (pipe_seq->ptype != PARSER_PIPE)
 		return (execute_simple_command(pipe_seq));
-	cur = pipe_seq;
 	if (!cur->left)
 		return (-1);
 	while (cur && cur->ptype == PARSER_PIPE)
@@ -80,18 +79,7 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 	}
 	new_proc = create_proc(&new_job, cur);
 	launch_job(new_job);
-	return (0); //TODO
-}
-
-void	print_uint(char *str, uint8_t *buf, size_t size)
-{
-	size_t	i = 0;
-
-	ft_putstr(str);
-	ft_putstr(" : ");
-	while (i < size)
-		ft_putchar(buf[i++]);
-	ft_putchar('\n');
+	return (0);
 }
 
 int		execute_and_or(t_lexer_token *and_or)
@@ -99,12 +87,10 @@ int		execute_and_or(t_lexer_token *and_or)
 	t_lexer_token	*cur;
 	int				execute;
 
-	execute = 0;
-	if (!and_or)
+	if (!(cur = and_or))
 		return (-1);
-	if (and_or->ptype != PARSER_AND_OR)
+	if (and_or->ptype != PARSER_AND_OR && !(execute = 0))
 		return (execute_pipe(and_or));
-	cur = and_or;
 	while (cur && cur->ptype == PARSER_AND_OR)
 	{
 		if (!execute)
@@ -113,65 +99,29 @@ int		execute_and_or(t_lexer_token *and_or)
 				return (-1);
 			execute = 0;
 		}
-		if (cur->buffer[0] == '&')
+		if ((cur->buffer[0] == '&' && g_shell.exit_code != 0)
+		|| (cur->buffer[0] != '&' && g_shell.exit_code == 0))
 		{
-			if (g_shell.exit_code != 0)
-			{
-				if (cur->right && cur->right->ptype != PARSER_AND_OR)
-					return (0);
-				execute = 1;
-			}
-		}
-		else
-		{
-			if (g_shell.exit_code == 0)
-			{
-				if (cur->right && cur->right->ptype != PARSER_AND_OR)
-					return (0);
-				execute = 1;
-			}
+			if (cur->right && cur->right->ptype != PARSER_AND_OR)
+				return (0);
+			execute = 1;
 		}
 		cur = cur->right;
 	}
 	return (execute_pipe(cur));
 }
 
-/*
-** int		execute_subshell(t_lexer_token *cmd)
-** {
-** 	pid_t	pid;
-** 	int		r;
-**
-** 	if ((pid = fork()) < 0)
-** 		return (-1);
-** 	if (pid > 0)
-** 	{
-** 		// TODO job control (pid)
-** 		return (1); //asynchronous list
-** 	}
-** 	r = execute_and_or(cmd);
-** 	// TODO clean
-** 	exit(r < 0 ? 128 : g_shell.exit_code);
-** }
-**
-**
-** 		if (cur->buffer[0] == '&')
-** 		{
-** 			if (execute_subshell(cur->left) > 0)
-** 				g_shell.exit_code = 0;
-** 		}
-** 		else if (execute_and_or(cur->left) < 0)
-*/
-
-int		execute_list(t_lexer_token *list)
+int		execute(t_lexer *lex)
 {
+	t_lexer_token	*cmd;
 	t_lexer_token	*cur;
 
-	if (!list)
+	cmd = lex->root;
+	if (!cmd)
 		return (-1);
-	if (list->ptype != PARSER_SEPARATOR)
-		return (execute_and_or(list));
-	cur = list;
+	if (cmd->ptype != PARSER_SEPARATOR)
+		return (execute_and_or(cmd));
+	cur = cmd;
 	while (cur && cur->ptype == PARSER_SEPARATOR)
 	{
 		if (execute_and_or(cur->left) < 0)
@@ -181,23 +131,4 @@ int		execute_list(t_lexer_token *list)
 	if (cur)
 		return (execute_and_or(cur));
 	return (0);
-}
-
-int		execute_complete_command(t_lexer_token *cmd)
-{
-	if (!cmd)
-		return (-1);
-	if (execute_list(cmd) < 0)
-	{
-		// TODO exec error
-		return (-1);
-	}
-	return (0);
-}
-
-int		execute(t_lexer *lex)
-{
-	if (!lex->root)
-		return (-1);
-	return (execute_complete_command(lex->root));
 }
