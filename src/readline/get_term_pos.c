@@ -45,7 +45,7 @@ static int	read_line_pos(char *buff, size_t *line)
 	if (n == POS_BUFSIZE - 1)
 		return (-1);
 	buff[n] = '\0';
-	r = atoi(buff);
+	r = ft_atoi(buff);
 	if (r < 1)
 		return (-1);
 	*line = (size_t)r - 1;
@@ -72,7 +72,7 @@ int			get_term_pos(size_t *line, size_t *col)
 	if (n == POS_BUFSIZE - 1)
 		return (-1);
 	buff[n] = '\0';
-	r = atoi(buff);
+	r = ft_atoi(buff);
 	if (r < 1)
 		return (-1);
 	*col = (size_t)r - 1;

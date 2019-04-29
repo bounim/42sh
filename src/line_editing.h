@@ -32,7 +32,6 @@ enum					e_prompt
 	QUOTE_PROMPT,
 	BACKSLASH_PROMPT,
 	HEREDOC_PROMPT,
-	SEARCH_PROMPT
 };
 
 /*
@@ -71,7 +70,6 @@ enum					e_errnum
 	PRINT_USAGE = 0,
 	NO_TERM_ENV,
 	NO_TERM_INFO,
-	CANT_MODIFY_TERM,
 	MALLOC_ERROR,
 	EXIT
 };
@@ -86,12 +84,6 @@ enum					e_freenum
 	FREE_ALL_EDIT,
 	FREE_ONLY_EDIT_CHAR_LIST
 };
-
-/*
-*** DEFINE BASIC ENV VAR
-*/
-
-# define TERM "xterm-256color"
 
 /*
 *** DEFINE CARACTERS SEQUENCES
@@ -137,35 +129,6 @@ enum					e_freenum
 # define BACKWARD_WORD "\033b"
 
 /*
-*** DEFINE COMMAND CODES
-*/
-
-enum					e_one_oct_comm_code
-{
-	RET_CODE = 0,
-	DEL_CODE,
-	CPY_MODE_CODE,
-	PASTE_CODE,
-	FORWARD_CODE,
-	BACKWARD_CODE
-};
-
-enum					e_multi_oct_comm_code
-{
-	SUPR_CODE = 10,
-	UP_ARROW_CODE,
-	DOWN_ARROW_CODE,
-	RIGHT_ARROW_CODE,
-	LEFT_ARROW_CODE,
-	PAGE_UP_CODE,
-	PAGE_DOWN_CODE,
-	HOME_CODE,
-	END_CODE,
-	DOWN_LINE_CODE,
-	UP_LINE_CODE
-};
-
-/*
 *** DEFINE STRUCTS
 */
 
@@ -209,15 +172,12 @@ typedef struct			s_keymap
 
 typedef struct			s_term
 {
-	struct termios		origin;
-	struct termios		capa;
 	struct winsize		max;
 }						t_term;
 
 struct					s_last_command
 {
 	uint8_t				*buff;
-	int					cursor_pos;
 	t_last_command		*prev;
 };
 
@@ -280,7 +240,6 @@ size_t					get_y_pos(t_char *prev_char, uint32_t col_limit,\
 		uint32_t row_limit);
 void					place_base_at_start(void);
 void					update_all_pos(void);
-void					check_all_pos(void);
 void					shift_pos_up(void);
 void					shift_pos_down(void);
 t_char					*skip_prompt(t_char *head);
@@ -345,15 +304,12 @@ void					return_fn(void);
 t_char					*find_first_non_prompt(t_char *head);
 void					rl_free_controler(int code);
 void					free_last_command_list(void);
-void					free_all(void);
 void					place_cursor_after_print(t_char *curr, int max_x,\
 		int max_y);
 void					handle_ctrl_c(void);
 void					add_to_undo_list(uint8_t *key, size_t keylen);
 void					undo_last_edit_command(void);
 void					delete_last_command(t_last_command *last);
-void					put_prompt_in_simple_buff(uint8_t *simple_buff,\
-		int prompt_id, int len);
 void					build_count(uint8_t *key, size_t *keylen, int mode);
 
 /*

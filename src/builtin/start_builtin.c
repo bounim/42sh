@@ -22,7 +22,6 @@ static t_builtin	g_builtin[] = {
 	{"export", built_export},
 	{"hash", built_hash},
 	{"history", built_history},
-	{"jobs", built_jobs},
 	{"set", built_set},
 	{"setenv", built_setenv},
 	{"test", built_test},

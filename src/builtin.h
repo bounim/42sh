@@ -41,24 +41,6 @@ struct				s_alias
 	struct s_alias	*next;
 };
 
-enum				e_fc_opts
-{
-	E = 0,
-	L = 1,
-	N = 2,
-	R = 3,
-	S = 4
-};
-
-enum				e_range_code
-{
-	OUT_OF_RANGE = 0,
-	IN_RANGE,
-	NUMBER,
-	RANGE,
-	NO_ARG
-};
-
 typedef struct		s_builtin
 {
 	char			*name;
@@ -80,7 +62,6 @@ char				**from_arg_to_cmd(char **start);
 int					env_exit(char *str, char *path);
 int					env_usage(char *str);
 int					built_alias(char **arg, t_envl *envl);
-int					built_bg(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);
 char				*find_cdpath(char *arg, t_envl *envl, int opts);
 char				*rework_cdpath_arr(char *cdpath);
@@ -90,10 +71,8 @@ int					built_env(char **arg, t_envl *envl);
 int					is_valid_name(char *str);
 int					built_exit(char **arg, t_envl *envl);
 int					built_export(char **arg, t_envl *envl);
-int					built_fg(char **arg, t_envl *envl);
 int					built_hash(char **arg, t_envl *envl);
 int					built_history(char **arg, t_envl *envl);
-int					built_jobs(char **arg, t_envl *envl);
 int					built_set(char **arg, t_envl *envl);
 int					built_setenv(char **arg, t_envl *envl);
 int					built_setenv_check_error(char **arg);

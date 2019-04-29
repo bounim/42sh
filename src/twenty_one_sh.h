@@ -36,12 +36,10 @@
 # include "line_editing.h"
 # include "lexer.h"
 # include "builtin.h"
-# include "builtin_defines.h"
 # include "job_control.h"
 # include "shell.h"
 # include "random.h"
 
-void						ft_sig_handler(int signo);
 void						ft_putendl_fd(char const *s, int fd);
 void						ft_putstr(char const *s);
 void						ft_putchar(char ch);

@@ -32,8 +32,8 @@ int			binary_test_end(char *operand1, char *operand2, char *operator)
 	int i1;
 	int i2;
 
-	i1 = atoi(operand1);
-	i2 = atoi(operand2);
+	i1 = ft_atoi(operand1);
+	i2 = ft_atoi(operand2);
 	if (operator[1] == 'e' && operator[2] == 'q')
 		return (i1 == i2);
 	if (operator[1] == 'n' && operator[2] == 'e')
