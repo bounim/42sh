@@ -72,6 +72,8 @@ char			*find_exclaim(char *word, t_history *hist)
 {
 	if (!word && (!word[0] || !word[1]))
 		return (NULL);
+	if (g_shell.hist.history_size <= 0)
+		return (NULL);
 	if (word[1] == '!')
 		return ((char *)hist->buf);
 	else if (ft_isdigit(word[1]))
