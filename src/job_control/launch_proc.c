@@ -108,7 +108,7 @@ static void	proc_child(t_proc *proc)
 
 void		launch_proc(t_proc *proc)
 {
-	if (!proc->is_builtin || proc->next || proc->prev)
+	if ((proc->arg && !proc->is_builtin) || proc->next || proc->prev)
 	{
 		if ((proc->pid = fork()) < 0)
 			return ; //TODO fork error
@@ -131,9 +131,9 @@ void		launch_proc(t_proc *proc)
 		g_shell.exit_code = proc->error;
 		return ;
 	}
-	if (proc->is_builtin)
+	if (!proc->arg || proc->is_builtin)
 	{
-		g_shell.exit_code = start_builtin(proc->arg, proc->envl);
+		g_shell.exit_code = proc->arg ? start_builtin(proc->arg, proc->envl) : 0;
 		command_redir_restore(proc->cmd);
 		if (proc->next || proc->prev)
 		{

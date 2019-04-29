@@ -21,6 +21,8 @@ char	**arg_to_argv(t_lexer_token *cmd)
 	t_lexer_token	*cur;
 	char			**av;
 
+	if (!cmd->arg_head)
+		return (NULL);
 	if (NULL == (av = malloc((cmd->arg_nb + 1) * sizeof(*av))))
 		return (NULL);
 	i = 0;
@@ -41,7 +43,7 @@ int		execute_simple_command(t_lexer_token *cmd) //ajouter exit status ds launch 
 	t_job			*new_job;
 
 	new_job = NULL;
-	if (!cmd ||  cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
+	if (!cmd || cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
 		return (-1);
 	new_proc = create_proc(&new_job, cmd);
 	launch_job(new_job); //1 == foreground
