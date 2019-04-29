@@ -67,7 +67,7 @@ char		*rework_canonic_path(char *cwd)
 	return (cwd);
 }
 
-static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts, char *tmp)
+static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts)
 {
 	char		*cwd;
 	int		i;
@@ -78,12 +78,7 @@ static char	*check_cdpath_t(char **cdpath_t, char *arg, int opts, char *tmp)
 	while (cdpath_t[i])
 	{
 		if (ft_strnequ(cdpath_t[i], ".", 1) || ft_strnequ(cdpath_t[i], "..", 2))
-		{
-			tmp = cdpath_t[i];
-			cdpath_t[i] = getcwd(NULL, 0);
-			cdpath_t[i] = ft_strfjoin(cdpath_t[i], "/", 0);
-			cdpath_t[i] = ft_strfjoin(cdpath_t[i], tmp, 2);
-		}
+			cdpath_t[i] = rework_cdpath_arr(cdpath_t[i]);
 		cwd = ft_strdup(cdpath_t[i]);
 		cwd = ft_strfjoin(cwd, "/", 0);
 		cwd = ft_strfjoin(cwd, arg, 0);
@@ -127,7 +122,7 @@ char		*find_cdpath(char *arg, t_envl *envl, int opts)
 	{
 		if (!(cdpath_t = ft_strsplit(cdpath, ':')))
 			return (ft_strdup(arg));
-		cwd = check_cdpath_t(cdpath_t, arg, opts, NULL);
+		cwd = check_cdpath_t(cdpath_t, arg, opts);
 		len = ft_arrlen(cdpath_t);
 		ft_arrdel(cdpath_t);
 	}

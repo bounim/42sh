@@ -71,6 +71,7 @@ SRC := \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_exclaim.c \
+	builtin/utils.c \
 	builtin/replace_exclaim_extra.c \
 	builtin/print_general_error.c \
 	builtin/built_exit.c \

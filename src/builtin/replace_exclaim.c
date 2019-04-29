@@ -53,12 +53,15 @@ char			*replace_exclaim(char *line, t_history *hist,
 		{
 			ft_putstr_fd("event not found: ", 2);
 			ft_putendl_fd(line + i + 1, 2);
+			ft_strdel(&concat);
+			ft_strdel(&bfr);
+			ft_strdel(&tmp);
+			ft_strdel(&next);
 			ft_strdel(&line);
 			return (NULL);
 		}
-		tmp = ft_strdup(tmp);
 		ft_strdel(&line);
-		line = ft_strfjoin(bfr, tmp, 2);
+		line = ft_strfjoin(bfr, tmp, 0);
 		line = ft_strfjoin(line, next, 2);
 	}
 	return (line);
