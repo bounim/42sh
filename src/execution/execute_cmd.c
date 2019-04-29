@@ -81,30 +81,25 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 int		execute_and_or(t_lexer_token *and_or)
 {
 	t_lexer_token	*cur;
-	int				execute;
 
 	if (!(cur = and_or))
 		return (-1);
-	if (!(execute = 0) && and_or->ptype != PARSER_AND_OR)
+	if (and_or->ptype != PARSER_AND_OR)
 		return (execute_pipe(and_or));
+	if (execute_pipe(cur->left) < 0)
+		return (-1);
 	while (cur && cur->ptype == PARSER_AND_OR)
 	{
-		if (!execute)
+		if ((cur->buffer[0] == '&' && g_shell.exit_code == 0)
+				|| (cur->buffer[0] == '|' && g_shell.exit_code != 0))
 		{
-			if (execute_pipe(cur->left) < 0)
+			if (execute_pipe(cur->right->ptype
+						== PARSER_AND_OR ? cur->right->left : cur->right) < 0)
 				return (-1);
-			execute = 0;
-		}
-		if ((cur->buffer[0] == '&' && g_shell.exit_code != 0)
-			|| (cur->buffer[0] != '&' && g_shell.exit_code == 0))
-		{
-			if (cur->right && cur->right->ptype != PARSER_AND_OR)
-				return (0);
-			execute = 1;
 		}
 		cur = cur->right;
 	}
-	return (execute_pipe(cur));
+	return (0);
 }
 
 int		execute(t_lexer *lex)
