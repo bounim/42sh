@@ -13,7 +13,8 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-int		execute_assign(t_proc *proc, t_lexer_token *assign)
+static int	execute_assign(t_lexer_token *cmd, t_proc *proc,
+		t_lexer_token *assign)
 {
 	char	*name;
 	char	*value;
@@ -30,7 +31,7 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 	ft_memcpy(value, assign->buffer + assign->assign_position + 1,
 			assign->size - assign->assign_position - 1);
 	value[assign->size - assign->assign_position - 1] = '\0';
-	if (proc)
+	if (cmd->arg_head)
 		push_env(&proc->envl, name, value, 1);
 	else
 		push_env(&g_shell.envl, name, value, 0);
@@ -39,16 +40,14 @@ int		execute_assign(t_proc *proc, t_lexer_token *assign)
 	return (0);
 }
 
-int		execute_assign_list(t_lexer_token *cmd, t_proc *proc)
+int			execute_assign_list(t_lexer_token *cmd, t_proc *proc)
 {
 	t_lexer_token *tmp;
 
 	tmp = cmd->assign_head;
-	if (!tmp)
-		return (0);
 	while (tmp)
 	{
-		if (execute_assign(proc, tmp) < 0)
+		if (execute_assign(cmd, proc, tmp) < 0)
 			return (-1);
 		tmp = tmp->assign_next;
 	}
