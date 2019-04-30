@@ -12,29 +12,39 @@
 
 #include "twenty_one_sh.h"
 
+static int		parent_proc(pid_t pid)
+{
+	int status;
+
+	waitpid(pid, &status, WUNTRACED);
+	if (WIFSTOPPED(status))
+	{
+		kill(pid, SIGTERM);
+		kill(pid, SIGCONT);
+	}
+	g_shell.exit_code = get_return_status(status);
+	tcsetpgrp(0, g_shell.pgid);
+	return (g_shell.exit_code);
+}
+
 static int		execute_utility(char **arg, char **env)
 {
 	pid_t	pid;
-	int		status;
 	t_envl	*envl;
 	char	path[PATH_MAX];
 
 	envl = NULL;
-	clear_signals();
 	pid = fork();
 	if (pid < 0)
 		return (-1);
 	else if (pid > 0)
-	{
-		waitpid(pid, &status, WUNTRACED | WCONTINUED);
-		g_shell.exit_code = get_return_status(status);
-		return (g_shell.exit_code);
-	}
+		return (parent_proc(pid));
+	clear_signals();
 	if (!arg[0])
 		return (125);
-	else if ((env && !(envl = envarr_to_envl(env)))
+	else if ((env && !(envl = envarr_to_envl(env)) && !ft_strchr(arg[0], '/'))
 			|| find_command(path, arg[0], envl) != 0)
-		return (env_exit(arg[0], path));
+		return (env_exit(arg[0], test_exec(path)));
 	execve(path, arg, env);
 	fatal_exit(7);
 	return (125);

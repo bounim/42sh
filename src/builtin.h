@@ -59,7 +59,7 @@ typedef struct		s_cor
 int					check_builtin(char *cmd);
 int					start_builtin(char **arg, t_envl *envl);
 char				**from_arg_to_cmd(char **start);
-int					env_exit(char *str, char *path);
+int					env_exit(char *str, int test);
 int					env_usage(char *str);
 int					built_alias(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);
