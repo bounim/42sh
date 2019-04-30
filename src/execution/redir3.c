@@ -53,3 +53,16 @@ int			test_fd_new_closed(t_lexer_token *cmd, t_lexer_token *cur)
 		return (1);
 	return (0);
 }
+
+void		close_fd_before_exec(t_lexer_token *cmd)
+{
+	t_lexer_token	*cur;
+
+	cur = cmd->redir_head;
+	while (cur)
+	{
+		if (cur->fd_dup > 0)
+			close(cur->fd_dup);
+		cur = cur->redir_next;
+	}
+}

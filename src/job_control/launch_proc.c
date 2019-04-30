@@ -149,8 +149,8 @@ void		launch_proc(t_proc *proc)
 	{
 		if (!(proc->env = envl_to_envarr(proc->envl)))
 			fatal_exit(SH_ENOMEM);
+		close_fd_before_exec(proc->cmd);
 		execve(proc->path, proc->arg, proc->env);
-		command_redir_restore(proc->cmd);
 		fatal_exit(7);
 	}
 }

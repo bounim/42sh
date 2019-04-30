@@ -44,5 +44,6 @@ int		read_heredoc(t_lexer *lex, size_t *i);
 int		will_close(t_lexer_token *cmd, int fd);
 void	lazy_close(t_lexer_token *cmd);
 int		test_fd_new_closed(t_lexer_token *cmd, t_lexer_token *cur);
+void	close_fd_before_exec(t_lexer_token *cmd);
 
 #endif
