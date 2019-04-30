@@ -99,7 +99,8 @@ void		command_redir_restore(t_lexer_token *cmd)
 			else
 				dup2(cur->fd_dup, cur->fd_saved);
 		}
-		close(cur->fd_dup);
+		if (cur->fd_dup > 0)
+			close(cur->fd_dup);
 		cur = cur->redir_previous;
 	}
 }
