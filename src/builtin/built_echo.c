@@ -58,10 +58,16 @@ static int	find_operands(char *arg)
 
 int			built_echo(char **arg, t_envl *envl)
 {
-	int		i;
+	int			i;
+	struct stat	st;
 
 	(void)envl;
 	i = 1;
+	if (fstat(STDOUT_FILENO, &st) == -1)
+	{
+		ft_putendl_fd("21sh: echo: write error: Bad file descriptor", 2);
+		return (1);
+	}
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '\\'))
