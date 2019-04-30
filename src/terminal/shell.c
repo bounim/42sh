@@ -54,8 +54,7 @@ void		init_shell(int ac, char **av, char **env)
 	if (init_terminal() < 0)
 		fatal_exit(SH_ENOTTY);
 	g_shell.term_set = 1;
-	g_shell.raw_tio.c_lflag &= ~(ECHO | ICANON | ISIG);
-	g_shell.raw_tio.c_oflag &= ~(OPOST);
+	g_shell.raw_tio.c_lflag &= ~(ECHO | ICANON | ISIG | ECHOCTL);
 	g_shell.raw_tio.c_cc[VMIN] = 1;
 	g_shell.raw_tio.c_cc[VTIME] = 0;
 	tgetent(NULL, "xterm-256color");

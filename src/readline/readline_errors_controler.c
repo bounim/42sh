@@ -20,7 +20,6 @@ static void	print_usage(void)
 
 void		readline_errors_controler(int errnum)
 {
-	ft_putstr(tgetstr("cr", NULL));
 	if (errnum == PRINT_USAGE)
 		print_usage();
 	else if (errnum == NO_TERM_ENV)

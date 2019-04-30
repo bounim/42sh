@@ -47,7 +47,6 @@ static void		print_special_error(char *line, int i)
 {
 	ft_putstr_fd("event not found: ", 2);
 	ft_putendl_fd(line + i, 2);
-	ft_putstr(tgetstr("cr", NULL));
 	ft_strdel(&line);
 }
 
