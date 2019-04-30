@@ -60,7 +60,7 @@ int					check_builtin(char *cmd);
 int					start_builtin(char **arg, t_envl *envl);
 char				**from_arg_to_cmd(char **start);
 int					env_exit(char *str, int test);
-int					env_usage(char *str);
+int					env_usage(char *str, t_envl *envl);
 void				init_cor(char **arg, t_envl *envl, t_cor *cor);
 int					built_alias(char **arg, t_envl *envl);
 int					built_cd(char **arg, t_envl *envl);

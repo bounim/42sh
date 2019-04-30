@@ -100,7 +100,9 @@ int				built_env(char **arg, t_envl *envl)
 		else if (c.o && (!ft_strcmp(*(c.t), "--") || !ft_strcmp(*(c.t), "-")))
 			c.o = 0;
 		else if (c.o && ft_strcmp(*(c.t), "-i") && *(c.t[0]) == '-')
-			return (env_usage(*(c.t)));
+		{
+			return (env_usage(*(c.t), c.dup_env));
+		}
 		else if ((ptr = ft_strchr(*(c.t), '=')) && is_valid_name(*arg))
 			env_assign(&c, ptr);
 		else if ((!c.o || (*(c.t))[0] != '-') && c.start == NULL)
