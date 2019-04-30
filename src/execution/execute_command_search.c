@@ -13,7 +13,7 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-int			test_exec(char *path)
+static int	test_exec(char *path)
 {
 	struct stat	buf;
 

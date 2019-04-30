@@ -32,6 +32,7 @@ static int		execute_utility(char **arg, char **env)
 	pid_t	pid;
 	t_envl	*envl;
 	char	path[PATH_MAX];
+	int		r;
 
 	envl = NULL;
 	pid = fork();
@@ -40,11 +41,12 @@ static int		execute_utility(char **arg, char **env)
 	else if (pid > 0)
 		return (parent_proc(pid));
 	clear_signals();
+	r = -1;
 	if (!arg[0])
 		return (125);
 	else if ((env && !(envl = envarr_to_envl(env)) && !ft_strchr(arg[0], '/'))
-			|| find_command(path, arg[0], envl) != 0)
-		return (env_exit(arg[0], test_exec(path)));
+			|| (r = find_command(path, arg[0], envl)) != 0)
+		return (env_exit(arg[0], r));
 	execve(path, arg, env);
 	fatal_exit(7);
 	return (125);
@@ -100,9 +102,7 @@ int				built_env(char **arg, t_envl *envl)
 		else if (c.o && (!ft_strcmp(*(c.t), "--") || !ft_strcmp(*(c.t), "-")))
 			c.o = 0;
 		else if (c.o && ft_strcmp(*(c.t), "-i") && *(c.t[0]) == '-')
-		{
 			return (env_usage(*(c.t), c.dup_env));
-		}
 		else if ((ptr = ft_strchr(*(c.t), '=')) && is_valid_name(*arg))
 			env_assign(&c, ptr);
 		else if ((!c.o || (*(c.t))[0] != '-') && c.start == NULL)
