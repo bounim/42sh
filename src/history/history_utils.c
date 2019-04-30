@@ -12,36 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-void	build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i,\
-		size_t j)
-{
-	size_t			ind;
-
-	ind = 0;
-	while (j < i)
-	{
-		if (cont[j] == '\\' && cont[j + 1] && cont[j + 1] == '\n')
-			j++;
-		tmp[ind++] = cont[j++];
-	}
-}
-
-size_t	skip_backslash(const uint8_t *str, size_t *i, size_t j,\
-		int bs)
-{
-	size_t			len;
-
-	len = *i - j - bs;
-	if (*i > 0 && str[*i - 1] && str[*i - 1] != '\\')
-		return (len);
-	(*i)++;
-	while (str[*i] && str[*i] != '\n')
-		(*i)++;
-	if (str[*i] && str[*i] == '\n' && str[*i - 1] == '\\')
-		skip_backslash(str, i, j, bs++);
-	return (len);
-}
-
 void	check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd)
 {
 	ssize_t			i;

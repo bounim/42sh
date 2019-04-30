@@ -24,7 +24,6 @@ struct				s_history
 struct				s_hist
 {
 	t_history		*history;
-	t_history		*search_point;
 	uint8_t			search_buff[15000];
 	size_t			search_len;
 	int				history_save;
@@ -73,9 +72,6 @@ void				build_search_buff(uint8_t *key, size_t *keylen);
 void				check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd);
 void				rl_line_to_hist(int add_to_hist, uint8_t *buff, size_t\
 		buff_size);
-size_t				skip_backslash(const uint8_t *str, size_t *i, size_t j,\
-		int bs);
 void				check_nul_charac(uint8_t buf[BUFF_SIZE + 1], ssize_t rd);
-void				build_tmp(uint8_t *tmp, const uint8_t *cont, size_t i,\
-		size_t j);
+
 #endif
