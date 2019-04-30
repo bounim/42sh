@@ -83,6 +83,7 @@ static void		env_assign(t_cor *c, char *ptr)
 {
 	c->name = ft_strsub(*c->t, 0, ptr - *(c->t));
 	push_env(&(c->dup_env), c->name, ptr + 1, 1);
+	ft_strdel(&(c->name));
 	c->o = 0;
 }
 
