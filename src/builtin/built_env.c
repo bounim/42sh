@@ -31,7 +31,7 @@ static int		execute_utility(char **arg, char **env)
 {
 	pid_t	pid;
 	t_envl	*envl;
-	char	path[PATH_MAX];
+	char	path[PATH_MAX + 1];
 	int		r;
 
 	envl = NULL;
