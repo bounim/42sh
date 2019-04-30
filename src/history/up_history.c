@@ -40,9 +40,6 @@ void			get_prev_history(void)
 		switch_history();
 	if (g_shell.hist.history_save == -1)
 	{
-		if (g_shell.hist.buf)
-			free(g_shell.hist.buf);
-		g_shell.hist.buf = list_to_buf();
 		print_history();
 		g_shell.hist.history_save = 0;
 	}

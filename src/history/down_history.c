@@ -42,8 +42,6 @@ void			get_next_history(void)
 		g_shell.edit.cur_base_x = 0;
 		init_char_list();
 		init_prompt(BASIC_PROMPT);
-		if (g_shell.hist.buf)
-			buff_to_charlist(g_shell.hist.buf);
 		clean_and_print();
 		g_shell.hist.history_save = -1;
 		return ;

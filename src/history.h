@@ -25,7 +25,6 @@ struct				s_hist
 {
 	t_history		*history;
 	t_history		*search_point;
-	uint8_t			*buf;
 	uint8_t			search_buff[15000];
 	size_t			search_len;
 	int				history_save;
