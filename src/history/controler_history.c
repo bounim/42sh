@@ -102,5 +102,7 @@ void	print_history(void)
 	init_char_list();
 	init_prompt(BASIC_PROMPT);
 	buff_to_charlist(g_shell.hist.history->buf);
+	if (g_shell.edit.cur_base_y < 0)
+		g_shell.edit.cur_base_y = 0;
 	clean_and_print();
 }
