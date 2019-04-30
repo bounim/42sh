@@ -66,8 +66,9 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 			return (-1);
 		cur = cur->right;
 	}
-	if (!(cur = pipe_seq) || command_expansions(cur) < 0)
+	if (command_expansions(cur) < 0)
 		return (-1);
+	cur = pipe_seq;
 	while (cur && cur->ptype == PARSER_PIPE)
 	{
 		create_proc(&new_job, cur->left);
