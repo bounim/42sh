@@ -19,6 +19,7 @@ SRC := \
 	execution/execution_errors.c \
 	execution/redir.c \
 	execution/redir2.c \
+	execution/redir3.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/init_shell_history.c \

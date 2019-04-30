@@ -81,6 +81,7 @@ struct							s_lexer_token
 	int							fd_saved;
 	int							fd_new;
 	int							fd_dup;
+	int							fd_saved_closed;
 	t_lexer_token				*redir_target;
 	int							heredoc_delimiter;
 	t_lexer_token				*heredoc_next;

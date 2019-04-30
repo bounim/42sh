@@ -11,17 +11,16 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <fcntl.h>
-#include <limits.h>
 #include <sys/stat.h>
 #include "twenty_one_sh.h"
 #include "execution.h"
-#include "random.h"
 
-static int	save_dup(t_lexer_token *cur)
+static int	save_dup(t_lexer_token *cmd, t_lexer_token *cur)
 {
 	struct stat	sb;
 
+	if (test_fd_new_closed(cmd, cur))
+		return (-1);
 	if (fstat(cur->fd_saved, &sb) < 0)
 	{
 		cur->fd_dup = -1;
@@ -36,7 +35,7 @@ static int	save_dup(t_lexer_token *cur)
 		return (-1);
 	}
 	if (cur->fd_new < 0)
-		close(cur->fd_saved);
+		cur->fd_saved_closed = 1;
 	else if (dup2(cur->fd_new, cur->fd_saved) < 0)
 	{
 		close(cur->fd_dup);
@@ -72,7 +71,7 @@ int			command_redir(t_lexer_token *cmd)
 		get_fd_saved(cur);
 		if (redir_op(cmd, cur) < 0)
 			return (-1);
-		if (save_dup(cur) < 0)
+		if (save_dup(cmd, cur) < 0)
 		{
 			if (cur->rtype == LESS || cur->rtype == GREAT
 					|| cur->rtype == DGREAT)
@@ -82,6 +81,7 @@ int			command_redir(t_lexer_token *cmd)
 		cmd->redir_last = cur;
 		cur = cur->redir_next;
 	}
+	lazy_close(cmd);
 	return (0);
 }
 
@@ -92,7 +92,7 @@ void		command_redir_restore(t_lexer_token *cmd)
 	cur = cmd->redir_last;
 	while (cur)
 	{
-		if (cur->fd_saved >= 0)
+		if (!cur->fd_saved_closed)
 		{
 			if (cur->fd_dup < 0)
 				close(cur->fd_saved);

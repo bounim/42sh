@@ -128,7 +128,8 @@ void		launch_proc(t_proc *proc)
 		g_shell.exit_code = proc->error;
 		if (!proc->is_builtin || proc->next || proc->prev)
 		{
-			command_redir_restore(proc->cmd);
+			if (proc->error != 125)
+				command_redir_restore(proc->cmd);
 			clean_shell();
 			exit(g_shell.exit_code);
 		}

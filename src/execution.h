@@ -41,5 +41,8 @@ void	write_error(char *cmd, char *str);
 int		redir_op(t_lexer_token *cmd, t_lexer_token *cur);
 int		error_restore(t_lexer_token *cmd, char *msg);
 int		read_heredoc(t_lexer *lex, size_t *i);
+int		will_close(t_lexer_token *cmd, int fd);
+void	lazy_close(t_lexer_token *cmd);
+int		test_fd_new_closed(t_lexer_token *cmd, t_lexer_token *cur);
 
 #endif
