@@ -34,8 +34,9 @@ int			env_exit(char *str, int test)
 	return (-1);
 }
 
-int			env_usage(char *str)
+int			env_usage(char *str, t_envl *head)
 {
+	free_envl(head);
 	printer_str(&g_shell.err, "env: illegal option -- ");
 	printer_char(&g_shell.err, *(str + 1));
 	printer_str(&g_shell.err, "\nusage: env [-i] [name=value ...]");
