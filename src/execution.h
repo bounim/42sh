@@ -30,7 +30,6 @@ int		execute(t_lexer *lex);
 
 int		find_command(char path[PATH_MAX + 1], char *cmd, t_envl *envl);
 void	exec_error(char *cmd, int r);
-int		test_exec(char *path);
 int		command_redir(t_lexer_token *cmd);
 void	command_redir_restore(t_lexer_token *cmd);
 int		execute_assign_list(t_lexer_token *cmd, t_proc *proc);

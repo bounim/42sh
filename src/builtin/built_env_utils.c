@@ -14,24 +14,16 @@
 
 int			env_exit(char *str, int test)
 {
-	ft_putstr_fd("env: ", 2);
+	ft_putstr_fd(g_shell.progname, 2);
+	ft_putstr_fd(": env: ", 2);
 	ft_putstr_fd(str, 2);
-	if (test == 1)
+	if (test < 0 || test == 1)
 	{
 		ft_putendl_fd(": No such file or directory", 2);
 		exit(127);
 	}
-	else if (test == 2)
-	{
-		ft_putendl_fd(": Is a directory", 2);
-		exit(127);
-	}
-	else if (test == 3)
-	{
-		ft_putendl_fd(": Operation not permitted", 2);
-		exit(126);
-	}
-	return (-1);
+	ft_putendl_fd(": Operation not permitted", 2);
+	exit(126);
 }
 
 int			env_usage(char *str, t_envl *head)

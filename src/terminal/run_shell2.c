@@ -16,6 +16,11 @@
 
 static int		heredoc_readline(size_t *i)
 {
+	if (g_shell.line)
+	{
+		free(g_shell.line);
+		g_shell.line = NULL;
+	}
 	readline(HEREDOC_PROMPT);
 	*i = 0;
 	if (!g_shell.line || g_shell.edit.ret_ctrl_c)
