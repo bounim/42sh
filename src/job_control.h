@@ -25,7 +25,6 @@ struct			s_proc
 	char			**env;
 	char			path[PATH_MAX + 1];
 	pid_t			pid;
-	int				completed;
 	int				stopped;
 	int				status;
 	int				std_in;
@@ -77,5 +76,6 @@ void			free_arr(char **arr);
 void			free_job(t_job *job);
 void			free_proc(t_proc *proc);
 void			free_exec(void);
+void			wait_job(t_proc *proc);
 
 #endif
