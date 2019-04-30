@@ -12,16 +12,21 @@
 
 #include "twenty_one_sh.h"
 
-int			env_exit(char *str, char *path)
+int			env_exit(char *str, int test)
 {
 	ft_putstr_fd("env: ", 2);
 	ft_putstr_fd(str, 2);
-	if (!path)
+	if (test == 1)
 	{
 		ft_putendl_fd(": No such file or directory", 2);
 		exit(127);
 	}
-	else if (access(path, X_OK))
+	else if (test == 2)
+	{
+		ft_putendl_fd(": Is a directory", 2);
+		exit(127);
+	}
+	else if (test == 3)
 	{
 		ft_putendl_fd(": Operation not permitted", 2);
 		exit(126);
