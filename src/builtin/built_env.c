@@ -77,15 +77,6 @@ static int		exec_env(char **start, t_envl *head)
 	return (r);
 }
 
-static void		init_cor(char **arg, t_envl *envl, t_cor *cor)
-{
-	cor->t = arg + 1;
-	cor->dup_env = dup_envl(envl);
-	cor->name = NULL;
-	cor->start = NULL;
-	cor->o = 1;
-}
-
 static void		env_assign(t_cor *c, char *ptr)
 {
 	c->name = ft_strsub(*c->t, 0, ptr - *(c->t));

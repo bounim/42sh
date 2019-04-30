@@ -81,3 +81,12 @@ int			is_valid_name(char *str)
 	}
 	return (1);
 }
+
+void		init_cor(char **arg, t_envl *envl, t_cor *cor)
+{
+	cor->t = arg + 1;
+	cor->dup_env = dup_envl(envl);
+	cor->name = NULL;
+	cor->start = NULL;
+	cor->o = 1;
+}
