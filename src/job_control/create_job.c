@@ -14,7 +14,7 @@
 #include "execution.h"
 #include "lexer/lexer_internal.h"
 
-t_job	*create_job(t_lexer_token *cmd)
+t_job			*create_job(t_lexer_token *cmd)
 {
 	t_job	*new;
 	t_job	*cur;
@@ -34,7 +34,20 @@ t_job	*create_job(t_lexer_token *cmd)
 	return (new);
 }
 
-t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
+static t_proc	*add_proc_list(t_job **job, t_proc *new)
+{
+	if ((*job)->foot_proc)
+	{
+		new->prev = (*job)->foot_proc;
+		(*job)->foot_proc->next = new;
+	}
+	else
+		(*job)->head_proc = new;
+	(*job)->foot_proc = new;
+	return (new);
+}
+
+t_proc			*create_proc(t_job **job, t_lexer_token *cmd)
 {
 	t_proc	*new;
 
@@ -54,13 +67,5 @@ t_proc	*create_proc(t_job **job, t_lexer_token *cmd)
 						new->arg[0], new->envl)) != 0)
 			new->error = 127;
 	}
-	if ((*job)->foot_proc)
-	{
-		new->prev = (*job)->foot_proc;
-		(*job)->foot_proc->next = new;
-	}
-	else
-		(*job)->head_proc = new;
-	(*job)->foot_proc = new;
-	return (new);
+	return (add_proc_list(job, new));
 }
