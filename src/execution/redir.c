@@ -95,9 +95,7 @@ void		command_redir_restore(t_lexer_token *cmd)
 		if (cur->fd_saved >= 0)
 		{
 			if (cur->fd_dup < 0)
-			{
 				close(cur->fd_saved);
-			}
 			else
 				dup2(cur->fd_dup, cur->fd_saved);
 		}
