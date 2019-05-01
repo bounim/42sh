@@ -14,25 +14,19 @@
 
 int			unexpected(char *cmd, char *arg, char *reason)
 {
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(reason, 2);
+	printer_str(&g_shell.err, g_shell.progname);
+	printer_str(&g_shell.err, ": ");
+	printer_str(&g_shell.err, cmd);
+	printer_str(&g_shell.err, ": ");
+	printer_str(&g_shell.err, arg);
+	printer_str(&g_shell.err, ": ");
+	printer_str(&g_shell.err, reason);
+	printer_str(&g_shell.err, " expected\n");
+	printer_flush(&g_shell.err);
 	return (2);
 }
 
-int			get_ac(char **av)
-{
-	int ret;
-
-	ret = 0;
-	while (av[ret])
-		ret++;
-	return (ret);
-}
-
-int			built_test_end(int argc, char **av, char *cmd, int r)
+static int	built_test_end(int argc, char **av, char *cmd, int r)
 {
 	if (argc == 3)
 	{
@@ -44,8 +38,7 @@ int			built_test_end(int argc, char **av, char *cmd, int r)
 	{
 		return (binary_test(cmd, av[1], av[2], av[3]) ^ r);
 	}
-	ft_putstr_fd(cmd, 2);
-	write(2, ": too many arguments\n", 21);
+	write_error("test", "too many arguments");
 	return (2);
 }
 
@@ -56,15 +49,15 @@ int			built_test(char **av, t_envl *envl)
 	int		argc;
 
 	(void)envl;
-	argc = get_ac(av);
+	argc = ft_arrlen(av);
 	cmd = av[0];
 	r = 1;
 	while (1)
 	{
 		if (argc <= 1)
-			return (1 ^ r);
+			return (0 ^ r);
 		if (argc == 2)
-			return ((av[1][0] == '\0') ^ r);
+			return ((av[1][0] != '\0') ^ r);
 		if (av[1][0] == '!' && av[1][1] == '\0')
 		{
 			r ^= 1;

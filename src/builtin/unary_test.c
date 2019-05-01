@@ -12,36 +12,30 @@
 
 #include "twenty_one_sh.h"
 
-int	unary_test_end(char *operator, struct stat sb)
+static int	unary_test_end(char *operator, struct stat *sb)
 {
 	if (operator[1] == 'b')
-		return ((sb.st_mode & S_IFMT) == S_IFBLK);
+		return ((sb->st_mode & S_IFMT) == S_IFBLK);
 	if (operator[1] == 'c')
-		return ((sb.st_mode & S_IFMT) == S_IFCHR);
+		return ((sb->st_mode & S_IFMT) == S_IFCHR);
 	if (operator[1] == 'd')
-		return ((sb.st_mode & S_IFMT) == S_IFDIR);
+		return ((sb->st_mode & S_IFMT) == S_IFDIR);
 	if (operator[1] == 'f')
-		return ((sb.st_mode & S_IFMT) == S_IFREG);
+		return ((sb->st_mode & S_IFMT) == S_IFREG);
 	if (operator[1] == 'p')
-		return ((sb.st_mode & S_IFMT) == S_IFIFO);
+		return ((sb->st_mode & S_IFMT) == S_IFIFO);
 	if (operator[1] == 'S')
-		return ((sb.st_mode & S_IFMT) == S_IFSOCK);
+		return ((sb->st_mode & S_IFMT) == S_IFSOCK);
 	if (operator[1] == 's')
-		return (sb.st_size > 0);
-	if (operator[1] == 'r')
-		return (sb.st_mode & S_IRUSR);
-	if (operator[1] == 'w')
-		return (sb.st_mode & S_IWUSR);
-	if (operator[1] == 'x')
-		return (sb.st_mode & S_IXUSR);
+		return (sb->st_size > 0);
 	if (operator[1] == 'u')
-		return (sb.st_mode & S_ISUID);
+		return ((sb->st_mode & S_ISUID) != 0);
 	if (operator[1] == 'g')
-		return (sb.st_mode & S_ISGID);
+		return ((sb->st_mode & S_ISGID) != 0);
 	return (-1);
 }
 
-int	unary_test(char *cmd, char *operator, char *operand)
+int			unary_test(char *cmd, char *operator, char *operand)
 {
 	struct stat	sb;
 	int			ret;
@@ -50,13 +44,19 @@ int	unary_test(char *cmd, char *operator, char *operand)
 		return (operand[0] == '\0');
 	if (operator[1] == 'n')
 		return (operand[0] != '\0');
-	if (operator[1] == 'L')
-		return (lstat(operand, &sb) != 0 || (sb.st_mode & S_IFMT) != S_IFLNK);
-	if (stat(operand, &sb) != 0)
+	if (operator[1] == 'r')
+		return (access(operand, R_OK) == 0);
+	if (operator[1] == 'w')
+		return (access(operand, W_OK) == 0);
+	if (operator[1] == 'x')
+		return (access(operand, X_OK) == 0);
+	if (lstat(operand, &sb) != 0)
 		return (0);
 	if (operator[1] == 'e')
-		return (0);
-	if ((ret = unary_test_end(operator, sb)) != -1)
+		return (1);
+	if (operator[1] == 'L')
+		return ((sb.st_mode & S_IFMT) == S_IFLNK);
+	if ((ret = unary_test_end(operator, &sb)) != -1)
 		return (ret);
 	return (unexpected(cmd, operator, "unary operator"));
 }
