@@ -4,7 +4,6 @@ LIBFT_SRC := \
 	ft_carac_nb.c \
 	ft_count_bn.c \
 	ft_isspace.c \
-	ft_free_arr.c \
 	ft_putnbr_fd.c \
 	ft_strisdigit.c \
 	ft_nblen.c \
