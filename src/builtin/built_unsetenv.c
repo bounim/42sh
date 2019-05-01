@@ -29,6 +29,12 @@ static int		unset_env(char *arg, t_envl **envl)
 	t_envl	*tmp;
 
 	h_env = *envl;
+	if (ft_strcmp(arg, "PATH") == 0)
+	{
+		hashmap_clean(&g_shell.hmap);
+		if (hashmap_init(&g_shell.hmap, HASHMAP_SIZE, hashmap_hash_crc32) < 0)
+			fatal_exit(SH_ENOMEM);
+	}
 	if (ft_strequ(arg, h_env->name) && h_env->exp == 1 && h_env->read_only == 0)
 		return (swap_var(envl, &h_env, &tmp, 1));
 	tmp = h_env;
