@@ -53,12 +53,6 @@ static void	redir_and(t_lexer_token *cur)
 				cur->redir_target->size);
 }
 
-/*
-** TODO in heredoc: replace close + open by lseek in 42sh
-** lseek(cur->fd_new, 0, SEEK_SET);
-** also: unlink path if write fails or after the open/lseek
-*/
-
 static int	redir_heredoc(t_lexer_token *cmd, t_lexer_token *cur)
 {
 	char	path[PATH_MAX + 1];
@@ -67,13 +61,9 @@ static int	redir_heredoc(t_lexer_token *cmd, t_lexer_token *cur)
 		return (error_restore(cmd, "Error: couldn't open\n"));
 	if (write(cur->fd_new, cur->heredoc_buffer,
 				cur->heredoc_size) != (ssize_t)cur->heredoc_size)
-	{
 		return (error_restore(cmd, "Error: couldn't write\n"));
-	}
-	close(cur->fd_new);
-	cur->fd_new = open(path, O_RDONLY);
-	if (cur->fd_new < 0)
-		return (error_restore(cmd, "Error: couldn't open\n"));
+	lseek(cur->fd_new, 0, SEEK_SET);
+	unlink(path);
 	return (0);
 }
 
