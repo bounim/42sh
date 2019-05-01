@@ -23,29 +23,55 @@ void			invoke_vi(void)
 	return ;
 }
 
-void			treat_as_comment(void)
+static t_char	*find_last_prompt(t_char *head)
 {
-	t_char		*tmp;
+	t_char		*ret;
+
+	ret = head;
+	while (ret->next && ret->is_prompt == 1)
+	{
+		if (ret->next->is_prompt == 0)
+			break ;
+		ret = ret->next;
+	}
+	return (ret);
+}
+
+static t_char	*new_char_comment(void)
+{
 	t_char		*new;
 
-	tmp = find_first_non_prompt(g_shell.edit.char_list.head);
 	if (!(new = (t_char *)malloc(sizeof(*new))))
 		fatal_exit(SH_ENOMEM);
 	ft_memset(new->charac, '\0', sizeof(new->charac));
 	new->charac[0] = '#';
 	new->len = 1;
-	if (tmp->is_prompt == TRUE)
+	new->is_prompt = 0;
+	return (new);
+}
+
+void			treat_as_comment(void)
+{
+	t_char		*last_prompt;
+	t_char		*new;
+	t_char		*next;
+
+	last_prompt = find_last_prompt(g_shell.edit.char_list.head);
+	new = new_char_comment();
+	if (!last_prompt->next)
 	{
-		tmp->next = new;
-		new->prev = tmp;
+		last_prompt->next = new;
+		new->prev = last_prompt;
 		new->next = NULL;
+		g_shell.edit.char_list.tail = new;
 	}
 	else
 	{
-		new->prev = tmp->prev;
-		new->prev->next = new;
-		new->next = tmp;
-		tmp->prev = new;
+		next = last_prompt->next;
+		last_prompt->next = new;
+		new->prev = last_prompt;
+		new->next = next;
+		next->prev = new;
 	}
 	update_all_pos();
 	clean_and_print();
