@@ -44,22 +44,22 @@ void		vi_clear_line_insert(void)
 
 void		vi_delete_x(void)
 {
-	int		count;
 	t_char	*tail;
 	t_char	*begin;
 	t_char	*tmp;
+	int		count;
 
-	begin = g_shell.edit.point_char->next;
-	tail = g_shell.edit.point_char->next;
 	count = g_shell.edit.count;
-	while (count-- && tail != g_shell.edit.char_list.tail)
-		tail = tail->next;
-	if (!begin || begin == tail)
+	if (!g_shell.edit.point_char ||
+			!(begin = g_shell.edit.point_char->next))
 		return ;
+	tail = begin;
+	while (--g_shell.edit.count && tail != g_shell.edit.char_list.tail)
+		tail = tail->next;
 	if (g_shell.edit.cpy_buff)
 		free(g_shell.edit.cpy_buff);
 	g_shell.edit.cpy_buff = build_cpy_buff(begin, tail);
-	while (begin && begin != tail->next)
+	while (begin && count--)
 	{
 		tmp = begin;
 		begin = begin->next;
@@ -73,25 +73,24 @@ void		vi_delete_x(void)
 
 void		vi_delete_bigx(void)
 {
-	int		count;
 	t_char	*tail;
-	t_char	*begin;
+	t_char	*beg;
 	t_char	*tmp;
+	int		count;
 
 	count = g_shell.edit.count;
-	tail = g_shell.edit.point_char;
-	begin = g_shell.edit.point_char;
-	while (count-- && begin && begin->prev && !(begin->prev->is_prompt))
-		begin = begin->prev;
-	if (!tail || begin == tail)
+	if (!(tail = g_shell.edit.point_char) || tail->is_prompt)
 		return ;
+	beg = tail;
+	while (--g_shell.edit.count && beg && beg->prev && !(beg->prev->is_prompt))
+		beg = beg->prev;
 	if (g_shell.edit.cpy_buff)
 		free(g_shell.edit.cpy_buff);
-	g_shell.edit.cpy_buff = build_cpy_buff(begin, tail);
-	while (begin && begin != tail->next)
+	g_shell.edit.cpy_buff = build_cpy_buff(beg, tail);
+	while (beg && count--)
 	{
-		tmp = begin;
-		begin = begin->next;
+		tmp = beg;
+		beg = beg->next;
 		delete_char_from_list(tmp);
 	}
 	update_all_pos();

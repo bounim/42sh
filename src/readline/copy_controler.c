@@ -17,6 +17,8 @@ static size_t	get_cpy_size(t_char *cpy_begin, t_char *cpy_end)
 	size_t cpy_size;
 
 	cpy_size = 0;
+	if (cpy_begin == cpy_end)
+		return (cpy_begin->len);
 	while (cpy_begin != cpy_end)
 	{
 		cpy_size += cpy_begin->len;
@@ -40,6 +42,11 @@ uint8_t			*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end)
 		readline_errors_controler(MALLOC_ERROR);
 	buff[cpy_size] = '\0';
 	i = 0;
+	if (curr == cpy_end)
+	{
+		ft_memmove(buff, curr->charac, curr->len);
+		return (buff);
+	}
 	while (curr && curr != cpy_end)
 	{
 		ft_memmove(buff + i, curr->charac, curr->len);

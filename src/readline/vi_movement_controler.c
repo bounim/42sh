@@ -96,11 +96,10 @@ void		vi_backward_word(void)
 void		vi_end_word(void)
 {
 	t_char	*curr;
-	int		count;
 
-	curr = g_shell.edit.point_char->next;
-	count = g_shell.edit.count;
-	while (count-- && curr)
+	if (!g_shell.edit.point_char || !(curr = g_shell.edit.point_char->next))
+		return ;
+	while (g_shell.edit.count-- && curr)
 	{
 		if (curr->next && ft_isspace(curr->next->charac[0]))
 		{
