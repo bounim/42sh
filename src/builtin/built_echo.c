@@ -65,7 +65,7 @@ int			built_echo(char **arg, t_envl *envl)
 	i = 1;
 	if (fstat(STDOUT_FILENO, &st) == -1)
 	{
-		ft_putendl_fd("21sh: echo: write error: Bad file descriptor", 2);
+		write_error("echo", "write error: Bad file descriptor");
 		return (1);
 	}
 	while (arg[i])

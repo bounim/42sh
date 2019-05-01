@@ -101,7 +101,7 @@ t_envl			*init_shell_envl(char **env)
 	set_env_var(&ret, "PWD", ft_strdup(cwd), ENV_EX);
 	set_env_var(&ret, "OLDPWD", ft_strdup(cwd), ENV_EX);
 	set_env_var(&ret, "HISTFILE", ft_strjoin(get_env_val(ret, "HOME"),
-				"/.21sh_history"), ENV_EX);
+				"/.42sh_history"), ENV_EX);
 	set_env_var(&ret, "HISTSIZE", ft_strdup("50000"), ENV_EX);
 	return (ret);
 }

@@ -37,7 +37,7 @@ enum					e_prompt
 *** DEFINE SHORTCUTS
 */
 
-# define BASIC_PRMPT "<21sh> "
+# define BASIC_PRMPT "<42sh> "
 # define QUOTE_PRMPT "pquote> "
 # define BACKSLASH_PRMPT "> "
 # define HEREDOC_PRMPT "heredoc> "
