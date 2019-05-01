@@ -67,11 +67,9 @@ void			job_notif(void);
 void			mark_job_as_running(t_job *job);
 t_job			*init_job(void);
 t_proc			*init_proc(void);
-t_job			*create_job(t_lexer_token *cmd);
 t_proc			*create_proc(t_job **job, t_lexer_token *cmd);
-t_job			*add_job(t_job *head, t_job *new_job);
-t_proc			*add_proc(t_proc *head, t_proc *new_proc);
-t_job			*create_job_list(t_lexer_token *cmd);
+t_proc			*create_proc_argv(t_job **job, char path[PATH_MAX + 1],
+		char **argv, t_envl *envl);
 void			free_arr(char **arr);
 void			free_job(t_job *job);
 void			free_proc(t_proc *proc);

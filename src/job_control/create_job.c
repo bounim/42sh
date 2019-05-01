@@ -14,14 +14,15 @@
 #include "execution.h"
 #include "lexer/lexer_internal.h"
 
-t_job			*create_job(t_lexer_token *cmd)
+static t_job	*create_job(t_lexer_token *cmd)
 {
 	t_job	*new;
 	t_job	*cur;
 
 	if (!(new = init_job()))
 		return (NULL);
-	new->cmd = lst_to_str(cmd);
+	if (cmd)
+		new->cmd = lst_to_str(cmd);
 	if (!g_shell.head_job)
 	{
 		g_shell.head_job = new;
@@ -31,6 +32,22 @@ t_job			*create_job(t_lexer_token *cmd)
 	while (cur->next)
 		cur = cur->next;
 	cur->next = new;
+	return (new);
+}
+
+static t_job	*create_job_argv(char **argv)
+{
+	t_job	*new;
+	char	*cmd;
+
+	if (!(cmd = ft_arrjoin(argv)))
+		return (NULL);
+	if (!(new = create_job(NULL)))
+	{
+		free(cmd);
+		return (NULL);
+	}
+	new->cmd = cmd;
 	return (new);
 }
 
@@ -67,5 +84,21 @@ t_proc			*create_proc(t_job **job, t_lexer_token *cmd)
 						new->arg[0], new->envl)) != 0)
 			new->error = 127;
 	}
+	return (add_proc_list(job, new));
+}
+
+t_proc			*create_proc_argv(t_job **job, char path[PATH_MAX + 1],
+		char **argv, t_envl *envl)
+{
+	t_proc	*new;
+
+	if (!*job && !(*job = create_job_argv(argv)))
+		return (NULL);
+	if (!(new = init_proc()))
+		return (NULL);
+	new->arg = ft_arrdup(argv);
+	new->job = *job;
+	new->envl = dup_envl(envl ? envl : g_shell.envl);
+	ft_memmove(new->path, path, PATH_MAX + 1);
 	return (add_proc_list(job, new));
 }

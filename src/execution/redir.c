@@ -65,6 +65,8 @@ int			command_redir(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
 
+	if (!cmd)
+		return (0);
 	cur = cmd->redir_head;
 	while (cur)
 	{
@@ -89,6 +91,8 @@ void		command_redir_restore(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
 
+	if (!cmd)
+		return ;
 	cur = cmd->redir_last;
 	while (cur)
 	{
