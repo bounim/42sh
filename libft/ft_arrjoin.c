@@ -17,12 +17,14 @@ static char		*ft_arrjoin_copy(char **arr, size_t *strl, size_t rl)
 {
 	char	*r;
 	size_t	i;
+	size_t	*strl_copy;
 
 	if (NULL == (r = malloc(rl)))
 	{
 		free(strl);
 		return (NULL);
 	}
+	strl_copy = strl;
 	i = 0;
 	while (*arr)
 	{
@@ -32,6 +34,7 @@ static char		*ft_arrjoin_copy(char **arr, size_t *strl, size_t rl)
 		arr++;
 		strl++;
 	}
+	free(strl_copy);
 	return (r);
 }
 
