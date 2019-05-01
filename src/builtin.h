@@ -41,6 +41,24 @@ struct				s_alias
 	struct s_alias	*next;
 };
 
+enum		e_fc_opts
+{
+	E = 0,
+	L = 1,
+	N = 2,
+	R = 3,
+	S = 4
+};
+
+enum		e_range_code
+{
+	OUT_OF_RANGE = 0,
+	IN_RANGE,
+	NUMBER,
+	RANGE,
+	NO_ARG
+};
+
 typedef struct		s_builtin
 {
 	char			*name;
@@ -82,8 +100,16 @@ int					built_type(char **arg, t_envl *envl);
 int					built_unalias(char **arg, t_envl *envl);
 int					built_unset(char **arg, t_envl *envl);
 int					built_unsetenv(char **arg, t_envl *envl);
-
 int					built_env_find_last_cmd(char **arg, int stock, int i);
+int					built_fc(char **av, t_envl *envl);
+int					check_fc_opts(char **av, int fc_opts[5]);
+void				build_fc_range(char **av, int fc_range[2], int i);
+void				print_fc_list(int fc_opts[5], int fc_range[2]);
+void				print_fc_list_reverse(int fc_opts[5], int fc_range[2]);
+void				print_usage_fc(char opt);
+void				fc_s(int fc_range[2]);
+int					check_fc_range(int fc_range[2]);
+void				rebuild_g_shell_line(uint8_t *buff);
 char				*replace_exclaim(char *line, t_history *hist, char *bfr,
 		char *next);
 char				*find_exclaim(char *word, t_history *hist);

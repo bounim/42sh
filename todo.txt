@@ -1,0 +1,10 @@
+fc
+
+- check les options
+- Checker si le list fonctionne correctement une bonne fois pour toute
+- s'occupper de fc -s
+- s'occuper de fc -e
+
+ED:
+fix copier coller
+clear screen

@@ -20,10 +20,10 @@ void	print_usage_fc(char opt)
 		ft_putchar(opt);
 		ft_putstr(": invalid option\n");
 		ft_putstr("fc: usage: fc [-e ename] [-nlr]\
-			[first] [last] or fc -s [pat=rep] [cmd]");
+			[first] [last] or fc -s [pat=rep] [cmd]\n");
 	}
 	else
-		ft_putstr("21sh: fc: history specification out of range");
+		ft_putstr("21sh: fc: history specification out of range\n");
 }
 
 void	print_fc_list_reverse(int fc_opts[5], int fc_range[2])

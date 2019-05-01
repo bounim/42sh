@@ -19,7 +19,8 @@ void		rebuild_g_shell_line(uint8_t *buff)
 
 	i = 0;
 	len = 0;
-	free(g_shell.line);
+	if (g_shell.line)
+		free(g_shell.line);
 	if (!(g_shell.line = (uint8_t*)ft_strdup((char*)(buff))))
 		fatal_exit(SH_ENOMEM);
 	g_shell.line_size = ft_u8_strlen(buff);
@@ -53,10 +54,10 @@ int		built_fc(char **av, t_envl *envl)
 
 	(void)envl;
 	if ((index = check_fc_opts(av, fc_opts)) == -1)
-		return (-1);
+		return (2);
 	build_fc_range(av, fc_range, index);
 	if (check_fc_range(fc_range) == OUT_OF_RANGE)
-		return (-1);
+		return (1);
 	fc_controler(fc_range, fc_opts, av, envl);
 	return (0);
 }
