@@ -60,10 +60,6 @@ static size_t	until_dollar_copy(t_lexer_token *tok, size_t j, size_t k)
 	return (x);
 }
 
-/*
-** TODO get env func with memcmp
-*/
-
 static size_t	dollar_expand(t_lexer_token *tok, size_t j, size_t k)
 {
 	size_t	x;

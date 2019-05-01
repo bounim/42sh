@@ -66,10 +66,6 @@ static int			lexer_read(t_lexer *lex)
 	return (0);
 }
 
-/*
-** TODO free heredoc
-*/
-
 void				lexer_destroy(t_lexer *lex)
 {
 	t_lexer_token	*current;
