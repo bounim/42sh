@@ -12,71 +12,41 @@
 
 #include "twenty_one_sh.h"
 
-static int		parent_proc(pid_t pid)
+static int		execute_utility(char **arg, t_envl *envl)
 {
-	int status;
-
-	waitpid(pid, &status, WUNTRACED);
-	if (WIFSTOPPED(status))
-	{
-		kill(pid, SIGTERM);
-		kill(pid, SIGCONT);
-	}
-	g_shell.exit_code = get_return_status(status);
-	tcsetpgrp(0, g_shell.pgid);
-	return (g_shell.exit_code);
-}
-
-static int		execute_utility(char **arg, char **env)
-{
-	pid_t	pid;
-	t_envl	*envl;
 	char	path[PATH_MAX + 1];
 	int		r;
+	t_job	*new_job;
 
-	envl = NULL;
-	pid = fork();
-	if (pid < 0)
-		return (-1);
-	else if (pid > 0)
-		return (parent_proc(pid));
-	clear_signals();
-	r = -1;
+	new_job = NULL;
 	if (!arg[0])
 		return (125);
-	else if ((env && !(envl = envarr_to_envl(env)) && !ft_strchr(arg[0], '/'))
-			|| (r = find_command(path, arg[0], envl)) != 0)
-		return (env_exit(arg[0], r));
-	execve(path, arg, env);
-	fatal_exit(7);
-	return (125);
+	if ((r = find_command(path, arg[0], envl)) != 0)
+	{
+		r = env_exit(arg[0], r);
+		ft_arrdel(arg);
+		free_envl(envl);
+		return (r);
+	}
+	create_proc_argv(&new_job, path, arg, envl);
+	ft_arrdel(arg);
+	free_envl(envl);
+	launch_job(new_job);
+	return (g_shell.exit_code);
 }
 
 static int		exec_env(char **start, t_envl *head)
 {
-	char	**ret;
-	char	**env;
-	int		r;
+	char	**arg;
 
-	r = 0;
-	env = NULL;
 	if (start == NULL)
 	{
 		print_envl(head, 0);
 		free_envl(head);
+		return (0);
 	}
-	else
-	{
-		ret = from_arg_to_cmd(start);
-		env = envl_to_envarr(head);
-		if (!env)
-			return (125);
-		r = execute_utility(ret, env);
-		ft_free_arr(ret);
-		ft_free_arr(env);
-		free_envl(head);
-	}
-	return (r);
+	arg = from_arg_to_cmd(start);
+	return (execute_utility(arg, head));
 }
 
 static void		env_assign(t_cor *c, char *ptr)

@@ -4,7 +4,6 @@ LIBFT_SRC := \
 	ft_carac_nb.c \
 	ft_count_bn.c \
 	ft_isspace.c \
-	ft_free_arr.c \
 	ft_putnbr_fd.c \
 	ft_strisdigit.c \
 	ft_nblen.c \
@@ -77,7 +76,8 @@ LIBFT_SRC := \
 	ft_u8_strdup.c \
 	ft_memtoi.c \
 	ft_isdigit.c \
-	ft_get_nb_len.c 
+	ft_get_nb_len.c \
+	ft_arrjoin.c
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)

@@ -58,6 +58,8 @@ void		close_fd_before_exec(t_lexer_token *cmd)
 {
 	t_lexer_token	*cur;
 
+	if (!cmd)
+		return ;
 	cur = cmd->redir_head;
 	while (cur)
 	{

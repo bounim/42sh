@@ -19,7 +19,6 @@
 # include "printer.h"
 
 void	ft_putnbr_fd(int n, int fd);
-void	ft_free_arr(char **arr);
 int		ft_nblen(int nb);
 int		ft_isdigit(int c);
 int		ft_strnequ(char const *s1, char const *s2, size_t n);
@@ -79,5 +78,6 @@ size_t	ft_wchar_len(unsigned char *str);
 size_t	ft_ustrlen(const uint8_t *ustr);
 uint8_t	*ft_u8_strdup(const uint8_t *s);
 int		ft_get_nb_len(int nb);
+char	*ft_arrjoin(char **arr);
 
 #endif

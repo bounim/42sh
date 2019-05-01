@@ -20,10 +20,10 @@ int			env_exit(char *str, int test)
 	if (test < 0 || test == 1)
 	{
 		ft_putendl_fd(": No such file or directory", 2);
-		exit(127);
+		return (127);
 	}
 	ft_putendl_fd(": Operation not permitted", 2);
-	exit(126);
+	return (126);
 }
 
 int			env_usage(char *str, t_envl *head)

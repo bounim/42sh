@@ -16,9 +16,14 @@ void	free_proc(t_proc *proc)
 {
 	if (!proc)
 		return ;
-	free(proc->arg);
+	if (!proc->cmd)
+		ft_arrdel(proc->arg);
+	else
+		free(proc->arg);
 	if (proc->envl)
 		free_envl(proc->envl);
+	if (proc->env)
+		ft_arrdel(proc->env);
 	free(proc);
 }
 
