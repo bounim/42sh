@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:16:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/26 14:17:11 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:12:26 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{CPY_ALL_LINE, 2, copy_all_line},
 		{PASTE, 2, paste_copy},
 		{RET, 1, return_fn},
-		{NULL, 0, NULL},
+		{CTRL_L, 1, cl_screen},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
@@ -72,7 +72,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{LEFT_ARROW, 3, vi_move_prev_char},
 		{UP_ARROW, 3, vi_get_prev_history},
 		{DOWN_ARROW, 3, vi_get_next_history},
-		{NULL, 0, NULL},
+		{CTRL_L, 1, cl_screen},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
@@ -179,7 +179,8 @@ static int	check_key(uint8_t *key, size_t *keylen)
 	int		check;
 
 	ki = 0;
-	while (g_keymap[g_shell.edit.edit_mode][ki].seq)
+	while (g_keymap[g_shell.edit.edit_mode][ki].seq
+			&& ki < KEYMAP_SIZE)
 	{
 		if ((check = compare_key(key, *keylen, ki)) == MATCH)
 		{
@@ -236,7 +237,7 @@ void		input_controller(void)
 			keylen = (size_t)rd;
 			build_count(key, &keylen, g_shell.edit.edit_mode);
 			if (check_key(key, &keylen) == NO_MATCH
-			&& g_shell.edit.edit_mode != MODE_VI_COMMAND)
+					&& g_shell.edit.edit_mode != MODE_VI_COMMAND)
 				check_printable(key, &keylen);
 		}
 	}

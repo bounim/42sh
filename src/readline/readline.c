@@ -42,6 +42,8 @@ void		init_edit(void)
 	g_shell.edit.cpy_buff = NULL;
 	g_shell.edit.vi_last_search_fn = -1;
 	g_shell.edit.vi_last_search_char = 0;
+	g_shell.edit.count = 1;
+	g_shell.edit.count_exist = FALSE;
 }
 
 void		readline(int prompt_id)

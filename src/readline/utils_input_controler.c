@@ -12,18 +12,13 @@
 
 #include "twenty_one_sh.h"
 
-void		build_key(uint8_t *key, size_t *keylen, const uint8_t *input)
-{
-	*(key + *keylen) = *input;
-	(*keylen)++;
-}
-
 void		build_count(uint8_t *key, size_t *keylen, int mode)
 {
 	size_t		i;
 	ssize_t		rd;
 
 	g_shell.edit.count = 1;
+	g_shell.edit.count_exist = FALSE;
 	if (*keylen == 1 && key[0] >= '1' && key[0] <= '9'
 			&& mode == MODE_VI_COMMAND)
 	{
@@ -41,6 +36,7 @@ void		build_count(uint8_t *key, size_t *keylen, int mode)
 				break ;
 			else if (key[0] >= '0' && key[0] <= '9')
 				g_shell.edit.count = g_shell.edit.count * 10 + key[0] - '0';
+			g_shell.edit.count_exist = FALSE;
 		}
 	}
 }

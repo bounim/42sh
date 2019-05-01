@@ -80,6 +80,7 @@ SRC := \
 	readline/prompt_controler.c \
 	readline/readline_errors_controler.c \
 	readline/character_controler.c \
+	readline/invoke_vi.c \
 	readline/calculate_pos.c \
 	readline/print_controler.c \
 	readline/input_controler.c \

@@ -95,6 +95,7 @@ enum					e_freenum
 # define CTRL_E "\005"
 # define CTRL_F "\006"
 # define CTRL_K "\013"
+# define CTRL_L "\014"
 # define CTRL_N "\016"
 # define CTRL_P "\020"
 # define CTRL_R "\022"
@@ -191,6 +192,7 @@ typedef struct			s_edit
 	int					reading;
 	int					ret_ctrl_c;
 	int					count;
+	int					count_exist;
 	int					edit_mode;
 	size_t				cur_base_x;
 	int					cur_base_y;
@@ -285,6 +287,7 @@ t_char					*get_to_right_position(t_char *curr);
 void					transpose_word(void);
 uint8_t					*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end);
 void					eot_fn(void);
+void					cl_screen(void);
 
 /*
 *** Copy functions for readline
@@ -314,6 +317,7 @@ void					build_count(uint8_t *key, size_t *keylen, int mode);
 /*
 *** VIM function for VIM mode in readline
 */
+
 void					vi_command_mode(void);
 void					vi_move_next_char(void);
 void					vi_move_prev_char(void);

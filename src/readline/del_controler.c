@@ -55,3 +55,11 @@ void	del_charac(void)
 	}
 	clean_and_print();
 }
+
+void	cl_screen(void)
+{
+	ft_putstr(tgetstr("cl", NULL));
+	g_shell.edit.cur_base_y = 0;
+	update_all_pos();
+	clean_and_print();
+}

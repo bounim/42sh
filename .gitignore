@@ -4,3 +4,6 @@
 /42sh
 /.vscode
 *.dSYM
+.idea
+CMakeLists.txt
+cmake-build-debug

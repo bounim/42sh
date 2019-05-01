@@ -18,11 +18,6 @@ void			vi_command_mode(void)
 	g_shell.edit.edit_mode = MODE_VI_COMMAND;
 }
 
-void			invoke_vi(void)
-{
-	return ;
-}
-
 static t_char	*find_last_prompt(t_char *head)
 {
 	t_char		*ret;
