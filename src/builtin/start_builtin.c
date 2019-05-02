@@ -29,6 +29,7 @@ static t_builtin	g_builtin[] = {
 	{"unalias", built_unalias},
 	{"unset", built_unset},
 	{"unsetenv", built_unsetenv},
+	{"fc", built_fc}
 };
 
 int					check_builtin(char *cmd)

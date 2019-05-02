@@ -49,6 +49,11 @@ SRC := \
 	builtin/start_builtin.c \
 	builtin/built_history.c \
 	builtin/built_cd.c \
+	builtin/built_fc.c \
+	builtin/fc_opts_controler.c \
+	builtin/fc_print.c \
+	builtin/fc_range_controler.c \
+	builtin/fc_s.c \
 	builtin/built_test.c \
 	builtin/unary_test.c \
 	builtin/binary_test.c \
