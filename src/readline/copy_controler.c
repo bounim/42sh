@@ -60,11 +60,19 @@ uint8_t			*build_cpy_buff(t_char *cpy_begin, t_char *cpy_end)
 
 void			paste_copy(void)
 {
-	uint8_t	*buff;
-	int		i;
-	size_t	len;
+	uint8_t		*buff;
+	int			i;
+	size_t		len;
 
+	
+	if (g_shell.edit.last_is_paste)
+	{
+		g_shell.edit.last_is_paste = 0;
+		return ;
+	}
 	buff = g_shell.edit.cpy_buff;
+	if (ft_u8_strlen(g_shell.edit.cpy_buff) >= 256)
+		return ;
 	i = 0;
 	if (!buff || !buff[0])
 		return ;

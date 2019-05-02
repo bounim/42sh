@@ -175,8 +175,8 @@ static int	compare_key(uint8_t *key, size_t keylen, size_t ki)
 
 static int	check_key(uint8_t *key, size_t *keylen)
 {
-	size_t	ki;
-	int		check;
+	size_t		ki;
+	int			check;
 
 	ki = 0;
 	while (g_keymap[g_shell.edit.edit_mode][ki].seq
