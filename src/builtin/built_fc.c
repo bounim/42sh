@@ -6,13 +6,13 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:09:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/05/01 12:09:05 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/02 15:02:01 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		rebuild_g_shell_line(uint8_t *buff)
+void	rebuild_g_shell_line(uint8_t *buff)
 {
 	int i;
 	int len;
@@ -28,8 +28,7 @@ void		rebuild_g_shell_line(uint8_t *buff)
 	sleep(1);
 }
 
-int			fc_controler(int fc_range[2], int fc_opts[5], char **av,\
-		t_envl *envl)
+int		fc_controler(int fc_range[2], int fc_opts[5], char **av, t_envl *envl)
 {
 	(void)av;
 	(void)envl;
