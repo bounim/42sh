@@ -30,6 +30,11 @@ static void	write_operands(char arg)
 		write(1, "\r", 1);
 	else if (arg == '\\')
 		write(1, "\\", 1);
+	else
+	{
+		write(1, "\\", 1);
+		write(1, &arg, 1);
+	}
 }
 
 static int	find_operands(char *arg)

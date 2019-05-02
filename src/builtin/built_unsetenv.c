@@ -47,7 +47,7 @@ static int		unset_env(char *arg, t_envl **envl)
 		tmp = h_env;
 		h_env = h_env->next;
 	}
-	return (1);
+	return (0);
 }
 
 static int		start_unsetenv(char **arg, t_envl **envl)
