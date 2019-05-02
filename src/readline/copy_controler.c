@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:14:25 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/02 19:06:04 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/02 16:50:50 by schakor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void			paste_copy(void)
 	int			i;
 	size_t		len;
 
-	
 	if (g_shell.edit.last_is_paste)
 	{
 		g_shell.edit.last_is_paste = 0;
