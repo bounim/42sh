@@ -73,7 +73,7 @@ static void		delete_from_to(t_char *begin, t_char *end)
 			delete_char_from_list(tmp);
 		}
 	}
-	if (end)
+	if (end && !end->is_prompt)
 		delete_char_from_list(end);
 }
 
