@@ -64,7 +64,6 @@ void			paste_copy(void)
 	int			i;
 	size_t		len;
 
-	
 	if (g_shell.edit.last_is_paste)
 	{
 		g_shell.edit.last_is_paste = 0;
