@@ -25,17 +25,23 @@ void		vi_clear_line_insert(void)
 	t_char	*tmp;
 	t_char	*prompt;
 
-	curr = g_shell.edit.char_list.head;
-	while (curr->is_prompt)
+	if (!(curr = g_shell.edit.char_list.head))
+		return ;
+	while (curr && curr->is_prompt)
+	{
+		if (curr->next == NULL || !curr->next->is_prompt)
+			break ;
 		curr = curr->next;
-	prompt = curr->prev;
+	}
+	prompt = curr;
+	curr = curr->next;
+	prompt->next = NULL;
 	while (curr)
 	{
 		tmp = curr->next;
 		free(curr);
 		curr = tmp;
 	}
-	prompt->next = NULL;
 	g_shell.edit.char_list.tail = prompt;
 	g_shell.edit.point_char = g_shell.edit.char_list.tail;
 	g_shell.edit.edit_mode = MODE_VI_INSERT;

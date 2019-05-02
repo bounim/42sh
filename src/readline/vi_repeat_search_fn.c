@@ -71,9 +71,10 @@ void		vi_repeat_after_before(uint8_t charac)
 	{
 		if (curr->charac[0] == charac)
 		{
-			if ((curr = curr->prev) && curr->is_prompt)
+			if (!(curr = curr->prev) || curr->is_prompt)
 				return ;
 			ft_putstr(tgoto(tgetstr("cm", NULL), curr->x_pos, curr->y_pos));
+			g_shell.edit.point_char = curr->prev;
 			break ;
 		}
 		curr = curr->next;

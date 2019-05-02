@@ -87,24 +87,27 @@ void			vi_delete_motion(void)
 {
 	char	c;
 	int		i;
-	t_char	*begin;
+	t_char	*beg;
 
 	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b'
 	&& c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';'
 	&& c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ','
 	&& c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
 		return ;
-	begin = g_shell.edit.point_char->next;
+	if (!g_shell.edit.point_char || !(beg = g_shell.edit.point_char->next))
+		return ;
 	i = 0;
+	if (c == '0' || c == '^' || c == '$' || c == 'c')
+		g_shell.edit.count = 1;
 	while (g_motion_keymap[i].seq && i < MOTION_KEYMAP_SIZE)
 	{
 		if (g_motion_keymap[i].seq[0] == c)
 			g_motion_keymap[i].funckey();
 		i++;
 	}
-	if (begin == g_shell.edit.point_char)
+	if (beg == g_shell.edit.point_char || c == 'c')
 		return ;
-	delete_from_to(begin, g_shell.edit.point_char);
+	delete_from_to(beg, g_shell.edit.point_char);
 	update_all_pos();
 	clean_and_print();
 }

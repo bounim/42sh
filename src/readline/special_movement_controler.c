@@ -17,6 +17,8 @@ void		vi_go_to_end(void)
 	t_char	*tail;
 
 	tail = g_shell.edit.char_list.tail;
+	if (tail->is_prompt)
+		return ;
 	ft_putstr(tgoto(tgetstr("cm", NULL), tail->x_pos, tail->y_pos));
 	g_shell.edit.point_char = tail->prev;
 }

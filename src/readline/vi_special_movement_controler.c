@@ -35,11 +35,10 @@ void		vi_forward_bigword(void)
 void		vi_end_bigword(void)
 {
 	t_char	*curr;
-	int		count;
 
-	curr = g_shell.edit.point_char->next;
-	count = g_shell.edit.count;
-	while (count-- && curr)
+	if (!g_shell.edit.point_char || !(curr = g_shell.edit.point_char->next))
+		return ;
+	while (g_shell.edit.count-- && curr)
 	{
 		if (curr->next && ft_isspace(curr->next->charac[0]))
 		{
@@ -83,10 +82,10 @@ void		vi_backward_bigword(void)
 
 void		vi_move_first_nonblank(void)
 {
-	t_char	*tmp;
+	t_char *tmp;
 
 	tmp = g_shell.edit.char_list.head;
-	while (tmp->is_prompt == TRUE)
+	while (tmp && tmp->is_prompt == TRUE)
 		tmp = tmp->next;
 	while (tmp)
 	{
