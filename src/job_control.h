@@ -82,6 +82,6 @@ int				create_background_job(t_lexer_token *cmd);
 ** must call printer_flush(&g_shell.out); after this function
 */
 
-void			print_signal(int sig);
+void			print_signal(t_printer *pr, int sig);
 
 #endif

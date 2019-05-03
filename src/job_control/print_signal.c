@@ -47,10 +47,10 @@ static char		*g_siglist[] = {
 	"SIGUSR2",
 };
 
-void			print_signal(int sig)
+void			print_signal(t_printer *pr, int sig)
 {
 	if (sig > 0 && sig < 32)
-		printer_str(&g_shell.out, g_siglist[sig]);
+		printer_str(pr, g_siglist[sig]);
 	else
-		printer_int(&g_shell.out, sig);
+		printer_int(pr, sig);
 }
