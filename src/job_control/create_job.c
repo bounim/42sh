@@ -22,7 +22,7 @@ static t_job	*create_job(t_lexer_token *cmd)
 	if (!(new = init_job()))
 		return (NULL);
 	if (cmd)
-		new->cmd = lst_to_str(cmd);
+		new->cmd = lst_to_str(cmd, 0);
 	if (!g_shell.head_job)
 	{
 		g_shell.head_job = new;
@@ -101,4 +101,31 @@ t_proc			*create_proc_argv(t_job **job, char path[PATH_MAX + 1],
 	new->envl = dup_envl(envl ? envl : g_shell.envl);
 	ft_memmove(new->path, path, PATH_MAX + 1);
 	return (add_proc_list(job, new));
+}
+
+int				create_background_job(t_lexer_token *amp)
+{
+	pid_t	pid;
+	t_job	*job;
+
+	if ((pid = fork()) < 0)
+		fatal_exit(SH_ENOMEM);
+	if (pid > 0)
+	{
+		if (!(job = create_job(NULL)))
+			return (-1);
+		job->pgid = pid;
+		job->cmd = lst_to_str(amp, 1);
+		job->background = 1;
+		// TODO print new job: [jobspec] pgid
+		return (1);
+	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
+	free_exec();
+	g_shell.background = 1;
+	g_shell.pgid = getpid();
+	setpgid(0, g_shell.pgid);
+	//clear_signals(); // FIXME may need to clear some signals (CHLD, STTIN, STTOU, STOP?)
+	return (0);
 }

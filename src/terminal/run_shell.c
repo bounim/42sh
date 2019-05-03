@@ -76,7 +76,7 @@ static void				run_shell_loop(t_lexer *lex, size_t *i)
 		}
 		execute(lex);
 		lexer_destroy(lex);
-		free_exec();
+		free_exec(); // FIXME do not free here
 	}
 }
 

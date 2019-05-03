@@ -50,6 +50,7 @@ struct			s_job
 	t_termios		tmodes;
 	struct s_job	*next;
 	int				running;
+	int				background;
 };
 
 t_job			*find_job(pid_t pgid);
@@ -75,5 +76,12 @@ void			free_job(t_job *job);
 void			free_proc(t_proc *proc);
 void			free_exec(void);
 void			wait_job(t_proc *proc);
+int				create_background_job(t_lexer_token *cmd);
+
+/*
+** must call printer_flush(&g_shell.out); after this function
+*/
+
+void			print_signal(int sig);
 
 #endif

@@ -28,10 +28,13 @@ static void	proc_child(t_proc *proc)
 {
 	t_proc *cur;
 
-	if (proc->job->pgid == 0)
+	if (g_shell.background)
+		proc->job->pgid = g_shell.pgid;
+	else if (proc->job->pgid == 0)
 		proc->job->pgid = getpid();
 	setpgid(0, proc->job->pgid);
-	tcsetpgrp(g_shell.term, proc->job->pgid);
+	if (!g_shell.background)
+		tcsetpgrp(g_shell.term, proc->job->pgid);
 	clear_signals();
 	if (proc->prev)
 		dup2(proc->prev->tunnel[0], STDIN_FILENO);

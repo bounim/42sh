@@ -33,7 +33,7 @@ void	exec_error(char *cmd, int r);
 int		command_redir(t_lexer_token *cmd);
 void	command_redir_restore(t_lexer_token *cmd);
 int		execute_assign_list(t_lexer_token *cmd, t_proc *proc);
-char	*lst_to_str(t_lexer_token *head);
+char	*lst_to_str(t_lexer_token *head, int background);
 char	**arg_to_argv(t_lexer_token *cmd);
 void	write_error(char *cmd, char *str);
 

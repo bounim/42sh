@@ -56,10 +56,12 @@ void		wait_job(t_proc *proc)
 
 	if (proc->next)
 		return ;
-	tcsetpgrp(g_shell.term, proc->job->pgid);
+	if (!g_shell.background)
+		tcsetpgrp(g_shell.term, proc->job->pgid);
 	status = 0;
 	wait_job_loop(proc, &status, 0, NULL);
-	tcsetpgrp(g_shell.term, g_shell.pgid);
+	if (!g_shell.background)
+		tcsetpgrp(g_shell.term, g_shell.pgid);
 	tcgetattr(g_shell.term, &proc->job->tmodes);
 	cooked_terminal();
 }

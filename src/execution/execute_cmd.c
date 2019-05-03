@@ -116,7 +116,17 @@ int		execute(t_lexer *lex)
 	cur = cmd;
 	while (cur && cur->ptype == PARSER_SEPARATOR)
 	{
-		if (execute_and_or(cur->left) < 0)
+		if (cur->buffer[0] == '&')
+		{
+			if (create_background_job(cur) == 0)
+			{
+				if (execute_and_or(cur->left) < 0)
+					fatal_exit(SH_EINVAL);
+				clean_shell();
+				exit(g_shell.exit_code);
+			}
+		}
+		else if (execute_and_or(cur->left) < 0)
 			return (-1);
 		cur = cur->right;
 	}

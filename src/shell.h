@@ -41,6 +41,7 @@ struct						s_shell
 	int						is_exiting;
 	t_lexer					*lexer;
 	char					*progname;
+	int						background;
 };
 
 /*
