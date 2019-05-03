@@ -54,6 +54,8 @@ SRC := \
 	builtin/fc_print.c \
 	builtin/fc_range_controler.c \
 	builtin/fc_s.c \
+	builtin/fc_modification.c \
+	builtin/fc_utils.c \
 	builtin/built_test.c \
 	builtin/unary_test.c \
 	builtin/binary_test.c \

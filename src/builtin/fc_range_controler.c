@@ -12,54 +12,80 @@
 
 #include "twenty_one_sh.h"
 
-int			check_fc_range(int fc_range[2])
+
+static int	build_range_no_arg(int fc_range[2], int fc_opts[5], int histsize)
 {
-	int histsize;
-
-	histsize = get_hist_full_size(g_shell.hist.history);
-	if (fc_range[0] > histsize)
-	{
-		print_usage_fc('e');
-		return (OUT_OF_RANGE);
-	}
-	return (IN_RANGE);
-}
-
-static int	arrange_nb(int nb, int histsize)
-{
-	if (nb == -0)
-		return (0);
-	nb *= -1;
-	printf("HISTSIZE: %d, NB_AFTER_TRANSFORM: %d\n",\
-			histsize, histsize - nb + 1);
-	return (histsize - nb + 1);
-}
-
-void		build_fc_range(char **av, int fc_range[2], int i)
-{
-	int histsize;
-	int tmp;
-
-	histsize = get_hist_full_size(g_shell.hist.history);
-	if (!av[i])
+	if (fc_opts[L])
 	{
 		fc_range[0] = histsize - 15;
 		fc_range[1] = histsize;
-		return ;
 	}
-	if ((fc_range[0] = ft_atoi(av[i])) < 0)
-		fc_range[0] = arrange_nb(fc_range[0], histsize);
-	if (!av[++i])
+	else
 	{
+		fc_range[0] = histsize;
 		fc_range[1] = histsize;
-		return ;
 	}
-	if ((fc_range[1] = ft_atoi(av[i])) < 0)
-		fc_range[1] = arrange_nb(fc_range[0], histsize);
-	if (fc_range[0] > fc_range[1])
+	return (0);
+}
+
+static int	build_range_one_arg(int fc_range[2], int fc_opts[5], int histsize, char **av)
+{
+	int	value;
+	int arg_is_num;
+
+	arg_is_num = check_if_arg_isdigit(av);
+	if ((value = ft_atoi(*av)) <= 0)
+		value = get_good_value_for_range(value, histsize);
+	if (fc_opts[L])
 	{
-		tmp = fc_range[0];
-		fc_range[0] = fc_range[1];
-		fc_range[1] = tmp;
+		if (arg_is_num)
+			return (return_fc_error(OUT_OF_RANGE, NULL));
+		fc_range[0] = value;
+		fc_range[1] = histsize;
 	}
+	else
+	{
+		if (arg_is_num)
+			return (return_fc_error(CMD_NOT_FOUND, *av));
+		fc_range[0] = value;
+		fc_range[1] = value;
+	}
+	return (0);
+}
+
+static int	build_range_two_arg(int fc_range[2], int fc_opts[5], int histsize, char **av)
+{
+	int	value1;
+	int value2;
+	int arg_is_num;
+
+	if (!(arg_is_num = check_if_arg_isdigit(av)))
+		arg_is_num = check_if_arg_isdigit(av + 1);
+	if ((value1 = ft_atoi(*av)) <= 0)
+		value1 = get_good_value_for_range(value1, histsize);
+	if ((value2 = ft_atoi(*(av + 1))) <= 0)
+		value2 = get_good_value_for_range(value2, histsize);
+	if (arg_is_num)
+	{
+		if (fc_opts[L])
+			return (return_fc_error(OUT_OF_RANGE, NULL));
+		return (return_fc_error(CMD_NOT_FOUND, *av));
+	}
+	fc_range[0] = value1;
+	fc_range[1] = value2;
+	return (0);
+}
+
+int			build_fc_range(char **av, int fc_range[2], int fc_opts[5])
+{
+	int histsize;
+
+	histsize = get_hist_full_size(g_shell.hist.history);
+	if (fc_opts[E] && av)
+		av++;
+	if (!(*av))
+		return (build_range_no_arg(fc_range, fc_opts, histsize));
+	if (!*(av + 1))
+		return (build_range_one_arg(fc_range, fc_opts, histsize, av));
+	return (build_range_two_arg(fc_range, fc_opts, histsize, av));
 }

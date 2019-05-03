@@ -29,6 +29,7 @@ void		fc_s(int fc_range[2])
 		fc_range[0] = fc_range[1];
 	if (!(curr = find_specific_hist_line(fc_range[0], curr)))
 		return ;
-	rebuild_g_shell_line(curr->buf);
+	//rebuild_g_shell_line(curr->buf);
 	print_line_to_shell(curr->buf);
+	//send_line_where_to();`
 }

@@ -12,6 +12,8 @@
 
 #include "twenty_one_sh.h"
 
+//La premiere option est celle retenue. Si -l est specifié on accepte -r et -n
+
 static void	set_fc_opts_to_null(int fc_opts[5])
 {
 	fc_opts[E] = 0;
