@@ -126,7 +126,8 @@ void	delete_word_backward(void)
 		curr = curr->prev;
 		delete_char_from_list(curr->next);
 	}
-	delete_char_from_list(curr);
+	if (!curr->is_prompt)
+		delete_char_from_list(curr);
 	update_all_pos();
 	clean_and_print();
 }

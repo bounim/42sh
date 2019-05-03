@@ -55,10 +55,11 @@ static int	find_print_from(void)
 		return (-1);
 	if (curr->y_pos >= 0)
 		return (0);
-	while (curr->y_pos < 0)
+	while (curr && curr->y_pos < 0)
 	{
 		curr = curr->next;
-		ret += curr->len;
+		if (curr)
+			ret += curr->len;
 	}
 	return (ret);
 }

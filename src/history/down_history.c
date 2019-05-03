@@ -41,7 +41,7 @@ void			get_next_history(void)
 		g_shell.edit.point_char = NULL;
 		g_shell.edit.cur_base_x = 0;
 		init_char_list();
-		init_prompt(BASIC_PROMPT);
+		init_prompt(g_shell.edit.prompt_id);
 		clean_and_print();
 		g_shell.hist.history_save = -1;
 		return ;

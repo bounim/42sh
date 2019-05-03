@@ -188,7 +188,7 @@ typedef struct			s_edit
 	t_last_command		*last_command;
 	t_char_list			char_list;
 	t_term				term_info;
-	int 				last_is_paste;
+	int					last_is_paste;
 	int					prompt_id;
 	int					reading;
 	int					ret_ctrl_c;

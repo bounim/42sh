@@ -66,6 +66,7 @@ static void		delete_from_to(t_char *begin, t_char *end)
 	}
 	else
 	{
+		begin = begin->prev;
 		while (begin && begin != end)
 		{
 			tmp = begin;
@@ -73,7 +74,7 @@ static void		delete_from_to(t_char *begin, t_char *end)
 			delete_char_from_list(tmp);
 		}
 	}
-	if (end && !end->is_prompt)
+	if (begin_before_end && end && !end->is_prompt)
 		delete_char_from_list(end);
 }
 
@@ -105,9 +106,9 @@ void			vi_delete_motion(void)
 			g_motion_keymap[i].funckey();
 		i++;
 	}
-	if (beg == g_shell.edit.point_char || c == 'c')
+	if (beg == g_shell.edit.point_char->next || c == 'c')
 		return ;
-	delete_from_to(beg, g_shell.edit.point_char);
+	delete_from_to(beg, g_shell.edit.point_char->next);
 	update_all_pos();
 	clean_and_print();
 }

@@ -100,7 +100,7 @@ void	print_history(void)
 	g_shell.edit.point_char = NULL;
 	g_shell.edit.cur_base_x = 0;
 	init_char_list();
-	init_prompt(BASIC_PROMPT);
+	init_prompt(g_shell.edit.prompt_id);
 	buff_to_charlist(g_shell.hist.history->buf);
 	if (g_shell.edit.cur_base_y < 0)
 		g_shell.edit.cur_base_y = 0;
