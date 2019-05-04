@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:51:35 by aguillot          #+#    #+#             */
-/*   Updated: 2019/05/04 18:17:23 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 18:30:55 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 	{
 		buff = (uint8_t *)replace_exclaim((char *)buff,
 				g_shell.hist.history, NULL, NULL);
-	//	buff = (uint8_t *)replace_alias((char *)buff,
-	//			g_shell.alias);
+		buff = (uint8_t *)replace_alias((char *)buff,
+				g_shell.alias);
 	}
 	rl_line_to_hist(add_to_hist, buff);
 	buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);

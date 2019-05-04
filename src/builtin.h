@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/22 16:28:23 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 18:31:28 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int					check_fc_range(int fc_range[2]);
 int					return_fc_error(int fc_err_code, char *av);
 int					check_if_arg_isdigit(char **av);
 int 				get_good_value_for_range(int value, int histsize);
+char				*replace_alias(char *line, t_alias *alias);
 char				*replace_exclaim(char *line, t_history *hist, char *bfr,
 		char *next);
 char				*find_exclaim(char *word, t_history *hist);
