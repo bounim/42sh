@@ -33,17 +33,18 @@ static int	open_modif_file(int *fd, char path[PATH_MAX + 1], struct stat *sb)
 		write_error(path, "file can not be created");
 		return (125);
 	}
-	if (fstat(*fd, sb) != 0)
+	if (stat(path, sb) != 0)
 	{
-		write_error(path, "not such file or directory");
+		perror("");
+		write_error(path, "no such file or directory");
 		return (1);
 	}
-	if (!((*sb).st_mode & S_IRUSR))
+	if (!(sb->st_mode & S_IRUSR))
 	{
 		write_error(path, "permission denied");
 		return (1);
 	}
-	else if (!(S_ISREG((*sb).st_mode)))
+	else if (!(S_ISREG(sb->st_mode)))
 	{
 		write_error(path, "not a file");
 		return (1);
@@ -54,9 +55,9 @@ static int	open_modif_file(int *fd, char path[PATH_MAX + 1], struct stat *sb)
 static int	build_buff(int fd, uint8_t **buff, struct stat *sb)
 {
 	int		rd;
-	char	r_stock[(*sb).st_mode];
+	char	r_stock[sb->st_mode];
 
-	if ((rd = read(fd, r_stock, (*sb).st_size)) != (*sb).st_size)
+	if ((rd = read(fd, r_stock, sb->st_size)) != sb->st_size)
 	{
 		write_error("fc", "write error: Bad file descriptor");
 		return (1);
@@ -69,12 +70,11 @@ static int	build_buff(int fd, uint8_t **buff, struct stat *sb)
 static int	manage_buff(int *fd, uint8_t **buff, char path[PATH_MAX + 1])
 {
 	int			ret;
-	struct stat *sb;
+	struct stat sb;
 
-	sb = NULL;
-	if ((ret = open_modif_file(fd, path, sb)) > 0)
+	if ((ret = open_modif_file(fd, path, &sb)) > 0)
 		return (ret);
-	if ((ret = build_buff(*fd, buff, sb)) > 0)
+	if ((ret = build_buff(*fd, buff, &sb)) > 0)
 		return (ret);
 	return (0);
 }
