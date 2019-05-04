@@ -12,7 +12,8 @@
 
 #include "twenty_one_sh.h"
 
-int		create_tmp_file(int *fd, char path[PATH_MAX + 1], uint8_t **buff,
+
+static int	create_tmp_file(int *fd, char path[PATH_MAX + 1], uint8_t **buff,
 	int len)
 {
 	if ((*fd = random_file(path)) < 0)
@@ -26,56 +27,57 @@ int		create_tmp_file(int *fd, char path[PATH_MAX + 1], uint8_t **buff,
 	return (0);
 }
 
-
-salam:salt:tu
-int		get_editor_path_len(char *path_var, char *editor, int *i)
+static int	check_editor_exists(char **ed_path)
 {
-	int ret;
-	int	j;
-
-	ret = 0;
-	j = 0;
-	while (path_var[*i] && path_var[*i] != ':')
-	{
-		ret++;
-		(*i)++;
-	}
-	while (editor[j])
-	{
-		ret++;
-		j++;
-	}
-	return (ret);
+	if (!access(*ed_path, F_OK))
+		return (0);
+	return (1);
 }
 
-int		malloc_editor_path(char **ed_path, int ed_path_len)
+int	build_ed_path(char **ed_path, char *editor, char *path_var, int *i)
 {
-	int ed_path_len;
+	int	path_var_len;
+	int	ed_var_len;
+	int	ed_path_len;
+	int j;
 
-	ed_path_len = get_editor_path_len(path_var, editor);
-	if (!(*ed_path = (char*)malloc(sizeof(char) * (ed_path_len + 1))))
-		return (1);	
-	ft_memmove(*ed_path, 0, ed_path_len);
+	j = *i;
+	path_var_len = ft_strchr(path_var + j, ':') - (path_var + j);
+	ed_var_len = ft_strlen(editor);
+	ed_path_len = path_var_len + ed_var_len;
+	if (!(*ed_path = (char*)malloc(sizeof(char*) * (ed_path_len + 1))))
+		return (1);
+	ft_memset(*ed_path, 0, ed_path_len);
+	ft_memmove(*ed_path, path_var + j, path_var_len);
+	ft_memmove(*ed_path + path_var_len, "/", 1);
+	ft_memmove(*ed_path + path_var_len + 1, editor, ed_var_len);
+	j += path_var_len + ed_var_len + 1;
+	(*i) = j;
+	printf("%d\n", *i);
+	sleep(1);
+	return (0);
 }
 
-int		create_editor_path(char **ed_path, char *editor, t_envl *envl)
+int	create_editor_path(char **ed_path, char *editor, t_envl *envl)
 {
 	char	*path_var;
 	int		path_var_len;
 	int		i;
-	int 	j;
 
 	i = 0;
-	if (!(path_var = get_env_val(envl, "PATH")));
+	if (!(path_var = get_env_val(envl, "PATH")))
 		return (1);//print nothing;
-	path_var_len = ft_u8_strlen(path_var);
-	while (i <= path_var_len)
+	path_var_len = ft_strlen(path_var);
+	while (i < path_var_len)
 	{
-		j = i;
-		if (malloc_editor_path(ed_path, ed_path_len))
+		if (build_ed_path(ed_path, editor, path_var, &i))
 			return (1);
-		ft_memmove(*ed_path, )
+		if (check_editor_exists(ed_path))
+			ft_strdel(ed_path);
+		else
+			return (0);
 	}
+	return (1);
 }
 
 
@@ -84,19 +86,21 @@ int 	fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
 	char 	path[PATH_MAX + 1];
 	int		fd;
 	int		ret;
-	char 	*buf[3] = {"/usr/bin/vim", NULL, NULL};
+	char 	*ed_path;
 	struct stat sb;
 
 	fd = 0;
 	if ((ret = create_tmp_file(&fd, path, buff, len)) > 0)
 		return (ret);
-	buf[1] = path;
 	close(fd);
 	int pid;
 	pid = fork();
+	if (create_editor_path(&ed_path, editor, envl))
+		return (1);
+	printf("Editor path = %s\n", ed_path);
 	if (pid == 0)
 	{
-		execve("/usr/bin/vim", buf, envl_to_envarr(envl));
+		execve("/usr/bin/vim", NULL, envl_to_envarr(envl));
 		exit(1);
 	}
 	wait(0);
@@ -110,12 +114,12 @@ int 	fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
 	ft_strdel((char **)buff);
 	if (!(sb.st_mode & S_IRUSR))
 	{
-		write_error(path, 3);
+		write_error(path, "permission denied");
 		return (1); // pas droit de fichier
 	}
 	else if (!(S_ISREG(sb.st_mode)))
 	{
-		write_error(path, 2);//pas un fichier
+		write_error(path, "not a file");//pas un fichier
 		return (1);
 	}
 	int i = 0;
