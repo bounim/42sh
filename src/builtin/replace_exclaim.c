@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 18:46:49 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 17:39:48 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/05/04 17:17:52 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ static void		print_special_error(char *line, int i)
 	ft_strdel(&line);
 }
 
+static char		*add_line(char *line, char **tmp, char **bfr, char **next)
+{
+	ft_strdel(&line);
+	line = ft_strfjoin(*bfr, *tmp, 0);
+	line = ft_strfjoin(line, *next, 2);
+	*tmp = NULL;
+	*bfr = NULL;
+	*next = NULL;
+	return (line);
+}
+
 char			*replace_exclaim(char *line, t_history *hist,
 		char *bfr, char *next)
 {
@@ -61,7 +72,7 @@ char			*replace_exclaim(char *line, t_history *hist,
 	while ((i = ft_strichr(line, '!')) != -1)
 	{
 		if ((j = concat_exclaim(line, i)) == 0)
-			return (free_exclaim(line, NULL, NULL, NULL));
+			return (line);
 		if (!(concat = ft_strsub(line, i, j - i + 1))
 				|| !(bfr = ft_strsub(line, 0, i))
 				|| !(tmp = find_exclaim(concat, hist))
@@ -70,10 +81,10 @@ char			*replace_exclaim(char *line, t_history *hist,
 			print_special_error(line, i);
 			return (free_exclaim(concat, bfr, tmp, next));
 		}
-		ft_strdel(&line);
-		line = ft_strfjoin(bfr, tmp, 0);
-		line = ft_strfjoin(line, next, 2);
+		line = add_line(line, &tmp, &bfr, &next);
 		ft_strdel(&concat);
+		concat = NULL;
 	}
+	ft_putendl(line);
 	return (line);
 }
