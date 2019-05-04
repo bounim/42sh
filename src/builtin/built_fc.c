@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:09:03 by aguillot          #+#    #+#             */
-/*   Updated: 2019/05/03 13:50:07 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 16:06:06 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	get_range_buff_len(int start, int end, t_history *curr)
 	return (len);
 }
 
-static int 	fc_build_buff(uint8_t **buff, t_history *history, int range[2])
+static int	fc_build_buff(uint8_t **buff, t_history *history, int range[2])
 {
-	int 	len;
-	int 	start;
+	int	len;
+	int	start;
 
 	start = range[0];
 	if (!(history = find_specific_hist_line(range[0], find_first_hist_line())))
@@ -73,11 +73,12 @@ static char	*find_fc_editor(char **av, t_envl *envl, int opts_e)
 	return (editor);
 }
 
-static int		fc_controler(char **av, int fc_range[2], int fc_opts[5], t_envl *envl)
+static int	fc_controler(char **av, int fc_range[2], int fc_opts[5],
+		t_envl *envl)
 {
 	uint8_t	*buff;
-	int 	len;
-	char 	*editor;
+	int		len;
+	char	*editor;
 
 	if (fc_opts[L])
 	{
@@ -86,7 +87,7 @@ static int		fc_controler(char **av, int fc_range[2], int fc_opts[5], t_envl *env
 		else
 			print_fc_list_reverse(fc_opts, fc_range);
 	}
-	else 
+	else
 	{
 		if (!(editor = find_fc_editor(av, envl, fc_opts[E])))
 			return (1);
@@ -101,7 +102,7 @@ static int		fc_controler(char **av, int fc_range[2], int fc_opts[5], t_envl *env
 	return (0);
 }
 
-int				built_fc(char **av, t_envl *envl)
+int			built_fc(char **av, t_envl *envl)
 {
 	int fc_opts[5];
 	int index;

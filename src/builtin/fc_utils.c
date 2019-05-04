@@ -6,7 +6,7 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 21:23:57 by aguillot          #+#    #+#             */
-/*   Updated: 2019/05/03 21:23:58 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 16:07:08 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ int	return_fc_error(int fc_err_code, char *av)
 	return (1);
 }
 
-int			check_fc_range(int fc_range[2])
+int	check_fc_range(int fc_range[2])
 {
 	int histsize;
 
 	histsize = get_hist_full_size(g_shell.hist.history);
 	if (fc_range[0] > histsize)
-	{
-		return(return_fc_error(OUT_OF_RANGE, NULL));
-	}
+		return (return_fc_error(OUT_OF_RANGE, NULL));
 	return (IN_RANGE);
 }
 
@@ -42,7 +40,7 @@ int	check_if_arg_isdigit(char **av)
 	return (0);
 }
 
-int 	get_good_value_for_range(int value, int histsize)
+int	get_good_value_for_range(int value, int histsize)
 {
 	if (value == 0)
 		return (histsize);

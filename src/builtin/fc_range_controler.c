@@ -6,12 +6,11 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 11:35:41 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 15:58:58 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 16:09:49 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
 
 static int	build_range_no_arg(int fc_range[2], int fc_opts[5], int histsize)
 {
@@ -28,7 +27,8 @@ static int	build_range_no_arg(int fc_range[2], int fc_opts[5], int histsize)
 	return (0);
 }
 
-static int	build_range_one_arg(int fc_range[2], int fc_opts[5], int histsize, char **av)
+static int	build_range_one_arg(int fc_range[2], int fc_opts[5], int histsize,
+		char **av)
 {
 	int	value;
 	int arg_is_num;
@@ -53,7 +53,8 @@ static int	build_range_one_arg(int fc_range[2], int fc_opts[5], int histsize, ch
 	return (0);
 }
 
-static int	build_range_two_arg(int fc_range[2], int fc_opts[5], int histsize, char **av)
+static int	build_range_two_arg(int fc_range[2], int fc_opts[5], int histsize,
+		char **av)
 {
 	int	value1;
 	int value2;

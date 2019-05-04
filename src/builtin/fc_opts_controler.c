@@ -6,13 +6,11 @@
 /*   By: aguillot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 16:33:12 by aguillot          #+#    #+#             */
-/*   Updated: 2019/04/19 15:58:04 by aguillot         ###   ########.fr       */
+/*   Updated: 2019/05/04 16:03:58 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
-
-//La premiere option est celle retenue. Si -l est specifié on accepte -r et -n
 
 static void	set_fc_opts_to_null(int fc_opts[5])
 {
