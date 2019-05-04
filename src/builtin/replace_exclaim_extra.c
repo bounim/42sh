@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 17:36:57 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/24 15:15:19 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/05/04 17:22:20 by aguillot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static char		*replace_exclaim_nb(t_history *history, char *word)
 	stock = ft_strlen(word);
 	while (stock--)
 	{
+		if (nb > 50000)
+			return (NULL);
 		nb *= 10;
 		nb += (int)(*word) - 48;
 		word++;
@@ -57,6 +59,8 @@ static char		*replace_exclaim_neg(t_history *history, char *word)
 	stock = ft_strlen(word);
 	while (stock--)
 	{
+		if (nb > 50000)
+			return (NULL);
 		nb *= 10;
 		nb += (int)(*word) - 48;
 		word++;

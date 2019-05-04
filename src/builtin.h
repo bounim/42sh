@@ -50,13 +50,12 @@ enum		e_fc_opts
 	S = 4
 };
 
-enum		e_range_code
+enum		e_fc_code
 {
-	OUT_OF_RANGE = 0,
-	IN_RANGE,
-	NUMBER,
-	RANGE,
-	NO_ARG
+	IN_RANGE = 0,
+	OUT_OF_RANGE = 1,
+	NO_ARG = 2,
+	CMD_NOT_FOUND = 3 
 };
 
 typedef struct		s_builtin
@@ -103,13 +102,16 @@ int					built_unsetenv(char **arg, t_envl *envl);
 int					built_env_find_last_cmd(char **arg, int stock, int i);
 int					built_fc(char **av, t_envl *envl);
 int					check_fc_opts(char **av, int fc_opts[5]);
-void				build_fc_range(char **av, int fc_range[2], int i);
+int					build_fc_range(char **av, int fc_range[2], int fc_otps[5]);
 void				print_fc_list(int fc_opts[5], int fc_range[2]);
 void				print_fc_list_reverse(int fc_opts[5], int fc_range[2]);
 void				print_usage_fc(char opt);
 void				fc_s(int fc_range[2]);
+int 				fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len);
 int					check_fc_range(int fc_range[2]);
-void				rebuild_g_shell_line(uint8_t *buff);
+int					return_fc_error(int fc_err_code, char *av);
+int					check_if_arg_isdigit(char **av);
+int 				get_good_value_for_range(int value, int histsize);
 char				*replace_exclaim(char *line, t_history *hist, char *bfr,
 		char *next);
 char				*find_exclaim(char *word, t_history *hist);
