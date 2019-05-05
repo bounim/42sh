@@ -23,6 +23,9 @@ void	eot_fn(void)
 		}
 		else
 			handle_ctrl_c();
+		g_shell.edit.ret_ctrl_c = FALSE;
+		g_shell.edit.ret_ctrl_d = TRUE;
+		return ;
 	}
 	supr_charac();
 }
