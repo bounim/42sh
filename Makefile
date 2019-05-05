@@ -77,6 +77,7 @@ SRC := \
 	builtin/built_type.c \
 	builtin/built_debug.c \
 	builtin/replace_alias.c \
+	builtin/replace_alias_extra.c \
 	builtin/replace_exclaim.c \
 	builtin/utils.c \
 	builtin/replace_exclaim_extra.c \

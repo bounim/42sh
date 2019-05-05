@@ -36,8 +36,7 @@ static void		return_end(uint8_t *buff, size_t buff_size, int add_to_hist)
 	{
 		buff = (uint8_t *)replace_exclaim((char *)buff,
 				g_shell.hist.history, NULL, NULL);
-		buff = (uint8_t *)replace_alias((char *)buff,
-				g_shell.alias);
+		buff = (uint8_t *)replace_alias((char *)buff, g_shell.alias, 0, 0);
 	}
 	rl_line_to_hist(add_to_hist, buff);
 	buff = (uint8_t *)ft_strfjoin((char *)buff, "\n", 0);

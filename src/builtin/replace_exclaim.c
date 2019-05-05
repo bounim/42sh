@@ -85,6 +85,5 @@ char			*replace_exclaim(char *line, t_history *hist,
 		ft_strdel(&concat);
 		concat = NULL;
 	}
-	ft_putendl(line);
 	return (line);
 }
