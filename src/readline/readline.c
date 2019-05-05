@@ -26,6 +26,7 @@ void		init_edit(void)
 
 	g_shell.edit.reading = TRUE;
 	g_shell.edit.ret_ctrl_c = FALSE;
+	g_shell.edit.ret_ctrl_d = FALSE;
 	g_shell.edit.edit_mode = g_shell.el_mode;
 	g_shell.edit.prompt_id = 0;
 	g_shell.edit.point_char = NULL;
