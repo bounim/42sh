@@ -56,8 +56,15 @@ void			get_next_history(void)
 void			vi_get_next_history(void)
 {
 	int			count;
+	int			i;
+	int			histsize;
 
 	count = g_shell.edit.count;
-	while (count--)
+	histsize = g_shell.hist.history_size;
+	i = 0;
+	while (i < count && i < histsize)
+	{
 		get_next_history();
+		i++;
+	}
 }
