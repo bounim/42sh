@@ -214,7 +214,7 @@ void					signal_handler(int signo);
 /*
 *** Readline init functions
 */
-void					init_prompt(int prompt_id);
+
 void					init_char_list(void);
 void					init_edit(void);
 void					init_prompt(int prompt_id);
