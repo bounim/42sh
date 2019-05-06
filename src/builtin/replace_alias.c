@@ -15,9 +15,9 @@
 static int	word_separator(char buff)
 {
 	if (buff == ' ' || buff == '\n' || buff == '\t' || buff == '='
-			|| buff == '[' || buff == ']' || buff == '?' || buff == '('
-			|| buff == ')' || buff == '#' || buff == '\\' || buff == '/'
-			|| buff == '~' || buff == '$' || buff == '>' || buff == '<')
+			|| buff == '[' || buff == ']' || buff == '?' || buff == '#' 
+			|| buff == '\\' || buff == '/' || buff == '~' || buff == '$'
+			|| buff == '>' || buff == '<')
 		return (1);
 	return (0);
 }
@@ -38,7 +38,12 @@ static int	allowed_char(char buff)
 
 char		*replace_alias(char *buff, t_alias *alias, int i, int n)
 {
-	while (buff[i])
+	char	*dup;
+	int		loop;
+
+	loop = 0;
+	dup = ft_strdup(buff);
+	while (buff[i] && loop++ < 500)
 	{
 		if (word_separator(buff[i]))
 			i++;
@@ -55,6 +60,11 @@ char		*replace_alias(char *buff, t_alias *alias, int i, int n)
 		}
 		else
 			i++;
+	}
+	if (loop >= 500)
+	{
+		ft_strdel(&buff);
+		return (dup);
 	}
 	return (buff);
 }

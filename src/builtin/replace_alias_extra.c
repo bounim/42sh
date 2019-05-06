@@ -45,16 +45,22 @@ char			*find_alias(char *word, t_alias *alias, t_alias *linked_alias, int *lnk)
 {
 	t_alias	*tmp;
 	char	*ret;
+	int		i;
 
+	i = 0;
 	ret = word;
 	tmp = alias;
-	while (tmp)
+	while (tmp && i++ < 500)
 	{
 		if (ft_strequ(tmp->name, word))
 		{
 			if ((*lnk = check_linked(&ret, tmp, linked_alias)))
-				return (find_alias(ret, alias,
-					add_new_alias(linked_alias, tmp->name, tmp->value), lnk));
+			{
+				linked_alias = add_new_alias(linked_alias, tmp->name, tmp->value);
+				tmp = alias;
+				word = ret;
+				continue;
+			}
 			else
 			{
 				free_alias(linked_alias, 0);
@@ -66,6 +72,7 @@ char			*find_alias(char *word, t_alias *alias, t_alias *linked_alias, int *lnk)
 	free_alias(linked_alias, 0);
 	return (ret);
 }
+
 
 static int		is_alias(char *concat, t_alias *alias)
 {
