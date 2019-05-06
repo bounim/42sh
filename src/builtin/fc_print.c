@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-void	print_usage_fc(char opt)
+void		print_usage_fc(char opt)
 {
 	ft_putstr("21sh: fc: -");
 	ft_putchar(opt);
@@ -21,7 +21,7 @@ void	print_usage_fc(char opt)
 		[first] [last] or fc -s [pat=rep] [cmd]\n");
 }
 
-void	print_fc_list_reverse(int fc_opts[5], int fc_range[2])
+static void	print_fc_list_reverse(int fc_opts[5], int fc_range[2])
 {
 	t_history	*curr;
 	int			blank_nb;
@@ -50,7 +50,7 @@ void	print_fc_list_reverse(int fc_opts[5], int fc_range[2])
 	}
 }
 
-void	print_fc_list(int fc_opts[5], int fc_range[2])
+static void	print_fc_list(int fc_opts[5], int fc_range[2])
 {
 	t_history	*curr;
 	int			blank_nb;
@@ -77,4 +77,12 @@ void	print_fc_list(int fc_opts[5], int fc_range[2])
 		curr = curr->next;
 		fc_range[0]++;
 	}
+}
+
+void	manage_fc_l(int fc_opts[5], int fc_range[5])
+{
+	if (!fc_opts[R])
+		print_fc_list(fc_opts, fc_range);
+	else
+		print_fc_list_reverse(fc_opts, fc_range);
 }

@@ -81,12 +81,7 @@ static int	fc_controler(char **av, int fc_range[2], int fc_opts[5],
 	char	*editor;
 
 	if (fc_opts[L])
-	{
-		if (!fc_opts[R])
-			print_fc_list(fc_opts, fc_range);
-		else
-			print_fc_list_reverse(fc_opts, fc_range);
-	}
+		manage_fc_l(fc_opts, fc_range);
 	else
 	{
 		if (!(editor = find_fc_editor(av, envl, fc_opts[E])))
@@ -95,8 +90,13 @@ static int	fc_controler(char **av, int fc_range[2], int fc_opts[5],
 		if ((len = fc_build_buff(&buff, g_shell.hist.history, fc_range)) == -1)
 			return (1);
 		if (!fc_opts[S])
+		{
 			if (fc_modification(&buff, envl, editor, len) > 0)
 				return (125);
+		}
+		else
+			if (fc_s(&buff, len) > 0)
+				return (1);
 		//return (fc_exec(buff, g_shell.envl));
 	}
 	return (0);

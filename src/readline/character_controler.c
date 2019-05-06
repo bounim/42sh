@@ -58,6 +58,8 @@ void		add_char_to_list(uint8_t *charac, size_t len, int is_prompt)
 	t_char	*new_char;
 	t_char	*prev_char;
 
+	if (g_shell.edit.edit_mode != MODE_EMACS && len != 1)
+		return ;
 	prev_char = g_shell.edit.point_char;
 	if (!(new_char = malloc(sizeof(*new_char))))
 		readline_errors_controler(MALLOC_ERROR);
