@@ -130,8 +130,7 @@ void	delete_word_backward(void)
 		curr = curr->prev;
 		delete_char_from_list(curr->next);
 	}
-	if (!curr->is_prompt)
-		delete_char_from_list(curr);
+	(!curr->is_prompt) ? delete_char_from_list(curr) : (0);
 	update_all_pos();
 	clean_and_print();
 }

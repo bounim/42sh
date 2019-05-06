@@ -64,7 +64,7 @@ static int	build_buff(int fd, uint8_t **buff, struct stat *sb)
 	}
 	r_stock[rd] = 0;
 	(*buff) = (uint8_t *)ft_strdup(r_stock);
-	if (*buff[rd - 1] != '\n')
+	if ((*buff)[rd - 1] != '\n')
 		*(buff) = (uint8_t*)ft_strfjoin((char*)*buff, "\n", 0);
 	return (0);
 }

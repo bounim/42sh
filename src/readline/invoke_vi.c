@@ -16,37 +16,32 @@ static uint8_t	*fill_command_edit(void)
 {
 	uint8_t		*cmd_edit;
 	t_char		*head_char;
-	t_char		*tail;
 	t_history	*head;
 	int			count;
 
+	cmd_edit = NULL;
 	count = g_shell.edit.count;
-	head_char = g_shell.edit.char_list.head;
-	tail = g_shell.edit.char_list.tail;
-	if (g_shell.edit.count_exist == TRUE)
+	head_char = find_first_non_prompt(g_shell.edit.char_list.head);
+	if (g_shell.edit.count_exist == TRUE && count < g_shell.hist.history_size)
 	{
 		head = find_first_hist_line();
-		cmd_edit = ft_u8_strdup(find_specific_hist_line(count, head)->buf);
+		cmd_edit = ft_u8_strdup((find_specific_hist_line(count, head))->buf);
 	}
 	else
-		cmd_edit = list_to_buff_print(head_char, tail);
+	{
+		cmd_edit = list_to_buff_print(head_char, NULL);
+	}
 	return (cmd_edit);
 }
 
 void			invoke_vi(void)
 {
-	int			fd;
-	char		path[PATH_MAX + 1];
 	uint8_t		*cmd_edit;
 
-	if (!(cmd_edit = fill_command_edit()))
+	cmd_edit = fill_command_edit();
+	if (fc_modification(&cmd_edit, g_shell.envl, "vim", ft_u8_strlen(cmd_edit)) != 0)
 		return ;
-	if ((fd = random_file(path)) == -1)
-	{
-		free(cmd_edit);
-		return ;
-	}
-
+	free(cmd_edit);
 }
 
 

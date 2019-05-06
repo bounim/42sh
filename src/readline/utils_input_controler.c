@@ -23,6 +23,7 @@ void		build_count(uint8_t *key, size_t *keylen, int mode)
 			&& mode == MODE_VI_COMMAND)
 	{
 		g_shell.edit.count = key[0] - '0';
+		g_shell.edit.count_exist = TRUE;
 		i = 0;
 		while (i < 6)
 		{
@@ -36,7 +37,6 @@ void		build_count(uint8_t *key, size_t *keylen, int mode)
 				break ;
 			else if (key[0] >= '0' && key[0] <= '9')
 				g_shell.edit.count = g_shell.edit.count * 10 + key[0] - '0';
-			g_shell.edit.count_exist = FALSE;
 		}
 	}
 }
