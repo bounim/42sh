@@ -12,24 +12,12 @@
 
 #include "twenty_one_sh.h"
 
-static void	print_line_to_shell(uint8_t *buff)
+int			fc_s(uint8_t **buff, int len)
 {
+	if (len <= 0)
+		return (1);
+	if (*buff[len - 1] != '\n')
+		*(buff) = (uint8_t*)ft_strfjoin((char*)*buff, "\n", 0);
 	ft_putstr((char*)buff);
-	ft_putchar('\n');
-}
-
-void		fc_s(int fc_range[2])
-{
-	int			histsize;
-	t_history	*curr;
-
-	histsize = get_hist_full_size(g_shell.hist.history);
-	curr = find_first_hist_line();
-	if (fc_range[0] == histsize - 15 && fc_range[1] == histsize)
-		fc_range[0] = fc_range[1];
-	if (!(curr = find_specific_hist_line(fc_range[0], curr)))
-		return ;
-	//rebuild_g_shell_line(curr->buf);
-	print_line_to_shell(curr->buf);
-	//send_line_where_to();`
+	return (0);
 }
