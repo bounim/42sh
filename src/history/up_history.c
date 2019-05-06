@@ -54,8 +54,15 @@ void			get_prev_history(void)
 void			vi_get_prev_history(void)
 {
 	int			count;
+	int			i;
+	int			histsize;
 
+	histsize = g_shell.hist.history_size;
 	count = g_shell.edit.count;
-	while (count--)
+	i = 0;
+	while (i < count && i < histsize)
+	{
 		get_prev_history();
+		i++;
+	}
 }
