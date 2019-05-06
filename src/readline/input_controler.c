@@ -61,6 +61,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
+		{NULL, 0, NULL}
 	},
 	{
 		{RET, 1, return_fn},
@@ -73,6 +74,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 		{UP_ARROW, 3, vi_get_prev_history},
 		{DOWN_ARROW, 3, vi_get_next_history},
 		{CTRL_L, 1, cl_screen},
+		{CTRL_D, 1, eot_fn},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
 		{NULL, 0, NULL},
@@ -114,6 +116,7 @@ static t_keymap	g_keymap[EDIT_MODE][KEYMAP_SIZE] = {
 	{
 		{RIGHT_ARROW, 3, vi_move_next_char},
 		{LEFT_ARROW, 3, vi_move_prev_char},
+		{CTRL_D, 1, eot_fn},
 		{RET, 1, return_fn},
 		{"#", 1, treat_as_comment},
 		{" ", 1, vi_move_next_char},

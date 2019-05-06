@@ -14,21 +14,29 @@
 
 void	eot_fn(void)
 {
-	if (g_shell.edit.char_list.tail->is_prompt == 1)
+	if (g_shell.edit.edit_mode == MODE_EMACS)
 	{
 		if (g_shell.edit.prompt_id == BASIC_PROMPT)
 		{
-			cooked_terminal();
-			built_exit(NULL, NULL);
+			if (g_shell.edit.char_list.tail->is_prompt)
+			{
+				cooked_terminal();
+				built_exit(NULL, NULL);
+			}
+			else
+				supr_charac();
 		}
-		write(1, "\n", 1);
-		rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
-		free_last_command_list();
-		g_shell.edit.reading = FALSE;
-		g_shell.edit.ret_ctrl_d = TRUE;
-		return ;
+		else
+		{
+			write(1, "\n", 1);
+			rl_free_controler(FREE_ONLY_EDIT_CHAR_LIST);
+			free_last_command_list();
+			g_shell.edit.reading = FALSE;
+			g_shell.edit.ret_ctrl_d = TRUE;
+		}
 	}
-	supr_charac();
+	else
+		return_fn();
 }
 
 void	delete_backline(void)
