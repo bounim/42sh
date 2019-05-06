@@ -192,7 +192,7 @@ typedef struct			s_edit
 	int					prompt_id;
 	int					reading;
 	int					ret_ctrl_c;
-	int 				ret_ctrl_d;
+	int					ret_ctrl_d;
 	int					count;
 	int					count_exist;
 	int					edit_mode;

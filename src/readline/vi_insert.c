@@ -44,8 +44,9 @@ void		vi_replace_char(void)
 	if (read(STDIN_FILENO, &c, 1) < 0)
 		fatal_exit(SH_EINVAL);
 	count = g_shell.edit.count;
-	curr = g_shell.edit.point_char->next;
-	if (!ft_isalnum(c) || !curr)
+	if (!g_shell.edit.point_char || !(curr = g_shell.edit.point_char->next))
+		return ;
+	if (!ft_isalnum(c))
 		return ;
 	while (curr && count--)
 	{

@@ -12,7 +12,7 @@
 
 #include "twenty_one_sh.h"
 
-static uint8_t	*fill_command_edit()
+static uint8_t	*fill_command_edit(void)
 {
 	uint8_t		*cmd_edit;
 	t_char		*head_char;
@@ -42,7 +42,11 @@ void			invoke_vi(void)
 	if (!(cmd_edit = fill_command_edit()))
 		return ;
 	if ((fd = random_file(path)) == -1)
+	{
+		free(cmd_edit);
 		return ;
+	}
+
 }
 
 
