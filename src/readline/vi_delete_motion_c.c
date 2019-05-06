@@ -90,10 +90,7 @@ void			vi_delete_motion(void)
 	int		i;
 	t_char	*beg;
 
-	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b'
-	&& c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';'
-	&& c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ','
-	&& c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
+	if (read(STDIN_FILENO, &c, 1) < 0 || !ft_ismotionchar(c))
 		return ;
 	if (!g_shell.edit.point_char || !(beg = g_shell.edit.point_char->next))
 		return ;
@@ -117,31 +114,27 @@ void			vi_yank_motion(void)
 {
 	char	c;
 	int		i;
-	t_char	*cpy_begin;
+	t_char	*cpy_beg;
 	t_char	*cpy_end;
 
-	if (read(STDIN_FILENO, &c, 1) < 0 || (c != ' ' && c != '0' && c != 'b'
-	&& c != 'F' && c != 'l' && c != 'W' && c != '^' && c != '$' && c != ';'
-	&& c != 'E' && c != 'f' && c != 'T' && c != 'w' && c != '|' && c != ','
-	&& c != 'B' && c != 'e' && c != 'h' && c != 't' && c != 'c'))
+	if (read(STDIN_FILENO, &c, 1) < 0 || !ft_ismotionchar(c))
 		return ;
-	if (!g_shell.edit.point_char || !(cpy_begin = g_shell.edit.point_char->next))
+	if (!g_shell.edit.point_char || !(cpy_beg = g_shell.edit.point_char->next))
 		return ;
-	i = 0;
-	while (g_motion_keymap[i].seq && i++ < MOTION_KEYMAP_SIZE)
+	i = -1;
+	while (g_motion_keymap[i].seq && ++i < MOTION_KEYMAP_SIZE)
 	{
 		if (g_motion_keymap[i].seq[0] == c)
 			g_motion_keymap[i].funckey();
 	}
-	if (cpy_begin == g_shell.edit.point_char->next)
+	if (cpy_beg == (cpy_end = g_shell.edit.point_char->next))
 		return ;
 	if (g_shell.edit.cpy_buff)
 		free(g_shell.edit.cpy_buff);
-	cpy_end = g_shell.edit.point_char->next;
-	if (begin_is_before_end(cpy_begin, cpy_end))
-		g_shell.edit.cpy_buff = build_cpy_buff(cpy_begin, cpy_end);
+	if (begin_is_before_end(cpy_beg, cpy_end))
+		g_shell.edit.cpy_buff = build_cpy_buff(cpy_beg, cpy_end);
 	else
-		g_shell.edit.cpy_buff = build_cpy_buff(cpy_end, cpy_begin->prev);
-	g_shell.edit.point_char = cpy_begin->prev;
+		g_shell.edit.cpy_buff = build_cpy_buff(cpy_end, cpy_beg->prev);
+	g_shell.edit.point_char = cpy_beg->prev;
 	clean_and_print();
 }

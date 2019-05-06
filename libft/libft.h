@@ -79,5 +79,6 @@ size_t	ft_ustrlen(const uint8_t *ustr);
 uint8_t	*ft_u8_strdup(const uint8_t *s);
 int		ft_get_nb_len(int nb);
 char	*ft_arrjoin(char **arr);
+int		ft_ismotionchar(int c);
 
 #endif

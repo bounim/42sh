@@ -29,6 +29,7 @@ LIBFT_SRC := \
 	ft_strncpyz.c \
 	ft_strnlen.c \
 	ft_strequ.c \
+	ft_ismotionchar.c \
 	hashmap/hashmap_clean.c \
 	hashmap/hashmap_clean_key.c \
 	hashmap/hashmap_get.c \
