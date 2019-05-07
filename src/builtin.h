@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:05:15 by khsadira          #+#    #+#             */
-/*   Updated: 2019/05/04 18:31:28 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/05/07 03:50:59 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ int					return_fc_error(int fc_err_code, char *av);
 int					check_if_arg_isdigit(char **av);
 int 				get_good_value_for_range(int value, int histsize);
 char				*replace_alias(char *line, t_alias *alias, int i, int n);
-char				*manage_alias_buff(char *buff, t_alias *alias, int i, int *n);
-char				*find_alias(char *word, t_alias *alias, t_alias *linked_alias, int *lnk);
+char				*manage_alias_buff(char *buff, t_alias *alias, int *i, int *n);
+char				*find_alias(char *word, t_alias *alias, t_alias *lnk_alias, int *lnk);
 char				*replace_exclaim(char *line, t_history *hist, char *bfr,
 		char *next);
 char				*find_exclaim(char *word, t_history *hist);
