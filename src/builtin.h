@@ -106,7 +106,8 @@ int					build_fc_range(char **av, int fc_range[2], int fc_otps[5]);
 void				manage_fc_l(int fc_opts[5], int fc_range[5]);
 void				print_usage_fc(char opt);
 int					fc_s(uint8_t **buff, int len);
-int					fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl);
+int					fast_exec(char *buf[3], char ed_path[PATH_MAX + 1],
+		t_envl *envl);
 int					fc_modification(uint8_t **buff, t_envl *envl, char *editor,
 		int len);
 int					check_fc_range(int fc_range[2]);
