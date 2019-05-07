@@ -107,6 +107,8 @@ int			built_fc(char **av, t_envl *envl)
 	int index;
 	int fc_range[2];
 
+	if (g_shell.script_lexer)
+		return (1);
 	if ((index = check_fc_opts(av, fc_opts)) == -1)
 		return (1);
 	if (build_fc_range(av + index, fc_range, fc_opts))
