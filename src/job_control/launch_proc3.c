@@ -43,13 +43,13 @@ static void	job_terminated(t_proc *proc, int status, int silent)
 	proc->job->running--;
 	if (proc->job->foot_proc == proc)
 	{
+		proc->job->stopped = 0;
 		if (!proc->job->background)
 			g_shell.exit_code = get_return_status(status);
 		if (WIFSIGNALED(status))
 		{
 			proc->job->sig = WTERMSIG(status);
-			if (!silent && proc->job->background)
-				detailed_list(&g_shell.err, proc->job, 0, 0);
+			detailed_list(&g_shell.err, proc->job, 0, 0);
 		}
 		else if (WIFEXITED(status) && proc->job->background && !silent)
 		{
