@@ -87,6 +87,7 @@ SRC := \
 	builtin/built_exit.c \
 	builtin/built_hash.c \
 	builtin/built_jobs.c \
+	builtin/built_jobs2.c \
 	builtin/built_bg.c \
 	builtin/built_fg.c \
 	readline/readline.c \
@@ -134,6 +135,7 @@ SRC := \
 	job_control/init_job.c \
 	job_control/create_job.c \
 	job_control/free_jobs.c \
+	job_control/free_jobs2.c \
 	job_control/print_signal.c \
 	job_control/get.c \
 	job_control/check_background.c \

@@ -55,7 +55,7 @@ enum		e_fc_code
 	IN_RANGE = 0,
 	OUT_OF_RANGE = 1,
 	NO_ARG = 2,
-	CMD_NOT_FOUND = 3 
+	CMD_NOT_FOUND = 3,
 };
 
 typedef struct		s_builtin
@@ -106,14 +106,17 @@ int					build_fc_range(char **av, int fc_range[2], int fc_otps[5]);
 void				manage_fc_l(int fc_opts[5], int fc_range[5]);
 void				print_usage_fc(char opt);
 int					fc_s(uint8_t **buff, int len);
-int 				fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len);
+int					fc_modification(uint8_t **buff, t_envl *envl, char *editor,
+		int len);
 int					check_fc_range(int fc_range[2]);
 int					return_fc_error(int fc_err_code, char *av);
 int					check_if_arg_isdigit(char **av);
-int 				get_good_value_for_range(int value, int histsize);
+int					get_good_value_for_range(int value, int histsize);
 char				*replace_alias(char *line, t_alias *alias, int i, int n);
-char				*manage_alias_buff(char *buff, t_alias *alias, int *i, int *n);
-char				*find_alias(char *word, t_alias *alias, t_alias *lnk_alias, int *lnk);
+char				*manage_alias_buff(char *buff, t_alias *alias, int *i,
+		int *n);
+char				*find_alias(char *word, t_alias *alias, t_alias *lnk_alias,
+		int *lnk);
 char				*replace_exclaim(char *line, t_history *hist, char *bfr,
 		char *next);
 char				*find_exclaim(char *word, t_history *hist);
