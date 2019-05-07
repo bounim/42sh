@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:35:23 by khsadira          #+#    #+#             */
-/*   Updated: 2019/03/29 16:51:00 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/05/07 02:42:19 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ int			print_alias(t_alias *alias)
 		ft_putstr("alias ");
 		ft_putstr(alias->name);
 		ft_putchar('=');
+		ft_putchar('\'');
 		ft_putstr(alias->value);
-		ft_putchar(10);
+		ft_putstr("'\n");
 		alias = alias->next;
 	}
 	return (0);

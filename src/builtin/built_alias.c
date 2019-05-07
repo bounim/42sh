@@ -6,7 +6,7 @@
 /*   By: khsadira <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 17:07:38 by khsadira          #+#    #+#             */
-/*   Updated: 2019/04/25 15:33:08 by khsadira         ###   ########.fr       */
+/*   Updated: 2019/05/07 03:21:09 by khsadira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,23 @@ static int		check_opts_alias(char **arg, int *opts)
 	return (-1);
 }
 
+static int		rework_value(char *arg, int i, char **name, char **value)
+{
+	if (!(*name = ft_strsub(arg, 0, i)))
+		return (1);
+	*value = ft_strsub(arg, i + 1, ft_strlen(arg) - i);
+	if (ft_strlen(*value) == 0)
+	{
+		ft_strdel(value);
+		if (!(*value = ft_strdup("")))
+		{
+			ft_strdel(name);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 static int		alias_var_egual(char *arg, t_alias **alias, int i)
 {
 	t_alias	*tmp;
@@ -36,8 +53,8 @@ static int		alias_var_egual(char *arg, t_alias **alias, int i)
 
 	if (i == -1)
 		return (1);
-	name = ft_strsub(arg, 0, i);
-	value = ft_strsub(arg, i + 1, ft_strlen(arg) - i);
+	if (rework_value(arg, i, &name, &value))
+		return (1);
 	tmp = *alias;
 	while (tmp)
 	{
@@ -69,7 +86,9 @@ static int		alias_var(char *arg, t_alias **alias)
 			ft_putstr("alias ");
 			ft_putstr(tmp->name);
 			ft_putchar('=');
-			ft_putendl(tmp->value);
+			ft_putchar('\'');
+			ft_putstr(tmp->value);
+			ft_putstr("'\n");
 			return (0);
 		}
 		tmp = tmp->next;
