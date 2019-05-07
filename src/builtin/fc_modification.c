@@ -12,20 +12,6 @@
 
 #include "twenty_one_sh.h"
 
-static int	create_tmp_file(int *fd, char path[PATH_MAX + 1], uint8_t **buff,
-	int len)
-{
-	if ((*fd = random_file(path)) < 0)
-	{
-		ft_putstr_fd("open: file can not be created", 2);
-		return (125);
-	}
-	write(*fd, *buff, len);
-	if (lseek(*fd, 0, SEEK_SET) == -1)
-		return (1);
-	return (0);
-}
-
 static int	open_modif_file(int *fd, char path[PATH_MAX + 1], struct stat *sb)
 {
 	if ((*fd = open(path, O_RDONLY)) < 0)
@@ -47,7 +33,7 @@ static int	open_modif_file(int *fd, char path[PATH_MAX + 1], struct stat *sb)
 static int	build_buff(int fd, uint8_t **buff, struct stat *sb)
 {
 	int		rd;
-	char	*r_stock; // FIXME norm error + crash buffer overflow
+	char	*r_stock;
 
 	if (NULL == (r_stock = malloc(sb->st_size + 1)))
 		return (1);
@@ -81,18 +67,17 @@ static int	manage_buff(int *fd, uint8_t **buff, char path[PATH_MAX + 1])
 	return (0);
 }
 
-static int	fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl)
+static int	fc_modification_end(uint8_t **buff, char ed_path[PATH_MAX + 1],
+		char *editor, t_envl *envl)
 {
-	g_shell.fast_exec_job = NULL;
-	create_proc_argv(&g_shell.fast_exec_job, ed_path, buf, envl);
-	launch_job(&g_shell.fast_exec_job);
-	if (g_shell.fast_exec_job)
+	if (!buff || !*buff)
+		return (1);
+	if (find_command(ed_path, editor, envl) == -1)
 	{
-		g_shell.fast_exec_job = NULL;
+		write_error("command not found", editor);
 		return (1);
 	}
-	g_shell.fast_exec_job = NULL;
-	return (g_shell.exit_code > 0);
+	return (0);
 }
 
 int			fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
@@ -103,13 +88,8 @@ int			fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
 	int		fd;
 	int		ret;
 
-	if (!buff || !*buff)
+	if (fc_modification_end(buff, ed_path, editor, envl))
 		return (1);
-	if (find_command(ed_path, editor, envl) == -1)
-	{
-		write_error("command not found", editor);
-		return (1);
-	}
 	fd = 0;
 	if ((ret = create_tmp_file(&fd, path, buff, len)) > 0)
 		return (ret);

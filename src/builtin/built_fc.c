@@ -94,11 +94,9 @@ static int	fc_controler(char **av, int fc_range[2], int fc_opts[5],
 			if (fc_modification(&buff, envl, editor, len) > 0)
 				return (125);
 		}
-		else
-			if (fc_s(&buff, len) > 0)
-				return (1);
+		else if (fc_s(&buff, len) > 0)
+			return (1);
 		run_script(buff);
-		//return (fc_exec(buff, g_shell.envl));
 	}
 	return (0);
 }

@@ -47,5 +47,3 @@ void			invoke_vi(void)
 	write(2, "\n", 1);
 	run_script(cmd_edit);
 }
-
-

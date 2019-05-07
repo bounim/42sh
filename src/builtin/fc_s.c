@@ -12,7 +12,21 @@
 
 #include "twenty_one_sh.h"
 
-int			fc_s(uint8_t **buff, int len)
+int	fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl)
+{
+	g_shell.fast_exec_job = NULL;
+	create_proc_argv(&g_shell.fast_exec_job, ed_path, buf, envl);
+	launch_job(&g_shell.fast_exec_job);
+	if (g_shell.fast_exec_job)
+	{
+		g_shell.fast_exec_job = NULL;
+		return (1);
+	}
+	g_shell.fast_exec_job = NULL;
+	return (g_shell.exit_code > 0);
+}
+
+int	fc_s(uint8_t **buff, int len)
 {
 	if (len <= 0)
 		return (1);

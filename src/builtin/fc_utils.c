@@ -46,3 +46,17 @@ int	get_good_value_for_range(int value, int histsize)
 		return (histsize);
 	return (histsize + value);
 }
+
+int	create_tmp_file(int *fd, char path[PATH_MAX + 1], uint8_t **buff,
+		int len)
+{
+	if ((*fd = random_file(path)) < 0)
+	{
+		ft_putstr_fd("open: file can not be created", 2);
+		return (125);
+	}
+	write(*fd, *buff, len);
+	if (lseek(*fd, 0, SEEK_SET) == -1)
+		return (1);
+	return (0);
+}

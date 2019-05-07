@@ -106,6 +106,7 @@ int					build_fc_range(char **av, int fc_range[2], int fc_otps[5]);
 void				manage_fc_l(int fc_opts[5], int fc_range[5]);
 void				print_usage_fc(char opt);
 int					fc_s(uint8_t **buff, int len);
+int					fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl);
 int					fc_modification(uint8_t **buff, t_envl *envl, char *editor,
 		int len);
 int					check_fc_range(int fc_range[2]);
@@ -140,5 +141,7 @@ int					built_bg(char **arg, t_envl *envl);
 t_job				*built_bg_fg_job(char **arg);
 void				detailed_list(t_printer *pr, t_job *job, int show_pgid,
 		int exit_code);
+int					create_tmp_file(int *fd, char path[PATH_MAX + 1],
+		uint8_t **buff, int len);
 
 #endif
