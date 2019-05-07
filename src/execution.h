@@ -45,5 +45,9 @@ int		will_close(t_lexer_token *cmd, int fd);
 void	lazy_close(t_lexer_token *cmd);
 int		test_fd_new_closed(t_lexer_token *cmd, t_lexer_token *cur);
 void	close_fd_before_exec(t_lexer_token *cmd);
+int		script_heredoc_copy(t_lexer_token *heredoc, size_t *i,
+		uint8_t *buf, size_t size);
+int		script_lex_a_line(t_lexer *lex, size_t *i,
+		uint8_t *buf, size_t size);
 
 #endif

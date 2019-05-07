@@ -83,6 +83,9 @@ t_proc			*get_proc_from_job(t_job *job, pid_t pid);
 t_proc			*update_job_status(t_job *job, pid_t wpid, int status,
 		int silent);
 void			check_background(int silent);
+t_proc			*add_proc_list(t_job *job, t_proc *new);
+t_job			*create_job(t_lexer_token *cmd);
+t_job			*create_job_argv(char **argv);
 
 /*
 ** must call printer_flush(&g_shell.out); after this function

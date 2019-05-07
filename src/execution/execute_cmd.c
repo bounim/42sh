@@ -15,29 +15,7 @@
 #include "execution.h"
 #include "expansions.h"
 
-char	**arg_to_argv(t_lexer_token *cmd)
-{
-	size_t			i;
-	t_lexer_token	*cur;
-	char			**av;
-
-	if (!cmd->arg_head)
-		return (NULL);
-	if (NULL == (av = (char **)malloc((cmd->arg_nb + 1) * sizeof(*av))))
-		return (NULL);
-	i = 0;
-	cur = cmd->arg_head;
-	while (i < cmd->arg_nb)
-	{
-		av[i] = (char *)cur->buffer;
-		i++;
-		cur = cur->arg_next;
-	}
-	av[cmd->arg_nb] = NULL;
-	return (av);
-}
-
-int		execute_simple_command(t_lexer_token *cmd)
+int			execute_simple_command(t_lexer_token *cmd)
 {
 	t_job			*new_job;
 
@@ -49,7 +27,7 @@ int		execute_simple_command(t_lexer_token *cmd)
 	return (0);
 }
 
-int		execute_pipe(t_lexer_token *pipe_seq)
+int			execute_pipe(t_lexer_token *pipe_seq)
 {
 	t_lexer_token	*cur;
 	t_job			*new_job;
@@ -78,7 +56,7 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 	return (0);
 }
 
-int		execute_and_or(t_lexer_token *and_or)
+int			execute_and_or(t_lexer_token *and_or)
 {
 	t_lexer_token	*cur;
 
@@ -102,7 +80,28 @@ int		execute_and_or(t_lexer_token *and_or)
 	return (0);
 }
 
-int		execute(t_lexer *lex)
+static void	execute_amp(t_lexer_token *cur)
+{
+	if (create_background_job(cur) == 0)
+	{
+		if (execute_and_or(cur->left) < 0)
+		{
+			clean_shell();
+			exit(125);
+		}
+		if (g_shell.background_signal)
+		{
+			clean_shell();
+			signal(g_shell.background_signal, SIG_DFL);
+			kill(getpid(), g_shell.background_signal);
+			exit(125);
+		}
+		clean_shell();
+		exit(g_shell.exit_code);
+	}
+}
+
+int			execute(t_lexer *lex)
 {
 	t_lexer_token	*cmd;
 	t_lexer_token	*cur;
@@ -116,25 +115,7 @@ int		execute(t_lexer *lex)
 	while (cur && cur->ptype == PARSER_SEPARATOR)
 	{
 		if (cur->buffer[0] == '&')
-		{
-			if (create_background_job(cur) == 0)
-			{
-				if (execute_and_or(cur->left) < 0)
-				{
-					clean_shell();
-					exit(125);
-				}
-				if (g_shell.background_signal)
-				{
-					clean_shell();
-					signal(g_shell.background_signal, SIG_DFL);
-					kill(getpid(), g_shell.background_signal);
-					exit(125);
-				}
-				clean_shell();
-				exit(g_shell.exit_code);
-			}
-		}
+			execute_amp(cur);
 		else if (execute_and_or(cur->left) < 0)
 			return (-1);
 		cur = cur->right;
