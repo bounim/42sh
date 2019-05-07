@@ -100,7 +100,7 @@ int			fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
 	buf[2] = NULL;
 	if (fast_exec(buf, ed_path, envl))
 	{
-		// TODO write error?
+		write_error("editor closed unexpectedly", editor);
 		unlink(path);
 		return (125);
 	}
