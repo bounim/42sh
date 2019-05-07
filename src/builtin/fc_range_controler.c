@@ -74,6 +74,11 @@ static int	build_range_two_arg(int fc_range[2], int fc_opts[5], int histsize,
 	}
 	fc_range[0] = value1;
 	fc_range[1] = value2;
+	if (value1 > value2)
+	{
+		fc_range[0] = value2;
+		fc_range[1] = value1;
+	}
 	return (0);
 }
 

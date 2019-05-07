@@ -33,10 +33,16 @@ int	check_fc_range(int fc_range[2])
 
 int	check_if_arg_isdigit(char **av)
 {
-	if (*av[0] == '-')
-		av++;
-	if (ft_strisdigit(*av))
-		return (1);
+	int	i;
+
+	i = 0;
+	if (av[0][0] == '-')
+		i++;
+	if (av[0] + i)
+	{
+		if (ft_strisdigit(av[0] + i))
+			return (1);
+	}
 	return (0);
 }
 
