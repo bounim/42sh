@@ -66,7 +66,9 @@ int		quoting(t_lexer *lex)
 	else if (lex->quoted == 1
 			|| (lex->quoted == 2 && lex->line[lex->i] == '\'')
 			|| (lex->quoted == 3 && lex->line[lex->i] == '\"'
-				&& lex->line[lex->i - 1] != '\\'))
+				&& (lex->line[lex->i - 1] != '\\'
+					|| (lex->line[lex->i - 1] == '\\' && (lex->i < 2
+							|| lex->line[lex->i - 2] == '\\')))))
 		lex->next_quoted = 0;
 	return (1);
 }

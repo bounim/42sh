@@ -69,8 +69,8 @@ static int		double_quote(t_lexer_token *tok)
 	j = tok->exp_i;
 	while (j < tok->size && tok->buffer[j] != '\"')
 	{
-		if (tok->buffer[j] == '\\'
-				&& j + 1 < tok->size && tok->buffer[j + 1] == '\"')
+		if (tok->buffer[j] == '\\' && j + 1 < tok->size
+				&& (tok->buffer[j + 1] == '\"' || tok->buffer[j + 1] == '\n'))
 			break ;
 		j++;
 	}
@@ -79,10 +79,11 @@ static int		double_quote(t_lexer_token *tok)
 		var_expand(tok, j, tok->exp_i);
 		tok->exp_i = j;
 	}
-	if (j + 1 < tok->size
-			&& tok->buffer[j] == '\\' && tok->buffer[j + 1] == '\"')
+	if (j + 1 < tok->size && tok->buffer[j] == '\\'
+			&& (tok->buffer[j + 1] == '\"' || tok->buffer[j + 1] == '\n'))
 	{
-		if (buffer_append(tok, (uint8_t *)"\"", 1) < 0)
+		if (tok->buffer[j + 1] == '\"' && tok->buffer[j - 1] != '\\'
+				&& buffer_append(tok, (uint8_t *)"\"", 1) < 0)
 			return (-1);
 		tok->exp_i++;
 	}
