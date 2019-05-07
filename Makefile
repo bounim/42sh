@@ -152,6 +152,7 @@ SRC := \
 	expansions/expansions2.c \
 	expansions/expansions3.c \
 	expansions/expansions4.c \
+	expansions/expansions5.c \
 	random/file.c
 
 CFLAGS ?=
