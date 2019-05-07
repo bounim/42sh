@@ -20,8 +20,7 @@ uint8_t	*build_full_buff(uint8_t *hist_buff)
 
 	hist_len = ft_u8_strlen(hist_buff);
 	search_len = g_shell.hist.search_len;
-	if (!(full_buff = (uint8_t*)malloc(sizeof(uint8_t) *
-		(hist_len + 23 + search_len + 1))))
+	if (!(full_buff = (uint8_t*)malloc(hist_len + 23 + search_len + 1)))
 		fatal_exit(SH_ENOMEM);
 	ft_memset(full_buff, 0, hist_len + 23 + g_shell.hist.search_len + 1);
 	ft_memmove(full_buff, SEARCH_PRMPT, 19);

@@ -74,8 +74,8 @@ void			vi_get_next_history(void)
 	int			count;
 
 	count = g_shell.edit.count;
-	if (!g_shell.hist.history || g_shell.hist.history_save == -1 ||
-			g_shell.hist.history_save == -2)
+	if (!g_shell.hist.history || g_shell.hist.history_save == -1
+			|| g_shell.hist.history_save == -2)
 		return ;
 	switch_history();
 	if (g_shell.hist.history_save == 0 || count > g_shell.hist.history_save)

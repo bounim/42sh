@@ -52,8 +52,8 @@ char			**ft_strsplit(char const *s, char c)
 	size_t	len;
 	size_t	ind[3];
 
-	if (!s || (!(tab = (char **)malloc(sizeof(*tab) * (ft_count_words(s, c) +
-							1)))))
+	if (!s || (!(tab = (char **)malloc(sizeof(*tab) * (ft_count_words(s,
+								c) + 1)))))
 		return (NULL);
 	ind[0] = 0;
 	ind[2] = 0;

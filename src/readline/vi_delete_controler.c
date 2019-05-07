@@ -56,8 +56,7 @@ void		vi_delete_x(void)
 	int		count;
 
 	count = g_shell.edit.count;
-	if (!g_shell.edit.point_char ||
-			!(begin = g_shell.edit.point_char->next))
+	if (!g_shell.edit.point_char || !(begin = g_shell.edit.point_char->next))
 		return ;
 	tail = begin;
 	while (--g_shell.edit.count && tail != g_shell.edit.char_list.tail)
