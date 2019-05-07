@@ -132,8 +132,10 @@ SRC := \
 	job_control/launch_job.c \
 	job_control/launch_proc.c \
 	job_control/launch_proc2.c \
+	job_control/launch_proc3.c \
 	job_control/init_job.c \
 	job_control/create_job.c \
+	job_control/create_job2.c \
 	job_control/free_jobs.c \
 	job_control/free_jobs2.c \
 	job_control/print_signal.c \
