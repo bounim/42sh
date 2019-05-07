@@ -22,6 +22,8 @@ void	eot_fn(void)
 			{
 				cooked_terminal();
 				built_exit(NULL, NULL);
+				g_shell.edit.reading = FALSE;
+				g_shell.edit.ret_ctrl_d = TRUE;
 			}
 			else
 				supr_charac();
