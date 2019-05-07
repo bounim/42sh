@@ -71,6 +71,8 @@ char			*replace_exclaim(char *line, t_history *hist,
 
 	while ((i = ft_strichr(line, '!')) != -1)
 	{
+		if (i > 0 && line[i - 1] == '\\')
+			return (line);
 		if ((j = concat_exclaim(line, i)) == 0)
 			return (line);
 		if (!(concat = ft_strsub(line, i, j - i + 1))
