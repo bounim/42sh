@@ -115,6 +115,7 @@ int			built_fc(char **av, t_envl *envl)
 		return (1);
 	if (check_fc_range(fc_range) == OUT_OF_RANGE)
 		return (1);
+	printf("%d\n", fc_range[0]);
 	if (fc_controler(av + index, fc_range, fc_opts, envl))
 		return (1);
 	return (0);

@@ -30,8 +30,8 @@ int	fc_s(uint8_t **buff, int len)
 {
 	if (len <= 0)
 		return (1);
-	if (*buff[len - 1] != '\n')
-		*(buff) = (uint8_t*)ft_strfjoin((char*)*buff, "\n", 0);
-	ft_putstr((char*)buff);
+	if ((*buff)[len - 1] != '\n')
+		(*buff) = (uint8_t*)ft_strfjoin((char*)(*buff), "\n", 0);
+	ft_putstr((char*)(*buff));
 	return (0);
 }
