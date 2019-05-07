@@ -26,6 +26,18 @@ static void		close_pipe_error(t_job *job, t_proc *err)
 	fatal_exit(SH_ENOPIPE);
 }
 
+static void		launch_job_end(t_job **job)
+{
+	if (!(*job)->stopped && (*job)->running == 0)
+	{
+		remove_job(*job);
+		*job = NULL;
+	}
+	else
+		add_job(*job);
+	g_shell.running_job = NULL;
+}
+
 void			launch_job(t_job **job)
 {
 	t_proc	*cur;
@@ -52,12 +64,5 @@ void			launch_job(t_job **job)
 			cur = cur->next;
 		}
 	}
-	if (!(*job)->stopped && (*job)->running == 0)
-	{
-		remove_job(*job);
-		*job = NULL;
-	}
-	else
-		add_job(*job);
-	g_shell.running_job = NULL;
+	launch_job_end(job);
 }

@@ -62,6 +62,33 @@ t_proc			*get_proc_from_job(t_job *job, pid_t pid)
 	return (NULL);
 }
 
+static t_job	*get_job_by_id_end(char *id)
+{
+	t_job	*job;
+
+	if (id[1] == '?')
+	{
+		job = g_shell.head_job;
+		while (job)
+		{
+			if (job->cmd && ft_strstart(job->cmd, id + 2))
+				return (job);
+			job = job->next;
+		}
+	}
+	else
+	{
+		job = g_shell.head_job;
+		while (job)
+		{
+			if (job->cmd && ft_strstr(job->cmd, id + 2))
+				return (job);
+			job = job->next;
+		}
+	}
+	return (NULL);
+}
+
 t_job			*get_job_by_id(char *id)
 {
 	size_t	jobspec;
@@ -83,26 +110,7 @@ t_job			*get_job_by_id(char *id)
 				return (job);
 			job = job->next;
 		}
+		return (NULL);
 	}
-	else if (id[1] == '?')
-	{
-		job = g_shell.head_job;
-		while (job)
-		{
-			if (job->cmd && ft_strstart(job->cmd, id + 2))
-				return (job);
-			job = job->next;
-		}
-	}
-	else
-	{
-		job = g_shell.head_job;
-		while (job)
-		{
-			if (job->cmd && ft_strstr(job->cmd, id + 2))
-				return (job);
-			job = job->next;
-		}
-	}
-	return (NULL);
+	return (get_job_by_id_end(id));
 }
