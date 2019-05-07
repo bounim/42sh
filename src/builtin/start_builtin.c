@@ -14,14 +14,18 @@
 
 static t_builtin	g_builtin[] = {
 	{"alias", built_alias},
+	{"bg", built_bg},
 	{"cd", built_cd},
 	{"debug", built_debug},
 	{"echo", built_echo},
 	{"env", built_env},
 	{"exit", built_exit},
 	{"export", built_export},
+	{"fc", built_fc},
+	{"fg", built_fg},
 	{"hash", built_hash},
 	{"history", built_history},
+	{"jobs", built_jobs},
 	{"set", built_set},
 	{"setenv", built_setenv},
 	{"test", built_test},
@@ -29,7 +33,6 @@ static t_builtin	g_builtin[] = {
 	{"unalias", built_unalias},
 	{"unset", built_unset},
 	{"unsetenv", built_unsetenv},
-	{"fc", built_fc}
 };
 
 int					check_builtin(char *cmd)

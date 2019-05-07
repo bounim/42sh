@@ -34,36 +34,31 @@ static int	open_modif_file(int *fd, char path[PATH_MAX + 1], struct stat *sb)
 		return (125);
 	}
 	if (stat(path, sb) != 0)
-	{
-		perror("");
 		write_error(path, "no such file or directory");
-		return (1);
-	}
-	if (!(sb->st_mode & S_IRUSR))
-	{
+	else if (!(sb->st_mode & S_IRUSR))
 		write_error(path, "permission denied");
-		return (1);
-	}
 	else if (!(S_ISREG(sb->st_mode)))
-	{
 		write_error(path, "not a file");
-		return (1);
-	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
 static int	build_buff(int fd, uint8_t **buff, struct stat *sb)
 {
 	int		rd;
-	char	r_stock[sb->st_mode];
+	char	*r_stock; // FIXME norm error + crash buffer overflow
 
+	if (NULL == (r_stock = malloc(sb->st_size + 1)))
+		return (1);
+	r_stock[sb->st_size] = '\0';
 	if ((rd = read(fd, r_stock, sb->st_size)) != sb->st_size)
 	{
 		write_error("fc", "write error: Bad file descriptor");
 		return (1);
 	}
-	r_stock[rd] = 0;
-	(*buff) = (uint8_t *)ft_strdup(r_stock);
+	r_stock[rd] = '\0';
+	(*buff) = (uint8_t *)r_stock;
 	if (rd - 1 > 0 && (*buff)[rd - 1] != '\n')
 		*(buff) = (uint8_t*)ft_strfjoin((char*)*buff, "\n", 0);
 	else if (!(*buff)[0])
@@ -86,17 +81,18 @@ static int	manage_buff(int *fd, uint8_t **buff, char path[PATH_MAX + 1])
 	return (0);
 }
 
-static void	fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl)
+static int	fast_exec(char *buf[3], char ed_path[PATH_MAX + 1], t_envl *envl)
 {
-	int	pid;
-
-	pid = fork();
-	if (pid == 0)
+	g_shell.fast_exec_job = NULL;
+	create_proc_argv(&g_shell.fast_exec_job, ed_path, buf, envl);
+	launch_job(&g_shell.fast_exec_job);
+	if (g_shell.fast_exec_job)
 	{
-		execve(ed_path, buf, envl_to_envarr(envl));
-		exit(1);
+		g_shell.fast_exec_job = NULL;
+		return (1);
 	}
-	wait(0);
+	g_shell.fast_exec_job = NULL;
+	return (g_shell.exit_code > 0);
 }
 
 int			fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
@@ -107,21 +103,28 @@ int			fc_modification(uint8_t **buff, t_envl *envl, char *editor, int len)
 	int		fd;
 	int		ret;
 
-	fd = 0;
-	if ((ret = create_tmp_file(&fd, path, buff, len)) > 0)
-		return (ret);
-	ft_strdel((char **)buff);
-	close(fd);
+	if (!buff || !*buff)
+		return (1);
 	if (find_command(ed_path, editor, envl) == -1)
 	{
 		write_error("command not found", editor);
 		return (1);
 	}
+	fd = 0;
+	if ((ret = create_tmp_file(&fd, path, buff, len)) > 0)
+		return (ret);
+	ft_strdel((char **)buff);
+	close(fd);
 	buf[0] = editor;
 	buf[1] = path;
 	buf[2] = NULL;
-	fast_exec(buf, ed_path, envl);
-	if ((ret = manage_buff(&fd, buff, path)) > 0)
-		return (ret);
-	return (0);
+	if (fast_exec(buf, ed_path, envl))
+	{
+		// TODO write error?
+		unlink(path);
+		return (125);
+	}
+	ret = manage_buff(&fd, buff, path);
+	unlink(path);
+	return (ret);
 }

@@ -21,7 +21,8 @@ static void	proc_parent(t_proc *proc)
 		close(proc->prev->tunnel[0]);
 	if (proc->next)
 		close(proc->tunnel[1]);
-	wait_job(proc);
+	else
+		wait_job(proc->job, 0);
 }
 
 static void	proc_child(t_proc *proc)

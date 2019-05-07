@@ -23,7 +23,12 @@ void			clean_shell(void)
 	rl_free_controler(FREE_ALL_EDIT);
 	hashmap_clean(&g_shell.hmap);
 	lexer_destroy(g_shell.lexer);
+	lexer_destroy(g_shell.script_lexer);
 	free(g_shell.line);
 	free(g_shell.canonic_path);
 	free_exec();
+	if (g_shell.running_job)
+		free_job(g_shell.running_job);
+	if (g_shell.fast_exec_job)
+		free_job(g_shell.fast_exec_job);
 }

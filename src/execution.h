@@ -36,6 +36,7 @@ int		execute_assign_list(t_lexer_token *cmd, t_proc *proc);
 char	*lst_to_str(t_lexer_token *head, int background);
 char	**arg_to_argv(t_lexer_token *cmd);
 void	write_error(char *cmd, char *str);
+void	run_script(uint8_t *buf);
 
 int		redir_op(t_lexer_token *cmd, t_lexer_token *cur);
 int		error_restore(t_lexer_token *cmd, char *msg);

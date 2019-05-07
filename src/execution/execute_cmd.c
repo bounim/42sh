@@ -39,14 +39,13 @@ char	**arg_to_argv(t_lexer_token *cmd)
 
 int		execute_simple_command(t_lexer_token *cmd)
 {
-	t_proc			*new_proc;
 	t_job			*new_job;
 
 	new_job = NULL;
 	if (!cmd || cmd->ptype != PARSER_COMMAND || command_expansions(cmd) < 0)
 		return (-1);
-	new_proc = create_proc(&new_job, cmd);
-	launch_job(new_job);
+	create_proc(&new_job, cmd);
+	launch_job(&new_job);
 	return (0);
 }
 
@@ -75,7 +74,7 @@ int		execute_pipe(t_lexer_token *pipe_seq)
 		cur = cur->right;
 	}
 	create_proc(&new_job, cur);
-	launch_job(new_job);
+	launch_job(&new_job);
 	return (0);
 }
 
@@ -121,7 +120,17 @@ int		execute(t_lexer *lex)
 			if (create_background_job(cur) == 0)
 			{
 				if (execute_and_or(cur->left) < 0)
-					fatal_exit(SH_EINVAL);
+				{
+					clean_shell();
+					exit(125);
+				}
+				if (g_shell.background_signal)
+				{
+					clean_shell();
+					signal(g_shell.background_signal, SIG_DFL);
+					kill(getpid(), g_shell.background_signal);
+					exit(125);
+				}
 				clean_shell();
 				exit(g_shell.exit_code);
 			}

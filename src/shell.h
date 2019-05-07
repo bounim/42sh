@@ -33,6 +33,11 @@ struct						s_shell
 	char					*canonic_path;
 	t_job					*head_job;
 	pid_t					pgid;
+	int						background;
+	t_job					*current_job;
+	t_job					*previous_job;
+	t_job					*running_job;
+	int						background_signal;
 	int						debug_mode;
 	char					pid_buffer[20];
 	int						exit_code;
@@ -41,7 +46,8 @@ struct						s_shell
 	int						is_exiting;
 	t_lexer					*lexer;
 	char					*progname;
-	int						background;
+	t_job					*fast_exec_job;
+	t_lexer					*script_lexer;
 };
 
 /*

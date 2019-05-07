@@ -74,6 +74,12 @@ int			built_exit(char **arg, t_envl *envl)
 		printer_str(&g_shell.err, "exit\n");
 		printer_flush(&g_shell.err);
 	}
+	if (g_shell.head_job)
+	{
+		printer_str(&g_shell.err, "There are stopped jobs.\n");
+		printer_flush(&g_shell.err);
+		return (1);
+	}
 	if (check_exit_arg_nb(arg) == -1)
 		return (1);
 	file_from_history(g_shell.hist.history);

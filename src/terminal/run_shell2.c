@@ -23,7 +23,7 @@ static int		heredoc_readline(size_t *i)
 	}
 	readline(HEREDOC_PROMPT);
 	*i = 0;
-	if (!g_shell.line || g_shell.edit.ret_ctrl_c)
+	if (!g_shell.edit.ret_ctrl_d && (!g_shell.line || g_shell.edit.ret_ctrl_c))
 	{
 		g_shell.exit_code = 1;
 		free(g_shell.line);
@@ -65,6 +65,8 @@ static int		copy_heredoc_line(t_lexer_token *heredoc, size_t *i)
 	{
 		if (heredoc_readline(i) < 0)
 			return (-1);
+		if (g_shell.edit.ret_ctrl_d)
+			return (0);
 	}
 	if (*i < g_shell.line_size)
 	{

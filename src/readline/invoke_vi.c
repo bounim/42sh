@@ -39,9 +39,13 @@ void			invoke_vi(void)
 	uint8_t		*cmd_edit;
 
 	cmd_edit = fill_command_edit();
-	if (fc_modification(&cmd_edit, g_shell.envl, "vim", ft_u8_strlen(cmd_edit)) != 0)
+	if (fc_modification(&cmd_edit, g_shell.envl, "vim",
+				ft_u8_strlen(cmd_edit)) != 0)
 		return ;
-	free(cmd_edit);
+	g_shell.edit.reading = FALSE;
+	rl_free_controler(FREE_ALL_EDIT);
+	write(2, "\n", 1);
+	run_script(cmd_edit);
 }
 
 

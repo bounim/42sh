@@ -26,13 +26,12 @@ static void		close_pipe_error(t_job *job, t_proc *err)
 	fatal_exit(SH_ENOPIPE);
 }
 
-void			launch_job(t_job *job)
+void			launch_job(t_job **job)
 {
 	t_proc	*cur;
-	int		std_file[2];
 
-	std_file[0] = STDIN_FILENO;
-	cur = job->head_proc;
+	g_shell.running_job = *job;
+	cur = (*job)->head_proc;
 	if (cur && !cur->next)
 		launch_proc(cur);
 	else if (cur)
@@ -41,16 +40,24 @@ void			launch_job(t_job *job)
 		{
 			if (pipe(cur->tunnel) < 0)
 			{
-				close_pipe_error(job, cur);
+				close_pipe_error(*job, cur);
 				return ;
 			}
 			cur = cur->next;
 		}
-		cur = job->head_proc;
+		cur = (*job)->head_proc;
 		while (cur)
 		{
 			launch_proc(cur);
 			cur = cur->next;
 		}
 	}
+	if (!(*job)->stopped && (*job)->running == 0)
+	{
+		remove_job(*job);
+		*job = NULL;
+	}
+	else
+		add_job(*job);
+	g_shell.running_job = NULL;
 }

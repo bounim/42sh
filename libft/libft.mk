@@ -78,7 +78,8 @@ LIBFT_SRC := \
 	ft_memtoi.c \
 	ft_isdigit.c \
 	ft_get_nb_len.c \
-	ft_arrjoin.c
+	ft_arrjoin.c \
+	ft_strstart.c
 
 LIBFT_NAME := lib$(LIBFT_SHORT_NAME)
 CPPFLAGS += -I$(LIBFT_NAME)

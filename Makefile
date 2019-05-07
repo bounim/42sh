@@ -20,6 +20,7 @@ SRC := \
 	execution/redir.c \
 	execution/redir2.c \
 	execution/redir3.c \
+	execution/run_script.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/init_shell_history.c \
@@ -85,6 +86,9 @@ SRC := \
 	builtin/print_general_error.c \
 	builtin/built_exit.c \
 	builtin/built_hash.c \
+	builtin/built_jobs.c \
+	builtin/built_bg.c \
+	builtin/built_fg.c \
 	readline/readline.c \
 	readline/get_term_pos.c \
 	readline/prompt_controler.c \
@@ -131,6 +135,8 @@ SRC := \
 	job_control/create_job.c \
 	job_control/free_jobs.c \
 	job_control/print_signal.c \
+	job_control/get.c \
+	job_control/check_background.c \
 	parser/parser.c \
 	parser/parser_func.c \
 	parser/parser_node.c \

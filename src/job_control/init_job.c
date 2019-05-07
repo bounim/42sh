@@ -19,6 +19,8 @@ t_job	*init_job(void)
 	if (!(job = (t_job *)malloc(sizeof(t_job))))
 		return (NULL);
 	ft_memset(job, 0, sizeof(*job));
+	if (!g_shell.background)
+		tcgetattr(g_shell.term, &job->tmodes);
 	return (job);
 }
 
