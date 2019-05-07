@@ -23,43 +23,99 @@ int			get_return_status(int status)
 	return (1);
 }
 
-static void	wait_job_loop(t_proc *proc, int *status, pid_t wpid, t_proc *cur)
+static void	update_job_status_background(t_proc *proc, int status)
 {
-	while (proc->job->running > 0 && (wpid = waitpid(WAIT_ANY, status,
-					WUNTRACED)) >= 0)
+	if (WIFSTOPPED(status))
+		return ;
+	proc->job->running--;
+	if (proc->next)
+		return ;
+	if (WIFSIGNALED(status))
+		g_shell.background_signal = WTERMSIG(status);
+	else if (WIFEXITED(status))
+		g_shell.exit_code = WEXITSTATUS(status);
+}
+
+t_proc		*update_job_status(t_job *job, pid_t wpid, int status, int silent)
+{
+	t_proc	*proc;
+
+	if (!(proc = get_proc_from_job(job, wpid)) && !(proc = get_proc(wpid)))
+		return (NULL);
+	if (g_shell.background)
 	{
-		if (WIFSTOPPED(*status))
+		update_job_status_background(proc, status);
+		return (NULL);
+	}
+	if (WIFSTOPPED(status))
+	{
+		if (proc->job->head_proc == proc || proc->job->foot_proc == proc)
 		{
-			kill(wpid, SIGTERM);
-			kill(wpid, SIGCONT);
-			continue ;
+			proc->job->stopped = 1;
+			proc->job->background = 0;
+			proc->job->sig = WSTOPSIG(status);
+			add_job(job);
+			if (!silent)
+				detailed_list(&g_shell.err, proc->job, 0, 0);
 		}
-		cur = proc->job->head_proc;
-		while (cur)
+	}
+	else
+	{
+		proc->job->running--;
+		if (proc->job->foot_proc == proc)
 		{
-			if (wpid == cur->pid)
+			if (!proc->job->background)
+				g_shell.exit_code = get_return_status(status);
+			if (WIFSIGNALED(status))
 			{
-				proc->job->running--;
-				if (!cur->next)
-					g_shell.exit_code = get_return_status(*status);
-				break ;
+				proc->job->sig = WTERMSIG(status);
+				if (!silent && proc->job->background)
+					detailed_list(&g_shell.err, proc->job, 0, 0);
 			}
-			cur = cur->next;
+			else if (WIFEXITED(status) && proc->job->background && !silent)
+			{
+				detailed_list(&g_shell.err, proc->job, 0,
+						get_return_status(status));
+			}
 		}
-		*status = 0;
+	}
+	printer_flush(&g_shell.err);
+	return (proc);
+}
+
+static void	wait_job_loop(t_job *job)
+{
+	int		status;
+	pid_t	wpid;
+
+	status = 0;
+	while (!job->stopped && job->running > 0
+			&& (wpid = waitpid(WAIT_ANY, &status, WUNTRACED)) >= 0)
+	{
+		update_job_status(job, wpid, status, 0);
+		status = 0;
 	}
 }
 
-void		wait_job(t_proc *proc)
+void		wait_job(t_job *job, int cont)
 {
-	int		status;
-
-	if (proc->next)
-		return ;
-	tcsetpgrp(g_shell.term, proc->job->pgid);
-	status = 0;
-	wait_job_loop(proc, &status, 0, NULL);
-	tcsetpgrp(g_shell.term, g_shell.pgid);
-	tcgetattr(g_shell.term, &proc->job->tmodes);
-	cooked_terminal();
+	if (!g_shell.background)
+		tcsetpgrp(g_shell.term, job->pgid);
+	if (cont)
+	{
+		job->stopped = 0;
+		job->background = 0;
+		tcsetattr(g_shell.term, TCSADRAIN, &job->tmodes);
+		kill(-job->pgid, SIGCONT);
+		g_shell.previous_job = g_shell.current_job;
+		g_shell.current_job = job;
+	}
+	wait_job_loop(job);
+	if (!g_shell.background)
+	{
+		tcsetpgrp(g_shell.term, g_shell.pgid);
+		if (job->running > 0)
+			tcgetattr(g_shell.term, &job->tmodes);
+		cooked_terminal();
+	}
 }

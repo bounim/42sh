@@ -131,5 +131,11 @@ int					print_alias(t_alias *alias);
 int					free_alias(t_alias *alias, int a);
 int					put_error(char *sh, char *cmd, char *arg, char *error);
 int					check_opts(char **arg, t_opts *flag, char opts);
+int					built_jobs(char **arg, t_envl *envl);
+int					built_fg(char **arg, t_envl *envl);
+int					built_bg(char **arg, t_envl *envl);
+t_job				*built_bg_fg_job(char **arg);
+void				detailed_list(t_printer *pr, t_job *job, int show_pgid,
+		int exit_code);
 
 #endif

@@ -14,7 +14,18 @@
 #include "parser.h"
 #include "execution.h"
 
-static void				lex_a_line(t_lexer *lex, enum e_prompt prompt,\
+static void				lex_a_line_error(t_lexer *lex, enum e_prompt *prompt)
+{
+	if (lex->head && g_shell.edit.ret_ctrl_d)
+		write_error("syntax error", "unexpected end of file");
+	if (g_shell.edit.ret_ctrl_c)
+		check_background(0);
+	g_shell.exit_code = 1;
+	lexer_destroy(lex);
+	*prompt = BASIC_PROMPT;
+}
+
+static void				lex_a_line(t_lexer *lex, enum e_prompt prompt,
 		size_t *i)
 {
 	while (1)
@@ -33,12 +44,11 @@ static void				lex_a_line(t_lexer *lex, enum e_prompt prompt,\
 				g_shell.line = NULL;
 			}
 			readline(prompt);
-			if (!g_shell.line || g_shell.edit.ret_ctrl_c)
-			{
-				g_shell.exit_code = 1;
-				lexer_destroy(lex);
-				prompt = BASIC_PROMPT;
-			}
+			if (!g_shell.line
+					|| g_shell.edit.ret_ctrl_c || g_shell.edit.ret_ctrl_d)
+				lex_a_line_error(lex, &prompt);
+			else if (g_shell.line[0] == '\n')
+				check_background(0);
 			*i = 0;
 		}
 	}
@@ -76,7 +86,7 @@ static void				run_shell_loop(t_lexer *lex, size_t *i)
 		}
 		execute(lex);
 		lexer_destroy(lex);
-		free_exec();
+		check_background(0);
 	}
 }
 

@@ -35,9 +35,9 @@ static int	fc_build_buff(uint8_t **buff, t_history *history, int range[2])
 	if (!(history = find_specific_hist_line(range[0], find_first_hist_line())))
 		return (-1);
 	len = get_range_buff_len(start, range[1], history);
-	if (!(*buff = (uint8_t*)malloc(sizeof(uint8_t) * (len + 1))))
+	if (!(*buff = (uint8_t*)malloc(sizeof(uint8_t) * (len + 2))))
 		return (-1);
-	*buff = ft_memset(*buff, 0, len);
+	*buff = ft_memset(*buff, 0, len + 2);
 	len = 0;
 	start = range[0];
 	if (!(history = find_specific_hist_line(range[0], find_first_hist_line())))
@@ -97,6 +97,7 @@ static int	fc_controler(char **av, int fc_range[2], int fc_opts[5],
 		else
 			if (fc_s(&buff, len) > 0)
 				return (1);
+		run_script(buff);
 		//return (fc_exec(buff, g_shell.envl));
 	}
 	return (0);

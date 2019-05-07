@@ -90,8 +90,7 @@ void				lexer(t_lexer *lex, uint8_t *buffer, size_t buffer_size)
 	lexer_init(lex, buffer, buffer_size);
 	if (lexer_read(lex) < 0)
 	{
-		printer_str(&g_shell.err, "Error: lexer: out of memory\n");
-		printer_flush(&g_shell.err);
+		write_error("lexer", "out of memory");
 		lexer_destroy(lex);
 		fatal_exit(SH_ENOMEM);
 		return ;

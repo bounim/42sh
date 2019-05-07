@@ -33,7 +33,8 @@ static void	write_operands(char arg)
 	else
 	{
 		write(1, "\\", 1);
-		write(1, &arg, 1);
+		if (arg)
+			write(1, &arg, 1);
 	}
 }
 

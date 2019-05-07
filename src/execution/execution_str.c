@@ -13,14 +13,15 @@
 #include "twenty_one_sh.h"
 #include "execution.h"
 
-int		get_size(t_lexer_token *head)
+static size_t	get_size(t_lexer_token *head, int background)
 {
 	t_lexer_token	*tmp;
 	size_t			len;
 
 	tmp = head;
 	len = 0;
-	while (tmp && tmp->ptype != PARSER_AND_OR && tmp->ptype != PARSER_SEPARATOR)
+	while (tmp && (background || tmp->ptype != PARSER_AND_OR)
+			&& tmp->ptype != PARSER_SEPARATOR)
 	{
 		len += tmp->size + 1;
 		tmp = tmp->next;
@@ -28,20 +29,23 @@ int		get_size(t_lexer_token *head)
 	return (len);
 }
 
-char	*lst_to_str(t_lexer_token *head)
+char			*lst_to_str(t_lexer_token *head, int background)
 {
 	t_lexer_token	*tmp;
 	size_t			len;
 	size_t			i;
 	char			*str;
 
+	while (head->left)
+		head = head->left;
 	i = 0;
-	len = get_size(head);
+	len = get_size(head, background);
 	str = NULL;
 	if (!(str = malloc(len)))
 		return (NULL);
 	tmp = head;
-	while (tmp && tmp->ptype != PARSER_AND_OR && tmp->ptype != PARSER_SEPARATOR)
+	while (tmp && (background || tmp->ptype != PARSER_AND_OR)
+			&& tmp->ptype != PARSER_SEPARATOR)
 	{
 		ft_memcpy(str + i, tmp->buffer, tmp->size);
 		i += tmp->size + 1;

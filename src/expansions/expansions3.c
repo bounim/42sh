@@ -79,7 +79,8 @@ static int		double_quote(t_lexer_token *tok)
 		var_expand(tok, j, tok->exp_i);
 		tok->exp_i = j;
 	}
-	if (j + 1 < tok->size && tok->buffer[j + 1] == '\"')
+	if (j + 1 < tok->size
+			&& tok->buffer[j] == '\\' && tok->buffer[j + 1] == '\"')
 	{
 		if (buffer_append(tok, (uint8_t *)"\"", 1) < 0)
 			return (-1);

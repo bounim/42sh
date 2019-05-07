@@ -31,7 +31,7 @@ static int		execute_utility(char **arg, t_envl *envl)
 	create_proc_argv(&new_job, path, arg, envl);
 	ft_arrdel(arg);
 	free_envl(envl);
-	launch_job(new_job);
+	launch_job(&new_job);
 	return (g_shell.exit_code);
 }
 
