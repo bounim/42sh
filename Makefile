@@ -21,6 +21,8 @@ SRC := \
 	execution/redir2.c \
 	execution/redir3.c \
 	execution/run_script.c \
+	execution/run_script2.c \
+	execution/arg_to_argv.c \
 	history/controler_history.c \
 	history/down_history.c \
 	history/init_shell_history.c \
